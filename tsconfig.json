@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react",
+    "baseUrl": "./src/",
+    "paths": {
+      "@/*": ["*"],
+      "@assets/*": ["assets/*"],
+      "@constants": ["constants/index"],
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@router/*": ["router/*"],
+      "@router": ["router/index"],
+      "@services/*": ["services/*"],
+      "@global/*": ["global/*"],
+      "@styled/*": ["styled/*"],
+      "@utilites/*": ["utilites/*"],
+      "@layouts/*": ["layouts/*"],
+      "@lang": ["lang/index"],
+      "@env": ["env/index"],
+      "@theme": ["theme/index"],
+      "@containers/*": ["containers/*"],
+      "@services": ["services/index"],
+      "@types": ["types/index"]
+    }
+  },
+  "include": ["./src", "src/pages/admin/.tsx"]
+}
