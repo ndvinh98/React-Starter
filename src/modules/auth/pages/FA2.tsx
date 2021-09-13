@@ -3,14 +3,14 @@ import * as yup from 'yup';
 import * as UI from '@chakra-ui/react';
 import useCountDown from 'react-countdown-hook';
 
-import {useRoute, usePost} from '@utils/hooks';
+import {useRouter, usePost} from '@utils/hooks';
 import {useAuthStore} from '@modules/auth';
 import FormGenerate from '@components/FormGenerate';
 
 function Auth2FA() {
   const {loginVerifyOtp} = useAuthStore();
   const [timeLeft, actions] = useCountDown(30000, 1000);
-  const {query} = useRoute();
+  const {query} = useRouter();
   const toast = UI.useToast();
 
   const {post: resendOpt, data} = usePost('/partnerUsers/resendOtpCode');

@@ -1,6 +1,6 @@
 export {useDimensions} from './useComponentSize';
 export {useMedia} from './useMedia';
-export {useRoute} from './useRoute';
+export {useRouter} from './useRouter';
 
 export {usePost} from './usePost';
 export {usePatch} from './usePatch';

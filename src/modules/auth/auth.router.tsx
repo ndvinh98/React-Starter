@@ -25,6 +25,10 @@ export default compose(
               title: '2FA',
               getView: () => import('./pages/FA2'),
             }),
+            '/change-password': route({
+              title: '2FA',
+              getView: () => import('./pages/ChangePassword'),
+            }),
           }),
     ),
   }),

@@ -1,6 +1,6 @@
 import {useCurrentRoute, useNavigation} from 'react-navi';
 
-export const useRoute = () => {
+export const useRouter = () => {
   const {lastChunk} = useCurrentRoute();
   const {navigate, goBack} = useNavigation();
   return {

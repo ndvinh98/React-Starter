@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, {useEffect, memo} from 'react';
+import React, {useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import FormGenerate from '@components/FormGenerate';
 import * as yup from 'yup';
@@ -31,7 +31,9 @@ function Login() {
 
         <FormGenerate
           spacing={6}
-          onSubmit={({email, password}) => login(email, password)}
+          onSubmit={({email, password}) => {
+            login(email, password);
+          }}
           schema={{
             email: yup.string().email().required('Email is a required field.'),
             password: yup

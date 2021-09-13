@@ -27,25 +27,22 @@ export interface IEXEC {
   };
 }
 
-const request = async (props: IEXEC) => {
+const request = (props: IEXEC) => {
   const {method, baseURL = EnvConfig().BASE_URL, path, option} = props;
   const {getToken} = useAuthStore.getState();
-  try {
-    const res = await axios({
-      method,
-      baseURL,
-      url: path,
-      params: option?.qs,
-      data: option?.data,
-      timeout: option?.timeout,
-      headers: {
-        Authorization: `Bearer ${getToken() || option?.token}`,
-        ...option?.headers,
-      },
-    });
-    return [res, null];
-  } catch (err) {
-    return [null, err];
-  }
+  return axios({
+    method,
+    baseURL,
+    url: path,
+    params: option?.qs,
+    data: option?.data,
+    timeout: option?.timeout,
+    headers: {
+      Authorization: `Bearer ${getToken() || option?.token}`,
+      ...option?.headers,
+    },
+  })
+    .then((res) => [res, null])
+    .catch((err) => [null, err]);
 };
 export default request;

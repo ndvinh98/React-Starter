@@ -1,11 +1,11 @@
 import {request} from '@services';
 import {IPartnerUsers} from '@types';
 
-export const login = async (
+export const login = (
   email: string,
   password: string,
 ): Promise<IPartnerUsers> => {
-  const [res, err] = await request({
+  return request({
     method: 'POST',
     path: '/partnerUsers/login',
     option: {
@@ -14,7 +14,8 @@ export const login = async (
         password,
       },
     },
+  }).then(([res, err]) => {
+    if (err) return null;
+    return res?.data?.data?.partnerUsers as IPartnerUsers;
   });
-  if (err) return;
-  return res?.data?.data?.partnerUsers as IPartnerUsers;
 };

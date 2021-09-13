@@ -19,13 +19,15 @@ const useAuthStore = create<IAuthStore>((set, get) => ({
   me: {},
   accessToken: '',
   isLoading: false,
-  login: async (email: string, password: string) => {
+  login: (email: string, password: string) => {
     set({isLoading: true});
-    const user = await login(email, password);
-    set({isLoading: false});
-    if (user?.isActive) {
-      navigation.navigate(`/auth/2fa?email=${user?.email}`);
-    }
+    login(email, password)
+      .then((user) => {
+        if (user?.isActive) {
+          navigation.navigate(`/auth/2fa?email=${user?.email}`);
+        }
+      })
+      .finally(() => set({isLoading: false}));
   },
   loginVerifyOtp: async (email: string, otpCode: string) => {
     const auth = await loginVerifyOtp({email, otpCode});
