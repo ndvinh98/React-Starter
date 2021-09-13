@@ -16,11 +16,10 @@
     "jsx": "react",
     "baseUrl": "./src/",
     "paths": {
-      "@/*": ["*"],
       "@assets/*": ["assets/*"],
       "@constants": ["constants/index"],
       "@components/*": ["components/*"],
-      "@pages/*": ["pages/*"],
+      "@modules/*": ["modules/*"],
       "@router/*": ["router/*"],
       "@router": ["router/index"],
       "@services/*": ["services/*"],
@@ -36,5 +35,5 @@
       "@types": ["types/index"]
     }
   },
-  "include": ["./src", "src/pages/admin/.tsx"]
+  "include": ["./src", "src/modules/admin/.tsx"]
 }

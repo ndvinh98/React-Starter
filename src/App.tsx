@@ -1,11 +1,18 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import {theme} from '@theme';
 import {ChakraProvider} from '@chakra-ui/react';
+import {Router, View} from 'react-navi';
+
+import {routes} from '@router';
 
 export default function App() {
   return (
     <ChakraProvider theme={theme}>
-      <div>This is main </div>
+      <Router routes={routes}>
+        <Suspense fallback={null}>
+          <View />
+        </Suspense>
+      </Router>
     </ChakraProvider>
   );
 }
