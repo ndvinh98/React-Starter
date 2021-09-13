@@ -204,3 +204,15 @@ export interface IModules extends BaseSchema {
   mediaType?: TMediaType;
   productModuleRelations: IProductModuleRelations[];
 }
+
+export interface IParams {
+  fields?: string;
+  limit?: number;
+  page?: number;
+  sort?: string;
+  filter?: any;
+  cache?: boolean;
+  textSearch?: string;
+  relations?: string;
+  [key: string]: any;
+}

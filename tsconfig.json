@@ -25,7 +25,7 @@
       "@services/*": ["services/*"],
       "@global/*": ["global/*"],
       "@styled/*": ["styled/*"],
-      "@utilites/*": ["utilites/*"],
+      "@utils/*": ["utils/*"],
       "@layouts/*": ["layouts/*"],
       "@lang": ["lang/index"],
       "@env": ["env/index"],

@@ -1,6 +1,6 @@
 import axios, {Method} from 'axios';
 import EnvConfig from '@env';
-import {useAuthStore} from '@global/auth';
+import {useAuthStore} from '@modules/auth';
 
 export interface IParams {
   fields?: string;

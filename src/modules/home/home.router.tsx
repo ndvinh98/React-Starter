@@ -3,6 +3,8 @@ import {mount, route, map, redirect, withView, compose} from 'navi';
 import HomeLayout from './home.layout';
 import {View} from 'react-navi';
 
+import {useAuthStore} from '@modules/auth';
+
 export default compose(
   withView((request) => (
     <HomeLayout mountpath={request.mountpath || '/'}>
@@ -11,7 +13,7 @@ export default compose(
   )),
   mount({
     '*': map((request) =>
-      !localStorage.getItem('token')
+      !useAuthStore.getState().getToken()
         ? redirect(
             '/auth/login?redirectTo=' + encodeURIComponent(request.originalUrl),
             {exact: false},
