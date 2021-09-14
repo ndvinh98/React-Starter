@@ -29,6 +29,20 @@ export default compose(
               title: '2FA',
               getView: () => import('./pages/ChangePassword'),
             }),
+            '/forgot-password': route({
+              title: 'Forgot Password',
+              getView: () => import('./pages/ForgotPassword'),
+            }),
+
+            '/forgot-password-verify': route({
+              title: 'Forgot Password',
+              getView: () => import('./pages/ForgotPasswordVerify'),
+            }),
+
+            '/change-password-done': route({
+              title: 'Change Password Done',
+              getView: () => import('./pages/ChangePasswordDone'),
+            }),
           }),
     ),
   }),
