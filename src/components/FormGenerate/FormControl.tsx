@@ -55,6 +55,7 @@ export interface IFormControl {
   DecorComponent?: React.FC<any>;
   CustomComponent?: React.FC<any>;
   onChangeValue?: (data: any) => void;
+  leftIcon?: React.ReactNode;
 }
 
 const DIRECTION = {

@@ -14,7 +14,7 @@ export const useGetItem = <T = any>(url?: string) => {
       path: options?.path ? url + options?.path : url,
       option: {qs: params},
     })
-      .then(([err, res]) => {
+      .then(([res, err]) => {
         if (err) {
           setError(err);
           return;

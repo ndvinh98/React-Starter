@@ -6,9 +6,11 @@ import * as yup from 'yup';
 
 import {ELocalStorage} from '@constants';
 import {useAuthController} from '@modules/auth';
+import {useRouter} from '@utils/hooks';
 
 function Login() {
   const {login, isLoading} = useAuthController();
+  const {push} = useRouter();
   useEffect(() => {
     localStorage.setItem(ELocalStorage.REMEMBER_ACCESS_TOKEN, '0');
   }, []);
@@ -76,8 +78,7 @@ function Login() {
               color="ste.red"
               fontSize={'md'}
               fontStyle={'italic'}
-              // onClick={() => push('/auth/forgot-password')}
-            >
+              onClick={() => push('/auth/forgot-password')}>
               Forgot password?
             </UI.Link>
           </UI.HStack>
@@ -99,8 +100,7 @@ function Login() {
               fontSize={{md: '15px'}}
               color="ste.red"
               fontStyle={'italic'}
-              // onClick={() => push('/auth/register')}
-            >
+              onClick={() => push('/auth/register')}>
               Create a new account.
             </UI.Link>
           </UI.HStack>

@@ -1,11 +1,12 @@
 import React from 'react';
 
 import {useRouter} from '@utils/hooks';
+import {useRouterController} from '@modules/router';
 import {Box, Button, Text, VStack, Image} from '@chakra-ui/react';
 
 function ForgotPasswordDone() {
-  const {replace, query} = useRouter();
-
+  const {replace} = useRouter();
+  const {query} = useRouterController();
   return (
     <VStack
       height={'calc(100vh - 50px)'}
@@ -24,7 +25,7 @@ function ForgotPasswordDone() {
 
         <Text textAlign={'left'}>
           {`If your email is registered with us, you will receive an email shortly
-        with a message to reset your password at ${query.email}. Please follow
+        with a message to reset your password at ${query?.email}. Please follow
         the instructions in the email.`}
         </Text>
         <Box w={'100%'}>

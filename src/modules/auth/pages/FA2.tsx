@@ -3,15 +3,16 @@ import * as yup from 'yup';
 import * as UI from '@chakra-ui/react';
 import useCountDown from 'react-countdown-hook';
 
-import {useRouter, usePost} from '@utils/hooks';
+import {usePost} from '@utils/hooks';
 import {useAuthController} from '@modules/auth';
 import FormGenerate from '@components/FormGenerate';
+import {useRouterController} from '@modules/router';
 
 function Auth2FA() {
   const {loginVerifyOtp} = useAuthController();
   const [timeLeft, actions] = useCountDown(30000, 1000);
-  const {query} = useRouter();
   const toast = UI.useToast();
+  const {query} = useRouterController();
 
   const {post: resendOpt, data} = usePost('/partnerUsers/resendOtpCode');
 
@@ -19,7 +20,7 @@ function Auth2FA() {
     actions.start();
   }, []);
 
-  const handleResendOtp = () => resendOpt({email: query.email});
+  const handleResendOtp = () => resendOpt({email: query?.email});
 
   useEffect(() => {
     if (data) {

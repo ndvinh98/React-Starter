@@ -5,7 +5,10 @@ import {Router, View} from 'react-navi';
 import {navigation} from '@router';
 import {logs} from '@modules/logs';
 import LoadingScreen from '@components/LoadingScreen';
+import {serverInterceptors} from '@services';
 logs();
+serverInterceptors();
+
 export default function App() {
   return (
     <ChakraProvider theme={theme}>

@@ -9,6 +9,7 @@ export interface IModalController {
   logout: boolean;
   comfirmRequest: boolean;
   data: any;
+  reject: boolean;
   action: boolean;
 }
 
@@ -18,6 +19,7 @@ export const useModalController = create<IModalController>((set) => ({
   logout: false,
   comfirmRequest: false,
   action: false,
+  reject: false,
   data: null,
   openModal: (name: string, data?: any) => set({[name]: true, data}),
   closeModal: (name: string) => set({[name]: false, data: null}),
