@@ -1,4 +1,5 @@
 import {createBrowserNavigation, lazy, mount, redirect} from 'navi';
+import {useRouterController} from '@modules/router';
 
 export const routes = mount({
   '/home': lazy(() => import('@modules/home/home.router')),
@@ -9,3 +10,9 @@ export const routes = mount({
 export const navigation = createBrowserNavigation({
   routes,
 });
+
+navigation.subscribe(() =>
+  navigation
+    .getRoute()
+    .then((route) => useRouterController.getState().setCurrentRoute(route)),
+);

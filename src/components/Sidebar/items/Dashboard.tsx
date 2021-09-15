@@ -102,7 +102,7 @@ export const MenuLevel1 = memo((props: {to: string; label: string}) => {
   return (
     <SB.SubMenu
       open={false}
-      className={classNames('level1', {active: useActive(to, {exact: true})})}
+      className={classNames('level1', {active: useActive(to, {exact: false})})}
       //@ts-ignore
       title={
         <UI.Text

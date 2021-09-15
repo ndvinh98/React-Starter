@@ -1,16 +1,11 @@
 import React from 'react';
 import {mount, route, map, redirect, withView, compose, lazy} from 'navi';
 import HomeLayout from './home.layout';
-import {View} from 'react-navi';
 
 import {useHomeController} from './controller';
 
 export default compose(
-  withView((request) => (
-    <HomeLayout mountpath={request.mountpath || '/'}>
-      <View />
-    </HomeLayout>
-  )),
+  withView(<HomeLayout />),
   mount({
     '*': map(async (request) => {
       const {guard} = useHomeController.getState();
@@ -18,7 +13,7 @@ export default compose(
         return res
           ? mount({
               '/': route({
-                title: 'Main',
+                title: 'Dashboard',
                 getView: () => import('./modules/dashboard'),
               }),
               '/partner-applications': lazy(

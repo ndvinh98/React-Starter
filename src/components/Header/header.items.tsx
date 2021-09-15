@@ -15,17 +15,55 @@ import {
 import {GiDiploma} from 'react-icons/gi';
 import {FaUsers} from 'react-icons/fa';
 import {HiUserGroup} from 'react-icons/hi';
-import {useRouter} from '@utils/hooks';
 import {SettingIcon} from '@components/icons';
 import AsyncSelect from '@components/AsyncSelect';
 
 import {useModalController} from '@modules/modal';
 import {useHomeController} from '@modules/home';
+import {useRouter} from '@utils/hooks';
+
+const USER_TYPE_DISPLAY = {
+  USER: 'User',
+  PARTNERADMIN: 'Partner admin',
+  ADMIN: 'Admin',
+};
+const HEADER_MENU = [
+  {
+    icon: <RiUserFill size={20} />,
+    label: 'Your Profile',
+    path: '/partner/your-profile',
+  },
+  {
+    icon: <RiBuildingFill size={20} />,
+    label: 'Company Information',
+    path: '/partner/company-information',
+  },
+  {
+    icon: <RiBarChartFill size={20} />,
+    label: 'Tier Information',
+    path: '/partner/tier-information',
+  },
+  {
+    icon: <FaUsers size={20} />,
+    label: 'User Management',
+    path: '/partner/user-management',
+  },
+  {
+    icon: <GiDiploma size={20} />,
+    label: 'Certificates',
+    path: '/partner/file-certificate',
+  },
+  {
+    icon: <RiFileUserFill size={20} />,
+    label: 'STE Profile',
+    path: '/partner/ste-profile',
+  },
+];
 
 export const HEADER_ITEMS = {
   notify: memo((porps: any) => {
     const {isDisabled} = porps;
-    const {push} = useRouter();
+    // const {push} = useRouter();
     return (
       <UI.Box position="relative" pr={2}>
         <UI.Circle
@@ -43,7 +81,7 @@ export const HEADER_ITEMS = {
         </UI.Circle>
         <UI.IconButton
           disabled={isDisabled}
-          onClick={() => push('/partner/notification')}
+          // onClick={() => push('/partner/notification')}
           variant={'ghost'}
           aria-label="Notify"
           icon={<FiBell size={20} />}
@@ -54,44 +92,6 @@ export const HEADER_ITEMS = {
   ['user-info']: memo(({isHiddenMenu}: any) => {
     const {me} = useHomeController();
     const {push} = useRouter();
-
-    const USER_TYPE_DISPLAY = {
-      USER: 'User',
-      PARTNERADMIN: 'Partner admin',
-      ADMIN: 'Admin',
-    };
-    const HEADER_MENU = [
-      {
-        icon: <RiUserFill size={20} />,
-        label: 'Your Profile',
-        path: '/partner/your-profile',
-      },
-      {
-        icon: <RiBuildingFill size={20} />,
-        label: 'Company Information',
-        path: '/partner/company-information',
-      },
-      {
-        icon: <RiBarChartFill size={20} />,
-        label: 'Tier Information',
-        path: '/partner/tier-information',
-      },
-      {
-        icon: <FaUsers size={20} />,
-        label: 'User Management',
-        path: '/partner/user-management',
-      },
-      {
-        icon: <GiDiploma size={20} />,
-        label: 'Certificates',
-        path: '/partner/file-certificate',
-      },
-      {
-        icon: <RiFileUserFill size={20} />,
-        label: 'STE Profile',
-        path: '/partner/ste-profile',
-      },
-    ];
 
     const Avatar = memo(() => (
       <UI.HStack pr={4}>
@@ -154,7 +154,7 @@ export const HEADER_ITEMS = {
     );
   }),
   setting: memo(() => {
-    const {push} = useRouter();
+    // const {push} = useRouter();
     const SETTING_MENU = [
       {
         icon: <HiUserGroup size={20} />,
@@ -186,7 +186,7 @@ export const HEADER_ITEMS = {
             <UI.MenuList>
               {SETTING_MENU.map((x, i) => (
                 <UI.MenuItem
-                  onClick={() => push(x?.path)}
+                  // onClick={() => push(x?.path)}
                   key={i}
                   fontWeight={'medium'}
                   icon={x.icon}>

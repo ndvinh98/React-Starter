@@ -1,35 +1,30 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {NotFoundBoundary} from 'react-navi';
 import NotFound from '@components/404NotFound';
 import * as UI from '@chakra-ui/react';
-import {useMedia} from '@utils/hooks';
 import envConfig from '@env';
+import {View} from 'react-navi';
 
 import Header from '@components/Header';
 import Sidebar from '@components/Sidebar';
 import InitModals from '@modules/modal';
 
-function HomeLayout({children}: any) {
-  const {isAllMobile, isBase} = useMedia();
-
+function HomeLayout() {
   return (
     <NotFoundBoundary render={() => <NotFound />}>
       <UI.HStack spacing={0}>
-        {isBase && (
-          <UI.Box w={'min-content'}>
-            <Sidebar.base />
-          </UI.Box>
-        )}
-        {isAllMobile && <Sidebar.mobile />}
+        <UI.Box w={'min-content'}>
+          <Sidebar.base />
+        </UI.Box>
+
         <UI.Box w={'full'} bg={'ste.gray_lighter'}>
-          {isBase && <Header.base />}
-          {isAllMobile && <Header.mobile />}
+          <Header.base />
           <UI.Box
             bg={'ste.gray_lighter'}
             h={'calc(100vh - 60px)'}
             overflow={'auto'}
             w={'full'}>
-            {children}
+            <View />
             <UI.Text mt={3} textAlign={'center'}>
               Copyright © 2020 ST Engineering - ver {envConfig().FE_VERSION}
             </UI.Text>
@@ -41,4 +36,4 @@ function HomeLayout({children}: any) {
   );
 }
 
-export default HomeLayout;
+export default memo(HomeLayout);

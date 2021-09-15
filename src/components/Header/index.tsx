@@ -5,35 +5,36 @@ import {HStack} from '@chakra-ui/react';
 import {HEADER_ITEMS} from './header.items';
 import Mobile from './header.mobile';
 
+const headerButton = [
+  {
+    headerButtonType: 'search',
+    isShow: true,
+    position: 1,
+  },
+  {
+    headerButtonType: 'setting',
+    isShow: true,
+    position: 2,
+  },
+  {
+    headerButtonType: 'notify',
+    isShow: true,
+    position: 3,
+  },
+  {
+    headerButtonType: 'user-info',
+    isShow: true,
+    position: 4,
+  },
+  {
+    headerButtonType: 'logout',
+    isShow: true,
+    position: 5,
+    props: null,
+  },
+];
+
 function Header() {
-  const headerButton = [
-    {
-      headerButtonType: 'search',
-      isShow: true,
-      position: 1,
-    },
-    {
-      headerButtonType: 'setting',
-      isShow: true,
-      position: 2,
-    },
-    {
-      headerButtonType: 'notify',
-      isShow: true,
-      position: 3,
-    },
-    {
-      headerButtonType: 'user-info',
-      isShow: true,
-      position: 4,
-    },
-    {
-      headerButtonType: 'logout',
-      isShow: true,
-      position: 5,
-      props: null,
-    },
-  ];
   return (
     <HStack justifyContent={'flex-end'} px={3} height={'60px'} bg={'ste.red'}>
       {chain(headerButton)

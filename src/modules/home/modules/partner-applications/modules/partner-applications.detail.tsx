@@ -1,7 +1,9 @@
 import React from 'react';
+import {useRouterController} from '@modules/router';
 
 function Detail() {
-  return <div>This is detail page</div>;
+  const {params} = useRouterController();
+  return <div>This is detail page {params?.id}</div>;
 }
 
 export default Detail;

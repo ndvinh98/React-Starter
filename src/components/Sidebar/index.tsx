@@ -8,16 +8,16 @@ import {SidebarWarp} from './styled';
 import {BiMenu} from 'react-icons/bi';
 import Mobile from './mobile';
 
+const sidebarMenu = [
+  {
+    sidebarMenuType: 'dashboard',
+    position: 1,
+    isShow: true,
+  },
+];
+
 function SideBar() {
   const {isOpen, onToggle} = UI.useDisclosure({defaultIsOpen: true});
-  const sidebarMenu = [
-    {
-      sidebarMenuType: 'dashboard',
-      position: 1,
-      isShow: true,
-    },
-  ];
-
   return (
     <UI.VStack
       alignItems={'start'}
