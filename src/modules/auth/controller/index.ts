@@ -4,7 +4,7 @@ import {navigation} from '@router';
 import {login, loginVerifyOtp} from '@services';
 import {IMe} from '@types';
 
-export interface IAuthStore {
+export interface IAuthController {
   me: IMe;
   isLoading: boolean;
   accessToken?: string;
@@ -15,7 +15,7 @@ export interface IAuthStore {
 }
 const {ACCESS_TOKEN, REMEMBER_ACCESS_TOKEN} = ELocalStorage;
 
-const useAuthStore = create<IAuthStore>((set, get) => ({
+export const useAuthController = create<IAuthController>((set, get) => ({
   me: {},
   accessToken: '',
   isLoading: false,
@@ -29,13 +29,14 @@ const useAuthStore = create<IAuthStore>((set, get) => ({
       })
       .finally(() => set({isLoading: false}));
   },
-  loginVerifyOtp: async (email: string, otpCode: string) => {
-    const auth = await loginVerifyOtp({email, otpCode});
-    if (auth?.token) {
-      localStorage.setItem(ELocalStorage.ACCESS_TOKEN, String(auth.token));
-      set({accessToken: auth.token});
-      navigation.navigate('/');
-    }
+  loginVerifyOtp: (email: string, otpCode: string) => {
+    loginVerifyOtp({email, otpCode}).then((auth) => {
+      if (auth?.token) {
+        localStorage.setItem(ELocalStorage.ACCESS_TOKEN, String(auth.token));
+        set({accessToken: auth.token});
+        navigation.navigate('/');
+      }
+    });
   },
   logout: () => {
     set({me: {}, accessToken: ''});
@@ -49,5 +50,3 @@ const useAuthStore = create<IAuthStore>((set, get) => ({
     return (isRemember && localStorageToken) || accessToken;
   },
 }));
-
-export default useAuthStore;

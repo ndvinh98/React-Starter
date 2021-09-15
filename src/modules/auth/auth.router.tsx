@@ -3,7 +3,7 @@ import {mount, route, compose, withView, map, redirect} from 'navi';
 import {View} from 'react-navi';
 
 import AuthLayout from './auth.layout';
-import {useAuthStore} from '@modules/auth';
+import {useAuthController} from '@modules/auth';
 
 export default compose(
   withView((request) => (
@@ -13,7 +13,7 @@ export default compose(
   )),
   mount({
     '*': map(() =>
-      useAuthStore.getState().getToken()
+      useAuthController.getState().getToken()
         ? redirect('/home', {exact: false})
         : mount({
             '/': redirect('login'),

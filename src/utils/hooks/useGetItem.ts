@@ -9,19 +9,20 @@ export const useGetItem = <T = any>(url?: string) => {
 
   const getItem = async (params?: IParams, options?: {path?: string}) => {
     setLoading(true);
-
-    const [res, error] = await request({
+    request({
       method: 'GET',
       path: options?.path ? url + options?.path : url,
-      option: {
-        qs: params,
-      },
-    });
-    if (res?.data?.data) setData(res?.data?.data as T);
-    else setData(null);
-    if (error) setError(error);
-    setLoading(false);
+      option: {qs: params},
+    })
+      .then(([err, res]) => {
+        if (err) {
+          setError(err);
+          return;
+        }
+        setData(res?.data?.data as T);
+      })
+      .finally(() => setLoading(false));
   };
 
-  return {item: data, loading, error, getItem};
+  return {data, loading, error, getItem};
 };

@@ -4,11 +4,11 @@ import * as UI from '@chakra-ui/react';
 import useCountDown from 'react-countdown-hook';
 
 import {useRouter, usePost} from '@utils/hooks';
-import {useAuthStore} from '@modules/auth';
+import {useAuthController} from '@modules/auth';
 import FormGenerate from '@components/FormGenerate';
 
 function Auth2FA() {
-  const {loginVerifyOtp} = useAuthStore();
+  const {loginVerifyOtp} = useAuthController();
   const [timeLeft, actions] = useCountDown(30000, 1000);
   const {query} = useRouter();
   const toast = UI.useToast();

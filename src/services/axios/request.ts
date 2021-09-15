@@ -1,6 +1,6 @@
 import axios, {Method} from 'axios';
 import EnvConfig from '@env';
-import {useAuthStore} from '@modules/auth';
+import {useAuthController} from '@modules/auth';
 
 export interface IParams {
   fields?: string;
@@ -29,7 +29,7 @@ export interface IEXEC {
 
 const request = (props: IEXEC) => {
   const {method, baseURL = EnvConfig().BASE_URL, path, option} = props;
-  const {getToken} = useAuthStore.getState();
+  const {getToken} = useAuthController.getState();
   return axios({
     method,
     baseURL,

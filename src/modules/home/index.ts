@@ -1,0 +1,1 @@
+export {useHomeController} from './controller';

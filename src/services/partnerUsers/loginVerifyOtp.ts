@@ -7,8 +7,8 @@ export const loginVerifyOtp = async ({
 }: {
   email: string;
   otpCode: string;
-}): Promise<{partnerUsers: IPartnerUsers; token: string}> => {
-  const [res, err] = await request({
+}): Promise<{partnerUsers: IPartnerUsers; token: string} | null> => {
+  return request({
     method: 'POST',
     path: 'partnerUsers/loginVerifyOtp',
     option: {
@@ -17,7 +17,8 @@ export const loginVerifyOtp = async ({
         otpCode,
       },
     },
+  }).then(([res, err]) => {
+    if (err) return null;
+    return res?.data?.data;
   });
-  if (err) return null;
-  return res?.data?.data;
 };

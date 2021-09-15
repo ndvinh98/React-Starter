@@ -2,7 +2,8 @@ import {useCurrentRoute, useNavigation} from 'react-navi';
 
 export const useRouter = () => {
   const {lastChunk} = useCurrentRoute();
-  const {navigate, goBack} = useNavigation();
+  const {navigate, goBack, subscribe} = useNavigation();
+
   return {
     push: navigate,
     goBack,
@@ -14,5 +15,6 @@ export const useRouter = () => {
     search: lastChunk?.request?.search,
     state: lastChunk?.request?.state,
     context: lastChunk?.request?.context,
+    subscribe: subscribe,
   };
 };

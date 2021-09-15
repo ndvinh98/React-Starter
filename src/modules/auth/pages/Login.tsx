@@ -5,10 +5,10 @@ import FormGenerate from '@components/FormGenerate';
 import * as yup from 'yup';
 
 import {ELocalStorage} from '@constants';
-import {useAuthStore} from '@modules/auth';
+import {useAuthController} from '@modules/auth';
 
 function Login() {
-  const {login, isLoading} = useAuthStore();
+  const {login, isLoading} = useAuthController();
   useEffect(() => {
     localStorage.setItem(ELocalStorage.REMEMBER_ACCESS_TOKEN, '0');
   }, []);
@@ -38,8 +38,8 @@ function Login() {
             email: yup.string().email().required('Email is a required field.'),
             password: yup
               .string()
-              .min(6)
-              .required('Password is a required field.'),
+              .min(8, 'Password must be at least 8 characters')
+              .required('Password is required'),
           }}
           fields={[
             {
