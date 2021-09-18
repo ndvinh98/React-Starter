@@ -7,7 +7,7 @@ export interface IModalController {
   add_user: boolean;
   search: boolean;
   logout: boolean;
-  comfirmRequest: boolean;
+  confirmRequest: boolean;
   data: any;
   reject: boolean;
   action: boolean;
@@ -17,7 +17,7 @@ export const useModalController = create<IModalController>((set) => ({
   add_user: false,
   search: false,
   logout: false,
-  comfirmRequest: false,
+  confirmRequest: false,
   action: false,
   reject: false,
   data: null,

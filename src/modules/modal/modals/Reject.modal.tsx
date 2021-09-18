@@ -3,9 +3,38 @@ import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 
 import {useModalController} from '../modals.controller';
+import FormGenerate from '@components/FormGenerate';
+import * as yup from 'yup';
+import {IFormControl} from '@components/FormGenerate/FormControl';
 
 function RejectModal() {
   const {reject, closeModal, data} = useModalController();
+  const FIELDS: IFormControl[] = [
+    {
+      type: 'checkbox-confirm',
+      name: 'Section A',
+      colSpan: 2,
+      defaultValue: 1,
+    },
+    {
+      type: 'checkbox-confirm',
+      name: 'Section B',
+      colSpan: 2,
+      defaultValue: 2,
+    },
+    {
+      type: 'checkbox-confirm',
+      name: 'Section C',
+      colSpan: 2,
+      defaultValue: 3,
+    },
+    {
+      type: 'checkbox-confirm',
+      name: 'Attachments',
+      colSpan: 2,
+      defaultValue: 4,
+    },
+  ];
   return (
     <UI.Modal isCentered isOpen={reject} onClose={() => closeModal('reject')}>
       <UI.ModalOverlay />
@@ -24,12 +53,37 @@ function RejectModal() {
 
         <UI.ModalHeader mt={8}>
           <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            Please select reason you wish to reject {data?.companyName}
+            Please select reason you wish to reject {data?.companyName}{' '}
             partner’s application?
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          Are you sure you want to Sign Out?
+          <UI.VStack>
+            <UI.HStack></UI.HStack>
+
+            <FormGenerate
+              schema={{
+                feedbackMessage: yup.string().required('Field is required'),
+              }}
+              fields={[
+                {
+                  name: 'reasonMessage',
+                  type: 'textarea',
+                  placeholder: 'Type your message...',
+                  label: (
+                    <UI.VStack justifyContent="space-between">
+                      <UI.Text fontSize={16} color="#1A1E32">
+                        Reason
+                      </UI.Text>
+                      <UI.Text fontSize={12} color=" #ADADAD">
+                        Max 4000 characters
+                      </UI.Text>
+                    </UI.VStack>
+                  ),
+                  h: '250px',
+                },
+              ]}></FormGenerate>
+          </UI.VStack>
         </UI.ModalBody>
 
         <UI.ModalFooter>
@@ -44,10 +98,10 @@ function RejectModal() {
             <UI.Button
               w={'120px'}
               onClick={() => {
-                closeModal('logout');
+                closeModal('reject');
               }}
               variant="outline">
-              Sign Out
+              Confirm
             </UI.Button>
           </UI.Center>
         </UI.ModalFooter>
