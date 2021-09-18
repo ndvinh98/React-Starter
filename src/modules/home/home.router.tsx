@@ -1,7 +1,6 @@
 import React from 'react';
 import {mount, route, map, redirect, withView, compose, lazy} from 'navi';
 import HomeLayout from './home.layout';
-
 import {useHomeController} from './controller';
 
 export default compose(
