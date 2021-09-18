@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {debounce} from 'lodash';
 
-export const usePagination = (init?: {
+export const useFilter = (init?: {
   page?: number;
   limit?: number;
   textSearch?: string;

@@ -1,5 +1,6 @@
 import React, {memo, forwardRef} from 'react';
 import * as UI from '@chakra-ui/react';
+import {HTMLChakraProps} from '@chakra-ui/system';
 
 import PasswordInput from './fields/PasswordInput';
 import Select, {IOptions} from './fields/Select';
@@ -8,6 +9,8 @@ import CustomFields from './fields/CustomFields';
 import TelInput from './fields/TelInput';
 import InputGroup from './fields/InputGroup';
 import Recaptcha from './fields/Recaptcha';
+import CheckboxGroup from './fields/CheckboxGroup';
+import RadioGroup from './fields/RadioGroup';
 
 const FieldComponent = {
   input: UI.Input,
@@ -19,9 +22,11 @@ const FieldComponent = {
   'input-tel': TelInput,
   'input-group': InputGroup,
   recaptcha: Recaptcha,
+  'radio-group': RadioGroup,
+  'checkbox-group': CheckboxGroup,
 };
 
-export interface IFormControl {
+export interface IFormControl extends HTMLChakraProps<'div'> {
   name?: string;
   colSpan?: number;
   type?:
@@ -35,7 +40,10 @@ export interface IFormControl {
     | 'upload-file'
     | 'input-tel'
     | 'input-group'
-    | 'recaptcha';
+    | 'recaptcha'
+    | 'checkbox-group'
+    | 'radio-group';
+
   label?: string | React.ReactNode;
   text?: string | React.ReactNode;
   size?: 'sm' | 'md' | 'lg';

@@ -17,7 +17,6 @@ export interface IFormGenerate {
     dataForm: any,
     filedChange: {name: string; value: any},
   ) => void;
-  [key: string]: any;
 }
 
 const FormGenerate = (props: IFormGenerate, ref?: any) => {

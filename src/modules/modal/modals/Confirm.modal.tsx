@@ -59,11 +59,13 @@ function ConfirmModal() {
               colorScheme="blue"
               mr={3}
               w={'120px'}
+              type="submit"
               onClick={() => closeModal('comfirmRequest')}>
               Confirm
             </UI.Button>
             <UI.Button
               w={'120px'}
+              type="button"
               onClick={() => {
                 closeModal('confirmRequest');
               }}

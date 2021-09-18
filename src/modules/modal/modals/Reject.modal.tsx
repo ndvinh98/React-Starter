@@ -5,40 +5,16 @@ import {RiErrorWarningFill} from 'react-icons/ri';
 import {useModalController} from '../modals.controller';
 import FormGenerate from '@components/FormGenerate';
 import * as yup from 'yup';
-import {IFormControl} from '@components/FormGenerate/FormControl';
+import {usePatch} from '@utils/hooks';
 
 function RejectModal() {
   const {reject, closeModal, data} = useModalController();
-  const FIELDS: IFormControl[] = [
-    {
-      type: 'checkbox-confirm',
-      name: 'Section A',
-      colSpan: 2,
-      defaultValue: 1,
-    },
-    {
-      type: 'checkbox-confirm',
-      name: 'Section B',
-      colSpan: 2,
-      defaultValue: 2,
-    },
-    {
-      type: 'checkbox-confirm',
-      name: 'Section C',
-      colSpan: 2,
-      defaultValue: 3,
-    },
-    {
-      type: 'checkbox-confirm',
-      name: 'Attachments',
-      colSpan: 2,
-      defaultValue: 4,
-    },
-  ];
+  const {data: patchData, loading, patch} = usePatch('');
+
   return (
     <UI.Modal isCentered isOpen={reject} onClose={() => closeModal('reject')}>
       <UI.ModalOverlay />
-      <UI.ModalContent position={'relative'}>
+      <UI.ModalContent minW="900px" position={'relative'}>
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -67,15 +43,30 @@ function RejectModal() {
               }}
               fields={[
                 {
+                  name: 'type',
+                  type: 'checkbox-group',
+                  size: 'lg',
+                  options: [
+                    {
+                      label: 'checkbox 1',
+                      value: '1',
+                    },
+                    {
+                      label: 'checkbox 2',
+                      value: '2',
+                    },
+                  ],
+                },
+                {
                   name: 'reasonMessage',
                   type: 'textarea',
                   placeholder: 'Type your message...',
                   label: (
-                    <UI.VStack justifyContent="space-between">
-                      <UI.Text fontSize={16} color="#1A1E32">
+                    <UI.VStack w="full" justifyContent="space-between">
+                      <UI.Text w="full" fontSize={16} color="#1A1E32">
                         Reason
                       </UI.Text>
-                      <UI.Text fontSize={12} color=" #ADADAD">
+                      <UI.Text w="full" fontSize={12} color=" #ADADAD">
                         Max 4000 characters
                       </UI.Text>
                     </UI.VStack>

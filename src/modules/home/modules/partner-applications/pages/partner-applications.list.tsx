@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {isEmpty} from 'lodash';
-import {useRouter, usePagination} from '@utils/hooks';
+import {useRouter, useFilter} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import {useGetList} from '@utils/hooks';
 import {IPartnerApplicationForms} from '@types';
@@ -21,7 +21,7 @@ const FIELDS: IFormControl[] = [
   },
   {
     type: 'select',
-    name: 'type',
+    name: 'status',
     colSpan: 3,
     defaultValue: {label: 'All requests', value: '-1'},
     options: [
@@ -44,9 +44,8 @@ const FIELDS: IFormControl[] = [
 function Main() {
   const {push} = useRouter();
   const {path} = useRouterController();
-  const isFirstLoad = useRef(true);
   const {page, limit, setPage, textSearch, setTextSearch, filter, setFilter} =
-    usePagination();
+    useFilter({page: 1, limit: 10});
   const {data, getList, loading} = useGetList<IPartnerApplicationForms>(
     '/partnerApplicationForms',
   );
@@ -55,34 +54,29 @@ function Main() {
     getList({
       page,
       limit,
-      cache: true,
+      relations: JSON.stringify(['partnerApplicationSubmission']),
+      filter: isEmpty(filter)
+        ? undefined
+        : JSON.stringify([
+            {partnerApplicationSubmission: {status: filter.status}},
+          ]),
+      textSearch: textSearch
+        ? JSON.stringify([
+            {firstName: textSearch},
+            {email: textSearch},
+            {lastName: textSearch},
+          ])
+        : undefined,
     });
-    isFirstLoad.current = false;
-  }, []);
-
-  useEffect(() => {
-    if (!isFirstLoad.current)
-      getList({
-        page,
-        limit,
-        relations: JSON.stringify([]),
-        filter: isEmpty(filter) ? undefined : JSON.stringify([filter]),
-        textSearch: textSearch
-          ? JSON.stringify([
-              {firstName: textSearch},
-              {email: textSearch},
-              {lastName: textSearch},
-            ])
-          : undefined,
-      });
-    isFirstLoad.current = false;
   }, [page, limit, textSearch, filter]);
 
-  const handleFilterData = ({textSearch}) => {
+  const handleFilterData = ({textSearch, status}) => {
     if (textSearch !== undefined) setTextSearch(textSearch);
     setFilter((filter) => ({
       ...filter,
     }));
+    if (status === '-1') setFilter(null);
+    else setFilter({status});
   };
 
   return (
