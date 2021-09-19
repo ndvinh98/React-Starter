@@ -1,12 +1,18 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import * as yup from 'yup';
 import FormGenerate from '@components/FormGenerate';
 import {useModalController} from '../modals.controller';
+import {usePatch} from '@utils/hooks';
 
 function ConfirmModal() {
   const {confirmRequest, closeModal, data} = useModalController();
+  const {
+    data: resData,
+    loading,
+    patch,
+  } = usePatch('/partnerApplicationSubmissions/`${data.id}`');
 
   return (
     <UI.Modal
@@ -14,7 +20,7 @@ function ConfirmModal() {
       isOpen={confirmRequest}
       onClose={() => closeModal('confirmRequest')}>
       <UI.ModalOverlay />
-      <UI.ModalContent position={'relative'}>
+      <UI.ModalContent position={'relative'} w="360px" minH="311px">
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -34,11 +40,10 @@ function ConfirmModal() {
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <FormGenerate
-            spacing={6}
-            pt={7}
-            onSubmit={(value) => {
-              // post(value);
-              // email.current = value?.email;
+            onSubmit={({}) => {
+              patch({
+                status: 'APPROVED',
+              });
             }}
             schema={{
               date: yup.date().isValid('Date is invalid'),
@@ -50,30 +55,31 @@ function ConfirmModal() {
                 size: 'lg',
                 placeholder: '',
               },
-            ]}></FormGenerate>
+            ]}>
+            <UI.Center w={'full'}>
+              <UI.Button
+                colorScheme="blue"
+                mr={3}
+                w={'120px'}
+                type="submit"
+                isLoading={loading}
+                onClick={() => closeModal('comfirmRequest')}>
+                Confirm
+              </UI.Button>
+              <UI.Button
+                w={'120px'}
+                type="button"
+                onClick={() => {
+                  closeModal('confirmRequest');
+                }}
+                variant="outline">
+                Cancle
+              </UI.Button>
+            </UI.Center>
+          </FormGenerate>
         </UI.ModalBody>
 
-        <UI.ModalFooter>
-          <UI.Center w={'full'}>
-            <UI.Button
-              colorScheme="blue"
-              mr={3}
-              w={'120px'}
-              type="submit"
-              onClick={() => closeModal('comfirmRequest')}>
-              Confirm
-            </UI.Button>
-            <UI.Button
-              w={'120px'}
-              type="button"
-              onClick={() => {
-                closeModal('confirmRequest');
-              }}
-              variant="outline">
-              Cancle
-            </UI.Button>
-          </UI.Center>
-        </UI.ModalFooter>
+        <UI.ModalFooter></UI.ModalFooter>
       </UI.ModalContent>
     </UI.Modal>
   );

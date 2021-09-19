@@ -17,14 +17,14 @@ const LineApplication = ({props}) => {
   const {path} = useRouterController();
 
   return (
-    <UI.Flex
+    <UI.HStack
       flexDirection={{md: 'column', lg: 'row'}}
       cursor="pointer"
       w="full"
       shadow="sm"
       p={3}
       bg="white"
-      justifyContent="center"
+      justifyContent="start"
       border="none"
       alignItems="center">
       <UI.Center
@@ -44,14 +44,28 @@ const LineApplication = ({props}) => {
         {props?.countryName}
       </UI.Text>
       <UI.Spacer />
-      <UI.Button
-        onClick={() => push(path + `/detail/${props?.id}`)}
-        color="#54565A"
-        bg="#E9E9E9"
-        borderRadius="0">
-        View
-      </UI.Button>
-    </UI.Flex>
+      <UI.Box pr="20px">
+        <UI.Button
+          w="62px"
+          h="30px"
+          onClick={() => push(path + `/detail/${props?.id}`)}
+          color="#54565A"
+          bg="#E9E9E9"
+          borderRadius="0"
+          fontSize={12}
+          disabled={
+            props?.partnerApplicationSubmission.status === 'PENDING'
+              ? false
+              : true
+          }>
+          {props?.partnerApplicationSubmission.status === 'PENDING'
+            ? 'View'
+            : props?.partnerApplicationSubmission.status === 'APPROVED'
+            ? 'Accepted'
+            : 'Rejected'}
+        </UI.Button>
+      </UI.Box>
+    </UI.HStack>
   );
 };
 
