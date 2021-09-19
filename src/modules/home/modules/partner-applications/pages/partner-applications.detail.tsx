@@ -14,7 +14,7 @@ function Detail() {
   const {getItem, data, loading} = useGetItem<IPartnerApplicationForms>(
     `/partnerApplicationForms`,
   );
-  const {post} = usePost('/partnerUsers/createUser');
+
   const {openModal} = useModalController();
   useEffect(() => {
     if (params?.id) getItem(null, {path: `/${params?.id}`});

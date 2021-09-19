@@ -31,11 +31,11 @@ const FIELDS: IFormControl[] = [
       },
       {
         label: 'Accepted requests',
-        value: '1',
+        value: 'APPROVED',
       },
       {
         label: 'Rejected requests',
-        value: '0',
+        value: 'REJECTED',
       },
     ],
   },

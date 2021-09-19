@@ -14,7 +14,7 @@ function RejectModal() {
   return (
     <UI.Modal isCentered isOpen={reject} onClose={() => closeModal('reject')}>
       <UI.ModalOverlay />
-      <UI.ModalContent minW="900px" position={'relative'}>
+      <UI.ModalContent minW="654px" h="550px" position={'relative'}>
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -73,29 +73,29 @@ function RejectModal() {
                   ),
                   h: '250px',
                 },
-              ]}></FormGenerate>
+              ]}>
+              <UI.Center w={'full'}>
+                <UI.Button
+                  colorScheme="blue"
+                  mr={3}
+                  w={'120px'}
+                  onClick={() => closeModal('reject')}>
+                  Cancel
+                </UI.Button>
+                <UI.Button
+                  w={'120px'}
+                  onClick={() => {
+                    closeModal('reject');
+                  }}
+                  variant="outline">
+                  Confirm
+                </UI.Button>
+              </UI.Center>
+            </FormGenerate>
           </UI.VStack>
         </UI.ModalBody>
 
-        <UI.ModalFooter>
-          <UI.Center w={'full'}>
-            <UI.Button
-              colorScheme="blue"
-              mr={3}
-              w={'120px'}
-              onClick={() => closeModal('reject')}>
-              Cancel
-            </UI.Button>
-            <UI.Button
-              w={'120px'}
-              onClick={() => {
-                closeModal('reject');
-              }}
-              variant="outline">
-              Confirm
-            </UI.Button>
-          </UI.Center>
-        </UI.ModalFooter>
+        <UI.ModalFooter></UI.ModalFooter>
       </UI.ModalContent>
     </UI.Modal>
   );
