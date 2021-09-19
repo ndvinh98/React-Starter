@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import * as yup from 'yup';
@@ -9,10 +9,10 @@ import {usePatch} from '@utils/hooks';
 function ConfirmModal() {
   const {confirmRequest, closeModal, data} = useModalController();
   const {
-    data: dataDate,
+    data: resData,
     loading,
     patch,
-  } = usePatch('/partnerApplicationSubmissions');
+  } = usePatch('/partnerApplicationSubmissions/`${data.id}`');
 
   return (
     <UI.Modal
@@ -40,8 +40,10 @@ function ConfirmModal() {
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <FormGenerate
-            onSubmit={({date}) => {
-              patch({});
+            onSubmit={({}) => {
+              patch({
+                status: 'APPROVED',
+              });
             }}
             schema={{
               date: yup.date().isValid('Date is invalid'),

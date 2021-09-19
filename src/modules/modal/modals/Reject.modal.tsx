@@ -9,7 +9,11 @@ import {usePatch} from '@utils/hooks';
 
 function RejectModal() {
   const {reject, closeModal, data} = useModalController();
-  const {data: patchData, loading, patch} = usePatch('');
+  const {
+    data: patchData,
+    loading,
+    patch,
+  } = usePatch('/partnerApplicationSubmissions');
 
   return (
     <UI.Modal isCentered isOpen={reject} onClose={() => closeModal('reject')}>
@@ -38,22 +42,40 @@ function RejectModal() {
             <UI.HStack></UI.HStack>
 
             <FormGenerate
+              onSubmit={({}) => {
+                patch({
+                  status: 'APPROVED',
+                  rejectionRemarks: null,
+                  sectionARejected: null,
+                  sectionBRejected: null,
+                  sectionCRejected: null,
+                  attachmentsRejected: null,
+                });
+              }}
               schema={{
                 feedbackMessage: yup.string().required('Field is required'),
               }}
               fields={[
                 {
-                  name: 'type',
+                  name: 'reasons',
                   type: 'checkbox-group',
                   size: 'lg',
                   options: [
                     {
-                      label: 'checkbox 1',
-                      value: '1',
+                      label: 'Section A',
+                      value: 'A',
                     },
                     {
-                      label: 'checkbox 2',
-                      value: '2',
+                      label: 'Section B',
+                      value: 'B',
+                    },
+                    {
+                      label: 'Section C',
+                      value: 'C',
+                    },
+                    {
+                      label: 'Attachments',
+                      value: 'attachments',
                     },
                   ],
                 },
@@ -77,6 +99,8 @@ function RejectModal() {
               <UI.Center w={'full'}>
                 <UI.Button
                   colorScheme="blue"
+                  type="button"
+                  loading={loading}
                   mr={3}
                   w={'120px'}
                   onClick={() => closeModal('reject')}>
@@ -84,6 +108,7 @@ function RejectModal() {
                 </UI.Button>
                 <UI.Button
                   w={'120px'}
+                  type="submit"
                   onClick={() => {
                     closeModal('reject');
                   }}
