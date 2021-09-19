@@ -23,7 +23,7 @@ const FIELDS: IFormControl[] = [
     type: 'select',
     name: 'status',
     colSpan: 3,
-    defaultValue: {label: 'All requests', value: '-1'},
+    defaultValue: {label: 'Pending requests', value: '-1'},
     options: [
       {
         label: 'All requests',
@@ -56,7 +56,7 @@ function Main() {
       limit,
       relations: JSON.stringify(['partnerApplicationSubmission']),
       filter: isEmpty(filter)
-        ? undefined
+        ? JSON.stringify([{partnerApplicationSubmission: {status: 'PENDING'}}])
         : JSON.stringify([
             {partnerApplicationSubmission: {status: filter.status}},
           ]),

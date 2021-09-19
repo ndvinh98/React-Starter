@@ -445,7 +445,10 @@ function Detail() {
             <UI.Flex justifyContent="center" p={3}>
               <UI.Button
                 onClick={() =>
-                  openModal('reject', {companyName: data?.companyName})
+                  openModal('reject', {
+                    companyName: data?.companyName,
+                    id: data?.id,
+                  })
                 }
                 mr="4"
                 variant="outline">

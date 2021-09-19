@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 
@@ -13,7 +13,15 @@ function RejectModal() {
     data: patchData,
     loading,
     patch,
-  } = usePatch('/partnerApplicationSubmissions');
+  } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
+  const toast = UI.useToast();
+
+  useEffect(() => {
+    if (patchData) {
+      closeModal('reject');
+      toast({status: 'success', description: 'Successfully!', duration: 2000});
+    }
+  }, [patchData]);
 
   return (
     <UI.Modal isCentered isOpen={reject} onClose={() => closeModal('reject')}>
@@ -42,18 +50,27 @@ function RejectModal() {
             <UI.HStack></UI.HStack>
 
             <FormGenerate
-              onSubmit={({}) => {
+              onSubmit={({
+                reasonMessage,
+                reasons,
+              }: {
+                reasonMessage: string;
+                reasons: string[];
+              }) => {
                 patch({
-                  status: 'APPROVED',
-                  rejectionRemarks: null,
-                  sectionARejected: null,
-                  sectionBRejected: null,
-                  sectionCRejected: null,
-                  attachmentsRejected: null,
+                  status: 'REJECTED',
+                  rejectionRemarks: reasonMessage,
+                  sectionARejected: reasons?.includes('A') ? 1 : 0,
+                  sectionBRejected: reasons?.includes('B') ? 1 : 0,
+                  sectionCRejected: reasons?.includes('C') ? 1 : 0,
+                  attachmentsRejected: reasons?.includes('AT') ? 1 : 0,
                 });
               }}
               schema={{
-                feedbackMessage: yup.string().required('Field is required'),
+                reasonMessage: yup
+                  .string()
+                  .required('ReasonMessage is required'),
+                reasons: yup.array().required('Reasons is required'),
               }}
               fields={[
                 {
@@ -75,7 +92,7 @@ function RejectModal() {
                     },
                     {
                       label: 'Attachments',
-                      value: 'attachments',
+                      value: 'AT',
                     },
                   ],
                 },
@@ -100,18 +117,16 @@ function RejectModal() {
                 <UI.Button
                   colorScheme="blue"
                   type="button"
-                  loading={loading}
                   mr={3}
                   w={'120px'}
                   onClick={() => closeModal('reject')}>
                   Cancel
                 </UI.Button>
                 <UI.Button
+                  loading={loading}
+                  x
                   w={'120px'}
                   type="submit"
-                  onClick={() => {
-                    closeModal('reject');
-                  }}
                   variant="outline">
                   Confirm
                 </UI.Button>
