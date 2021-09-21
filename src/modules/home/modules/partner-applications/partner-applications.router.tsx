@@ -5,7 +5,7 @@ export default mount({
     title: 'list',
     getView: () => import('./pages/partner-applications.list'),
   }),
-  '/detail/:id': route({
+  '/:id': route({
     title: 'detail',
     getView: () => import('./pages/partner-applications.detail'),
   }),

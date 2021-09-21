@@ -1,6 +1,6 @@
 import React, {memo, useEffect} from 'react';
 import {useRouterController} from '@modules/router';
-import {useGetItem, useMedia, useRouter, usePost} from '@utils/hooks';
+import {useGetItem, useMedia, useRouter} from '@utils/hooks';
 import {IPartnerApplicationForms} from '@types';
 import * as UI from '@chakra-ui/react';
 import {isEmpty} from 'lodash';
@@ -12,12 +12,15 @@ function Detail() {
   const {params} = useRouterController();
   const {push} = useRouter();
   const {getItem, data, loading} = useGetItem<IPartnerApplicationForms>(
-    `/partnerApplicationForms`,
+    `/partnerApplicationForms/${params?.id}`,
   );
 
   const {openModal} = useModalController();
   useEffect(() => {
-    if (params?.id) getItem(null, {path: `/${params?.id}`});
+    if (params?.id)
+      getItem({
+        relations: JSON.stringify(['partnerApplicationSubmission']),
+      });
   }, [params]);
 
   return (
@@ -40,7 +43,10 @@ function Detail() {
             onClick={() => push('/home/partner-applications')}>
             <UI.Flex alignItems="center">
               <MdKeyboardBackspace size={20} />
-              Back
+              <UI.Text size="12" pl={2}>
+                {' '}
+                Back
+              </UI.Text>
             </UI.Flex>
           </UI.Link>
           <UI.Text
@@ -48,7 +54,7 @@ function Detail() {
             fontSize={{md: 'md', lg: 'lg'}}
             fontWeight={'semibold'}
             color={'ste.black'}>
-            {data?.companyName}
+            {data.countryName}
           </UI.Text>
           <UI.Box width="full" bg="white" pt={4} py={6} px={8}>
             <UI.Text
@@ -456,7 +462,9 @@ function Detail() {
               </UI.Button>
               <UI.Button
                 onClick={() =>
-                  openModal('confirmRequest', {companyName: data?.companyName})
+                  openModal('confirmRequest', {
+                    companyName: data?.companyName,
+                  })
                 }
                 colorScheme=" #D03A2B"
                 variant="solid">

@@ -9,10 +9,18 @@ import {usePatch} from '@utils/hooks';
 function ConfirmModal() {
   const {confirmRequest, closeModal, data} = useModalController();
   const {
-    data: resData,
+    data: patchData,
     loading,
     patch,
-  } = usePatch('/partnerApplicationSubmissions/`${data.id}`');
+  } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
+  const toast = UI.useToast();
+
+  useEffect(() => {
+    if (patchData) {
+      closeModal('confirmRequest');
+      toast({status: 'success', description: 'Successfully!', duration: 2000});
+    }
+  }, [patchData]);
 
   return (
     <UI.Modal
@@ -62,8 +70,7 @@ function ConfirmModal() {
                 mr={3}
                 w={'120px'}
                 type="submit"
-                isLoading={loading}
-                onClick={() => closeModal('comfirmRequest')}>
+                isLoading={loading}>
                 Confirm
               </UI.Button>
               <UI.Button
