@@ -116,7 +116,7 @@ export interface IPartnerApplicationAttachments extends BaseSchema {
 }
 
 export interface IPartnerApplicationForms extends BaseSchema {
-  partnerApplicationSubmission?: number | IPartnerApplicationSubmissions;
+  partnerApplicationSubmission?: IPartnerApplicationSubmissions;
   partnerApplicationAttachments?: IPartnerApplicationAttachments[];
   companyName?: string;
   address1?: string;

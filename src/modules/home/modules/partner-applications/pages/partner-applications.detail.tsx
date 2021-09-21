@@ -447,7 +447,7 @@ function Detail() {
                 onClick={() =>
                   openModal('reject', {
                     companyName: data?.companyName,
-                    id: data?.id,
+                    id: data?.partnerApplicationSubmission?.id,
                   })
                 }
                 mr="4"

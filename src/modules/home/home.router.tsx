@@ -21,6 +21,12 @@ export default compose(
                     './modules/partner-applications/partner-applications.router'
                   ),
               ),
+              '/partner-management': lazy(
+                () =>
+                  import(
+                    './modules/partner-management/partner-management.router'
+                  ),
+              ),
             })
           : redirect(
               '/auth/login?redirectTo=' +
