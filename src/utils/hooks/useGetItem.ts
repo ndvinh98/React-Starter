@@ -1,10 +1,11 @@
 import {useState} from 'react';
 import {request} from '@services';
 import {IParams} from '@types';
+import path from 'path/posix';
 
 export const useGetItem = <T = any>(url?: string) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<T | null>(null);
+  const [data, setData] = useState<T>(null);
   const [error, setError] = useState<any>();
 
   const getItem = async (params?: IParams, options?: {path?: string}) => {
@@ -24,5 +25,5 @@ export const useGetItem = <T = any>(url?: string) => {
       .finally(() => setLoading(false));
   };
 
-  return {data, loading, error, getItem};
+  return {data, loading, error, getItem, setData};
 };

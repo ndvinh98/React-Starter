@@ -48,7 +48,7 @@ const LineApplication = ({props}) => {
         <UI.Button
           w="62px"
           h="30px"
-          onClick={() => push(path + `/detail/${props?.id}`)}
+          onClick={() => push(path + `/${props?.id}`)}
           color="#54565A"
           bg="#E9E9E9"
           borderRadius="0"
