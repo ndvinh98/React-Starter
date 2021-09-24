@@ -216,3 +216,11 @@ export interface IParams {
   relations?: string;
   [key: string]: any;
 }
+
+export interface IUserManagement extends BaseSchema {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  userType?: string;
+  status?: string;
+}
