@@ -1,0 +1,30 @@
+name: DEPLOY-DEVELOPMENT
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    container: nodesource/centos7
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Node
+        uses: actions/setup-node@master
+        with:
+          node-version: 14.x
+      - run: echo ${{ secrets.DEV_APP_ENV }} > .env
+      - run: npm install --global yarn
+      - run: yarn
+      - run: CI=false yarn build
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@2.0
+        with:
+          switches: -avzr --delete --exclude=.git*
+          path: dist/*
+          remote_path: ${{ secrets.DEV_REMOTE_PATH }}
+          remote_host: ${{ secrets.HAWK_HOST }}
+          remote_port: ${{ secrets.HAWK_SSH_PORT }}
+          remote_user: ${{ secrets.HAWK_SSH_USER }}
+          remote_key: ${{ secrets.HAWK_SSH_KEY }}
