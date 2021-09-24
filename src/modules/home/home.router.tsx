@@ -27,6 +27,10 @@ export default compose(
                     './modules/partner-management/partner-management.router'
                   ),
               ),
+              '/user-management': lazy(
+                () =>
+                  import('./modules/user-management/user-management.router'),
+              ),
             })
           : redirect(
               '/auth/login?redirectTo=' +

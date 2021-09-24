@@ -58,7 +58,7 @@ function Main() {
     '/partnerApplicationForms',
   );
 
-  const disableLoadMore = false;
+  const isHiden = false;
 
   useEffect(() => {
     getList({

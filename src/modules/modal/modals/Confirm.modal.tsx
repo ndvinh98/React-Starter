@@ -53,9 +53,6 @@ function ConfirmModal() {
                 status: 'APPROVED',
               });
             }}
-            schema={{
-              date: yup.date().isValid('Date is invalid'),
-            }}
             fields={[
               {
                 name: 'date',
