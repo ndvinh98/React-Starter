@@ -464,6 +464,7 @@ function Detail() {
                 onClick={() =>
                   openModal('confirmRequest', {
                     companyName: data?.companyName,
+                    id: data?.partnerApplicationSubmission?.id,
                   })
                 }
                 colorScheme=" #D03A2B"
