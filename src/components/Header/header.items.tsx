@@ -96,6 +96,7 @@ export const HEADER_ITEMS = {
     const Avatar = memo(() => (
       <UI.HStack pr={4}>
         <UI.Avatar
+          sx={{img: {objectFit: 'contain'}}}
           bg={me?.avatarMediaDestination ? 'white' : undefined}
           src={me?.avatarMediaDestination}
           name={me?.firstName + ' ' + me?.lastName}

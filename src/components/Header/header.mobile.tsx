@@ -1,6 +1,6 @@
 import React from 'react';
 import * as UI from '@chakra-ui/react';
-import {startsWith} from 'lodash';
+// import {startsWith} from 'lodash';
 import {BiMenu} from 'react-icons/bi';
 import {SettingIcon2} from '@components/icons';
 import {FiBell, FiLogOut} from 'react-icons/fi';

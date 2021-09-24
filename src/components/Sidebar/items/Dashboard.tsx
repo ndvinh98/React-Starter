@@ -53,7 +53,7 @@ const MENUS = [
   },
   {
     label: 'Feedback Form',
-    to: '/home/feedback-form',
+    to: '/home/feedback',
     icon: FeedbackFormIcon,
   },
   {
