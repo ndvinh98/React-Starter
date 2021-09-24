@@ -20,9 +20,14 @@ export const useGetList = <T = any>(url: string) => {
 
   const getList = async (
     params?: IParams,
-    options?: {path?: string; headers?: any; token?: string},
+    options?: {
+      path?: string;
+      headers?: any;
+      token?: string;
+      hiddenLoading?: boolean;
+    },
   ) => {
-    setLoading(true);
+    if (!options?.hiddenLoading) setLoading(true);
     request({
       method: 'GET',
       path: options?.path ? url + options?.path : url,
