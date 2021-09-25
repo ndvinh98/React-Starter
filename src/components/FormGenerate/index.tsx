@@ -1,4 +1,5 @@
 import React, {memo, forwardRef, useImperativeHandle} from 'react';
+import {HTMLChakraProps} from '@chakra-ui/system';
 import {useForm} from 'react-hook-form';
 import {isEmpty} from 'lodash';
 import FormControl, {IFormControl} from './FormControl';
@@ -6,7 +7,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import * as UI from '@chakra-ui/react';
 import * as yup from 'yup';
 
-export interface IFormGenerate {
+export interface IFormGenerate extends HTMLChakraProps<any> {
   onSubmit?: (values: any) => void;
   fields?: IFormControl[];
   schema?: any;
