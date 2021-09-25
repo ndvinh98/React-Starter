@@ -5,7 +5,6 @@ import {useActive} from 'react-navi';
 import classNames from 'classnames';
 
 import {useRouter} from '@utils/hooks';
-import Select from '@components/Select';
 import {
   PartnerApplicationsIcon,
   UserManagmentIcon,
@@ -54,7 +53,7 @@ const MENUS = [
   },
   {
     label: 'Feedback Form',
-    to: '/home/feedback-form',
+    to: '/home/feedback',
     icon: FeedbackFormIcon,
   },
   {
@@ -64,10 +63,7 @@ const MENUS = [
   },
 ];
 
-const DashboardMenu = (props: any) => {
-  const {isCollapsed, onCloseMobileSidebar} = props;
-  const {push} = useRouter();
-
+const DashboardMenu = () => {
   return (
     <SB.Menu>
       {MENUS.map((x, i) => (

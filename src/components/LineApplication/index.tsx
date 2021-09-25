@@ -1,18 +1,10 @@
-import React, {useEffect, useState, memo} from 'react';
+import React, {memo} from 'react';
 import {useRouter} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
-import {isEmpty} from 'lodash';
 import * as UI from '@chakra-ui/react';
-import FormGenerate from '@components/FormGenerate';
-import {useMedia} from '@utils/hooks';
-import {
-  AiOutlineSearch,
-  AiOutlineAppstore,
-  AiOutlineBars,
-} from 'react-icons/ai';
 
-const LineApplication = ({props}) => {
-  const {isBase, isAllMobile} = useMedia();
+const LineApplication = (props) => {
+  const {aplicationData} = props;
   const {push} = useRouter();
   const {path} = useRouterController();
 
@@ -40,27 +32,32 @@ const LineApplication = ({props}) => {
         />
       </UI.Center>
 
-      <UI.Text fontSize={{md: 'md', lg: 'lg'}} pl={10}>
-        {props?.countryName}
+      <UI.Text fontSize={{md: 'md', lg: 'lg'}} pl={2}>
+        {aplicationData?.companyName} (
+        {
+          aplicationData?.partnerApplicationSubmission?.submittedByPartnerUser
+            ?.email
+        }
+        )
       </UI.Text>
       <UI.Spacer />
       <UI.Box pr="20px">
         <UI.Button
           w="62px"
           h="30px"
-          onClick={() => push(path + `/${props?.id}`)}
+          onClick={() => push(path + `/${aplicationData?.id}`)}
           color="#54565A"
           bg="#E9E9E9"
           borderRadius="0"
           fontSize={12}
           disabled={
-            props?.partnerApplicationSubmission.status === 'PENDING'
+            aplicationData?.partnerApplicationSubmission.status === 'PENDING'
               ? false
               : true
           }>
-          {props?.partnerApplicationSubmission.status === 'PENDING'
+          {aplicationData?.partnerApplicationSubmission.status === 'PENDING'
             ? 'View'
-            : props?.partnerApplicationSubmission.status === 'APPROVED'
+            : aplicationData?.partnerApplicationSubmission.status === 'APPROVED'
             ? 'Accepted'
             : 'Rejected'}
         </UI.Button>

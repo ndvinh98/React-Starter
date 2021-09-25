@@ -1,13 +1,11 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import {isEmpty} from 'lodash';
-import {useRouter, useFilter} from '@utils/hooks';
-import {useRouterController} from '@modules/router';
+import {useFilter} from '@utils/hooks';
 import {useGetList} from '@utils/hooks';
 import {IPartnerApplicationForms} from '@types';
 import FormGenerate from '@components/FormGenerate';
 import {IFormControl} from '@components/FormGenerate/FormControl';
 import LineAplication from '@components/LineApplication';
-import {RiLoader3Fill} from 'react-icons/ri';
 import * as UI from '@chakra-ui/react';
 import {AiOutlineSearch} from 'react-icons/ai';
 
@@ -42,29 +40,20 @@ const FIELDS: IFormControl[] = [
 ];
 
 function Main() {
-  const {push} = useRouter();
-  const {path} = useRouterController();
-  const {
-    page,
-    limit,
-    setPage,
-    textSearch,
-    setTextSearch,
-    filter,
-    setFilter,
-    setLimit,
-  } = useFilter({page: 1, limit: 10});
+  const {page, limit, textSearch, setTextSearch, filter, setFilter, setLimit} =
+    useFilter({page: 1, limit: 10});
   const {data, getList, loading} = useGetList<IPartnerApplicationForms>(
     '/partnerApplicationForms',
   );
-
-  const isHiden = false;
 
   useEffect(() => {
     getList({
       page,
       limit,
-      relations: JSON.stringify(['partnerApplicationSubmission']),
+      relations: JSON.stringify([
+        'partnerApplicationSubmission',
+        'partnerApplicationSubmission.submittedByPartnerUser',
+      ]),
       filter: isEmpty(filter)
         ? JSON.stringify([{partnerApplicationSubmission: {status: 'PENDING'}}])
         : JSON.stringify([
@@ -78,7 +67,36 @@ function Main() {
           ])
         : undefined,
     });
-  }, [page, limit, textSearch, filter]);
+  }, [page, textSearch, filter]);
+
+  useEffect(() => {
+    if (limit !== 10)
+      getList(
+        {
+          page,
+          limit,
+          relations: JSON.stringify([
+            'partnerApplicationSubmission',
+            'partnerApplicationSubmission.submittedByPartnerUser',
+          ]),
+          filter: isEmpty(filter)
+            ? JSON.stringify([
+                {partnerApplicationSubmission: {status: 'PENDING'}},
+              ])
+            : JSON.stringify([
+                {partnerApplicationSubmission: {status: filter.status}},
+              ]),
+          textSearch: textSearch
+            ? JSON.stringify([
+                {firstName: textSearch},
+                {email: textSearch},
+                {lastName: textSearch},
+              ])
+            : undefined,
+        },
+        {hiddenLoading: true},
+      );
+  }, [limit]);
 
   const handleFilterData = ({textSearch, status}) => {
     if (textSearch !== undefined) setTextSearch(textSearch);
@@ -92,7 +110,6 @@ function Main() {
   const handleLoadMore = () => {
     if (data?.total > limit + 10) {
       setLimit(limit + 10);
-      console.log(limit);
     } else if (data?.total <= limit + 10) {
       setLimit(data?.total);
     }
@@ -116,20 +133,18 @@ function Main() {
       ) : (
         data.records.map((x) => (
           <UI.HStack key={x?.id} spacing={8} width="full">
-            <LineAplication props={x} />
+            <LineAplication aplicationData={x} />
           </UI.HStack>
         ))
       )}
 
-      <UI.Center>
+      <UI.Center hidden={data?.total <= limit}>
         <UI.Button
           onClick={handleLoadMore}
           color="#54565A"
           bg="#E9E9E9"
-          borderRadius="2"
-          h={8}
-          w={20}>
-          <RiLoader3Fill />
+          borderRadius="2">
+          Load more
         </UI.Button>
       </UI.Center>
     </UI.VStack>

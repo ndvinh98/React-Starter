@@ -31,6 +31,13 @@ export default compose(
                 () =>
                   import('./modules/user-management/user-management.router'),
               ),
+              '/tier-management': lazy(
+                () =>
+                  import('./modules/tier-management/tier-management.router'),
+              ),
+              '/feedback': lazy(
+                () => import('./modules/feedback/feedback.router'),
+              ),
             })
           : redirect(
               '/auth/login?redirectTo=' +
