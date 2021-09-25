@@ -9,4 +9,8 @@ export default mount({
     title: 'detail',
     // getView: () => import('./pages/partner-applications.detail'),
   }),
+  '/create-user': route({
+    title: 'new',
+    getView: () => import('./pages/user-management.new'),
+  }),
 });

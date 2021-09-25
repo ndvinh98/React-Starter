@@ -7,7 +7,7 @@ export const login = (
 ): Promise<IPartnerUsers> => {
   return request({
     method: 'POST',
-    path: '/partnerUsers/login',
+    path: '/users/login',
     option: {
       data: {
         email,

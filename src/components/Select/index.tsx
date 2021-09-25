@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {isArray, keyBy} from 'lodash';
+import {isArray} from 'lodash';
 import * as UI from '@chakra-ui/react';
 
 import {default as RSelect} from 'react-select';
