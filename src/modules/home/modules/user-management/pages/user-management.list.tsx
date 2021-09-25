@@ -5,9 +5,10 @@ import FormGenerate from '@components/FormGenerate';
 import Pagination from '@components/Pagination';
 import {IUserManagement} from '@types';
 import Select from '@components/Select';
+import {useRouterController} from '@modules/router';
 
 import {useRouter, useFilter, useGetList} from '@utils/hooks';
-import {useRouterController} from '@modules/router';
+// import {useRouterController} from '@modules/router';
 import {useMedia} from '@utils/hooks';
 
 import {isEmpty} from 'lodash';
@@ -23,8 +24,8 @@ export const USRTYPE_STRING = {
 };
 
 export const STATUS_STRING = {
-  1: 'Has site access',
-  0: 'No site access',
+  1: 'Active',
+  0: 'Inactive',
 };
 export const ACTIVE_STRING = {
   1: 'Actived',
@@ -32,8 +33,10 @@ export const ACTIVE_STRING = {
 };
 
 function userTable() {
-  const {push} = useRouter();
   const {path} = useRouterController();
+
+  const {push} = useRouter();
+  // const {path} = useRouterController();
   const {isBase} = useMedia();
 
   const {
@@ -44,11 +47,11 @@ function userTable() {
     setTextSearch,
     filter,
     setFilter,
-    setLimit,
+    // setLimit,
   } = useFilter({page: 1, limit: 10});
   const {data, getList, loading} = useGetList<IUserManagement>('/users');
 
-  const isHiden = false;
+  // const isHiden = false;
 
   useEffect(() => {
     getList({
@@ -104,21 +107,17 @@ function userTable() {
               size: 'md',
 
               defaultValue: {
-                label: 'All User',
+                label: 'Status ',
                 value: '-1',
               },
               options: [
                 {
-                  label: 'All User',
-                  value: '-1',
-                },
-                {
-                  label: 'No site access',
-                  value: '0',
-                },
-                {
-                  label: 'Has site access',
+                  label: 'Active',
                   value: '1',
+                },
+                {
+                  label: 'Inactive',
+                  value: '0',
                 },
               ],
             },
@@ -127,27 +126,19 @@ function userTable() {
               type: 'select',
               colSpan: isBase ? 3 : 6,
               size: 'md',
-              placeholder: 'Roles',
+              placeholder: ' All Roles',
               defaultValue: {
-                label: 'All User Type',
+                label: 'All Roles',
                 value: '-1',
               },
               options: [
                 {
-                  label: 'All User Type',
-                  value: '-1',
-                },
-                {
-                  label: 'Owner',
-                  value: 'PARTNERADMIN',
+                  label: 'Admin',
+                  value: 'ADMIN',
                 },
                 {
                   label: 'User',
                   value: 'USER',
-                },
-                {
-                  label: 'Admin',
-                  value: 'ADMIN',
                 },
               ],
             },
@@ -164,7 +155,7 @@ function userTable() {
                       justifyContent={'space-between'}>
                       <UI.Button
                         minW={110}
-                        onClick={() => push('/user-management/add-new')}
+                        onClick={() => push(path + '/create-user')}
                         size={'md'}>
                         Add new user
                       </UI.Button>
@@ -328,7 +319,7 @@ function userTable() {
 export const ActionColum = (props: any) => {
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
   // const {openModal} = useModalStore();
-  const {row, refresh} = props;
+  const {row} = props;
   return (
     <UI.Center>
       <UI.Menu onClose={onClose} isOpen={isOpen}>

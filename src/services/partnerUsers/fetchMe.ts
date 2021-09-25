@@ -5,7 +5,7 @@ import {ELocalStorage} from '@constants';
 export const fetchMe = (): Promise<IMe> => {
   return request({
     method: 'GET',
-    path: '/partnerUsers/me',
+    path: '/users/me',
   }).then(([res, err]) => {
     if (err) {
       localStorage.removeItem(ELocalStorage.ACCESS_TOKEN);

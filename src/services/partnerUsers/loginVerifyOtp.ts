@@ -10,7 +10,7 @@ export const loginVerifyOtp = async ({
 }): Promise<{partnerUsers: IPartnerUsers; token: string} | null> => {
   return request({
     method: 'POST',
-    path: 'partnerUsers/loginVerifyOtp',
+    path: 'users/loginVerifyOtp',
     option: {
       data: {
         email,
