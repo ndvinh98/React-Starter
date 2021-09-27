@@ -7,7 +7,7 @@ export default mount({
   }),
   '/:id': route({
     title: 'detail',
-    // getView: () => import('./pages/partner-applications.detail'),
+    getView: () => import('./pages/user-management.detail'),
   }),
   '/create-user': route({
     title: 'new',

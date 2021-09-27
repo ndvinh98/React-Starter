@@ -224,3 +224,32 @@ export interface IUserManagement extends BaseSchema {
   userType?: string;
   status?: string;
 }
+
+export interface IUsers extends BaseSchema {
+  hasAccess?: 1 | 0;
+  isActive?: 1 | 0;
+  salutation?: TSalutation;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  userType?: TUserType;
+  otpCode?: string;
+  otpCodeExp?: Date;
+}
+
+export interface IUserProfiles extends BaseSchema {
+  partnerUser?: number | IPartnerUsers;
+  language?: ILanguages;
+  jobTitle?: string;
+  cityName?: string;
+  countryName?: string;
+  companyName?: string;
+  postalCode?: string;
+  workNumber?: string;
+  mobileNumber?: string;
+  avatarMediaDestination?: string;
+  salesID?: string;
+  showMobileNumber?: 1 | 0;
+  showWorkNumber?: 1 | 0;
+}
