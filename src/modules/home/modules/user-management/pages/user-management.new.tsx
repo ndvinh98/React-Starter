@@ -44,7 +44,7 @@ function Addnew() {
   }, [data]);
 
   return (
-    <UI.Box>
+    <UI.Box py={6} px={8} spacing={4} width="full">
       <UI.HStack
         _hover={{cursor: 'pointer'}}
         onClick={() => push('/partner/user-management')}>
@@ -208,6 +208,16 @@ function Addnew() {
               name: 'workNumber',
               type: 'input-tel',
               label: 'Work No.',
+              placeholder: 'Work Number',
+              colSpan: 12,
+              size: 'md',
+              width: isBase ? '70%' : '100%',
+              layout: isBase ? 'horizontal' : 'vertical',
+            },
+            {
+              name: 'displayWorkNo',
+              type: 'checkbox-confirm',
+              label: <></>,
               placeholder: 'Work Number',
               colSpan: 12,
               size: 'md',

@@ -5,10 +5,10 @@ import FormGenerate from '@components/FormGenerate';
 import Pagination from '@components/Pagination';
 import {IUserManagement} from '@types';
 import Select from '@components/Select';
-import {useRouterController} from '@modules/router';
+import UserInfoCard from '@components/UserInfoCard';
 
 import {useRouter, useFilter, useGetList} from '@utils/hooks';
-// import {useRouterController} from '@modules/router';
+import {useRouterController} from '@modules/router';
 import {useMedia} from '@utils/hooks';
 
 import {isEmpty} from 'lodash';
@@ -52,6 +52,7 @@ function userTable() {
   const {data, getList, loading} = useGetList<IUserManagement>('/users');
 
   // const isHiden = false;
+  console.log(data);
 
   useEffect(() => {
     getList({
@@ -198,7 +199,7 @@ function userTable() {
         />
         {isBase ? (
           <TableGenerate
-            //   onClickRow={(row) => push(path + `/${data?.id}`)}
+            onClickRow={(row) => push(path + `/${row?.id}`)}
             isLoading={loading}
             currentPage={data?.page}
             totalpage={data?.totalPages}
@@ -292,6 +293,9 @@ function userTable() {
               <UI.Center>No data</UI.Center>
             ) : (
               <UI.VStack bg="white" spacing={3} p={3}>
+                {data?.records.map((x) => (
+                  <UserInfoCard key={x?.id} userData={x} />
+                ))}
                 <UI.HStack
                   alignItems="center"
                   justifyContent="space-between"

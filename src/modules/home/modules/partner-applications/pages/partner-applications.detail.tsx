@@ -6,7 +6,7 @@ import * as UI from '@chakra-ui/react';
 import {isEmpty} from 'lodash';
 import {useModalController} from '@modules/modal';
 import FormGenerate from '@components/FormGenerate';
-import {MdKeyboardBackspace} from 'react-icons/md';
+import {BsArrowLeft} from 'react-icons/bs';
 
 function Detail() {
   const {params} = useRouterController();
@@ -42,7 +42,7 @@ function Detail() {
             fontStyle={'normal'}
             onClick={() => push('/home/partner-applications')}>
             <UI.Flex alignItems="center">
-              <MdKeyboardBackspace size={20} />
+              <BsArrowLeft size={20} />
               <UI.Text size="12" pl={2}>
                 {' '}
                 Back
