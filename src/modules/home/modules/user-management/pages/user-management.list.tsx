@@ -51,9 +51,6 @@ function userTable() {
   } = useFilter({page: 1, limit: 10});
   const {data, getList, loading} = useGetList<IUserManagement>('/users');
 
-  // const isHiden = false;
-  console.log(data);
-
   useEffect(() => {
     getList({
       page,

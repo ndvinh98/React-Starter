@@ -10,7 +10,7 @@ import {isEmpty} from 'lodash';
 
 function Addnew() {
   const {languages} = useConfigStore();
-  const {post, loading, data} = usePost('/users/createUser');
+  const {post, loading, data} = usePost('/users');
   const toast = UI.useToast();
   const {isBase} = useMedia();
   const {push} = useRouter();
@@ -47,7 +47,7 @@ function Addnew() {
     <UI.Box py={6} px={8} spacing={4} width="full">
       <UI.HStack
         _hover={{cursor: 'pointer'}}
-        onClick={() => push('/partner/user-management')}>
+        onClick={() => push('/home/user-management')}>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
@@ -70,7 +70,7 @@ function Addnew() {
               .string()
               .email('Email is invalid')
               .required('Email is required'),
-            jobFunction: yup.string().required('Job Function is required'),
+            role: yup.string().required('role is required'),
             jobTitle: yup.string().required('Job Title is required'),
             countryName: yup.string().required('Country is required'),
             cityName: yup.string().required('City is required'),
@@ -90,8 +90,8 @@ function Addnew() {
               width: isBase ? '70%' : '100%',
               layout: isBase ? 'horizontal' : 'vertical',
               label: 'Salutation',
-
               placeholder: 'Salutation',
+
               options: [
                 {value: 'MR', label: 'Mr'},
                 {value: 'MRS', label: 'Mrs'},
@@ -153,11 +153,10 @@ function Addnew() {
               width: isBase ? '70%' : '100%',
               layout: isBase ? 'horizontal' : 'vertical',
               label: 'Sales ID (Only for Sales Mgr)',
-              placeholder: 'Salutation',
+              placeholder: 'Admin or Sales Manager',
               options: [
                 {value: '1', label: '1'},
                 {value: '2', label: '2'},
-                {value: '3', label: '3'},
               ],
             },
             {

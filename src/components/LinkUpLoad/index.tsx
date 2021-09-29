@@ -3,8 +3,8 @@ import * as UI from '@chakra-ui/react';
 import {isEmpty} from 'lodash';
 import {HTMLChakraProps} from '@chakra-ui/system';
 import {useGetItem} from '@utils/hooks';
-import {uploadFile} from '@services';
-import {useAuthStore} from '@stores/auth';
+import {uploadFile} from '@services/attachments/uploadFile';
+import {useAuthController} from '@modules/auth';
 
 export interface ILinkUploadProps extends HTMLChakraProps<'div'> {
   label?: string;
@@ -30,7 +30,7 @@ function LinkUpload(props: ILinkUploadProps) {
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
   const {getItem, item} = useGetItem('partnerUsers/uploadAvatarUrl');
   const [file, setFile] = useState<File>(null);
-  const {getMe} = useAuthStore();
+  const {getMe} = useAuthController();
 
   const onFileChange = (event: any) => {
     if (!isEmpty(event.target.files)) {
