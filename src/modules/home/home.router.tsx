@@ -2,7 +2,9 @@ import React from 'react';
 import {mount, route, map, redirect, withView, compose, lazy} from 'navi';
 import HomeLayout from './home.layout';
 import {useHomeController} from './controller';
+import {useConfigStore} from '@services/config';
 
+useConfigStore.getState?.()?.initDashboardConfig?.();
 export default compose(
   withView(<HomeLayout />),
   mount({

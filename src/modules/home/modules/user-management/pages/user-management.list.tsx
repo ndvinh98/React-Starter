@@ -10,7 +10,7 @@ import UserInfoCard from '@components/UserInfoCard';
 import {useRouter, useFilter, useGetList} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import {useMedia} from '@utils/hooks';
-
+import {useModalController} from '@modules/modal';
 import {isEmpty} from 'lodash';
 
 import * as UI from '@chakra-ui/react';
@@ -47,7 +47,7 @@ function userTable() {
     setTextSearch,
     filter,
     setFilter,
-    // setLimit,
+    setLimit,
   } = useFilter({page: 1, limit: 10});
   const {data, getList, loading} = useGetList<IUserManagement>('/users');
 
@@ -55,12 +55,11 @@ function userTable() {
     getList({
       page,
       limit,
-
-      // filter: isEmpty(filter)
-      //   ? JSON.stringify([{partnerApplicationSubmission: {status: 'PENDING'}}])
-      //   : JSON.stringify([
-      //       {partnerApplicationSubmission: {status: filter.status}},
-      //     ]),
+      filter: isEmpty(filter)
+        ? undefined
+        : JSON.stringify([
+            {isActive: filter.status, userType: filter.userType},
+          ]),
       textSearch: textSearch
         ? JSON.stringify([
             {firstName: textSearch},
@@ -71,13 +70,35 @@ function userTable() {
     });
   }, [page, limit, textSearch, filter]);
 
-  const handleFilterData = ({textSearch, status}) => {
+  const handleFilterData = ({textSearch, status, userType, demo}) => {
     if (textSearch !== undefined) setTextSearch(textSearch);
     setFilter((filter) => ({
       ...filter,
     }));
-    if (status === '-1') setFilter(null);
-    else setFilter({status});
+    if (status === '-1')
+      setFilter((filter) => ({
+        ...filter,
+        status: null,
+      }));
+    else
+      setFilter((filter) => ({
+        ...filter,
+        status: status,
+      }));
+
+    if (userType === '-1')
+      setFilter((filter) => ({
+        ...filter,
+        userType: null,
+      }));
+    else
+      setFilter((filter) => ({
+        ...filter,
+        userType: userType,
+      }));
+
+    console.log('haha', demo);
+    setLimit(limit);
   };
 
   return (
@@ -99,7 +120,7 @@ function userTable() {
               leftIcon: <AiOutlineSearch size={20} />,
             },
             {
-              name: 'hasAccess',
+              name: 'status',
               type: 'select',
               colSpan: isBase ? 3 : 6,
               size: 'md',
@@ -135,13 +156,14 @@ function userTable() {
                   value: 'ADMIN',
                 },
                 {
-                  label: 'User',
+                  label: 'Sales Manager',
                   value: 'USER',
                 },
               ],
             },
             {
               type: 'decor',
+              name: 'demo',
               colSpan: isBase ? 3 : 12,
               DecorComponent: () => {
                 return (
@@ -249,7 +271,7 @@ function userTable() {
                 id: 'status',
                 accessor: (row) => {
                   return (
-                    <UI.Text>{STATUS_STRING?.[row?.hasAccess] || ''}</UI.Text>
+                    <UI.Text>{STATUS_STRING?.[row?.isActive] || ''}</UI.Text>
                   );
                 },
               },
@@ -318,6 +340,8 @@ function userTable() {
 }
 
 export const ActionColum = (props: any) => {
+  const {openModal} = useModalController();
+
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
   // const {openModal} = useModalStore();
   const {row} = props;
@@ -333,49 +357,30 @@ export const ActionColum = (props: any) => {
           }}>
           <HiDotsHorizontal color={'#9097A9'} size={20} />
         </UI.MenuButton>
-        <UI.MenuList minWidth={'150px'}>
+        <UI.MenuList>
           <UI.MenuItem
-            isDisabled={row?.isActive === 1}
-            // onClick={(e) => {
-            //   e.stopPropagation();
-            //   openModal('action', {
-            //     title: 'Activate Access',
-            //     type: 'Activate',
-            //     id: row?.id,
-            //     cb: () => refresh(),
-            //   });
-            // }}
-          >
+            hidden={row?.isActive === 1}
+            onClick={() =>
+              openModal('action', {
+                title: 'Activate Access',
+                type: 'Activate',
+                // cb: () => getUserProfile(),
+                id: row?.id,
+              })
+            }>
             Activate Access
           </UI.MenuItem>
           <UI.MenuItem
-            isDisabled={row?.isActive === 0}
-            // onClick={(e) => {
-            //   e.stopPropagation();
-            //   openModal('action', {
-            //     title: 'Deactivate Access',
-            //     type: 'Deactivate',
-            //     id: row?.id,
-            //     cb: () => refresh(),
-            //   });
-            // }}
-          >
+            hidden={row?.isActive === 0}
+            onClick={() =>
+              openModal('action', {
+                title: 'Deactivate Access',
+                type: 'Deactivate',
+                // cb: () => getUserProfile(),
+                id: row?.id,
+              })
+            }>
             Deactivate Access
-          </UI.MenuItem>
-          <UI.MenuItem
-            isDisabled={row?.userType === 'PARTNERADMIN'}
-            // onClick={(e) => {
-            //   e.stopPropagation();
-            //   openModal('action', {
-            //     title: 'Change role',
-            //     type: 'change-role',
-            //     id: row?.id,
-            //     currentUserType: row?.userType,
-            //     cb: () => refresh(),
-            //   });
-            // }}
-          >
-            Change Role
           </UI.MenuItem>
         </UI.MenuList>
       </UI.Menu>

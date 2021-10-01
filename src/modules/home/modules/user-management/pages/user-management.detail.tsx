@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import FormGenerate from '@components/FormGenerate';
 import {COUNTRY_NAME} from '@constants';
-import {BsArrowLeft, BsThreeDotsVertical} from 'react-icons/bs';
+import {BsArrowLeft} from 'react-icons/bs';
 import {HiDotsHorizontal} from 'react-icons/hi';
 
 import {useRouter, useGetItem, usePatch} from '@utils/hooks';
@@ -137,7 +137,7 @@ function UserDetail() {
                         openModal('action', {
                           title: 'Activate Access',
                           type: 'Activate',
-                          cb: () => getUserProfile(),
+                          //   cb: () => getUserProfile(),
                           id: profileData?.id,
                         })
                       }>
@@ -149,7 +149,7 @@ function UserDetail() {
                         openModal('action', {
                           title: 'Deactivate Access',
                           type: 'Deactivate',
-                          cb: () => getUserProfile(),
+                          //   cb: () => getUserProfile(),
                           id: profileData?.id,
                         })
                       }>
@@ -173,7 +173,7 @@ function UserDetail() {
               displayName={profileData?.firstName + ' ' + profileData?.lastName}
               name="avatar"
               boxSize="100px"
-              partnerUserId={profileData?.id}
+              userId={profileData?.id}
               src={userProfiles?.avatarMediaDestination}
               cb={() => getUserProfile()}
             />

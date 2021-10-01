@@ -22,16 +22,16 @@ function Addnew() {
         salutation: '',
         firstName: '',
         lastName: '',
-        companyName: '',
+        salesId: '',
         email: '',
-        jobFunction: '',
+        userType: '',
         jobTitle: '',
         countryName: '',
         cityName: '',
         postalCode: '',
         workNumber: '',
         mobileNumber: '',
-        preferredLanguage: 1,
+        languageId: 1,
       });
       toast({
         title: 'Success',
@@ -65,21 +65,18 @@ function Addnew() {
             salutation: yup.string().required('Salutation is required'),
             firstName: yup.string().required('First Name is required'),
             lastName: yup.string().required('Last Name is required'),
-            companyName: yup.string().required('Company Name is required'),
             email: yup
               .string()
               .email('Email is invalid')
               .required('Email is required'),
-            role: yup.string().required('role is required'),
+            userType: yup.string().required('role is required'),
             jobTitle: yup.string().required('Job Title is required'),
             countryName: yup.string().required('Country is required'),
             cityName: yup.string().required('City is required'),
             postalCode: yup.string().required('Postal Code is required'),
             workNumber: yup.string().required('Work Number is required'),
             mobileNumber: yup.string().required('Mobile Number is required'),
-            preferredLanguage: yup
-              .string()
-              .required('Preferred Language is required'),
+            languageId: yup.string().required('Preferred Language is required'),
           }}
           fields={[
             {
@@ -132,7 +129,7 @@ function Addnew() {
               layout: isBase ? 'horizontal' : 'vertical',
             },
             {
-              name: 'role',
+              name: 'userType',
               type: 'select',
               colSpan: 12,
               size: 'md',
@@ -142,7 +139,7 @@ function Addnew() {
               placeholder: 'Admin or Sales Manager',
               options: [
                 {value: 'ADMIN', label: 'Admin'},
-                {value: 'SALES', label: 'Sales Manager'},
+                {value: 'USER', label: 'Sales Manager'},
               ],
             },
             {
@@ -153,7 +150,7 @@ function Addnew() {
               width: isBase ? '70%' : '100%',
               layout: isBase ? 'horizontal' : 'vertical',
               label: 'Sales ID (Only for Sales Mgr)',
-              placeholder: 'Admin or Sales Manager',
+              placeholder: 'Enter Sales ID',
               options: [
                 {value: '1', label: '1'},
                 {value: '2', label: '2'},
@@ -213,16 +210,7 @@ function Addnew() {
               width: isBase ? '70%' : '100%',
               layout: isBase ? 'horizontal' : 'vertical',
             },
-            {
-              name: 'displayWorkNo',
-              type: 'checkbox-confirm',
-              label: <></>,
-              placeholder: 'Work Number',
-              colSpan: 12,
-              size: 'md',
-              width: isBase ? '70%' : '100%',
-              layout: isBase ? 'horizontal' : 'vertical',
-            },
+
             {
               name: 'mobileNumber',
               type: 'input-tel',
@@ -234,7 +222,7 @@ function Addnew() {
               layout: isBase ? 'horizontal' : 'vertical',
             },
             {
-              name: 'preferredLanguage',
+              name: 'languageId',
               type: 'select',
               label: 'Preferred Language',
               size: 'md',

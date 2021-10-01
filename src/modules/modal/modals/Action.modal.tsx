@@ -58,7 +58,7 @@ function ActionModal() {
                 patch(
                   {
                     id: data?.id,
-                    isActive: data?.type === 'Activate' ? 0 : 1,
+                    isActive: data?.type === 'Activate' ? 1 : 0,
                   },
                   {},
                 );

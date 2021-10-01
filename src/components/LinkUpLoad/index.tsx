@@ -12,7 +12,7 @@ export interface ILinkUploadProps extends HTMLChakraProps<'div'> {
   displayName?: string;
   src?: string;
   boxSize?: string;
-  partnerUserId: number;
+  userId: number;
   cb?: () => void;
 }
 
@@ -23,12 +23,12 @@ function LinkUpload(props: ILinkUploadProps) {
     displayName,
     boxSize,
     src,
-    partnerUserId,
+    userId,
     cb,
     ...others
   } = props;
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
-  const {getItem, item} = useGetItem('partnerUsers/uploadAvatarUrl');
+  const {getItem, item} = useGetItem('users/uploadAvatarUrl');
   const [file, setFile] = useState<File>(null);
   const {getMe} = useAuthController();
 
@@ -40,7 +40,7 @@ function LinkUpload(props: ILinkUploadProps) {
       getItem({
         name: file?.name,
         type: file?.type,
-        partnerUserId: partnerUserId,
+        userId: userId,
       });
     }
   };

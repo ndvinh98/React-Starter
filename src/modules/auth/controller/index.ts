@@ -1,3 +1,4 @@
+import {fetchMe} from '@services/partnerUsers/fetchMe';
 import create from 'zustand';
 import {ELocalStorage} from '@constants';
 import {navigation} from '@router';
@@ -12,6 +13,7 @@ export interface IAuthController {
   logout: () => void;
   getToken: () => string;
   loginVerifyOtp: (email: string, otp: string) => any;
+  getMe?: () => Promise<IMe>;
 }
 const {ACCESS_TOKEN, REMEMBER_ACCESS_TOKEN} = ELocalStorage;
 
@@ -48,5 +50,10 @@ export const useAuthController = create<IAuthController>((set, get) => ({
     const isRemember = !!+localStorage.getItem(REMEMBER_ACCESS_TOKEN);
     const localStorageToken = localStorage.getItem(ACCESS_TOKEN);
     return (isRemember && localStorageToken) || accessToken;
+  },
+  getMe: async () => {
+    const me = await fetchMe();
+    set({me});
+    return me;
   },
 }));
