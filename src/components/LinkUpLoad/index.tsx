@@ -3,8 +3,8 @@ import * as UI from '@chakra-ui/react';
 import {isEmpty} from 'lodash';
 import {HTMLChakraProps} from '@chakra-ui/system';
 import {useGetItem} from '@utils/hooks';
-import {uploadFile} from '@services';
-import {useAuthStore} from '@stores/auth';
+import {uploadFile} from '@services/attachments/uploadFile';
+import {useAuthController} from '@modules/auth';
 
 export interface ILinkUploadProps extends HTMLChakraProps<'div'> {
   label?: string;
@@ -12,7 +12,7 @@ export interface ILinkUploadProps extends HTMLChakraProps<'div'> {
   displayName?: string;
   src?: string;
   boxSize?: string;
-  partnerUserId: number;
+  userId: number;
   cb?: () => void;
 }
 
@@ -23,14 +23,14 @@ function LinkUpload(props: ILinkUploadProps) {
     displayName,
     boxSize,
     src,
-    partnerUserId,
+    userId,
     cb,
     ...others
   } = props;
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
-  const {getItem, item} = useGetItem('partnerUsers/uploadAvatarUrl');
+  const {getItem, item} = useGetItem('users/uploadAvatarUrl');
   const [file, setFile] = useState<File>(null);
-  const {getMe} = useAuthStore();
+  const {getMe} = useAuthController();
 
   const onFileChange = (event: any) => {
     if (!isEmpty(event.target.files)) {
@@ -40,7 +40,7 @@ function LinkUpload(props: ILinkUploadProps) {
       getItem({
         name: file?.name,
         type: file?.type,
-        partnerUserId: partnerUserId,
+        userId: userId,
       });
     }
   };

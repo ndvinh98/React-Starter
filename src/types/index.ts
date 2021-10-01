@@ -236,6 +236,7 @@ export interface IUsers extends BaseSchema {
   userType?: TUserType;
   otpCode?: string;
   otpCodeExp?: Date;
+  userProfiles?: IUserProfiles;
 }
 
 export interface IUserProfiles extends BaseSchema {
