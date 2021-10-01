@@ -16,6 +16,7 @@ function Detail() {
   );
 
   const {openModal} = useModalController();
+
   useEffect(() => {
     if (params?.id)
       getItem({

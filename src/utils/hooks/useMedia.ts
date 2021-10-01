@@ -1,21 +1,4 @@
-import {useState, useEffect} from 'react';
 import {useMediaQuery} from '@chakra-ui/react';
-
-interface ISize {
-  width: number | undefined;
-  height: number | undefined;
-}
-interface IRange {
-  gt?: IBreakPoint;
-  lt?: IBreakPoint;
-}
-
-type IBreakPoint =
-  | 'smallPhone'
-  | 'phone'
-  | 'tablet'
-  | 'desktop'
-  | 'largeDesktop';
 
 export const BREAK_POINT = {
   smallPhone: 320,

@@ -64,6 +64,8 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
   CustomComponent?: React.FC<any>;
   onChangeValue?: (data: any) => void;
   leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  isClearable?: boolean;
 }
 
 const DIRECTION = {
@@ -76,7 +78,7 @@ const LAYOUT_ITEMS = {
   horizontal: 'center',
 };
 
-const FormControl = (props: IFormControl, ref: any) => {
+const FormControl = (props: IFormControl) => {
   const {
     label,
     helperText,

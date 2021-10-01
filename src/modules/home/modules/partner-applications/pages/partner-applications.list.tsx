@@ -42,6 +42,7 @@ const FIELDS: IFormControl[] = [
 function Main() {
   const {page, limit, textSearch, setTextSearch, filter, setFilter, setLimit} =
     useFilter({page: 1, limit: 10});
+
   const {data, getList, loading} = useGetList<IPartnerApplicationForms>(
     '/partnerApplicationForms',
   );

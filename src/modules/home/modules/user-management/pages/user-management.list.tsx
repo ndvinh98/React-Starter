@@ -39,16 +39,8 @@ function userTable() {
   // const {path} = useRouterController();
   const {isBase} = useMedia();
 
-  const {
-    page,
-    limit,
-    setPage,
-    textSearch,
-    setTextSearch,
-    filter,
-    setFilter,
-    setLimit,
-  } = useFilter({page: 1, limit: 10});
+  const {page, limit, setPage, textSearch, setTextSearch, filter, setFilter} =
+    useFilter({page: 1, limit: 10});
   const {data, getList, loading} = useGetList<IUserManagement>('/users');
 
   useEffect(() => {
@@ -70,35 +62,13 @@ function userTable() {
     });
   }, [page, limit, textSearch, filter]);
 
-  const handleFilterData = ({textSearch, status, userType, demo}) => {
-    if (textSearch !== undefined) setTextSearch(textSearch);
+  const handleFilterData = ({textSearch, status, userType}) => {
+    setTextSearch(textSearch === undefined ? '' : textSearch);
     setFilter((filter) => ({
       ...filter,
+      status: status === '-1' ? undefined : status,
+      userType: userType === '-1' ? undefined : userType,
     }));
-    if (status === '-1')
-      setFilter((filter) => ({
-        ...filter,
-        status: null,
-      }));
-    else
-      setFilter((filter) => ({
-        ...filter,
-        status: status,
-      }));
-
-    if (userType === '-1')
-      setFilter((filter) => ({
-        ...filter,
-        userType: null,
-      }));
-    else
-      setFilter((filter) => ({
-        ...filter,
-        userType: userType,
-      }));
-
-    console.log('haha', demo);
-    setLimit(limit);
   };
 
   return (
@@ -124,12 +94,16 @@ function userTable() {
               type: 'select',
               colSpan: isBase ? 3 : 6,
               size: 'md',
-
               defaultValue: {
-                label: 'Status ',
+                label: 'All Status',
                 value: '-1',
               },
+              isClearable: false,
               options: [
+                {
+                  label: 'All Status',
+                  value: '-1',
+                },
                 {
                   label: 'Active',
                   value: '1',
@@ -145,12 +119,17 @@ function userTable() {
               type: 'select',
               colSpan: isBase ? 3 : 6,
               size: 'md',
-              placeholder: ' All Roles',
+              placeholder: 'All Roles',
               defaultValue: {
                 label: 'All Roles',
                 value: '-1',
               },
+              isClearable: false,
               options: [
+                {
+                  label: 'All Roles',
+                  value: '-1',
+                },
                 {
                   label: 'Admin',
                   value: 'ADMIN',
@@ -189,6 +168,7 @@ function userTable() {
                           isClearable={false}
                           size="sm"
                           name="limit"
+                          // onChangeValue={(data) => console.log('data', data)}
                           defaultValue={{
                             label: '10',
                             value: '10',

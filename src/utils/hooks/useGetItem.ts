@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import {request} from '@services';
 import {IParams} from '@types';
-import path from 'path/posix';
 
 export const useGetItem = <T = any>(url?: string) => {
   const [loading, setLoading] = useState<boolean>(false);
