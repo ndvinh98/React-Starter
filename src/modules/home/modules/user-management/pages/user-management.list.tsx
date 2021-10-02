@@ -20,7 +20,7 @@ import {HiDotsHorizontal} from 'react-icons/hi';
 export const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
   ADMIN: 'Admin',
-  USER: 'User',
+  USER: 'Sales Management',
 };
 
 export const STATUS_STRING = {
@@ -39,8 +39,16 @@ function userTable() {
   // const {path} = useRouterController();
   const {isBase} = useMedia();
 
-  const {page, limit, setPage, textSearch, setTextSearch, filter, setFilter} =
-    useFilter({page: 1, limit: 10});
+  const {
+    page,
+    limit,
+    setPage,
+    textSearch,
+    setTextSearch,
+    filter,
+    setFilter,
+    setLimit,
+  } = useFilter({page: 1, limit: 10});
   const {data, getList, loading} = useGetList<IUserManagement>('/users');
 
   useEffect(() => {
@@ -78,7 +86,7 @@ function userTable() {
       </UI.Text>
       <UI.Box width="full">
         <FormGenerate
-          gap={isBase ? 4 : 2}
+          gap={isBase ? 4 : 6}
           onChangeValue={handleFilterData}
           fields={[
             {
@@ -168,23 +176,23 @@ function userTable() {
                           isClearable={false}
                           size="sm"
                           name="limit"
-                          // onChangeValue={(data) => console.log('data', data)}
+                          onChangeValue={(data) => setLimit(data.value)}
                           defaultValue={{
                             label: '10',
-                            value: '10',
+                            value: 10,
                           }}
                           options={[
                             {
                               label: '10',
-                              value: '10',
+                              value: 5,
                             },
                             {
                               label: '20',
-                              value: '20',
+                              value: 20,
                             },
                             {
                               label: 'all',
-                              value: 'all',
+                              value: 1000,
                             },
                           ]}
                         />
