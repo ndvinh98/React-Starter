@@ -3,20 +3,23 @@ import React from 'react';
 import * as UI from '@chakra-ui/react';
 import {FiMoreHorizontal} from 'react-icons/fi';
 
-const USRTYPE_STRING = {
+const USERTYPE_STRING = {
   PARTNERADMIN: 'Owner',
   ADMIN: 'Admin',
-  USER: 'User',
+  USER: 'Sales Manager',
 };
 const STATUS_STRING = {
   1: 'Active',
   0: 'Inactive',
 };
 
+export const ACTIVE_STRING = {
+  1: 'Actived',
+  0: 'Decatived',
+};
 function UserInfoCard(props) {
   const {userData} = props;
-  console.log('daaaa');
-  console.log(userData);
+
   //const {openModal} = useModalStore();
 
   return (
@@ -47,10 +50,13 @@ function UserInfoCard(props) {
             {userData?.firstName} {userData?.lastName}
           </UI.Text>
           <UI.Text pb={2} w="full" fontSize="14px" fontWeight="semibold">
-            {STATUS_STRING?.[userData?.status]}
+            {userData?.email}
           </UI.Text>
           <UI.Text pb={2} w="full" fontSize="14px" fontWeight="semibold">
-            {USRTYPE_STRING?.[userData?.userType]}
+            {STATUS_STRING?.[userData?.isActive]}
+          </UI.Text>
+          <UI.Text pb={2} w="full" fontSize="14px" fontWeight="semibold">
+            {USERTYPE_STRING?.[userData?.userType]}
           </UI.Text>
         </UI.VStack>
       </UI.HStack>

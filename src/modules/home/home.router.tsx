@@ -1,5 +1,5 @@
 import React from 'react';
-import {mount, route, map, redirect, withView, compose, lazy} from 'navi';
+import {mount, map, redirect, withView, compose, lazy} from 'navi';
 import HomeLayout from './home.layout';
 import {useHomeController} from './controller';
 import {useConfigStore} from '@services/config';
@@ -13,10 +13,7 @@ export default compose(
       return guard().then((res) => {
         return res
           ? mount({
-              '/': route({
-                title: 'Dashboard',
-                getView: () => import('./modules/dashboard'),
-              }),
+              '/': redirect('partner-applications'),
               '/partner-applications': lazy(
                 () =>
                   import(

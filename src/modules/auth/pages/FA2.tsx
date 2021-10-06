@@ -14,7 +14,7 @@ function Auth2FA() {
   const toast = UI.useToast();
   const {query} = useRouterController();
 
-  const {post: resendOpt, data} = usePost('/partnerUsers/resendOtpCode');
+  const {post: resendOpt, data} = usePost('/users/resendOtpCode');
 
   useEffect(() => {
     actions.start();

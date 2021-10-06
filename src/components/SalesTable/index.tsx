@@ -1,11 +1,9 @@
 import React, {useEffect} from 'react';
-import moment from 'moment';
 
 import TableGenerate from '@components/TableGenerate';
 import FormGenerate from '@components/FormGenerate';
 import Pagination from '@components/Pagination';
-import {IPartnerManagement} from '@types';
-import Select from '@components/Select';
+import {IUserManagement} from '@types';
 import UserInfoCard from '@components/UserInfoCard';
 
 import {useRouter, useFilter, useGetList} from '@utils/hooks';
@@ -33,31 +31,19 @@ export const ACTIVE_STRING = {
   0: 'Decatived',
 };
 
-function CompanyManagement() {
+function SalesTable() {
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
 
-  const {
-    page,
-    limit,
-    setPage,
-    textSearch,
-    setTextSearch,
-    filter,
-    setFilter,
-    setLimit,
-  } = useFilter({page: 1, limit: 10});
-  const {data, getList, loading} = useGetList<IPartnerManagement>('/partners');
+  const {page, limit, setPage, textSearch, setTextSearch, filter, setFilter} =
+    useFilter({page: 1, limit: 10});
+  const {data, getList, loading} = useGetList<IUserManagement>('/users');
 
   useEffect(() => {
     getList({
       page,
       limit,
-      relations: JSON.stringify([
-        'partnerApplicationSubmissions',
-        'partnerApplicationSubmissions.partnerApplicationForms',
-      ]),
       filter: isEmpty(filter)
         ? undefined
         : JSON.stringify([
@@ -83,9 +69,9 @@ function CompanyManagement() {
   };
 
   return (
-    <UI.VStack py={6} px={8} spacing={4} width="full">
+    <UI.VStack py={6} px={8} spacing={4} width="full" bgColor="white">
       <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
-        User Management
+        User Infomation
       </UI.Text>
       <UI.Box width="full">
         <FormGenerate
@@ -125,54 +111,31 @@ function CompanyManagement() {
                 },
               ],
             },
-
             {
-              type: 'decor',
-              name: 'demo',
-              colSpan: isBase ? 3 : 12,
-              DecorComponent: () => {
-                return (
-                  <UI.VStack>
-                    <UI.HStack
-                      position={{md: 'absolute', lg: 'static'}}
-                      top={'-166px'}
-                      w={'full'}
-                      justifyContent={'space-between'}>
-                      <UI.HStack
-                        position={{md: 'absolute', lg: 'static'}}
-                        top={'-166px'}
-                        w={'full'}
-                        justifyContent={'flex-end'}>
-                        <UI.Text> View Item</UI.Text>
-                        <Select
-                          isClearable={false}
-                          size="sm"
-                          name="limit"
-                          onChangeValue={(data) => setLimit(data.value)}
-                          defaultValue={{
-                            label: '10',
-                            value: 10,
-                          }}
-                          options={[
-                            {
-                              label: '10',
-                              value: 5,
-                            },
-                            {
-                              label: '20',
-                              value: 20,
-                            },
-                            {
-                              label: 'all',
-                              value: 1000,
-                            },
-                          ]}
-                        />
-                      </UI.HStack>
-                    </UI.HStack>
-                  </UI.VStack>
-                );
+              name: 'userType',
+              type: 'select',
+              colSpan: isBase ? 3 : 6,
+              size: 'md',
+              placeholder: 'All Roles',
+              defaultValue: {
+                label: 'All Roles',
+                value: '-1',
               },
+              isClearable: false,
+              options: [
+                {
+                  label: 'All Roles',
+                  value: '-1',
+                },
+                {
+                  label: 'Admin',
+                  value: 'ADMIN',
+                },
+                {
+                  label: 'Sales Manager',
+                  value: 'USER',
+                },
+              ],
             },
           ]}
         />
@@ -193,17 +156,39 @@ function CompanyManagement() {
             }
             columns={[
               {
-                Header: 'Company',
-                id: 'company',
+                Header: 'User',
+                id: 'user',
                 accessor: (row) => (
-                  <UI.Text>
-                    {
-                      row?.partnerApplicationSubmissions[0]
-                        ?.partnerApplicationForms[0]?.companyName
-                    }
-                  </UI.Text>
+                  <UI.HStack>
+                    <UI.Avatar
+                      sx={{
+                        img: {
+                          objectFit: 'contain',
+                        },
+                      }}
+                      bg={
+                        row?.partnerUserProfiles?.[0]?.avatarMediaDestination
+                          ? 'white'
+                          : undefined
+                      }
+                      src={
+                        row?.partnerUserProfiles?.[0]?.avatarMediaDestination
+                      }
+                      name={row?.firstName + ' ' + row?.lastName}
+                      size={'sm'}
+                    />
+                    <UI.Text>
+                      {row?.firstName} {row?.lastName}
+                    </UI.Text>
+                  </UI.HStack>
                 ),
               },
+              {
+                Header: 'Email Address',
+                id: 'emailAddress',
+                accessor: (row) => <UI.Text>{row?.email}</UI.Text>,
+              },
+
               {
                 Header: 'Status',
                 id: 'status',
@@ -214,24 +199,11 @@ function CompanyManagement() {
                 },
               },
               {
-                Header: 'Registered Date',
-                id: 'registDate',
-                accessor: (row) => (
-                  <UI.Text>
-                    {moment(row?.createdAt).format('DD MMM YYYY')}
-                  </UI.Text>
-                ),
-              },
-
-              {
-                Header: 'Validity Date',
-                id: 'validDate',
+                Header: 'Role',
+                id: 'role',
                 accessor: (row) => {
                   return (
-                    <UI.Text>
-                      {' '}
-                      {moment(row?.expiryDate).format('DD MMM YYYY')}
-                    </UI.Text>
+                    <UI.Text>{USRTYPE_STRING?.[row?.userType] || ''}</UI.Text>
                   );
                 },
               },
@@ -339,4 +311,4 @@ export const ActionColum = (props: any) => {
   );
 };
 
-export default CompanyManagement;
+export default SalesTable;
