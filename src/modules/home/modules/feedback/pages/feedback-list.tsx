@@ -111,7 +111,7 @@ function FeedbackList() {
       textSearch: textSearch
         ? JSON.stringify([{feedbackMessage: textSearch}])
         : undefined,
-      filter: isEmpty(filter) ? undefined : JSON.stringify([filter]),
+      filter: isEmpty(filter) ? JSON.stringify([{isRead: 1}]) : JSON.stringify([filter]),
     });
   }, [limit, page, textSearch, filter]);
 
@@ -149,8 +149,8 @@ function FeedbackList() {
               name: 'isRead',
               isClearable: false,
               defaultValue: {
-                label: 'All feedback',
-                value: '-1',
+                label: 'Read',
+                value: '1',
               },
               options: [
                 {
