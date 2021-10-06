@@ -9,27 +9,72 @@ import {
 } from 'react-icons/ai';
 import Pagination from '@components/Pagination';
 import {useMedia} from '@utils/hooks';
-import {useRouter, useFilter, useGetList} from '@utils/hooks';
+import {useRouter, useFilter, useGetList, useGetItem} from '@utils/hooks';
 import groupBy from 'lodash/groupBy';
 import {format} from 'date-fns';
 import _ from 'lodash';
+
+
 const FeedbackContent = ({data}) => {
   //const {openModal} = useModalStore();
-  // const {getItem, item} = useGetItem('partnerUserNotifications/read/');
-  // const readNoti = () => {
-  //   getItem({}, {path: data?.id});
-  // };
+  const {getItem, data: item} = useGetItem('partnerUserFeedbacks/read/');
+  const readFeedback = () => {
+    getItem({}, {path: data?.id});
+  };
 
-  // React.useEffect(() => {
-  //   if (item) getTotalUnread();
-  // }, [item]);
+  const [isRead, setIsRead] = useState(!!+data?.isRead);
 
-  // const [isRead, setIsRead] = useState(!!+data?.isRead);
+  return (
+    <UI.Flex
+      flexDirection={{md: 'column', lg: 'row'}}
+      onClick={() => {
+        if (isRead) return;
+        readFeedback();
+        setIsRead(true);
+      }}
+      cursor="pointer"
+      w="full"
+      shadow="sm"
+      p={3}
+      bg={isRead ? 'transparent' : 'white'}
+      justifyContent="space-between"
+      border={isRead ? ' 1px solid #E0E0E0' : 'none'}
+      mb={2}
+    >
+      <UI.HStack>
+        <UI.Center
+          w={{md: '40px', lg: '70px'}}
+          p={{md: 1, lg: 2}}
+          bg={isRead ? 'transparent' : 'white'}
+          shadow="md">
+          <UI.Image
+            w={{md: '30px', lg: '50px'}}
+            h={{md: '30px', lg: '50px'}}
+            src="/images/feedback-icon.svg"
+            alt="feedback.png"
+          />
+        </UI.Center>
+        <UI.Text fontSize={{md: 'md', lg: 'lg'}}>
+          {data?.feedbackMessage}
+        </UI.Text>
+      </UI.HStack>
 
-  // const groupedMessages = groupBy(data, function(n) {
-  //   return format(new Date(n.createdAt), 'dd MMM yyyy');
-  // });
+      <UI.HStack pr={4} pt={{md: 4, lg: 0}} justifyContent={'center'}>
+        <UI.Button
+          bgColor={'#E9E9E9'}
+          color={'#54565A'}
+          size={'sm'}
+          _hover={{bgColor: '#28C76F', color: 'white'}}
+          colorScheme="#EEFCEA">
+          View
+        </UI.Button>
+      </UI.HStack>
+    </UI.Flex>
+  )
+};
 
+const FeedbackCategory = ({data}) => {
+  
   const groupedMessages = _(data)
     .groupBy((item) => format(new Date(item.createdAt), 'dd MMM yyyy'))
     .sortBy((group) => data.indexOf(group[0]))
@@ -43,61 +88,16 @@ const FeedbackContent = ({data}) => {
           <UI.Box key={gr_index} pt={4} mb={4}>
             <UI.Text pb={2}> {section} </UI.Text>
             { group.map((item, item_index) => {
-              return (
-                <UI.Flex
-                  flexDirection={{md: 'column', lg: 'row'}}
-                  key = {item_index}
-                  // onClick={() => {
-                  //   if (isRead) return;
-                  //   readNoti();
-                  //   setIsRead(true);
-                  // }}
-                  cursor="pointer"
-                  w="full"
-                  shadow="sm"
-                  p={3}
-                  //bg={isRead ? 'transparent' : 'white'}
-                  bg={'white'}
-                  justifyContent="space-between"
-                  //border={isRead ? ' 1px solid #E0E0E0' : 'none'}
-                  mb={2}
-                >
-                  <UI.HStack>
-                    <UI.Center
-                      w={{md: '40px', lg: '70px'}}
-                      p={{md: 1, lg: 2}}
-                      bg="white"
-                      shadow="md">
-                      <UI.Image
-                        w={{md: '30px', lg: '50px'}}
-                        h={{md: '30px', lg: '50px'}}
-                        src="/images/feedback-icon.svg"
-                        alt="feedback.png"
-                      />
-                    </UI.Center>
-                    <UI.Text fontSize={{md: 'md', lg: 'lg'}}>
-                      {item?.feedbackMessage}
-                    </UI.Text>
-                  </UI.HStack>
-
-                  <UI.HStack pr={4} pt={{md: 4, lg: 0}} justifyContent={'center'}>
-                    <UI.Button
-                      bgColor={'#E9E9E9'}
-                      color={'#54565A'}
-                      size={'sm'}
-                      _hover={{bgColor: '#28C76F', color: 'white'}}
-                      colorScheme="#EEFCEA">
-                      View
-                    </UI.Button>
-                  </UI.HStack>
-                </UI.Flex>
-              )})}
+              return <FeedbackContent key={item_index} data={item}/>
+            })}
           </UI.Box>
         )
       })}
     </UI.Box>
   );
 };
+
+
 
 function FeedbackList() {
   const {data, loading, getList} = useGetList('/partnerUserFeedbacks');
@@ -120,6 +120,10 @@ function FeedbackList() {
   }, [limit, page, textSearch, filter]);
 
   const {isBase, isAllMobile} = useMedia();
+
+  useEffect(() => {
+    console.log(data)
+  },[data])
 
   const handleOnChange = ({textSearch, isRead}) => {
     if (textSearch !== undefined) setTextSearch(textSearch as string);
@@ -203,7 +207,7 @@ function FeedbackList() {
               </UI.VStack>
             </UI.Center>
           ) : (
-            <FeedbackContent data={data?.records} />
+            <FeedbackCategory data={data?.records} />
           )}
         </UI.Box>
         {data?.totalPages > 1 && !isAllMobile && (
