@@ -6,7 +6,7 @@ import * as yup from 'yup';
 
 function ChangePassword() {
   const {query, replace} = useRouter();
-  const {post, loading, data} = usePost('/partnerUsers/resetPassword');
+  const {post, loading, data} = usePost('/users/resetPassword');
   useEffect(() => {
     if (data) {
       replace(`/auth/change-password-done`);

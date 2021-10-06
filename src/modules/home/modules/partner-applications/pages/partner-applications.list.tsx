@@ -24,10 +24,6 @@ const FIELDS: IFormControl[] = [
     defaultValue: {label: 'Pending requests', value: '-1'},
     options: [
       {
-        label: 'All requests',
-        value: '-1',
-      },
-      {
         label: 'Accepted requests',
         value: 'APPROVED',
       },

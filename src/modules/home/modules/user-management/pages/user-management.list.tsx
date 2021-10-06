@@ -32,11 +32,9 @@ export const ACTIVE_STRING = {
   0: 'Decatived',
 };
 
-function userTable() {
+function userManagement() {
   const {path} = useRouterController();
-
   const {push} = useRouter();
-  // const {path} = useRouterController();
   const {isBase} = useMedia();
 
   const {
@@ -376,4 +374,4 @@ export const ActionColum = (props: any) => {
   );
 };
 
-export default userTable;
+export default userManagement;
