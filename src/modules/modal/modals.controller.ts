@@ -11,9 +11,12 @@ export interface IModalController {
   data: any;
   reject: boolean;
   action: boolean;
+  fileViewer: boolean;
+
 }
 
 export const useModalController = create<IModalController>((set) => ({
+  fileViewer: false,
   add_user: false,
   search: false,
   logout: false,
