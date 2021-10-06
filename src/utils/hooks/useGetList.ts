@@ -27,7 +27,10 @@ export const useGetList = <T = any>(url: string) => {
       hiddenLoading?: boolean;
     },
   ) => {
-    if (!options?.hiddenLoading) setLoading(true);
+    if (!options?.hiddenLoading) {
+      setLoading(true);
+      setData(null);
+    }
     request({
       method: 'GET',
       path: options?.path ? url + options?.path : url,

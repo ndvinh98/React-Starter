@@ -1,28 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {isEmpty} from 'lodash';
+import React, {useEffect, useState, useMemo} from 'react';
+import {isEmpty, chain} from 'lodash';
 import * as UI from '@chakra-ui/react';
 import FormGenerate from '@components/FormGenerate';
-import {
-  AiOutlineSearch,
-  AiOutlineAppstore,
-  AiOutlineBars,
-} from 'react-icons/ai';
+import {AiOutlineSearch} from 'react-icons/ai';
 import Pagination from '@components/Pagination';
 import {useMedia} from '@utils/hooks';
-import {useRouter, useFilter, useGetList, useGetItem} from '@utils/hooks';
-import groupBy from 'lodash/groupBy';
+import {useFilter, useGetList, useGetItem} from '@utils/hooks';
 import {format} from 'date-fns';
-import _ from 'lodash';
-
 
 const FeedbackContent = ({data}) => {
-  //const {openModal} = useModalStore();
-  const {getItem, data: item} = useGetItem('partnerUserFeedbacks/read/');
+  const {getItem} = useGetItem('partnerUserFeedbacks/read/');
   const readFeedback = () => {
     getItem({}, {path: data?.id});
   };
 
-  const [isRead, setIsRead] = useState(!!+data?.isRead);
+  const [isRead, setIsRead] = useState(!!data?.isRead);
 
   return (
     <UI.Flex
@@ -39,8 +31,7 @@ const FeedbackContent = ({data}) => {
       bg={isRead ? 'transparent' : 'white'}
       justifyContent="space-between"
       border={isRead ? ' 1px solid #E0E0E0' : 'none'}
-      mb={2}
-    >
+      mb={2}>
       <UI.HStack>
         <UI.Center
           w={{md: '40px', lg: '70px'}}
@@ -70,34 +61,35 @@ const FeedbackContent = ({data}) => {
         </UI.Button>
       </UI.HStack>
     </UI.Flex>
-  )
+  );
 };
 
 const FeedbackCategory = ({data}) => {
-  
-  const groupedMessages = _(data)
-    .groupBy((item) => format(new Date(item.createdAt), 'dd MMM yyyy'))
-    .sortBy((group) => data.indexOf(group[0]))
-    .value();
+  const groupedMessages = useMemo(
+    () =>
+      chain(data)
+        .groupBy((item) => format(new Date(item.createdAt), 'dd MMM yyyy'))
+        .sortBy((group) => data.indexOf(group[0]))
+        .valueOf(),
+    [data],
+  );
 
   return (
     <UI.Box>
       {groupedMessages.map((group, gr_index) => {
-        const section = format(new Date(group[0].createdAt), 'dd MMM yyyy')
+        const section = format(new Date(group[0].createdAt), 'dd MMM yyyy');
         return (
           <UI.Box key={gr_index} pt={4} mb={4}>
             <UI.Text pb={2}> {section} </UI.Text>
-            { group.map((item, item_index) => {
-              return <FeedbackContent key={item_index} data={item}/>
+            {group.map((item, index) => {
+              return <FeedbackContent key={index} data={item} />;
             })}
           </UI.Box>
-        )
+        );
       })}
     </UI.Box>
   );
 };
-
-
 
 function FeedbackList() {
   const {data, loading, getList} = useGetList('/partnerUserFeedbacks');
@@ -120,10 +112,6 @@ function FeedbackList() {
   }, [limit, page, textSearch, filter]);
 
   const {isBase, isAllMobile} = useMedia();
-
-  useEffect(() => {
-    console.log(data)
-  },[data])
 
   const handleOnChange = ({textSearch, isRead}) => {
     if (textSearch !== undefined) setTextSearch(textSearch as string);
