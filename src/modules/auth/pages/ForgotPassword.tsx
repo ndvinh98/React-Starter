@@ -7,7 +7,7 @@ import * as yup from 'yup';
 
 function ForgotPassword() {
   const {push, replace} = useRouter();
-  const {post, loading, data} = usePost('/partnerUsers/forgotPassword');
+  const {post, loading, data} = usePost('/users/forgotPassword');
   const email = useRef<string>('');
 
   useEffect(() => {

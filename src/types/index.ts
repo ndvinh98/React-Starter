@@ -107,7 +107,7 @@ export interface IPartnerApplicationSubmissions extends BaseSchema {
   submittedByPartnerUser?: number | IPartnerUsers;
   partner?: number | IPartners;
   status?: TStatus;
-  partnerApplicationForms?: IPartnerApplicationForms[];
+  partnerApplicationForms?: IPartnerApplicationForms;
 }
 
 export interface IPartnerApplicationAttachments extends BaseSchema {
@@ -253,4 +253,10 @@ export interface IUserProfiles extends BaseSchema {
   salesID?: string;
   showMobileNumber?: 1 | 0;
   showWorkNumber?: 1 | 0;
+}
+
+export interface IPartnerManagement extends BaseSchema {
+  isActive?: 1 | 0;
+  expiryDate?: Date;
+  partnerApplicationSubmissions?: IPartnerApplicationSubmissions;
 }
