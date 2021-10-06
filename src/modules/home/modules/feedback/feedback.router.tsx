@@ -6,7 +6,7 @@ export default mount({
     getView: () => import('./pages/feedback-list'),
   }),
   '/:id': route({
-    title: 'main',
-    getView: () => import('./pages/feedback-list'),
+    title: 'detail',
+    getView: () => import('./pages/feedback-detail'),
   }),
 });

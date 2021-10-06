@@ -16,7 +16,7 @@ import _ from 'lodash';
 
 
 const FeedbackContent = ({data}) => {
-  //const {openModal} = useModalStore();
+  const {push} = useRouter();
   const {getItem, data: item} = useGetItem('partnerUserFeedbacks/read/');
   const readFeedback = () => {
     getItem({}, {path: data?.id});
@@ -61,6 +61,9 @@ const FeedbackContent = ({data}) => {
 
       <UI.HStack pr={4} pt={{md: 4, lg: 0}} justifyContent={'center'}>
         <UI.Button
+          onClick={() => {
+            push("/home/feedback/"+data?.id)
+          }}
           bgColor={'#E9E9E9'}
           color={'#54565A'}
           size={'sm'}
