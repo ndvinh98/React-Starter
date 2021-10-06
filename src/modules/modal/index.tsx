@@ -3,6 +3,7 @@ import ConfirmModal from './modals/Confirm.modal';
 import LogoutModal from './modals/Logout.modal';
 import RejectModal from './modals/Reject.modal';
 import ActionModal from './modals/Action.modal';
+import FileViewer from './modals/FileViewer.modal'
 
 function InitModal() {
   return (
@@ -11,6 +12,7 @@ function InitModal() {
       <RejectModal />
       <ConfirmModal />
       <ActionModal />
+      <FileViewer />
     </>
   );
 }
