@@ -223,6 +223,7 @@ export interface IUserManagement extends BaseSchema {
   email?: string;
   userType?: string;
   status?: string;
+  user?: IUsers;
 }
 
 export interface IUsers extends BaseSchema {
@@ -255,8 +256,15 @@ export interface IUserProfiles extends BaseSchema {
   showWorkNumber?: 1 | 0;
 }
 
+export interface IPartnerDomain extends BaseSchema {
+  isAllowed?: 1 | 0;
+  domain?: string;
+}
+
 export interface IPartnerManagement extends BaseSchema {
   isActive?: 1 | 0;
+  isApproved?: 1 | 0;
   expiryDate?: Date;
-  partnerApplicationSubmissions?: IPartnerApplicationSubmissions;
+  companyName?: string;
+  partnerDomain?: IPartnerDomain;
 }

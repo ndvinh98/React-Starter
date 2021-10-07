@@ -9,10 +9,7 @@ export default mount({
     title: 'company-detail',
     getView: () => import('./pages/company-detail'),
   }),
-  '/company-test/': route({
-    title: 'company-detail',
-    getView: () => import('./pages/company-detail'),
-  }),
+
   '/company/:id/user/:id': route({
     title: 'user-detail',
     getView: () => import('./pages/staff-detail'),

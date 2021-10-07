@@ -42,12 +42,6 @@ function CompanyInfo(props: any) {
                       {
                         type: 'decor',
                         DecorComponent: () => (
-                          <SectionTitle sectionName={'Section A'} />
-                        ),
-                      },
-                      {
-                        type: 'decor',
-                        DecorComponent: () => (
                           <FieldData
                             name={'Name of Company'}
                             value={data?.companyName}

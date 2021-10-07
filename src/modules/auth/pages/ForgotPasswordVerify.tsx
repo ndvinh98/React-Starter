@@ -17,7 +17,7 @@ function ForgotPasswordDone() {
         </Box>
         <Text
           py={5}
-          fontSize="3xl"
+          fontSize="2xl"
           fontWeight={'extrabold'}
           textAlign={{md: 'left', lg: 'center'}}>
           We Have Sent You An Email
