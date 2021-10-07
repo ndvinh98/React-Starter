@@ -37,6 +37,9 @@ export default compose(
               '/feedback': lazy(
                 () => import('./modules/feedback/feedback.router'),
               ),
+              '/your-profile': lazy(
+                () => import('./modules/profile/profile.router'),
+              ),
             })
           : redirect(
               '/auth/login?redirectTo=' +

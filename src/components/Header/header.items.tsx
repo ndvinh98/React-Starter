@@ -5,15 +5,15 @@ import Highlighter from 'react-highlight-words';
 import * as UI from '@chakra-ui/react';
 import {FiBell, FiLogOut, FiSearch} from 'react-icons/fi';
 import {
-  RiBuildingFill,
+  // RiBuildingFill,
   RiUserFill,
-  RiBarChartFill,
-  RiFileUserFill,
+  // RiBarChartFill,
+  // RiFileUserFill,
   RiFeedbackFill,
   RiFileTransferFill,
 } from 'react-icons/ri';
-import {GiDiploma} from 'react-icons/gi';
-import {FaUsers} from 'react-icons/fa';
+// import {GiDiploma} from 'react-icons/gi';
+// import {FaUsers} from 'react-icons/fa';
 import {HiUserGroup} from 'react-icons/hi';
 import {SettingIcon} from '@components/icons';
 import AsyncSelect from '@components/AsyncSelect';
@@ -31,33 +31,33 @@ const HEADER_MENU = [
   {
     icon: <RiUserFill size={20} />,
     label: 'Your Profile',
-    path: '/partner/your-profile',
+    path: '/home/your-profile',
   },
-  {
-    icon: <RiBuildingFill size={20} />,
-    label: 'Company Information',
-    path: '/partner/company-information',
-  },
-  {
-    icon: <RiBarChartFill size={20} />,
-    label: 'Tier Information',
-    path: '/partner/tier-information',
-  },
-  {
-    icon: <FaUsers size={20} />,
-    label: 'User Management',
-    path: '/partner/user-management',
-  },
-  {
-    icon: <GiDiploma size={20} />,
-    label: 'Certificates',
-    path: '/partner/file-certificate',
-  },
-  {
-    icon: <RiFileUserFill size={20} />,
-    label: 'STE Profile',
-    path: '/partner/ste-profile',
-  },
+  // {
+  //   icon: <RiBuildingFill size={20} />,
+  //   label: 'Company Information',
+  //   path: '/partner/company-information',
+  // },
+  // {
+  //   icon: <RiBarChartFill size={20} />,
+  //   label: 'Tier Information',
+  //   path: '/partner/tier-information',
+  // },
+  // {
+  //   icon: <FaUsers size={20} />,
+  //   label: 'User Management',
+  //   path: '/partner/user-management',
+  // },
+  // {
+  //   icon: <GiDiploma size={20} />,
+  //   label: 'Certificates',
+  //   path: '/partner/file-certificate',
+  // },
+  // {
+  //   icon: <RiFileUserFill size={20} />,
+  //   label: 'STE Profile',
+  //   path: '/partner/ste-profile',
+  // },
 ];
 
 export const HEADER_ITEMS = {
