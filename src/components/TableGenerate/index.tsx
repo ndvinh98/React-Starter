@@ -25,6 +25,8 @@ export interface ITableGenerate {
   Footer?: React.ReactNode;
   currentPage?: number;
   totalpage?: number;
+  totalCount?: number;
+  pageSize?: number;
   onChangePage?: (page: number) => void;
   onClickRow?: (row?: any) => void;
 }
@@ -39,6 +41,8 @@ const TableGenerate = (props: ITableGenerate, ref?: any) => {
     totalpage,
     onChangePage,
     onClickRow,
+    totalCount,
+    pageSize,
   } = props;
 
   useImperativeHandle(ref, () => ({}));
@@ -122,7 +126,9 @@ const TableGenerate = (props: ITableGenerate, ref?: any) => {
       <Pagination
         currentPage={currentPage}
         totalpage={totalpage}
+        totalCount={totalCount}
         onChangePage={onChangePage}
+        pageSize={pageSize}
         mt={3}
         size={'sm'}
       />

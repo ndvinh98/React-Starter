@@ -182,6 +182,8 @@ function CompanyManagement() {
             isLoading={loading}
             currentPage={data?.page}
             totalpage={data?.totalPages}
+            totalCount={data?.total}
+            pageSize={data?.limit}
             data={data?.records || []}
             onChangePage={setPage}
             Footer={
@@ -279,6 +281,8 @@ function CompanyManagement() {
                     onChangePage={setPage}
                     size={'sm'}
                     justifyContent="flex-end"
+                    totalCount={data?.total}
+                    pageSize={data?.limit}
                   />
                 </UI.HStack>
               </UI.VStack>

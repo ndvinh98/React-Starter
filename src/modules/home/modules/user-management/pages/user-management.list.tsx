@@ -210,6 +210,8 @@ function userManagement() {
             totalpage={data?.totalPages}
             data={data?.records || []}
             onChangePage={setPage}
+            totalCount={data?.total}
+            pageSize={data?.limit}
             Footer={
               <UI.Tr>
                 <UI.Td fontWeight="bold" colSpan={1000}>
@@ -309,8 +311,10 @@ function userManagement() {
                     {data?.total} User
                   </UI.Text>
                   <Pagination
+                    pageSize={data?.limit}
                     currentPage={data?.page}
                     totalpage={data?.totalPages}
+                    totalCount={data?.total}
                     onChangePage={setPage}
                     size={'sm'}
                     justifyContent="flex-end"

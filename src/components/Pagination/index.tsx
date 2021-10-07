@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
 import * as UI from '@chakra-ui/react';
+import {isEmpty} from 'lodash';
 import {
   FiChevronLeft,
   FiChevronsLeft,
@@ -7,10 +8,13 @@ import {
   FiChevronsRight,
 } from 'react-icons/fi';
 import {HTMLChakraProps} from '@chakra-ui/system';
+import {usePagination} from './usePagination';
 
 export interface IPagination extends HTMLChakraProps<'div'> {
   currentPage?: number;
   totalpage?: number;
+  totalCount?: number;
+  pageSize?: number;
   onChangePage?: (page: number) => void;
   size?: 'md' | 'sm';
 }
@@ -54,9 +58,18 @@ function Pagination(props: IPagination) {
     currentPage = 1,
     totalpage = 1,
     onChangePage,
+    totalCount,
+    pageSize,
     size = 'md',
     ...other
   } = props;
+
+  const pages = usePagination({
+    currentPage,
+    pageSize: pageSize,
+    totalCount: totalCount,
+  });
+
   const handleBackOne = () => {
     if (currentPage > 1) onChangePage(currentPage - 1);
   };
@@ -94,41 +107,22 @@ function Pagination(props: IPagination) {
         />
       </IconItem>
 
-      {currentPage === totalpage && totalpage !== 1 && (
-        <IconItem
-          size={size}
-          onClick={() => onChangePage(currentPage - 2)}
-          className="page-item">
-          {currentPage - 2}
-        </IconItem>
-      )}
-      {currentPage !== 1 && (
-        <IconItem
-          size={size}
-          onClick={() => onChangePage(currentPage - 1)}
-          className="page-item">
-          {currentPage - 1}
-        </IconItem>
-      )}
-      <IconItem size={size} isActive className="page-item">
-        {currentPage}
-      </IconItem>
-      {currentPage !== totalpage && (
-        <IconItem
-          size={size}
-          onClick={() => onChangePage(currentPage + 1)}
-          className="page-item">
-          {currentPage + 1}
-        </IconItem>
-      )}
-      {currentPage === 1 && totalpage !== 1 && (
-        <IconItem
-          size={size}
-          onClick={() => onChangePage(currentPage + 2)}
-          className="page-item">
-          {currentPage + 2}
-        </IconItem>
-      )}
+      {!isEmpty(pages) &&
+        pages?.map((x) => {
+          return x === '...' ? (
+            <IconItem key={x} size={size}>
+              ...
+            </IconItem>
+          ) : (
+            <IconItem
+              key={x}
+              size={size}
+              isActive={x === currentPage}
+              onClick={() => onChangePage(+x)}>
+              {x}
+            </IconItem>
+          );
+        })}
 
       <IconItem size={size} isDisabled={currentPage >= totalpage - 1}>
         <FiChevronsRight
