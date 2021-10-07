@@ -54,21 +54,14 @@ function CompanyManagement() {
     getList({
       page,
       limit,
-      relations: JSON.stringify([
-        'partnerApplicationSubmissions',
-        'partnerApplicationSubmissions.partnerApplicationForms',
-      ]),
+      relations: JSON.stringify(['partnerDomain']),
       filter: isEmpty(filter)
         ? undefined
         : JSON.stringify([
             {isActive: filter.status, userType: filter.userType},
           ]),
       textSearch: textSearch
-        ? JSON.stringify([
-            {firstName: textSearch},
-            {email: textSearch},
-            {lastName: textSearch},
-          ])
+        ? JSON.stringify([{companyName: textSearch}])
         : undefined,
     });
   }, [page, limit, textSearch, filter]);
@@ -85,7 +78,7 @@ function CompanyManagement() {
   return (
     <UI.VStack py={6} px={8} spacing={4} width="full">
       <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
-        User Management
+        Partner Management
       </UI.Text>
       <UI.Box width="full">
         <FormGenerate
@@ -156,7 +149,7 @@ function CompanyManagement() {
                           options={[
                             {
                               label: '10',
-                              value: 5,
+                              value: 10,
                             },
                             {
                               label: '20',
@@ -178,7 +171,7 @@ function CompanyManagement() {
         />
         {isBase ? (
           <TableGenerate
-            onClickRow={(row) => push(path + `/${row?.id}`)}
+            onClickRow={(row) => push(path + `/company/${row?.id}`)}
             isLoading={loading}
             currentPage={data?.page}
             totalpage={data?.totalPages}
@@ -197,14 +190,7 @@ function CompanyManagement() {
               {
                 Header: 'Company',
                 id: 'company',
-                accessor: (row) => (
-                  <UI.Text>
-                    {
-                      row?.partnerApplicationSubmissions[0]
-                        ?.partnerApplicationForms[0]?.companyName
-                    }
-                  </UI.Text>
-                ),
+                accessor: (row) => <UI.Text>{row?.companyName}</UI.Text>,
               },
               {
                 Header: 'Status',

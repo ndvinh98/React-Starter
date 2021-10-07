@@ -91,19 +91,6 @@ function Login() {
             size="lg">
             Login now
           </UI.Button>
-
-          <UI.HStack justifyContent={'space-evenly'} mt={4}>
-            <UI.Text fontSize={{md: '15px'}} fontStyle={'italic'}>
-              Don't have an account?
-            </UI.Text>
-            <UI.Link
-              fontSize={{md: '15px'}}
-              color="ste.red"
-              fontStyle={'italic'}
-              onClick={() => push('/auth/register')}>
-              Create a new account.
-            </UI.Link>
-          </UI.HStack>
         </FormGenerate>
       </UI.VStack>
     </UI.VStack>

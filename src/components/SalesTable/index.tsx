@@ -1,15 +1,16 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import TableGenerate from '@components/TableGenerate';
 import FormGenerate from '@components/FormGenerate';
 import Pagination from '@components/Pagination';
-import {IUserManagement} from '@types';
+
 import UserInfoCard from '@components/UserInfoCard';
 
-import {useRouter, useFilter, useGetList} from '@utils/hooks';
+import {useRouter} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import {useMedia} from '@utils/hooks';
 import {useModalController} from '@modules/modal';
+
 import {isEmpty} from 'lodash';
 
 import * as UI from '@chakra-ui/react';
@@ -31,114 +32,56 @@ export const ACTIVE_STRING = {
   0: 'Decatived',
 };
 
-function SalesTable() {
+function SalesTable(props: any) {
+  const {data, loading, setPage, handleFilterData} = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
 
-  const {page, limit, setPage, textSearch, setTextSearch, filter, setFilter} =
-    useFilter({page: 1, limit: 10});
-  const {data, getList, loading} = useGetList<IUserManagement>('/users');
-
-  useEffect(() => {
-    getList({
-      page,
-      limit,
-      filter: isEmpty(filter)
-        ? undefined
-        : JSON.stringify([
-            {isActive: filter.status, userType: filter.userType},
-          ]),
-      textSearch: textSearch
-        ? JSON.stringify([
-            {firstName: textSearch},
-            {email: textSearch},
-            {lastName: textSearch},
-          ])
-        : undefined,
-    });
-  }, [page, limit, textSearch, filter]);
-
-  const handleFilterData = ({textSearch, status, userType}) => {
-    setTextSearch(textSearch === undefined ? '' : textSearch);
-    setFilter((filter) => ({
-      ...filter,
-      status: status === '-1' ? undefined : status,
-      userType: userType === '-1' ? undefined : userType,
-    }));
-  };
-
   return (
     <UI.VStack py={6} px={8} spacing={4} width="full" bgColor="white">
       <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
-        User Infomation
+        Sales Manager
       </UI.Text>
       <UI.Box width="full">
         <FormGenerate
-          gap={isBase ? 4 : 6}
+          gap={isBase ? 1 : 2}
           onChangeValue={handleFilterData}
           fields={[
             {
               name: 'textSearch',
               type: 'input-group',
-              colSpan: isBase ? 3 : 12,
+              colSpan: isBase ? 4 : 12,
               size: 'md',
               placeholder: 'Search...',
               leftIcon: <AiOutlineSearch size={20} />,
             },
             {
-              name: 'status',
-              type: 'select',
-              colSpan: isBase ? 3 : 6,
-              size: 'md',
-              defaultValue: {
-                label: 'All Status',
-                value: '-1',
+              type: 'decor',
+              name: 'demo',
+              colSpan: isBase ? 4 : 12,
+              DecorComponent: () => {
+                return (
+                  <UI.VStack>
+                    <UI.HStack
+                      position={{md: 'absolute', lg: 'static'}}
+                      top={'-166px'}
+                      w={'full'}
+                      justifyContent={'space-between'}>
+                      <UI.Button
+                        minW={110}
+                        onClick={() => push(path + '/create-user')}
+                        size={'md'}>
+                        Add Sales Manager
+                      </UI.Button>
+                    </UI.HStack>
+                  </UI.VStack>
+                );
               },
-              isClearable: false,
-              options: [
-                {
-                  label: 'All Status',
-                  value: '-1',
-                },
-                {
-                  label: 'Active',
-                  value: '1',
-                },
-                {
-                  label: 'Inactive',
-                  value: '0',
-                },
-              ],
-            },
-            {
-              name: 'userType',
-              type: 'select',
-              colSpan: isBase ? 3 : 6,
-              size: 'md',
-              placeholder: 'All Roles',
-              defaultValue: {
-                label: 'All Roles',
-                value: '-1',
-              },
-              isClearable: false,
-              options: [
-                {
-                  label: 'All Roles',
-                  value: '-1',
-                },
-                {
-                  label: 'Admin',
-                  value: 'ADMIN',
-                },
-                {
-                  label: 'Sales Manager',
-                  value: 'USER',
-                },
-              ],
             },
           ]}
         />
+
         {isBase ? (
           <TableGenerate
             onClickRow={(row) => push(path + `/${row?.id}`)}
@@ -167,13 +110,11 @@ function SalesTable() {
                         },
                       }}
                       bg={
-                        row?.partnerUserProfiles?.[0]?.avatarMediaDestination
+                        row?.user?.userProfiles[0]?.avatarMediaDestination
                           ? 'white'
                           : undefined
                       }
-                      src={
-                        row?.partnerUserProfiles?.[0]?.avatarMediaDestination
-                      }
+                      src={row?.user?.userProfiles[0]?.avatarMediaDestination}
                       name={row?.firstName + ' ' + row?.lastName}
                       size={'sm'}
                     />
@@ -186,7 +127,7 @@ function SalesTable() {
               {
                 Header: 'Email Address',
                 id: 'emailAddress',
-                accessor: (row) => <UI.Text>{row?.email}</UI.Text>,
+                accessor: (row) => <UI.Text>{row?.user?.email}</UI.Text>,
               },
 
               {
@@ -194,7 +135,9 @@ function SalesTable() {
                 id: 'status',
                 accessor: (row) => {
                   return (
-                    <UI.Text>{STATUS_STRING?.[row?.isActive] || ''}</UI.Text>
+                    <UI.Text>
+                      {STATUS_STRING?.[row?.user?.isActive] || ''}
+                    </UI.Text>
                   );
                 },
               },
@@ -203,7 +146,9 @@ function SalesTable() {
                 id: 'role',
                 accessor: (row) => {
                   return (
-                    <UI.Text>{USRTYPE_STRING?.[row?.userType] || ''}</UI.Text>
+                    <UI.Text>
+                      {USRTYPE_STRING?.[row?.user?.userType] || ''}
+                    </UI.Text>
                   );
                 },
               },
