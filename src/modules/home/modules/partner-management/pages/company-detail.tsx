@@ -43,6 +43,56 @@ function CompanyDetail() {
       });
   }, [params]);
 
+  //import data User
+
+  const {
+    page: pageUser,
+    limit: limitUser,
+    setPage: setPageUser,
+    textSearch: textSearchUser,
+    setTextSearch: setTextSearchUser,
+    filter: filterUser,
+    setFilter: setFilterUser,
+  } = useFilter({page: 1, limit: 10});
+  const {
+    data: dataUser,
+    getList: getListUser,
+    loading: loadingUser,
+  } = useGetList<IUserManagement>('/partnerUsers');
+
+  useEffect(() => {
+    getListUser({
+      pageUser,
+      limitUser,
+      relations: JSON.stringify(['domain']),
+      filter: isEmpty(filter)
+        ? undefined
+        : JSON.stringify([
+            {
+              isActive: filter.status,
+              userType: filter.userType,
+              domain: dataDomain?.partnerDomain?.id,
+            },
+          ]),
+      textSearch: textSearch
+        ? JSON.stringify([
+            {firstName: textSearch},
+            {email: textSearch},
+            {lastName: textSearch},
+          ])
+        : undefined,
+    });
+  }, [pageUser, limitUser, textSearchUser, filterUser]);
+
+  const handleFilterDataUser = ({textSearch, status, userType}) => {
+    setTextSearchUser(textSearch === undefined ? '' : textSearch);
+    setFilterUser((filter) => ({
+      ...filter,
+      status: status === '-1' ? undefined : status,
+      userType: userType === '-1' ? undefined : userType,
+    }));
+  };
+
   // Import data Sale Manager
 
   const {
@@ -107,7 +157,12 @@ function CompanyDetail() {
         {''} ({dataDomain?.partnerDomain?.domain})
       </UI.Text>
       <CompanyInfo data={dataCompany} loading={loadingCompany} />
-      <UserTable />
+      <UserTable
+        data={dataUser}
+        loading={loadingUser}
+        handleFilterData={handleFilterDataUser}
+        setPage={setPageSales}
+      />
       <SalesTable
         data={dataSales}
         loading={loadingSales}

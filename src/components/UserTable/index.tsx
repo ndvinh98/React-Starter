@@ -1,12 +1,13 @@
-import React, {useEffect} from 'react';
+import React from 'react';
+import moment from 'moment';
 
 import TableGenerate from '@components/TableGenerate';
 import FormGenerate from '@components/FormGenerate';
 import Pagination from '@components/Pagination';
-import {IUserManagement} from '@types';
+
 import UserInfoCard from '@components/UserInfoCard';
 
-import {useRouter, useFilter, useGetList} from '@utils/hooks';
+import {useRouter} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import {useMedia} from '@utils/hooks';
 import {useModalController} from '@modules/modal';
@@ -31,42 +32,11 @@ export const ACTIVE_STRING = {
   0: 'Decatived',
 };
 
-function UserTable() {
+function UserTable(props: any) {
+  const {data, loading, setPage, handleFilterData} = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
-
-  const {page, limit, setPage, textSearch, setTextSearch, filter, setFilter} =
-    useFilter({page: 1, limit: 10});
-  const {data, getList, loading} = useGetList<IUserManagement>('/users');
-
-  useEffect(() => {
-    getList({
-      page,
-      limit,
-      filter: isEmpty(filter)
-        ? undefined
-        : JSON.stringify([
-            {isActive: filter.status, userType: filter.userType},
-          ]),
-      textSearch: textSearch
-        ? JSON.stringify([
-            {firstName: textSearch},
-            {email: textSearch},
-            {lastName: textSearch},
-          ])
-        : undefined,
-    });
-  }, [page, limit, textSearch, filter]);
-
-  const handleFilterData = ({textSearch, status, userType}) => {
-    setTextSearch(textSearch === undefined ? '' : textSearch);
-    setFilter((filter) => ({
-      ...filter,
-      status: status === '-1' ? undefined : status,
-      userType: userType === '-1' ? undefined : userType,
-    }));
-  };
 
   return (
     <UI.VStack py={6} px={8} spacing={4} width="full" bgColor="white">
@@ -186,7 +156,12 @@ function UserTable() {
               {
                 Header: 'Last Activity',
                 id: 'lastActivity',
-                accessor: (row) => <UI.Text>01 May 2021</UI.Text>,
+                accessor: (row) => (
+                  <UI.Text>
+                    {' '}
+                    {moment(row?.updatedAt).format('DD MMM YYYY')}
+                  </UI.Text>
+                ),
               },
 
               {
@@ -210,7 +185,12 @@ function UserTable() {
               {
                 Header: 'Registered Date',
                 id: 'registDate',
-                accessor: (row) => <UI.Text>01 May 2021</UI.Text>,
+                accessor: (row) => (
+                  <UI.Text>
+                    {' '}
+                    {moment(row?.createdAt).format('DD MMM YYYY')}
+                  </UI.Text>
+                ),
               },
               {
                 Header: () => <UI.Center>Action</UI.Center>,
