@@ -40,6 +40,10 @@ export default compose(
               '/your-profile': lazy(
                 () => import('./modules/profile/profile.router'),
               ),
+              '/system-settings': lazy(
+                () =>
+                  import('./modules/system-settings/system-settings.router'),
+              ),
             })
           : redirect(
               '/auth/login?redirectTo=' +
