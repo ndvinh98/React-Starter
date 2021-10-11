@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
-import {useRouter, useFilter, useGetList, useGetItem} from '@utils/hooks';
+import {useRouter, useGetList} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import {isEmpty} from 'lodash';
 
@@ -11,7 +11,7 @@ import {useModalController} from '@modules/modal';
 function FeedbackDetail() {
   const {push} = useRouter();
   const {openModal} = useModalController();
-  const {data, loading, getList} = useGetList('/partnerUserFeedbacks');
+  const {data, getList} = useGetList('/partnerUserFeedbacks');
   const {params} = useRouterController();
   const [partnerUser, setPartnerUser] = useState<any>();
   const [attachments, setAttachments] = useState<any>();
