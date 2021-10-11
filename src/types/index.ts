@@ -268,3 +268,15 @@ export interface IPartnerManagement extends BaseSchema {
   companyName?: string;
   partnerDomain?: IPartnerDomain;
 }
+
+export interface IPartnerUser extends BaseSchema {
+  isActive?: 1 | 0;
+  isVerified?: 1 | 0;
+  salutation?: TSalutation;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  userType?: TUserType;
+  otpCodeExp?: Date;
+  domain?: IPartnerDomain;
+}

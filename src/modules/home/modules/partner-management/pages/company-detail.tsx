@@ -8,7 +8,11 @@ import CompanyInfo from '@components/CompanyInfo';
 import UserTable from '@components/UserTable';
 
 import {IUserManagement} from '@types';
-import {IPartnerApplicationForms, IPartnerManagement} from '@types';
+import {
+  IPartnerApplicationForms,
+  IPartnerManagement,
+  IPartnerUser,
+} from '@types';
 import {isEmpty} from 'lodash';
 
 import * as UI from '@chakra-ui/react';
@@ -57,27 +61,27 @@ function CompanyDetail() {
     data: dataUser,
     getList: getListUser,
     loading: loadingUser,
-  } = useGetList<IUserManagement>('/partnerUsers');
+  } = useGetList<IPartnerUser>('/partnerUsers');
 
   useEffect(() => {
     getListUser({
       pageUser,
-      limitUser,
+      limit: limitUser,
       relations: JSON.stringify(['domain']),
-      filter: isEmpty(filter)
+      filter: isEmpty(filterUser)
         ? undefined
         : JSON.stringify([
             {
-              isActive: filter.status,
-              userType: filter.userType,
-              domain: dataDomain?.partnerDomain?.id,
+              isActive: filterUser.status,
+              userType: filterUser.userType,
+              domain: {id: dataDomain?.partnerDomain?.id},
             },
           ]),
-      textSearch: textSearch
+      textSearch: textSearchUser
         ? JSON.stringify([
-            {firstName: textSearch},
-            {email: textSearch},
-            {lastName: textSearch},
+            {firstName: textSearchUser},
+            {email: textSearchUser},
+            {lastName: textSearchUser},
           ])
         : undefined,
     });
@@ -95,13 +99,11 @@ function CompanyDetail() {
   // Import data Sale Manager
 
   const {
-    page,
-    limit,
+    page: pageSales,
+    limit: limitSales,
     setPage: setPageSales,
-    textSearch,
-    setTextSearch,
-    filter,
-    setFilter,
+    textSearch: textSearchSales,
+    setTextSearch: setTextSearchSales,
   } = useFilter({page: 1, limit: 10});
   const {
     data: dataSales,
@@ -111,35 +113,23 @@ function CompanyDetail() {
 
   useEffect(() => {
     getList({
-      page,
-      limit,
+      page: pageSales,
+      limit: limitSales,
       relations: JSON.stringify(['user', 'user.userProfiles']),
-      filter: isEmpty(filter)
-        ? JSON.stringify([{partnerId: params?.id}])
-        : JSON.stringify([
-            {
-              isActive: filter.status,
-              userType: filter.userType,
-              partnerId: params?.id,
-            },
-          ]),
-      textSearch: textSearch
+      filter: JSON.stringify([{partnerId: params?.id}]),
+
+      textSearch: textSearchSales
         ? JSON.stringify([
-            {firstName: textSearch},
-            {email: textSearch},
-            {lastName: textSearch},
+            {firstName: textSearchSales},
+            {email: textSearchSales},
+            {lastName: textSearchSales},
           ])
         : undefined,
     });
-  }, [page, limit, textSearch, filter]);
+  }, [pageSales, limitSales, textSearchSales]);
 
-  const handleFilterDataSales = ({textSearch, status, userType}) => {
-    setTextSearch(textSearch === undefined ? '' : textSearch);
-    setFilter((filter) => ({
-      ...filter,
-      status: status === '-1' ? undefined : status,
-      userType: userType === '-1' ? undefined : userType,
-    }));
+  const handleFilterDataSales = ({textSearch}) => {
+    setTextSearchSales(textSearch === undefined ? '' : textSearch);
   };
 
   return (
