@@ -33,7 +33,7 @@ export const ACTIVE_STRING = {
 };
 
 function UserTable(props) {
-  const {data, loading, setPage, handleFilterDataUser} = props;
+  const {data, loading, setPage, handleFilterDataUser, totalCount} = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
@@ -202,12 +202,12 @@ function UserTable(props) {
                 id: 'action',
                 accessor: (row) => (
                   <ActionColum
-                    refresh={() =>
-                      getList({
-                        page: 1,
-                        limit: 10,
-                      })
-                    }
+                    // refresh={() =>
+                    //   getList({
+                    //     page: 1,
+                    //     limit: 10,
+                    //   })
+                    // }
                     row={row}
                   />
                 ),
@@ -239,6 +239,7 @@ function UserTable(props) {
                     totalpage={data?.totalPages}
                     onChangePage={setPage}
                     size={'sm'}
+                    totalCount={totalCount}
                     justifyContent="flex-end"
                   />
                 </UI.HStack>

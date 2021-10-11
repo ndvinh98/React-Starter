@@ -13,7 +13,7 @@ import {
   IPartnerManagement,
   IPartnerUser,
 } from '@types';
-import {isEmpty} from 'lodash';
+// import {isEmpty} from 'lodash';
 
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
@@ -31,9 +31,10 @@ function CompanyDetail() {
   );
 
   useEffect(() => {
-    getItemPartner({
-      relations: JSON.stringify(['partnerApplicationSubmission']),
-    });
+    if (params?.id)
+      getItemPartner({
+        relations: JSON.stringify(['partnerApplicationSubmission']),
+      });
   }, [params]);
 
   const {getItem: getItemDomain, data: dataDomain} =
@@ -56,7 +57,13 @@ function CompanyDetail() {
     setTextSearch: setTextSearchUser,
     filter: filterUser,
     setFilter: setFilterUser,
-  } = useFilter({page: 1, limit: 10});
+  } = useFilter({
+    page: 1,
+    limit: 10,
+    filter: {
+      domain: {id: 27},
+    },
+  });
   const {
     data: dataUser,
     getList: getListUser,
@@ -68,15 +75,7 @@ function CompanyDetail() {
       pageUser,
       limit: limitUser,
       relations: JSON.stringify(['domain']),
-      filter: isEmpty(filterUser)
-        ? undefined
-        : JSON.stringify([
-            {
-              isActive: filterUser.status,
-              userType: filterUser.userType,
-              domain: {id: dataDomain?.partnerDomain?.id},
-            },
-          ]),
+      filter: JSON.stringify([filterUser]),
       textSearch: textSearchUser
         ? JSON.stringify([
             {firstName: textSearchUser},
@@ -104,7 +103,10 @@ function CompanyDetail() {
     setPage: setPageSales,
     textSearch: textSearchSales,
     setTextSearch: setTextSearchSales,
-  } = useFilter({page: 1, limit: 10});
+  } = useFilter({
+    page: 1,
+    limit: 10,
+  });
   const {
     data: dataSales,
     getList,
