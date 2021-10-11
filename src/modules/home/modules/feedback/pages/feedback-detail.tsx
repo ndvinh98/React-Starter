@@ -96,13 +96,12 @@ function FeedbackDetail() {
             </UI.HStack>
 
             <UI.HStack mb={4} alignItems={'start'}>
-              <UI.Text fontWeight={'bold'} w={'20%'}>Feedback:</UI.Text>
+              <UI.Text fontWeight={'bold'} w={'20%'}>Message:</UI.Text>
               <UI.Text>{data?.records[0]?.feedbackMessage}</UI.Text>
             </UI.HStack>
 
             <UI.HStack mb={4} alignItems={'start'}>
               <UI.Text fontWeight={'bold'} w={'20%'}>Attachments:</UI.Text>
-
               <UI.VStack>
                 { attachments ?
                   attachments.map((item, index) => {
