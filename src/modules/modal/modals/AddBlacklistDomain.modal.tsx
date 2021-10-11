@@ -1,34 +1,34 @@
 import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
-import * as yup from 'yup';
 import FormGenerate from '@components/FormGenerate';
 import {useModalController} from '../modals.controller';
 import {usePatch} from '@utils/hooks';
 
-function ConfirmModal() {
-  const {confirmRequest, closeModal, data} = useModalController();
-  const {
-    data: patchData,
-    loading,
-    patch,
-  } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
-  const toast = UI.useToast();
+function AddBlacklistDomainModal() {
+  const {addBlacklistDomain, closeModal, data} = useModalController();
 
-  useEffect(() => {
-    if (patchData) {
-      closeModal('confirmRequest');
-      toast({status: 'success', description: 'Successfully!', duration: 2000});
-    }
-  }, [patchData]);
+  // const {
+  //   data: patchData,
+  //   loading,
+  //   patch,
+  // } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
+  // const toast = UI.useToast();
+
+  // useEffect(() => {
+  //   if (patchData) {
+  //     closeModal('addBlacklistDomain');
+  //     toast({status: 'success', description: 'Successfully!', duration: 2000});
+  //   }
+  // }, [patchData]);
 
   return (
     <UI.Modal
       isCentered
-      isOpen={confirmRequest}
-      onClose={() => closeModal('confirmRequest')}>
+      isOpen={addBlacklistDomain}
+      onClose={() => closeModal('addBlacklistDomain')}>
       <UI.ModalOverlay />
-      <UI.ModalContent position={'relative'} w="360px" minH="311px">
+      <UI.ModalContent position={'relative'} w="360px" minH="211px">
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -43,38 +43,34 @@ function ConfirmModal() {
 
         <UI.ModalHeader mt={8}>
           <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            Please select access validity date for {data?.companyName}
+            Add a blacklisted domain
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <FormGenerate
-            onSubmit={({}) => {
-              patch({
-                status: 'APPROVED',
-              });
-            }}
+            onSubmit={()=>{}}
             fields={[
               {
-                name: 'date',
+                name: 'domain',
                 type: 'input',
                 size: 'lg',
-                placeholder: '',
+                placeholder: 'Enter domain name...',
               },
             ]}>
-            <UI.Center w={'full'}>
+            <UI.Center mt={4} w={'full'}>
               <UI.Button
                 colorScheme="blue"
                 mr={3}
                 w={'120px'}
                 type="submit"
-                isLoading={loading}>
+              >
                 Confirm
               </UI.Button>
               <UI.Button
                 w={'120px'}
                 type="button"
                 onClick={() => {
-                  closeModal('confirmRequest');
+                  closeModal('addBlacklistDomain');
                 }}
                 variant="outline">
                 Cancel
@@ -89,4 +85,4 @@ function ConfirmModal() {
   );
 }
 
-export default memo(ConfirmModal);
+export default memo(AddBlacklistDomainModal);

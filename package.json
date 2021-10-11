@@ -57,6 +57,7 @@
     "react-intl": "^5.18.1",
     "react-navi": "^0.14.4",
     "react-pro-sidebar": "^0.6.0",
+    "react-query": "^3.26.0",
     "react-select": "^4.3.1",
     "react-table": "^7.7.0",
     "rollup-plugin-uglify": "^6.0.4",

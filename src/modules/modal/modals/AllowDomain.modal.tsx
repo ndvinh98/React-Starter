@@ -1,23 +1,27 @@
 import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
-import * as yup from 'yup';
-import FormGenerate from '@components/FormGenerate';
 import {useModalController} from '../modals.controller';
 import {usePatch} from '@utils/hooks';
 
-function ConfirmModal() {
-  const {confirmRequest, closeModal, data} = useModalController();
+function AllowDomainModal() {
+  const {allowDomain, closeModal, data} = useModalController();
   const {
     data: patchData,
     loading,
     patch,
-  } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
+  } = usePatch(`/partnerDomains/${data?.id}`);
   const toast = UI.useToast();
+
+
+  useEffect(() => {
+    console.log(data)
+  },[data])
 
   useEffect(() => {
     if (patchData) {
-      closeModal('confirmRequest');
+      data?.cb();
+      closeModal('allowDomain');
       toast({status: 'success', description: 'Successfully!', duration: 2000});
     }
   }, [patchData]);
@@ -25,10 +29,10 @@ function ConfirmModal() {
   return (
     <UI.Modal
       isCentered
-      isOpen={confirmRequest}
-      onClose={() => closeModal('confirmRequest')}>
+      isOpen={allowDomain}
+      onClose={() => closeModal('allowDomain')}>
       <UI.ModalOverlay />
-      <UI.ModalContent position={'relative'} w="360px" minH="311px">
+      <UI.ModalContent position={'relative'} w="360px" minH="211px">
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -42,28 +46,17 @@ function ConfirmModal() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
-          <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            Please select access validity date for {data?.companyName}
-          </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          <FormGenerate
-            onSubmit={({}) => {
-              patch({
-                status: 'APPROVED',
-              });
-            }}
-            fields={[
-              {
-                name: 'date',
-                type: 'input',
-                size: 'lg',
-                placeholder: '',
-              },
-            ]}>
-            <UI.Center w={'full'}>
+            <UI.Center fontWeight={'bold'} fontSize={'lg'} textAlign="center" color={'ste.red'}>
+                Are you sure you want to {data?.isAllowed ? 'blacklist' : 'whitelist'} {data?.domain}
+            </UI.Center>
+            <UI.Center mt={8} w={'full'}>
               <UI.Button
                 colorScheme="blue"
+                onClick={() =>{
+                    patch({isAllowed: data?.isAllowed ? 0 : 1});
+                }}
                 mr={3}
                 w={'120px'}
                 type="submit"
@@ -74,13 +67,12 @@ function ConfirmModal() {
                 w={'120px'}
                 type="button"
                 onClick={() => {
-                  closeModal('confirmRequest');
+                  closeModal('allowDomain');
                 }}
                 variant="outline">
                 Cancel
               </UI.Button>
             </UI.Center>
-          </FormGenerate>
         </UI.ModalBody>
 
         <UI.ModalFooter></UI.ModalFooter>
@@ -89,4 +81,4 @@ function ConfirmModal() {
   );
 }
 
-export default memo(ConfirmModal);
+export default memo(AllowDomainModal);

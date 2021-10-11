@@ -8,6 +8,8 @@ export interface IModalController {
   search: boolean;
   logout: boolean;
   confirmRequest: boolean;
+  addBlacklistDomain: boolean;
+  allowDomain: boolean;
   data: any;
   reject: boolean;
   action: boolean;
@@ -17,10 +19,12 @@ export interface IModalController {
 
 export const useModalController = create<IModalController>((set) => ({
   fileViewer: false,
+  addBlacklistDomain: false,
   add_user: false,
   search: false,
   logout: false,
   confirmRequest: false,
+  allowDomain: false,
   action: false,
   reject: false,
   data: null,
