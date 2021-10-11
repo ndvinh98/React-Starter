@@ -23,14 +23,13 @@ function CompanyDetail() {
     data: dataCompany,
     loading: loadingCompany,
   } = useGetItem<IPartnerApplicationForms>(
-    `/partnerApplicationForms/${params.id}`,
+    `/partnerApplicationForms/${params?.id}`,
   );
 
   useEffect(() => {
-    if (1)
-      getItemPartner({
-        relations: JSON.stringify(['partnerApplicationSubmission']),
-      });
+    getItemPartner({
+      relations: JSON.stringify(['partnerApplicationSubmission']),
+    });
   }, [params]);
 
   const {getItem: getItemDomain, data: dataDomain} =
@@ -160,8 +159,8 @@ function CompanyDetail() {
       <UserTable
         data={dataUser}
         loading={loadingUser}
-        handleFilterData={handleFilterDataUser}
-        setPage={setPageSales}
+        handleFilterDataUser={handleFilterDataUser}
+        setPage={setPageUser}
       />
       <SalesTable
         data={dataSales}

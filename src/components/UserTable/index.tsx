@@ -32,11 +32,15 @@ export const ACTIVE_STRING = {
   0: 'Decatived',
 };
 
-function UserTable(props: any) {
-  const {data, loading, setPage, handleFilterData} = props;
+function UserTable(props) {
+  const {data, loading, setPage, handleFilterDataUser} = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
+
+  const handleFilterData = ({textSearch, status, userType}) => {
+    handleFilterDataUser(textSearch, status, userType);
+  };
 
   return (
     <UI.VStack py={6} px={8} spacing={4} width="full" bgColor="white">
