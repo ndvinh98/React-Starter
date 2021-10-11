@@ -11,6 +11,8 @@ import InputGroup from './fields/InputGroup';
 import Recaptcha from './fields/Recaptcha';
 import CheckboxGroup from './fields/CheckboxGroup';
 import RadioGroup from './fields/RadioGroup';
+import UploadFile from './fields/UploadFile';
+
 
 const FieldComponent = {
   input: UI.Input,
@@ -24,6 +26,7 @@ const FieldComponent = {
   recaptcha: Recaptcha,
   'radio-group': RadioGroup,
   'checkbox-group': CheckboxGroup,
+  'upload-file': UploadFile,
 };
 
 export interface IFormControl extends HTMLChakraProps<'div'> {
