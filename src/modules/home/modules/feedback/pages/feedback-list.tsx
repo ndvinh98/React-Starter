@@ -15,6 +15,9 @@ const FeedbackContent = ({data}) => {
     getItem({}, {path: data?.id});
   };
 
+  useEffect(() => {console.log(data)}, [data]);
+
+
   const [isRead, setIsRead] = useState(!!data?.isRead);
 
   return (
@@ -47,7 +50,16 @@ const FeedbackContent = ({data}) => {
           />
         </UI.Center>
         <UI.Text fontSize={{md: 'md', lg: 'lg'}}>
-          {data?.feedbackMessage}
+              {data?.partnerUser
+                ? data?.partnerUser?.firstName +
+                  ' ' +
+                  data?.partnerUser?.lastName +
+                  ' ' +
+                  '(' +
+                  data?.partnerUser?.email +
+                  ')' +
+                  ' has sent a feedback'
+                : undefined}
         </UI.Text>
       </UI.HStack>
 
@@ -77,6 +89,7 @@ const FeedbackCategory = ({data}) => {
         .valueOf(),
     [data],
   );
+
 
   return (
     <UI.Box>
@@ -112,6 +125,9 @@ function FeedbackList() {
         ? JSON.stringify([{feedbackMessage: textSearch}])
         : undefined,
       filter: isEmpty(filter) ? JSON.stringify([{isRead: 0}]) : JSON.stringify([filter]),
+      relations: JSON.stringify([
+        'partnerUser'
+      ]),
     });
   }, [limit, page, textSearch, filter]);
 
