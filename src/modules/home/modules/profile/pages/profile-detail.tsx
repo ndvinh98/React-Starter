@@ -10,8 +10,6 @@ import {useConfigStore} from '@services/config';
 import LinkUpload from '@components/LinkUpLoad';
 import {useAuthController} from '@modules/auth';
 
-
-
 function ProfileDetail() {
   const {isBase} = useMedia();
   const {languages} = useConfigStore();

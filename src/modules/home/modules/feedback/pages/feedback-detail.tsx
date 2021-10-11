@@ -8,7 +8,6 @@ import {isEmpty} from 'lodash';
 import {format} from 'date-fns';
 import {useModalController} from '@modules/modal';
 
-
 function FeedbackDetail() {
   const {push} = useRouter();
   const {openModal} = useModalController();
@@ -18,7 +17,7 @@ function FeedbackDetail() {
   const [attachments, setAttachments] = useState<any>();
 
   useEffect(() => {
-    console.log(data)
+    console.log(data);
     if (data) {
       setPartnerUser(data?.records[0]?.partnerUser);
       setAttachments(data?.records[0]?.partnerUserFeedbackAttachments);
@@ -26,8 +25,8 @@ function FeedbackDetail() {
   }, [data]);
 
   useEffect(() => {
-    console.log(partnerUser)
-  }, [partnerUser])
+    console.log(partnerUser);
+  }, [partnerUser]);
 
   useEffect(() => {
     if (params?.id) {
@@ -73,73 +72,73 @@ function FeedbackDetail() {
               //   push("/home/user-management/"+partnerUser?.id)
               // }}
               bgColor={'#D94645'}
-              size={'sm'}
-              
-              >
+              size={'sm'}>
               View Profile
             </UI.Button>
           </UI.HStack>
-          
-          <UI.Box
-            bg={'white'}
-            p={4}
-            w={'100%'}
-          >
+
+          <UI.Box bg={'white'} p={4} w={'100%'}>
             <UI.HStack mb={4} alignItems={'start'}>
-              <UI.Text fontWeight={'bold'} w={'20%'}>Feedback:</UI.Text>
+              <UI.Text fontWeight={'bold'} w={'20%'}>
+                Feedback:
+              </UI.Text>
               <UI.Text>{data?.records[0]?.feedbackSubject}</UI.Text>
             </UI.HStack>
 
             <UI.HStack mb={4} alignItems={'start'}>
-              <UI.Text fontWeight={'bold'} w={'20%'}>Date received:</UI.Text>
-              <UI.Text>{format(new Date(data?.records[0]?.createdAt), 'dd MMM yyyy')}</UI.Text>
+              <UI.Text fontWeight={'bold'} w={'20%'}>
+                Date received:
+              </UI.Text>
+              <UI.Text>
+                {format(new Date(data?.records[0]?.createdAt), 'dd MMM yyyy')}
+              </UI.Text>
             </UI.HStack>
 
             <UI.HStack mb={4} alignItems={'start'}>
-              <UI.Text fontWeight={'bold'} w={'20%'}>Message:</UI.Text>
+              <UI.Text fontWeight={'bold'} w={'20%'}>
+                Message:
+              </UI.Text>
               <UI.Text>{data?.records[0]?.feedbackMessage}</UI.Text>
             </UI.HStack>
 
             <UI.HStack mb={4} alignItems={'start'}>
-              <UI.Text fontWeight={'bold'} w={'20%'}>Attachments:</UI.Text>
+              <UI.Text fontWeight={'bold'} w={'20%'}>
+                Attachments:
+              </UI.Text>
               <UI.VStack>
-                { attachments ?
-                  attachments.map((item, index) => {
-                    return (
-                      <UI.HStack
-                        bg={'#F7F7F7'}
-                        justifyContent={'space-between'}
-                        p={2}
-                        w={"600px"}
-                      >
-                        <UI.Text fontWeight={'bold'}>{item?.mediaDestination}</UI.Text>
-                        <UI.Button
-                          onClick={() =>
-                            openModal('fileViewer', {
-                              type: 'feedback',
-                              title: item?.name,
-                              payload: item,
-                            })
-                          }
-                          bgColor={'#E9E9E9'}
-                          color={'#54565A'}
-                          size={'sm'}
-                          _hover={{bgColor: '#28C76F', color: 'white'}}
-                          colorScheme="#EEFCEA">
-                          View
-                        </UI.Button>
-                      </UI.HStack>
-                    )
-                  }):undefined
-                }
-
-
+                {attachments
+                  ? attachments.map((item, index) => {
+                      return (
+                        <UI.HStack
+                          bg={'#F7F7F7'}
+                          justifyContent={'space-between'}
+                          p={2}
+                          w={'600px'}>
+                          <UI.Text fontWeight={'bold'}>
+                            {item?.mediaDestination}
+                          </UI.Text>
+                          <UI.Button
+                            onClick={() =>
+                              openModal('fileViewer', {
+                                type: 'feedback',
+                                title: item?.name,
+                                payload: item,
+                              })
+                            }
+                            bgColor={'#E9E9E9'}
+                            color={'#54565A'}
+                            size={'sm'}
+                            _hover={{bgColor: '#28C76F', color: 'white'}}
+                            colorScheme="#EEFCEA">
+                            View
+                          </UI.Button>
+                        </UI.HStack>
+                      );
+                    })
+                  : undefined}
               </UI.VStack>
             </UI.HStack>
-
-
           </UI.Box>
-            
         </UI.VStack>
       )}
     </>
