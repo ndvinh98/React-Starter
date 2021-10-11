@@ -28,7 +28,7 @@ function LinkUpload(props: ILinkUploadProps) {
     ...others
   } = props;
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
-  const {getItem, item} = useGetItem('users/uploadAvatarUrl');
+  const {getItem, data: item} = useGetItem('users/uploadAvatarUrl');
   const [file, setFile] = useState<File>(null);
   const {getMe} = useAuthController();
 
