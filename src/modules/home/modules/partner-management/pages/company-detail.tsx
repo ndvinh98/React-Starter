@@ -60,9 +60,6 @@ function CompanyDetail() {
   } = useFilter({
     page: 1,
     limit: 10,
-    filter: {
-      domain: {id: 27},
-    },
   });
   const {
     data: dataUser,
@@ -71,20 +68,26 @@ function CompanyDetail() {
   } = useGetList<IPartnerUser>('/partnerUsers');
 
   useEffect(() => {
-    getListUser({
-      pageUser,
-      limit: limitUser,
-      relations: JSON.stringify(['domain']),
-      filter: JSON.stringify([filterUser]),
-      textSearch: textSearchUser
-        ? JSON.stringify([
-            {firstName: textSearchUser},
-            {email: textSearchUser},
-            {lastName: textSearchUser},
-          ])
-        : undefined,
-    });
-  }, [pageUser, limitUser, textSearchUser, filterUser]);
+    if (dataDomain)
+      getListUser({
+        pageUser,
+        limit: limitUser,
+        relations: JSON.stringify(['domain']),
+        filter: JSON.stringify([
+          {
+            ...filterUser,
+            domain: {id: dataDomain?.partnerDomain?.id},
+          },
+        ]),
+        textSearch: textSearchUser
+          ? JSON.stringify([
+              {firstName: textSearchUser},
+              {email: textSearchUser},
+              {lastName: textSearchUser},
+            ])
+          : undefined,
+      });
+  }, [pageUser, limitUser, textSearchUser, filterUser, dataDomain]);
 
   const handleFilterDataUser = ({textSearch, status, userType}) => {
     setTextSearchUser(textSearch === undefined ? '' : textSearch);
@@ -109,26 +112,27 @@ function CompanyDetail() {
   });
   const {
     data: dataSales,
-    getList,
+    getList: getListSales,
     loading: loadingSales,
   } = useGetList<IUserManagement>('/partnerUserRelations');
 
   useEffect(() => {
-    getList({
-      page: pageSales,
-      limit: limitSales,
-      relations: JSON.stringify(['user', 'user.userProfiles']),
-      filter: JSON.stringify([{partnerId: params?.id}]),
+    if (params?.id)
+      getListSales({
+        page: pageSales,
+        limit: limitSales,
+        relations: JSON.stringify(['user', 'user.userProfiles']),
+        filter: JSON.stringify([{partnerId: params?.id}]),
 
-      textSearch: textSearchSales
-        ? JSON.stringify([
-            {firstName: textSearchSales},
-            {email: textSearchSales},
-            {lastName: textSearchSales},
-          ])
-        : undefined,
-    });
-  }, [pageSales, limitSales, textSearchSales]);
+        textSearch: textSearchSales
+          ? JSON.stringify([
+              {firstName: textSearchSales},
+              {email: textSearchSales},
+              {lastName: textSearchSales},
+            ])
+          : undefined,
+      });
+  }, [pageSales, limitSales, textSearchSales, params]);
 
   const handleFilterDataSales = ({textSearch}) => {
     setTextSearchSales(textSearch === undefined ? '' : textSearch);

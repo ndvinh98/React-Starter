@@ -14,11 +14,12 @@ export interface IModalController {
   reject: boolean;
   action: boolean;
   fileViewer: boolean;
-
+  fileViewer2: boolean;
 }
 
 export const useModalController = create<IModalController>((set) => ({
   fileViewer: false,
+  fileViewer2: false,
   addBlacklistDomain: false,
   add_user: false,
   search: false,

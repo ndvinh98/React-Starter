@@ -5,7 +5,7 @@ import FormGenerate from '@components/FormGenerate';
 import {AiOutlineSearch} from 'react-icons/ai';
 import Pagination from '@components/Pagination';
 import {useMedia} from '@utils/hooks';
-import {useFilter,useRouter, useGetList, useGetItem} from '@utils/hooks';
+import {useFilter, useRouter, useGetList, useGetItem} from '@utils/hooks';
 import {format} from 'date-fns';
 
 const FeedbackContent = ({data}) => {
@@ -15,8 +15,9 @@ const FeedbackContent = ({data}) => {
     getItem({}, {path: data?.id});
   };
 
-  useEffect(() => {console.log(data)}, [data]);
-
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   const [isRead, setIsRead] = useState(!!data?.isRead);
 
@@ -50,23 +51,23 @@ const FeedbackContent = ({data}) => {
           />
         </UI.Center>
         <UI.Text fontSize={{md: 'md', lg: 'lg'}}>
-              {data?.partnerUser
-                ? data?.partnerUser?.firstName +
-                  ' ' +
-                  data?.partnerUser?.lastName +
-                  ' ' +
-                  '(' +
-                  data?.partnerUser?.email +
-                  ')' +
-                  ' has sent a feedback'
-                : undefined}
+          {data?.partnerUser
+            ? data?.partnerUser?.firstName +
+              ' ' +
+              data?.partnerUser?.lastName +
+              ' ' +
+              '(' +
+              data?.partnerUser?.email +
+              ')' +
+              ' has sent a feedback'
+            : undefined}
         </UI.Text>
       </UI.HStack>
 
       <UI.HStack pr={4} pt={{md: 4, lg: 0}} justifyContent={'center'}>
         <UI.Button
           onClick={() => {
-            push("/home/feedback/"+data?.id)
+            push('/home/feedback/' + data?.id);
           }}
           bgColor={'#E9E9E9'}
           color={'#54565A'}
@@ -89,7 +90,6 @@ const FeedbackCategory = ({data}) => {
         .valueOf(),
     [data],
   );
-
 
   return (
     <UI.Box>
@@ -124,10 +124,10 @@ function FeedbackList() {
       textSearch: textSearch
         ? JSON.stringify([{feedbackMessage: textSearch}])
         : undefined,
-      filter: isEmpty(filter) ? JSON.stringify([{isRead: 0}]) : JSON.stringify([filter]),
-      relations: JSON.stringify([
-        'partnerUser'
-      ]),
+      filter: isEmpty(filter)
+        ? JSON.stringify([{isRead: 0}])
+        : JSON.stringify([filter]),
+      relations: JSON.stringify(['partnerUser']),
     });
   }, [limit, page, textSearch, filter]);
 
