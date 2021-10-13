@@ -46,10 +46,13 @@ function AllowDomainModal() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
+          <UI.Center fontSize={'lg'} color={'ste.red'} textAlign="center">
+            {data?.isAllowed ? 'Blacklist' : 'Whitelist'} Domain
+          </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-            <UI.Center fontWeight={'bold'} fontSize={'lg'} textAlign="center" color={'ste.red'}>
-                Are you sure you want to {data?.isAllowed ? 'blacklist' : 'whitelist'} {data?.domain}
+            <UI.Center fontSize={'lg'} textAlign="center">
+                Are you sure you want to {data?.isAllowed ? 'blacklist' : 'whitelist'} {data?.domain} ?
             </UI.Center>
             <UI.Center mt={8} w={'full'}>
               <UI.Button
