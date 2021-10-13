@@ -20,7 +20,7 @@ import {HiDotsHorizontal} from 'react-icons/hi';
 export const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
   ADMIN: 'Admin',
-  USER: 'Sales Management',
+  USER: 'User',
 };
 
 export const STATUS_STRING = {
@@ -116,7 +116,7 @@ function UserTable(props) {
         />
         {isBase ? (
           <TableGenerate
-            onClickRow={(row) => push(path + `/${row?.id}`)}
+            onClickRow={(row) => push(path + '/user' + `/${row?.id}`)}
             isLoading={loading}
             currentPage={data?.page}
             totalpage={data?.totalPages}

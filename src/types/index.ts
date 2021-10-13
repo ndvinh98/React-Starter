@@ -251,7 +251,7 @@ export interface IUserProfiles extends BaseSchema {
   workNumber?: string;
   mobileNumber?: string;
   avatarMediaDestination?: string;
-  salesID?: string;
+  salesId?: string;
   showMobileNumber?: 1 | 0;
   showWorkNumber?: 1 | 0;
 }
