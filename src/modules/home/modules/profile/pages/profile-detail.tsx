@@ -67,7 +67,10 @@ function ProfileDetail() {
           {!isEmpty(profileData) && !isEmpty(languages) && (
             <UI.Box p={{md: 2, lg: 4}}>
               <FormGenerate
-                onSubmit={(data: any) => patch(data)}
+                onSubmit={(data: any) => {
+                  patch(data);
+                  location.reload();
+                }}
                 schema={{
                   firstName: yup
                     .string()

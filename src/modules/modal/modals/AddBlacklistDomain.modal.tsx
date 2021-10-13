@@ -3,24 +3,20 @@ import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import FormGenerate from '@components/FormGenerate';
 import {useModalController} from '../modals.controller';
-import {usePatch} from '@utils/hooks';
+import {usePost} from '@utils/hooks';
 
 function AddBlacklistDomainModal() {
   const {addBlacklistDomain, closeModal, data} = useModalController();
+  const {post, loading, data: postData} = usePost('/partnerDomains/addBlacklist');
+  const toast = UI.useToast();
 
-  // const {
-  //   data: patchData,
-  //   loading,
-  //   patch,
-  // } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
-  // const toast = UI.useToast();
-
-  // useEffect(() => {
-  //   if (patchData) {
-  //     closeModal('addBlacklistDomain');
-  //     toast({status: 'success', description: 'Successfully!', duration: 2000});
-  //   }
-  // }, [patchData]);
+  useEffect(() => {
+    if (postData) {
+      data?.cb();
+      closeModal('addBlacklistDomain');
+      toast({status: 'success', description: 'Successfully!', duration: 2000});
+    }
+  }, [postData]);
 
   return (
     <UI.Modal
@@ -48,7 +44,7 @@ function AddBlacklistDomainModal() {
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <FormGenerate
-            onSubmit={()=>{}}
+            onSubmit={(value)=>{post(value)}}
             fields={[
               {
                 name: 'domain',
@@ -60,6 +56,7 @@ function AddBlacklistDomainModal() {
             <UI.Center mt={4} w={'full'}>
               <UI.Button
                 colorScheme="blue"
+                isLoading={loading}
                 mr={3}
                 w={'120px'}
                 type="submit"
