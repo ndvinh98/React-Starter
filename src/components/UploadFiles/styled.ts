@@ -52,8 +52,8 @@ export const UploadFilesStyled = styled(FileDrop)`
     width: 1px;
   }
   .btn-upload {
-    background-color:'blue';
-    color:'red';
+    background-color: 'blue';
+    color: 'red';
     padding: 10px 20px;
     border-radius: 5px;
   }

@@ -122,7 +122,11 @@ function FeedbackList() {
       limit,
       sort: JSON.stringify({createdAt: -1}),
       textSearch: textSearch
-        ? JSON.stringify([{feedbackMessage: textSearch}])
+        ? JSON.stringify([
+            {partnerUser: {firstName: textSearch}},
+            {partnerUser: {lastName: textSearch}},
+            {partnerUser: {email: textSearch}},
+          ])
         : undefined,
       filter: isEmpty(filter)
         ? JSON.stringify([{isRead: 0}])

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, useGetList} from '@utils/hooks';
@@ -13,20 +13,21 @@ function FeedbackDetail() {
   const {openModal} = useModalController();
   const {data, getList} = useGetList('/partnerUserFeedbacks');
   const {params} = useRouterController();
-  const [partnerUser, setPartnerUser] = useState<any>();
-  const [attachments, setAttachments] = useState<any>();
 
-  useEffect(() => {
-    console.log(data);
-    if (data) {
-      setPartnerUser(data?.records[0]?.partnerUser);
-      setAttachments(data?.records[0]?.partnerUserFeedbackAttachments);
-    }
-  }, [data]);
+  const getFileName = (name: string) => {
+    if (!name) return undefined;
+    const names = name?.split('/');
+    if (!names.length) return name;
+    return names?.[names?.length - 1];
+  };
 
-  useEffect(() => {
-    console.log(partnerUser);
-  }, [partnerUser]);
+  const attachments = useMemo(()=>{
+    return data?.records?.[0]?.partnerUserFeedbackAttachments
+  },[data])
+
+  const partnerUser = useMemo(()=>{
+    return data?.records?.[0]?.partnerUser
+  },[data])
 
   useEffect(() => {
     if (params?.id) {
@@ -35,6 +36,8 @@ function FeedbackDetail() {
         filter: JSON.stringify([{id: params?.id}]),
         relations: JSON.stringify([
           'partnerUser',
+          'partnerUser.domain',
+          'partnerUser.domain.partners',
           'partnerUserFeedbackAttachments',
         ]),
       });
@@ -68,9 +71,19 @@ function FeedbackDetail() {
                 : undefined}
             </UI.Text>
             <UI.Button
-              // onClick={() => {
-              //   push("/home/user-management/"+partnerUser?.id)
-              // }}
+              onClick={() => {
+                if (
+                  !isEmpty(partnerUser) &&
+                  partnerUser?.domain?.partners?.[0]?.id
+                ) {
+                  push(
+                    '/home/user-management/company/' +
+                      partnerUser?.domain?.partners?.[0]?.id +
+                      '/user/' +
+                      partnerUser?.id,
+                  );
+                }
+              }}
               bgColor={'#D94645'}
               size={'sm'}>
               View Profile
@@ -82,7 +95,7 @@ function FeedbackDetail() {
               <UI.Text fontWeight={'bold'} w={'20%'}>
                 Feedback:
               </UI.Text>
-              <UI.Text>{data?.records[0]?.feedbackSubject}</UI.Text>
+              <UI.Text>{data?.records?.[0]?.feedbackSubject}</UI.Text>
             </UI.HStack>
 
             <UI.HStack mb={4} alignItems={'start'}>
@@ -90,7 +103,7 @@ function FeedbackDetail() {
                 Date received:
               </UI.Text>
               <UI.Text>
-                {format(new Date(data?.records[0]?.createdAt), 'dd MMM yyyy')}
+                {format(new Date(data?.records?.[0]?.createdAt), 'dd MMM yyyy')}
               </UI.Text>
             </UI.HStack>
 
@@ -98,7 +111,7 @@ function FeedbackDetail() {
               <UI.Text fontWeight={'bold'} w={'20%'}>
                 Message:
               </UI.Text>
-              <UI.Text>{data?.records[0]?.feedbackMessage}</UI.Text>
+              <UI.Text>{data?.records?.[0]?.feedbackMessage}</UI.Text>
             </UI.HStack>
 
             <UI.HStack mb={4} alignItems={'start'}>
@@ -110,12 +123,13 @@ function FeedbackDetail() {
                   ? attachments.map((item, index) => {
                       return (
                         <UI.HStack
+                          key={index}
                           bg={'#F7F7F7'}
                           justifyContent={'space-between'}
                           p={2}
                           w={'600px'}>
                           <UI.Text fontWeight={'bold'}>
-                            {item?.mediaDestination}
+                            {getFileName(item?.mediaDestination)}
                           </UI.Text>
                           <UI.Button
                             onClick={() =>

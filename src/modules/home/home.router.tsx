@@ -30,6 +30,12 @@ export default compose(
                 () =>
                   import('./modules/user-management/user-management.router'),
               ),
+              '/content-management': lazy(
+                () =>
+                  import(
+                    './modules/content-management/content-mamagement.router'
+                  ),
+              ),
               '/tier-management': lazy(
                 () =>
                   import('./modules/tier-management/tier-management.router'),

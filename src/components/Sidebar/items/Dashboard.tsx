@@ -55,6 +55,33 @@ const MENUS = [
     to: '/home/content-management',
     icon: ContentManagementIcon,
     type: 'level0',
+    subMenu: [
+      {
+        label: 'Line of Business',
+        to: '/home/content-management/line-of-business',
+        type: 'level1',
+      },
+      {
+        label: 'Line of Product',
+        to: '/home/content-management/line-of-product',
+        type: 'level1',
+      },
+      {
+        label: 'Product Group',
+        to: '/home/content-management/product-group',
+        type: 'level1',
+      },
+      {
+        label: 'Products',
+        to: '/home/content-management/products',
+        type: 'level1',
+      },
+      {
+        label: 'Modules',
+        to: '/home/content-management/modules',
+        type: 'level1',
+      },
+    ],
   },
   {
     label: 'Feedback Form',
@@ -168,11 +195,13 @@ export const MenuLevel0 = memo(
             }
             key={i}>
             <UI.Text
-              color="black"
               whiteSpace={'nowrap'}
               overflow="hidden"
               fontSize={'16px'}
-              fontWeight={'medium'}>
+              color="#6C6F84"
+              fontWeight={
+                useActive(x?.to, {exact: false}) ? 'extrabold' : 'medium'
+              }>
               {x?.label}
             </UI.Text>
           </SB.MenuItem>

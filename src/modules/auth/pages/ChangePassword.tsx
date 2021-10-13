@@ -3,9 +3,12 @@ import {usePost, useRouter} from '@utils/hooks';
 import {Box, Button, Text, VStack, Image} from '@chakra-ui/react';
 import FormGenerate from '@components/FormGenerate';
 import * as yup from 'yup';
+import {useRouterController} from '@modules/router';
 
 function ChangePassword() {
-  const {query, replace} = useRouter();
+  const {replace} = useRouter();
+  const {query} = useRouterController();
+
   const {post, loading, data} = usePost('/users/resetPassword');
   useEffect(() => {
     if (data) {
