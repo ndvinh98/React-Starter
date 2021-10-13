@@ -33,14 +33,15 @@ export const ACTIVE_STRING = {
 };
 
 function UserTable(props) {
-  const {data, loading, setPage, handleFilterDataUser} = props;
+  const {data, loading, setPage, handleFilterDataUser, totalCount} = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
 
-  const handleFilterData = ({textSearch, status, userType}) => {
-    handleFilterDataUser(textSearch, status, userType);
-  };
+  // const handleFilterData = ({textSearch, status, userType}) => {
+  //   // handleFilterDataUser(textSearch, status, userType);
+  //   console.log(textSearch, status, userType, 'hahahah');
+  // };
 
   return (
     <UI.VStack py={6} px={8} spacing={4} width="full" bgColor="white">
@@ -50,7 +51,7 @@ function UserTable(props) {
       <UI.Box width="full">
         <FormGenerate
           gap={isBase ? 4 : 6}
-          onChangeValue={handleFilterData}
+          onChangeValue={handleFilterDataUser}
           fields={[
             {
               name: 'textSearch',
@@ -163,7 +164,7 @@ function UserTable(props) {
                 accessor: (row) => (
                   <UI.Text>
                     {' '}
-                    {moment(row?.updatedAt).format('DD MMM YYYY')}
+                    {moment(row?.otpCodeExp).format('DD MMM YYYY')}
                   </UI.Text>
                 ),
               },
@@ -201,12 +202,12 @@ function UserTable(props) {
                 id: 'action',
                 accessor: (row) => (
                   <ActionColum
-                    refresh={() =>
-                      getList({
-                        page: 1,
-                        limit: 10,
-                      })
-                    }
+                    // refresh={() =>
+                    //   getList({
+                    //     page: 1,
+                    //     limit: 10,
+                    //   })
+                    // }
                     row={row}
                   />
                 ),
@@ -238,6 +239,7 @@ function UserTable(props) {
                     totalpage={data?.totalPages}
                     onChangePage={setPage}
                     size={'sm'}
+                    totalCount={totalCount}
                     justifyContent="flex-end"
                   />
                 </UI.HStack>

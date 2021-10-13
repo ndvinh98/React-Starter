@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import * as UI from '@chakra-ui/react';
 import FormGenerate from '@components/FormGenerate';
 
@@ -124,9 +124,11 @@ function Appearance() {
               },
             ]}>
             <UI.HStack mt={8} justifyContent={'center'}>
-              <UI.Button w={"100px"} variant="outline"> Preview</UI.Button>
-              <UI.Button w={"100px"}> Save</UI.Button>
-
+              <UI.Button w={'100px'} variant="outline">
+                {' '}
+                Preview
+              </UI.Button>
+              <UI.Button w={'100px'}> Save</UI.Button>
             </UI.HStack>
           </FormGenerate>
         </UI.Box>
