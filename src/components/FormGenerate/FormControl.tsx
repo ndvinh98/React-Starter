@@ -13,7 +13,6 @@ import CheckboxGroup from './fields/CheckboxGroup';
 import RadioGroup from './fields/RadioGroup';
 import UploadFile from './fields/UploadFile';
 
-
 const FieldComponent = {
   input: UI.Input,
   select: Select,
@@ -119,22 +118,26 @@ const FormControl = (props: IFormControl) => {
           />
         </UI.Box>
       </UI.Stack>
-      <UI.Stack
-        justifyContent={'space-between'}
-        alignItems={LAYOUT_ITEMS[layout]}
-        direction={DIRECTION[layout]}>
-        <div> </div>
-        <UI.Box h={'20x'} width={width}>
-          {!!helperText && <UI.FormHelperText>{helperText}</UI.FormHelperText>}
-          <UI.Text
-            textAlign={align}
-            lineHeight={'20px'}
-            fontSize={'sm'}
-            color={'ste.red'}>
-            {error?.message}
-          </UI.Text>
-        </UI.Box>
-      </UI.Stack>
+      {error?.message && (
+        <UI.Stack
+          justifyContent={'space-between'}
+          alignItems={LAYOUT_ITEMS[layout]}
+          direction={DIRECTION[layout]}>
+          <div> </div>
+          <UI.Box h={'20x'} width={width}>
+            {!!helperText && (
+              <UI.FormHelperText>{helperText}</UI.FormHelperText>
+            )}
+            <UI.Text
+              textAlign={align}
+              lineHeight={'20px'}
+              fontSize={'sm'}
+              color={'ste.red'}>
+              {error?.message}
+            </UI.Text>
+          </UI.Box>
+        </UI.Stack>
+      )}
     </UI.FormControl>
   );
 };

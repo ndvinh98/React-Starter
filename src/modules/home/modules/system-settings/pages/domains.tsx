@@ -11,16 +11,8 @@ import {useModalController} from '@modules/modal';
 import {IPartnerManagement} from '@types';
 
 function Appearance() {
-  const {
-    page,
-    limit,
-    setPage,
-    textSearch,
-    setTextSearch,
-    filter,
-    setFilter,
-    setLimit,
-  } = useFilter({page: 1, limit: 10});
+  const {page, limit, setPage, textSearch, setTextSearch, filter, setFilter} =
+    useFilter({page: 1, limit: 10});
   const {data, getList, loading} =
     useGetList<IPartnerManagement>('/partnerDomains');
 
@@ -48,7 +40,7 @@ function Appearance() {
     }));
   };
 
-  const {isBase, isAllMobile} = useMedia();
+  const {isBase} = useMedia();
   const {openModal} = useModalController();
 
   return (

@@ -32,10 +32,6 @@ function UploadFiles(props: IUploadFilesPorps) {
   const [files, setFiles] = useState<any[]>(defaultValue);
   const isChanged = useRef(false);
 
-  // useEffect(() => {
-  //   setFiles(defaultValue);
-  // }, [defaultValue]);
-
   useEffect(() => {
     if (onChangeValue && isChanged.current) onChangeValue({[name]: files});
   }, [files]);
