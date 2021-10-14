@@ -22,6 +22,7 @@ export interface IContentView {
   limit?: number;
   currentPage?: number;
   linkAddNew?: string;
+  linkToChild?: string;
 }
 
 function ContentView(props: IContentView) {
@@ -35,6 +36,7 @@ function ContentView(props: IContentView) {
     currentPage,
     linkAddNew,
     isLoading,
+    linkToChild
   } = props;
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
@@ -108,6 +110,7 @@ function ContentView(props: IContentView) {
             <LoadingComponent isLoading={isLoading}>
               {data?.map((x) => (
                 <UI.Box
+                  onClick={() => {push(linkToChild)}}
                   bg="white"
                   bgImage={`url(${x?.mediaDestination})`}
                   bgSize="cover"
@@ -155,6 +158,7 @@ function ContentView(props: IContentView) {
             <LoadingComponent isLoading={isLoading}>
               {data?.map((x) => (
                 <UI.HStack
+                  onClick={() => {push(linkToChild)}}
                   key={x?.id}
                   cursor="pointer"
                   w="full"

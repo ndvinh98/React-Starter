@@ -101,6 +101,7 @@ function List() {
         }
         name="Content Management - Product Group"
         linkAddNew="/home/content-management/product-group/add-new"
+        linkToChild="/home/content-management/products"
       />
     </UI.Box>
   );
