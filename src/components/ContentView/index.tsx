@@ -16,6 +16,7 @@ export interface IContentView {
   onLimitChange?: (limit: number) => void;
   isLoading?: boolean;
   filterBar?: React.ReactNode;
+  filterBarWidth?: string;
   totalCount?: number;
   limit?: number;
   currentPage?: number;
@@ -23,7 +24,7 @@ export interface IContentView {
 }
 
 function ContentView(props: IContentView) {
-  const {name, filterBar, data, limit, totalCount, currentPage, linkAddNew} =
+  const {name, filterBar,filterBarWidth, data, limit, totalCount, currentPage, linkAddNew} =
     props;
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
@@ -39,7 +40,7 @@ function ContentView(props: IContentView) {
           {name}
         </UI.Text>
         <UI.HStack w={'full'} justifyContent={'space-between'} spacingY={'20px'} spacingX={'0px'} flexWrap="wrap" pb={5}>
-          {filterBar && <UI.Box w={"300px"}>{filterBar}</UI.Box>}
+          {filterBar && <UI.Box w={filterBarWidth ? filterBarWidth : "300px"}>{filterBar}</UI.Box>}
           <UI.HStack>
             <UI.Text>View Item</UI.Text>
             <UI.Box w="80px">

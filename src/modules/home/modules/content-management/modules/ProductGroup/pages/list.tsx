@@ -11,9 +11,12 @@ function List() {
     getAllMenu();
   }, []);
 
-  const handleOnChange = ({business}) => {
+  const handleOnChange = ({business, category}) => {
     if (business)
       getListCategories({filter: JSON.stringify([{application: business}])});
+    getListGroupings({
+      filter: category ? JSON.stringify([{category: category}]) : undefined,
+    });
   };
 
   //const {getList: getListApplications, data: lineOfBusinessData} = useGetList<IApplication>('applications');

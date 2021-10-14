@@ -6,6 +6,12 @@ import {useGetList, useFilter} from '@utils/hooks';
 import {IApplication, ICategorie} from '@types';
 
 function List() {
+  const handleOnChange = ({business}) => {
+    getListCategories({
+      filter: business ? JSON.stringify([{application: business}]) : undefined,
+    });
+  };
+
   const {getList: getListApplications, data: lineOfBusinessData} =
     useGetList<IApplication>('applications');
   const {getList: getListCategories, data: categoriesData} =
@@ -34,6 +40,7 @@ function List() {
         currentPage={page}
         filterBar={
           <FormGenerate
+            onChangeValue={handleOnChange}
             gap="10px"
             w="60vw"
             mb={4}
