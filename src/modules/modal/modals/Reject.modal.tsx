@@ -110,10 +110,10 @@ function RejectModal() {
                       </UI.Text>
                     </UI.VStack>
                   ),
-                  h: '250px',
+                  h: '170px',
                 },
               ]}>
-              <UI.Center w={'full'}>
+              <UI.Center w={'full'} pt="10">
                 <UI.Button
                   colorScheme="blue"
                   type="button"

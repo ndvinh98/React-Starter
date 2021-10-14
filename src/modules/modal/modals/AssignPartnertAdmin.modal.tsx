@@ -1,13 +1,13 @@
 import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
-import * as yup from 'yup';
+
 import FormGenerate from '@components/FormGenerate';
 import {useModalController} from '../modals.controller';
 import {usePatch} from '@utils/hooks';
 
-function ConfirmModal() {
-  const {confirmRequest, closeModal, data} = useModalController();
+function AssignPartnerAdminModal() {
+  const {asignPartnerAdmin, closeModal, data} = useModalController();
   const {
     data: patchData,
     loading,
@@ -17,7 +17,7 @@ function ConfirmModal() {
 
   useEffect(() => {
     if (patchData) {
-      closeModal('confirmRequest');
+      closeModal('assignPartnerAdmin');
       toast({status: 'success', description: 'Successfully!', duration: 2000});
     }
   }, [patchData]);
@@ -25,8 +25,8 @@ function ConfirmModal() {
   return (
     <UI.Modal
       isCentered
-      isOpen={confirmRequest}
-      onClose={() => closeModal('confirmRequest')}>
+      isOpen={asignPartnerAdmin}
+      onClose={() => closeModal('assignPartnerAdmin')}>
       <UI.ModalOverlay />
       <UI.ModalContent position={'relative'} w="360px" minH="311px">
         <UI.Circle
@@ -43,7 +43,8 @@ function ConfirmModal() {
 
         <UI.ModalHeader mt={8}>
           <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            Please select access validity date for {data?.companyName}
+            Are you sure you want to asign {data?.firstName} {', '}{' '}
+            {data?.lastName}
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
@@ -89,4 +90,4 @@ function ConfirmModal() {
   );
 }
 
-export default memo(ConfirmModal);
+export default memo(AssignPartnerAdminModal);

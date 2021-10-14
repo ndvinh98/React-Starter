@@ -24,7 +24,7 @@ function FileViewer2() {
         <UI.ModalHeader>{data?.title}</UI.ModalHeader>
         <UI.ModalCloseButton />
         <UI.ModalBody p={5} textAlign={'center'}>
-          <UI.Text> </UI.Text>
+          <UI.Text>{data?.payload?.[0]?.name}</UI.Text>
           {data?.payload?.[0]?.url && (
             <ReactFileViewer
               fileType={getFileType(data?.payload?.[0]?.name)}
