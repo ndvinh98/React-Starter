@@ -11,8 +11,9 @@ function List() {
     getAllMenu();
   }, []);
 
-  const handleOnChange = ({business, product}) => {
-    if (business) getListCategories({filters: JSON.stringify([{application: business}])})
+  const handleOnChange = ({business, category}) => {
+    if (business) getListCategories({filter: JSON.stringify([{application: business}])})
+    if (category) getListGroupings({filter: JSON.stringify([{category: category}])})
   };
 
   //const {getList: getListApplications, data: lineOfBusinessData} = useGetList<IApplication>('applications');
@@ -54,7 +55,7 @@ function List() {
                 })),
               },
               {
-                name: 'product',
+                name: 'category',
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
