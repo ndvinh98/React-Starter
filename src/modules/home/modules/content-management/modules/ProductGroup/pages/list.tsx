@@ -13,7 +13,7 @@ function List() {
 
   const handleOnChange = ({business, category}) => {
     if (business) getListCategories({filter: JSON.stringify([{application: business}])})
-    if (category) getListGroupings({filter: JSON.stringify([{category: category}])})
+    getListGroupings({filter: category ? JSON.stringify([{category: category}]): undefined})
   };
 
   //const {getList: getListApplications, data: lineOfBusinessData} = useGetList<IApplication>('applications');
