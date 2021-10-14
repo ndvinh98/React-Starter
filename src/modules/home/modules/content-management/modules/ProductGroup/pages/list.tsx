@@ -71,7 +71,7 @@ function List() {
                 })),
               },
               {
-                name: 'product',
+                name: 'category',
                 refEl: productRef,
                 type: 'select',
                 size: 'md',
