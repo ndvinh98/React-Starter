@@ -48,7 +48,6 @@ function RejectModal() {
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <UI.VStack>
             <UI.HStack></UI.HStack>
-
             <FormGenerate
               onSubmit={({
                 reasonMessage,

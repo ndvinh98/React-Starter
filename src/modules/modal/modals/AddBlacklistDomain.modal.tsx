@@ -7,7 +7,11 @@ import {usePost} from '@utils/hooks';
 
 function AddBlacklistDomainModal() {
   const {addBlacklistDomain, closeModal, data} = useModalController();
-  const {post, loading, data: postData} = usePost('/partnerDomains/addBlacklist');
+  const {
+    post,
+    loading,
+    data: postData,
+  } = usePost('/partnerDomains/addBlacklist');
   const toast = UI.useToast();
 
   useEffect(() => {
@@ -44,7 +48,9 @@ function AddBlacklistDomainModal() {
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <FormGenerate
-            onSubmit={(value)=>{post(value)}}
+            onSubmit={(value) => {
+              post(value);
+            }}
             fields={[
               {
                 name: 'domain',
@@ -59,8 +65,7 @@ function AddBlacklistDomainModal() {
                 isLoading={loading}
                 mr={3}
                 w={'120px'}
-                type="submit"
-              >
+                type="submit">
                 Confirm
               </UI.Button>
               <UI.Button

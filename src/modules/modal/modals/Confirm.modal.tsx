@@ -1,19 +1,18 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
-import * as yup from 'yup';
-import FormGenerate from '@components/FormGenerate';
 import {useModalController} from '../modals.controller';
 import {usePatch} from '@utils/hooks';
 
+import DatePicker from '@components/DatePicker';
+
 function ConfirmModal() {
   const {confirmRequest, closeModal, data} = useModalController();
-  const {
-    data: patchData,
-    loading,
-    patch,
-  } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
+  const {data: patchData} = usePatch(
+    `/partnerApplicationSubmissions/${data?.id}`,
+  );
   const toast = UI.useToast();
+  const [selectedDay, setSelectedDay] = useState(null);
 
   useEffect(() => {
     if (patchData) {
@@ -25,6 +24,7 @@ function ConfirmModal() {
   return (
     <UI.Modal
       isCentered
+      autoFocus={false}
       isOpen={confirmRequest}
       onClose={() => closeModal('confirmRequest')}>
       <UI.ModalOverlay />
@@ -46,41 +46,13 @@ function ConfirmModal() {
             Please select access validity date for {data?.companyName}
           </UI.Center>
         </UI.ModalHeader>
-        <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          <FormGenerate
-            onSubmit={({}) => {
-              patch({
-                status: 'APPROVED',
-              });
-            }}
-            fields={[
-              {
-                name: 'date',
-                type: 'input',
-                size: 'lg',
-                placeholder: '',
-              },
-            ]}>
-            <UI.Center w={'full'}>
-              <UI.Button
-                colorScheme="blue"
-                mr={3}
-                w={'120px'}
-                type="submit"
-                isLoading={loading}>
-                Confirm
-              </UI.Button>
-              <UI.Button
-                w={'120px'}
-                type="button"
-                onClick={() => {
-                  closeModal('confirmRequest');
-                }}
-                variant="outline">
-                Cancel
-              </UI.Button>
-            </UI.Center>
-          </FormGenerate>
+        <UI.ModalBody>
+          <UI.Text mb={2}>Validity Date:</UI.Text>
+          <DatePicker
+            isMinimumTodayDate
+            value={selectedDay}
+            onChange={setSelectedDay}
+          />
         </UI.ModalBody>
 
         <UI.ModalFooter></UI.ModalFooter>

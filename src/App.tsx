@@ -6,6 +6,9 @@ import {navigation} from '@router';
 import {logs} from '@modules/logs';
 import LoadingScreen from '@components/LoadingScreen';
 import {serverInterceptors} from '@services';
+
+import '@assets/css/datePicker.css';
+
 logs();
 serverInterceptors();
 
