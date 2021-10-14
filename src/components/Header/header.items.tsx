@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo,useEffect, useState} from 'react';
 import {debounce} from 'lodash';
 import Highlighter from 'react-highlight-words';
 
@@ -92,7 +92,11 @@ export const HEADER_ITEMS = {
   }),
   ['user-info']: memo(({isHiddenMenu}: any) => {
     //const {me} = useHomeController();
-    const {me} = useAuthController();
+    const {me, getMe} = useAuthController();
+
+    useEffect(()=> {
+      getMe();
+    },[])
 
     const {push} = useRouter();
 
