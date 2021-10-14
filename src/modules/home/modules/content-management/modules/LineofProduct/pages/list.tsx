@@ -5,16 +5,15 @@ import FormGenerate from '@components/FormGenerate';
 import {useGetList, useFilter} from '@utils/hooks';
 import {IApplication, ICategorie} from '@types';
 
-
 function List() {
-
-  const {getList: getListApplications, data: lineOfBusinessData} = useGetList<IApplication>('applications');
-  const {getList: getListCategories, data: categoriesData} = useGetList<ICategorie>('categories');
-
+  const {getList: getListApplications, data: lineOfBusinessData} =
+    useGetList<IApplication>('applications');
+  const {getList: getListCategories, data: categoriesData} =
+    useGetList<ICategorie>('categories');
 
   useEffect(() => {
     getListApplications({
-      limit:9999
+      limit: 9999,
     });
   }, []);
 
@@ -25,7 +24,6 @@ function List() {
       limit,
     });
   }, [page, limit]);
-
 
   return (
     <UI.Box minH="89vh">

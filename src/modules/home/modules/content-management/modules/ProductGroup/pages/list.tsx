@@ -1,9 +1,9 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
 import {useGetList, useFilter, useGetItem} from '@utils/hooks';
-import {IApplication, ICategorie, IGrouping} from '@types';
+import {ICategorie, IGrouping} from '@types';
 
 function List() {
   const {getItem: getAllMenu, data: menuData} = useGetItem('applications/menu');
@@ -11,13 +11,19 @@ function List() {
     getAllMenu();
   }, []);
 
-  const handleOnChange = ({business, product}) => {
-    if (business) getListCategories({filters: JSON.stringify([{application: business}])})
+  const handleOnChange = ({business}) => {
+    if (business)
+      getListCategories({filter: JSON.stringify([{application: business}])});
   };
 
   //const {getList: getListApplications, data: lineOfBusinessData} = useGetList<IApplication>('applications');
-  const {getList: getListCategories, data: categoriesData} = useGetList<ICategorie>('categories');
-  const {getList: getListGroupings, data: groupingsData} = useGetList<IGrouping>('groupings');
+  const {
+    getList: getListCategories,
+    data: categoriesData,
+    // setData,
+  } = useGetList<ICategorie>('categories');
+  const {getList: getListGroupings, data: groupingsData} =
+    useGetList<IGrouping>('groupings');
 
   const {page, limit} = useFilter({limit: 10, page: 1});
   useEffect(() => {
@@ -27,9 +33,17 @@ function List() {
     });
   }, [page, limit]);
 
+  const productRef = useRef<any>(null);
 
   return (
     <UI.Box minH="89vh">
+      {/* <UI.Button
+        onClick={() => {
+          productRef?.current?.select?.clearValue();
+          setData({});
+        }}>
+        set
+      </UI.Button> */}
       <ContentView
         data={groupingsData?.records}
         limit={limit}
@@ -48,18 +62,19 @@ function List() {
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Line of Business',
-                options: menuData?.map((x) => ({
+                options: menuData?.map?.((x) => ({
                   value: x?.id,
                   label: x?.name,
                 })),
               },
               {
                 name: 'product',
+                refEl: productRef,
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Line of Product',
-                options: categoriesData?.records.map((x) => ({
+                options: categoriesData?.records?.map?.((x) => ({
                   value: x?.id,
                   label: x?.name,
                 })),

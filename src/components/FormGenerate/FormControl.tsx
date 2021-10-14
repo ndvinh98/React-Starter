@@ -67,6 +67,7 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
   onChangeValue?: (data: any) => void;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  refEl?: any;
   isClearable?: boolean;
 }
 

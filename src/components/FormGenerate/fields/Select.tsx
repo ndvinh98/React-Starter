@@ -18,6 +18,7 @@ export interface ISelect {
   name?: string;
   isInvalid?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  ref?: any;
   [key: string]: any;
 }
 
@@ -39,11 +40,14 @@ const Select: React.FC<ISelect> = (props) => {
     isInvalid,
     isClearable = true,
     defaultValue,
+    options,
+    refEl,
     ...other
   } = props;
 
   return (
     <RSelect
+      ref={refEl}
       defaultValue={defaultValue}
       isClearable={isClearable}
       onChange={(data: any) => {
@@ -56,6 +60,7 @@ const Select: React.FC<ISelect> = (props) => {
           });
         else onChange({target: {value: data?.value || undefined, name}});
       }}
+      options={options}
       {...other}
       styles={{
         valueContainer: (provided) => ({

@@ -46,5 +46,7 @@ export const useGetList = <T = any>(url: string) => {
       .finally(() => setLoading(false));
   };
 
-  return {data, loading, error, getList, setData};
+  const clearData = () => setData((data) => ({...data, records: []}));
+
+  return {data, loading, error, getList, setData, clearData};
 };
