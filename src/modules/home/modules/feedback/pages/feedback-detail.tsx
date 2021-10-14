@@ -77,7 +77,7 @@ function FeedbackDetail() {
                   partnerUser?.domain?.partners?.[0]?.id
                 ) {
                   push(
-                    '/home/user-management/company/' +
+                    '/home/partner-management/company/' +
                       partnerUser?.domain?.partners?.[0]?.id +
                       '/user/' +
                       partnerUser?.id,
