@@ -4,7 +4,7 @@ import LogoutModal from './modals/Logout.modal';
 import RejectModal from './modals/Reject.modal';
 import ActionModal from './modals/Action.modal';
 import FileViewer from './modals/FileViewer.modal';
-import FileViewer2 from './modals/FileViewer.modal';
+import FileViewer2 from './modals/FileViewer2.modal';
 import AllowDomainModal from './modals/AllowDomain.modal';
 import AddBlacklistDomainModal from './modals/AddBlacklistDomain.modal';
 import AssignPartnertAdminModal from './modals/AssignPartnertAdmin.modal';
