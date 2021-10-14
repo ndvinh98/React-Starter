@@ -5,6 +5,8 @@ import FormGenerate from '@components/FormGenerate';
 import {useGetList, useFilter, useGetItem} from '@utils/hooks';
 import {ICategorie, IGrouping} from '@types';
 
+import LoadingComponent from '@components/LoadingComponent';
+
 function List() {
   const {getItem: getAllMenu, data: menuData} = useGetItem('applications/menu');
   useEffect(() => {
@@ -25,8 +27,11 @@ function List() {
     data: categoriesData,
     // setData,
   } = useGetList<ICategorie>('categories');
-  const {getList: getListGroupings, data: groupingsData} =
-    useGetList<IGrouping>('groupings');
+  const {
+    getList: getListGroupings,
+    data: groupingsData,
+    loading,
+  } = useGetList<IGrouping>('groupings');
 
   const {page, limit} = useFilter({limit: 10, page: 1});
   useEffect(() => {
@@ -36,58 +41,62 @@ function List() {
     });
   }, [page, limit]);
 
-  const productRef = useRef<any>(null);
+  const categoryRef = useRef<any>(null);
 
   return (
     <UI.Box minH="89vh">
       {/* <UI.Button
         onClick={() => {
-          productRef?.current?.select?.clearValue();
+          categoryRef?.current?.select?.clearValue();
           setData({});
         }}>
         set
       </UI.Button> */}
-      <ContentView
-        data={groupingsData?.records}
-        limit={limit}
-        totalCount={groupingsData?.total}
-        currentPage={page}
-        filterBar={
-          <FormGenerate
-            onChangeValue={handleOnChange}
-            gap="10px"
-            w="60vw"
-            mb={4}
-            fields={[
-              {
-                name: 'business',
-                type: 'select',
-                size: 'md',
-                colSpan: 3,
-                placeholder: 'Line of Business',
-                options: menuData?.map?.((x) => ({
-                  value: x?.id,
-                  label: x?.name,
-                })),
-              },
-              {
-                name: 'category',
-                refEl: productRef,
-                type: 'select',
-                size: 'md',
-                colSpan: 3,
-                placeholder: 'Line of Product',
-                options: categoriesData?.records?.map?.((x) => ({
-                  value: x?.id,
-                  label: x?.name,
-                })),
-              },
-            ]}
-          />
-        }
-        name="Content Management - Product Group"
-        linkAddNew="/home/content-management/product-group/add-new"
-      />
+      <LoadingComponent
+        isLoading={loading}
+        length={groupingsData?.records?.length}>
+        <ContentView
+          data={groupingsData?.records}
+          limit={limit}
+          totalCount={groupingsData?.total}
+          currentPage={page}
+          filterBar={
+            <FormGenerate
+              onChangeValue={handleOnChange}
+              gap="10px"
+              w="60vw"
+              mb={4}
+              fields={[
+                {
+                  name: 'business',
+                  type: 'select',
+                  size: 'md',
+                  colSpan: 3,
+                  placeholder: 'Line of Business',
+                  options: menuData?.map?.((x) => ({
+                    value: x?.id,
+                    label: x?.name,
+                  })),
+                },
+                {
+                  name: 'category',
+                  refEl: categoryRef,
+                  type: 'select',
+                  size: 'md',
+                  colSpan: 3,
+                  placeholder: 'Line of Product',
+                  options: categoriesData?.records?.map?.((x) => ({
+                    value: x?.id,
+                    label: x?.name,
+                  })),
+                },
+              ]}
+            />
+          }
+          name="Content Management - Product Group"
+          linkAddNew="/home/content-management/product-group/add-new"
+        />
+      </LoadingComponent>
     </UI.Box>
   );
 }
