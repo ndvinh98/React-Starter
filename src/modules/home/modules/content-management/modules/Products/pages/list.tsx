@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
@@ -11,18 +11,33 @@ function List() {
     getAllMenu();
   }, []);
 
-  const handleOnChange = ({business, category, grouping}) => {
-    if (business) getListCategories({filter: JSON.stringify([{application: business}])})
-    if (category) getListGroupings({filter: JSON.stringify([{category: category}])})
-    getListProduct({filter: grouping ? JSON.stringify([{grouping: grouping}]): undefined})
+  const categoryRef = useRef<any>(null);
+  const applicationRef = useRef<any>(null);
+  const groupingRef = useRef<any>(null);
+
+  useEffect(() => {
+    categoryRef?.current?.select?.clearValue();
+    groupingRef?.current?.select?.clearValue();
+  },[applicationRef?.current?.state?.value?.value])
+
+  useEffect(() => {
+    groupingRef?.current?.select?.clearValue();
+  },[categoryRef?.current?.state?.value?.value])
 
 
-  };
 
-  //const {getList: getListApplications, data: lineOfBusinessData} = useGetList<IApplication>('applications');
+
   const {getList: getListCategories, data: categoriesData} = useGetList<ICategorie>('categories');
   const {getList: getListGroupings, data: groupingsData} = useGetList<IGrouping>('groupings');
   const {getList: getListProduct, data: productsData} = useGetList<IProduct>('products');
+
+  const handleOnChange = ({application, category, grouping}) => {
+    if (application) {
+      getListCategories({limit:9999,filter: JSON.stringify([{application: application}])});
+    }
+    if (category) getListGroupings({limit:9999,filter: JSON.stringify([{category: category}])})
+    getListProduct({filter: grouping ? JSON.stringify([{grouping: grouping}]): undefined})
+  };
 
 
   const {page, limit} = useFilter({limit: 10, page: 1});
@@ -49,7 +64,8 @@ function List() {
             mb={4}
             fields={[
               {
-                name: 'business',
+                name: 'application',
+                refEl: applicationRef,
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
@@ -62,6 +78,8 @@ function List() {
               {
                 name: 'category',
                 type: 'select',
+                refEl: categoryRef,
+                isDisabled: applicationRef?.current?.state?.value?.value ? false : true,
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Line of Product',
@@ -73,6 +91,8 @@ function List() {
               {
                 name: 'grouping',
                 type: 'select',
+                refEl: groupingRef,
+                isDisabled: categoryRef?.current?.state?.value?.value ? false : true,
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Product Group',

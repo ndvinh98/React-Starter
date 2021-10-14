@@ -6,6 +6,7 @@ import {useRouter} from '@utils/hooks';
 
 import Select from '@components/Select';
 import Pagination from '@components/Pagination';
+import LoadingComponent from '@components/LoadingComponent';
 
 export interface IContentView {
   name?: string;
@@ -24,8 +25,17 @@ export interface IContentView {
 }
 
 function ContentView(props: IContentView) {
-  const {name, filterBar,filterBarWidth, data, limit, totalCount, currentPage, linkAddNew} =
-    props;
+  const {
+    name,
+    filterBar,
+    filterBarWidth,
+    data,
+    limit,
+    totalCount,
+    currentPage,
+    linkAddNew,
+    isLoading,
+  } = props;
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
 
@@ -39,8 +49,18 @@ function ContentView(props: IContentView) {
         <UI.Text fontSize="24px" fontWeight="bold">
           {name}
         </UI.Text>
-        <UI.HStack w={'full'} justifyContent={'space-between'} spacingY={'20px'} spacingX={'0px'} flexWrap="wrap" pb={5}>
-          {filterBar && <UI.Box w={filterBarWidth ? filterBarWidth : "300px"}>{filterBar}</UI.Box>}
+        <UI.HStack
+          w={'full'}
+          justifyContent={'space-between'}
+          spacingY={'20px'}
+          spacingX={'0px'}
+          flexWrap="wrap"
+          pb={5}>
+          {filterBar && (
+            <UI.Box w={filterBarWidth ? filterBarWidth : '300px'}>
+              {filterBar}
+            </UI.Box>
+          )}
           <UI.HStack>
             <UI.Text>View Item</UI.Text>
             <UI.Box w="80px">
@@ -78,35 +98,39 @@ function ContentView(props: IContentView) {
             </UI.Center>
           </UI.HStack>
         </UI.HStack>
+
         {showType === 'GRID' && (
           <UI.SimpleGrid
             w="full"
             templateColumns="repeat(auto-fill, 300px);"
             minChildWidth="300px"
             spacing="40px">
-            {data?.map((x) => (
-              <UI.Box
-                bg="white"
-                bgImage={`url(${x?.mediaDestination})`}
-                bgSize="cover"
-                bgRepeat="no-repeat"
-                cursor="pointer"
-                shadow="sm"
-                height="200px"
-                size="20px"
-                fontWeight="bold"
-                position="relative"
-                key={x?.id}>
-                <UI.Center
-                  position="absolute"
-                  w="full"
-                  height="50px"
-                  bg="#000000a7"
-                  bottom={0}>
-                  <UI.Text color="white">{x?.name}</UI.Text>
-                </UI.Center>
-              </UI.Box>
-            ))}
+            <LoadingComponent isLoading={isLoading}>
+              {data?.map((x) => (
+                <UI.Box
+                  bg="white"
+                  bgImage={`url(${x?.mediaDestination})`}
+                  bgSize="cover"
+                  bgRepeat="no-repeat"
+                  cursor="pointer"
+                  shadow="sm"
+                  height="200px"
+                  size="20px"
+                  fontWeight="bold"
+                  position="relative"
+                  key={x?.id}>
+                  <UI.Center
+                    position="absolute"
+                    w="full"
+                    height="50px"
+                    bg="#000000a7"
+                    bottom={0}>
+                    <UI.Text color="white">{x?.name}</UI.Text>
+                  </UI.Center>
+                </UI.Box>
+              ))}
+            </LoadingComponent>
+
             <UI.Center
               cursor="pointer"
               onClick={() => push(linkAddNew)}
@@ -128,31 +152,33 @@ function ContentView(props: IContentView) {
         )}
         {showType === 'LIST' && (
           <UI.VStack w="full">
-            {data?.map((x) => (
-              <UI.HStack
-                key={x?.id}
-                cursor="pointer"
-                w="full"
-                borderTopWidth={2}
-                py={5}>
-                <UI.Center
-                  bgImage={`url(${x?.mediaDestination})`}
-                  bgSize="cover"
-                  bgRepeat="no-repeat"
+            <LoadingComponent isLoading={isLoading}>
+              {data?.map((x) => (
+                <UI.HStack
+                  key={x?.id}
                   cursor="pointer"
-                  mr={3}
-                  shadow="md"
-                  w="90px"
-                  h="60px"></UI.Center>
-                <UI.Text
-                  textTransform="uppercase"
-                  color="#828282"
-                  fontWeight="bold"
-                  fontSize="18px">
-                  {x?.name}
-                </UI.Text>
-              </UI.HStack>
-            ))}
+                  w="full"
+                  borderTopWidth={2}
+                  py={5}>
+                  <UI.Center
+                    bgImage={`url(${x?.mediaDestination})`}
+                    bgSize="cover"
+                    bgRepeat="no-repeat"
+                    cursor="pointer"
+                    mr={3}
+                    shadow="md"
+                    w="90px"
+                    h="60px"></UI.Center>
+                  <UI.Text
+                    textTransform="uppercase"
+                    color="#828282"
+                    fontWeight="bold"
+                    fontSize="18px">
+                    {x?.name}
+                  </UI.Text>
+                </UI.HStack>
+              ))}
+            </LoadingComponent>
             <UI.HStack
               onClick={() => push(linkAddNew)}
               cursor="pointer"
