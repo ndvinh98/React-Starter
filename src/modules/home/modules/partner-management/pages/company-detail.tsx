@@ -33,7 +33,10 @@ function CompanyDetail() {
   useEffect(() => {
     if (params?.id)
       getItemPartner({
-        relations: JSON.stringify(['partnerApplicationSubmission']),
+        relations: JSON.stringify([
+          'partnerApplicationSubmission',
+          'partnerApplicationAttachments',
+        ]),
       });
   }, [params]);
 

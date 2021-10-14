@@ -1,5 +1,6 @@
-import React, {memo} from 'react';
-import {useMedia} from '@utils/hooks';
+import React, {memo, useEffect} from 'react';
+import {useMedia, useGetItem} from '@utils/hooks';
+import {useModalController} from '@modules/modal';
 
 import * as UI from '@chakra-ui/react';
 import {isEmpty} from 'lodash';
@@ -7,6 +8,13 @@ import FormGenerate from '@components/FormGenerate';
 
 function CompanyInfo(props: any) {
   const {data, loading} = props;
+
+  const handleNameAttachment = (name: string) => {
+    if (!name) return undefined;
+    const names = name?.split('/');
+    if (!names.length) return undefined;
+    return names?.[names?.length - 1];
+  };
 
   return (
     <UI.VStack w="full">
@@ -323,8 +331,15 @@ function CompanyInfo(props: any) {
                         type: 'decor',
                         DecorComponent: () => (
                           <FieldView
-                            name={`Attachments`}
-                            value={'  data?.registryAttachments?'}
+                            name={`Company's last signed audited financial statement`}
+                            value={handleNameAttachment(
+                              data?.partnerApplicationAttachments[0]
+                                ?.mediaDestination,
+                            )}
+                            data={
+                              data?.partnerApplicationAttachments[0]
+                                ?.mediaDestination
+                            }
                           />
                         ),
                       },
@@ -332,8 +347,15 @@ function CompanyInfo(props: any) {
                         type: 'decor',
                         DecorComponent: () => (
                           <FieldView
-                            name={` `}
-                            value={'  data?.registryAttachments?'}
+                            name={`Company's business registry`}
+                            value={handleNameAttachment(
+                              data?.partnerApplicationAttachments[0]
+                                ?.mediaDestination,
+                            )}
+                            data={
+                              data?.partnerApplicationAttachments[0]
+                                ?.mediaDestination
+                            }
                           />
                         ),
                       },
@@ -376,8 +398,19 @@ export const FieldData = memo(({name, value}: any) => {
   );
 });
 
-export const FieldView = memo(({name, value}: any) => {
+export const FieldView = memo(({name, value, data}: any) => {
   const {isBase} = useMedia();
+
+  const {openModal} = useModalController();
+  const {getItem, data: item} = useGetItem(
+    'partnerApplicationAttachments/downloadFileUrl',
+  );
+
+  useEffect(() => {
+    if (data != null) {
+      getItem({name: JSON.stringify([data])});
+    }
+  }, [data]);
 
   return (
     <UI.Stack
@@ -385,13 +418,24 @@ export const FieldView = memo(({name, value}: any) => {
       alignItems={isBase ? 'center' : 'flex-start'}
       w={'full'}>
       <UI.Text w={'300px'}>{name}</UI.Text>
-      <UI.HStack py={2} px={2} w={'full'} bg={'ste.gray_lighter'}>
-        <UI.Text fontWeight={'semibold'} color={'ste.black'}>
-          {value || '---'}
-        </UI.Text>
-        <UI.Spacer />
-        <UI.Button onClick={() => console.log('sss')} variant="outline">
-          Reject
+      <UI.HStack
+        bg={'#F7F7F7'}
+        justifyContent={'space-between'}
+        p={2}
+        w={'full'}>
+        <UI.Text fontWeight={'bold'}>{value || '---'}</UI.Text>
+        <UI.Button
+          onClick={() =>
+            openModal('fileViewer2', {
+              payload: item,
+            })
+          }
+          bgColor={'#E9E9E9'}
+          color={'#54565A'}
+          size={'sm'}
+          _hover={{bgColor: '#28C76F', color: 'white'}}
+          colorScheme="#EEFCEA">
+          View
         </UI.Button>
       </UI.HStack>
     </UI.Stack>
