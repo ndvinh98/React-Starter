@@ -309,8 +309,7 @@ function UserPartnerDetail() {
           </UI.Box>
         </UI.Box>
       )}
-
-      <UpLoadCertificates />
+      <UpLoadCertificates partnerUserId={profileData?.id} />
     </UI.VStack>
   );
 }
