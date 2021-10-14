@@ -20,6 +20,7 @@ import AsyncSelect from '@components/AsyncSelect';
 
 import {useModalController} from '@modules/modal';
 import {useHomeController} from '@modules/home';
+import {useAuthController} from '@modules/auth';
 import {useRouter} from '@utils/hooks';
 
 const USER_TYPE_DISPLAY = {
@@ -90,7 +91,9 @@ export const HEADER_ITEMS = {
     );
   }),
   ['user-info']: memo(({isHiddenMenu}: any) => {
-    const {me} = useHomeController();
+    //const {me} = useHomeController();
+    const {me} = useAuthController();
+
     const {push} = useRouter();
 
     const Avatar = memo(() => (
