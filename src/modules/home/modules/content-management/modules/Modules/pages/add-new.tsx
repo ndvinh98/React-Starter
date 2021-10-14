@@ -8,11 +8,35 @@ import UploadThumb from '@components/UploadThumb';
 import {uploadFile} from '@services';
 
 const STOCK = [
-  'https://i.imgur.com/Q04dMOc.png',
-  'https://i.imgur.com/2NpnErN.png',
-  'https://i.imgur.com/wSX6CPl.png',
-  'https://i.imgur.com/Y3lAWKG.png',
-  'https://i.imgur.com/1okhbVx.png',
+  '/modules/Case Study 4.png',
+  '/modules/Group 506.png',
+  '/modules/Group 508.png',
+  '/modules/Group 510.png',
+  '/modules/Group 511.png',
+  '/modules/Group 516.png',
+  '/modules/Group 517.png',
+  '/modules/Group 518.png',
+  '/modules/Group 519.png',
+  '/modules/Group 521.png',
+  '/modules/Group 523.png',
+  '/modules/Group 526.png',
+  '/modules/Group 527.png',
+  '/modules/Group 528.png',
+  '/modules/Group 529.png',
+  '/modules/Group 530.png',
+  '/modules/Group 531.png',
+  '/modules/Group 532.png',
+  '/modules/Group 533.png',
+  '/modules/Group 534.png',
+  '/modules/Group 603.png',
+  '/modules/Group 605.png',
+  '/modules/Group 606.png',
+  '/modules/Group 610.png',
+  '/modules/Group 17145.png',
+  '/modules/Group 17146.png',
+  '/modules/Group 17147.png',
+  '/modules/Group 17148.png',
+
 ];
 
 function AddNew() {
@@ -124,7 +148,7 @@ function AddNew() {
           ADD NEW PRODUCT
         </UI.Text>
         <UI.HStack w="full">
-          <UI.Text w="300px">Product Name</UI.Text>
+          <UI.Text w="300px">Module Name</UI.Text>
           <UI.Input value={name} onChange={handleChange} />
         </UI.HStack>
         <UI.HStack w="full">
@@ -142,6 +166,7 @@ function AddNew() {
           <UI.Text w="300px">Select Line of Product</UI.Text>
           <UI.Select
             placeholder={'Select Line of Product'}
+            isDisabled={application ? false : true}
             onChange={handleChangeSelectCategory}>
             {categoriesData &&
               categoriesData?.records.map((x) => {
@@ -153,6 +178,7 @@ function AddNew() {
           <UI.Text w="300px">Select Product Group</UI.Text>
           <UI.Select
             placeholder={'Select Product Group'}
+            isDisabled={category ? false : true}
             onChange={handleChangeSelectGroup}>
             {groupingsData &&
               groupingsData?.records.map((x) => {
@@ -164,6 +190,7 @@ function AddNew() {
           <UI.Text w="300px">Select Product</UI.Text>
           <UI.Select
             placeholder={'Select Product Group'}
+            isDisabled={grouping ? false : true}
             onChange={handleChangeSelectProduct}>
             {productsData &&
               productsData?.records.map((x) => {
@@ -172,11 +199,12 @@ function AddNew() {
           </UI.Select>
         </UI.HStack>
         <UI.HStack alignItems="flex-start" w="full">
-          <UI.Text w="300px">Upload Image</UI.Text>
+          <UI.Text w="300px">Upload Icon</UI.Text>
           <UI.VStack alignItems="flex-start" w="full">
             <UploadThumb
               name="thumb"
               isLoading={uploading}
+              description={'Recommended size: 48px x 48px'}
               onChangeValue={({thumb}) => {
                 if (thumb?.[0]) {
                   setUploading(true);
@@ -203,7 +231,7 @@ function AddNew() {
                   <IoMdCloseCircle fontSize="20px" color="red" />
                 </UI.Circle>
                 <UI.Image
-                  boxSize="120px"
+                  boxSize="48px"
                   borderRadius="md"
                   objectFit="cover"
                   src={thumb}
@@ -213,14 +241,14 @@ function AddNew() {
           </UI.VStack>
         </UI.HStack>
         <UI.HStack alignItems="flex-start" w="full">
-          <UI.Text w="300px">Choose Stock Image</UI.Text>
+          <UI.Text w="300px">Choose Icon</UI.Text>
           <UI.SimpleGrid
             borderWidth="2px"
             borderRadius="md"
             p={5}
             w="full"
             gap="20px"
-            templateColumns="repeat(auto-fill, 180px)">
+            templateColumns="repeat(auto-fill, 30px)">
             {STOCK.map((x, i) => (
               <UI.Box cursor="pointer" onClick={() => setThumb(x)} key={i}>
                 <UI.Image src={x} />

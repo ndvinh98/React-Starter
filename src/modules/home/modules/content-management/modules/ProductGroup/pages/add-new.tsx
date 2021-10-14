@@ -120,6 +120,7 @@ function AddNew() {
           <UI.Text w="300px">Select Line of Product</UI.Text>
           <UI.Select
             placeholder={'Select Line of Product'}
+            isDisabled={application ? false : true}
             onChange={handleChangeSelectProduct}>
             {listCategories &&
               listCategories.map((x) => {
