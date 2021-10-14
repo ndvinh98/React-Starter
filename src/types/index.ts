@@ -280,3 +280,7 @@ export interface IPartnerUser extends BaseSchema {
   otpCodeExp?: Date;
   domain?: IPartnerDomain;
 }
+
+export interface ITier extends BaseSchema {
+  name?: string;
+}

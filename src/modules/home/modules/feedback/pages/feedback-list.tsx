@@ -15,10 +15,6 @@ const FeedbackContent = ({data}) => {
     getItem({}, {path: data?.id});
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   const [isRead, setIsRead] = useState(!!data?.isRead);
 
   return (
