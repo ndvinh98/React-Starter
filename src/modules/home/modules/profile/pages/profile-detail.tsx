@@ -9,6 +9,7 @@ import * as yup from 'yup';
 import {useConfigStore} from '@services/config';
 import LinkUpload from '@components/LinkUpLoad';
 import {useAuthController} from '@modules/auth';
+import {useHomeController} from '@modules/home';
 
 const SALUATION_OPITONS = [
   {value: 'MR', label: 'MR'},
@@ -62,6 +63,7 @@ function ProfileDetail() {
               boxSize="100px"
               userId={profileData?.id}
               src={profileData?.avatarMediaDestination}
+              cb={() => getMe()}
             />
           </UI.Center>
           {!isEmpty(profileData) && !isEmpty(languages) && (
@@ -69,7 +71,6 @@ function ProfileDetail() {
               <FormGenerate
                 onSubmit={(data: any) => {
                   patch(data);
-                  location.reload();
                 }}
                 schema={{
                   firstName: yup
