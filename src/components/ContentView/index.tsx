@@ -30,7 +30,7 @@ function ContentView(props: IContentView) {
 
   return (
     <UI.VStack
-      h="88vh"
+      //h="88vh"
       alignItems="flex-start"
       justifyContent="space-between"
       w="full">
@@ -38,8 +38,8 @@ function ContentView(props: IContentView) {
         <UI.Text fontSize="24px" fontWeight="bold">
           {name}
         </UI.Text>
-        <UI.HStack spacingY={'20px'} spacingX={'0px'} flexWrap="wrap" pb={5}>
-          {filterBar && <UI.Box>{filterBar}</UI.Box>}
+        <UI.HStack w={'full'} justifyContent={'space-between'} spacingY={'20px'} spacingX={'0px'} flexWrap="wrap" pb={5}>
+          {filterBar && <UI.Box w={"300px"}>{filterBar}</UI.Box>}
           <UI.HStack>
             <UI.Text>View Item</UI.Text>
             <UI.Box w="80px">
