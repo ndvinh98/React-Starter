@@ -7,7 +7,7 @@ import {useModalController} from '../modals.controller';
 import {usePatch} from '@utils/hooks';
 
 function AssignPartnerAdminModal() {
-  const {asignPartnerAdmin, closeModal, data} = useModalController();
+  const {assignPartnerAdmin, closeModal, data} = useModalController();
   const {
     data: patchData,
     loading,
@@ -25,7 +25,7 @@ function AssignPartnerAdminModal() {
   return (
     <UI.Modal
       isCentered
-      isOpen={asignPartnerAdmin}
+      isOpen={assignPartnerAdmin}
       onClose={() => closeModal('assignPartnerAdmin')}>
       <UI.ModalOverlay />
       <UI.ModalContent position={'relative'} w="360px" minH="311px">

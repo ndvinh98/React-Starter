@@ -285,7 +285,7 @@ export const ActionColum = (props: any) => {
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
   // const {openModal} = useModalStore();
-  const {row} = props;
+  const {row, refresh} = props;
   return (
     <UI.Center>
       <UI.Menu onClose={onClose} isOpen={isOpen}>
@@ -300,26 +300,28 @@ export const ActionColum = (props: any) => {
         </UI.MenuButton>
         <UI.MenuList>
           <UI.MenuItem
-            hidden={row?.isActive === 1}
-            onClick={() =>
+            isDisabled={row?.isActive === 1}
+            onClick={(e) =>{
+              e.stopPropagation();
               openModal('action', {
                 title: 'Activate Access',
                 type: 'Activate',
-                // cb: () => getUserProfile(),
+                cb: () => refresh(),
                 id: row?.id,
-              })
+              })}
             }>
             Activate Access
           </UI.MenuItem>
           <UI.MenuItem
-            hidden={row?.isActive === 0}
-            onClick={() =>
+            isDisabled={row?.isActive === 0}
+            onClick={(e) =>{
+              e.stopPropagation();
               openModal('action', {
                 title: 'Deactivate Access',
                 type: 'Deactivate',
-                // cb: () => getUserProfile(),
+                cb: () => refresh(),
                 id: row?.id,
-              })
+              })}
             }>
             Deactivate Access
           </UI.MenuItem>
