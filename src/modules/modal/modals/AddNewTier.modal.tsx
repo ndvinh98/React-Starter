@@ -1,37 +1,35 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import {useModalController} from '../modals.controller';
-import {usePatch} from '@utils/hooks';
+import {usePost} from '@utils/hooks';
 
-function AllowDomainModal() {
-  const {allowDomain, closeModal, data} = useModalController();
-  const {
-    data: patchData,
-    loading,
-    patch,
-  } = usePatch(`/partnerDomains/${data?.id}`);
+function AddNewTier() {
+  const {addNewTier, closeModal, data} = useModalController();
+  const [name, setName] = React.useState('');
+  const handleChange = (event) => setName(event.target.value);
+  const {data: postData, loading, post} = usePost(`/tiers`);
   const toast = UI.useToast();
 
-  useEffect(() => {
-    if (patchData) {
-      data?.cb();
-      closeModal('allowDomain');
+  React.useEffect(() => {
+    if (postData) {
+      data?.cb?.();
+      closeModal('addNewTier');
       toast({
         status: 'success',
+        description: 'Successfully!',
         position: 'top-right',
         isClosable: true,
-        description: 'Successfully!',
         duration: 2000,
       });
     }
-  }, [patchData]);
+  }, [postData]);
 
   return (
     <UI.Modal
       isCentered
-      isOpen={allowDomain}
-      onClose={() => closeModal('allowDomain')}>
+      isOpen={addNewTier}
+      onClose={() => closeModal('addNewTier')}>
       <UI.ModalOverlay />
       <UI.ModalContent position={'relative'} w="360px" minH="211px">
         <UI.Circle
@@ -48,23 +46,28 @@ function AllowDomainModal() {
 
         <UI.ModalHeader mt={8}>
           <UI.Center fontSize={'lg'} color={'ste.red'} textAlign="center">
-            {data?.isAllowed ? 'Blacklist' : 'Whitelist'} Domain
+            Add new tier
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <UI.Center fontSize={'lg'} textAlign="center">
-            Are you sure you want to{' '}
-            {data?.isAllowed ? 'blacklist' : 'whitelist'} {data?.domain} ?
+            <UI.VStack w="full" alignItems="flex-start">
+              <UI.Text fontSize="16px">Tier name:</UI.Text>
+              <UI.Input
+                value={name}
+                onChange={handleChange}
+                placeholder="Enter name"
+              />
+            </UI.VStack>
           </UI.Center>
           <UI.Center mt={8} w={'full'}>
             <UI.Button
               colorScheme="blue"
-              onClick={() => {
-                patch({isAllowed: data?.isAllowed ? 0 : 1});
-              }}
+              onClick={() => post({name})}
               mr={3}
               w={'120px'}
               type="submit"
+              isDisabled={!name}
               isLoading={loading}>
               Confirm
             </UI.Button>
@@ -72,7 +75,7 @@ function AllowDomainModal() {
               w={'120px'}
               type="button"
               onClick={() => {
-                closeModal('allowDomain');
+                closeModal('addNewTier');
               }}
               variant="outline">
               Cancel
@@ -85,4 +88,4 @@ function AllowDomainModal() {
   );
 }
 
-export default memo(AllowDomainModal);
+export default memo(AddNewTier);

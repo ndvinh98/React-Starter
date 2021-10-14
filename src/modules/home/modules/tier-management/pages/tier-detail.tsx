@@ -1,22 +1,37 @@
-import React, {useEffect, memo} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
-import {IApplication} from '@types';
 import {useRouterController} from '@modules/router';
-import {useGetItem, useRouter, useGetList} from '@utils/hooks';
+import {useGetItem, useRouter, usePatch} from '@utils/hooks';
 import LoadingComponent from '@components/LoadingComponent';
+import {ITier} from '@types';
 
 import {BsArrowLeft, BsDot} from 'react-icons/bs';
+import CheckboxTree from 'react-checkbox-tree';
+import {
+  MdCheckBoxOutlineBlank,
+  MdCheckBox,
+  MdIndeterminateCheckBox,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowRight,
+} from 'react-icons/md';
+import {isEmpty} from 'lodash';
 
 function TierDetail() {
   const {params} = useRouterController();
   const {push} = useRouter();
-  const {getItem, loading} = useGetItem(`/tiers/${params?.id}`);
+  const {getItem, loading, data} = useGetItem<ITier>(`/tiers/${params?.id}`);
 
   const {
-    getList: getListApplication,
+    getItem: getListApplication,
     data: dataApplication,
     loading: loadingApplication,
-  } = useGetList<IApplication>(`/applications`);
+  } = useGetItem(`/applications/menu`);
+
+  const {
+    patch,
+    loading: updating,
+    data: updateData,
+  } = usePatch(`/tiers/${params?.id}`);
 
   useEffect(() => {
     if (params?.id) {
@@ -27,6 +42,85 @@ function TierDetail() {
   useEffect(() => {
     getListApplication();
   }, []);
+
+  const [checked, setCheck] = useState([]);
+  const [expanded, setExpadned] = useState([]);
+  const [nodes, setNodes] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setCheck(JSON.parse(data?.productPermission) || []);
+    }
+  }, [data]);
+  const toast = UI.useToast();
+  useEffect(() => {
+    if (updateData) {
+      toast({
+        title: 'Successfully!',
+        status: 'success',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
+    }
+  }, [updateData]);
+
+  useEffect(() => {
+    if (!isEmpty(dataApplication)) {
+      const _nodes = dataApplication?.map?.((x) => ({
+        value: `applications-${x?.id}`,
+        label: (
+          <UI.Text fontSize="16px" fontWeight="bold">
+            {x?.name}
+          </UI.Text>
+        ),
+        disabled: isEmpty(x?.categories),
+        children: isEmpty(x?.categories)
+          ? undefined
+          : x?.categories?.map?.((y) => ({
+              value: `categories-${y?.id}`,
+              label: (
+                <UI.Text fontSize="16px" fontWeight="bold">
+                  {y?.name}
+                </UI.Text>
+              ),
+              disabled: isEmpty(y?.groupings),
+              children: isEmpty(y?.groupings)
+                ? undefined
+                : y?.groupings?.map?.((z) => ({
+                    value: `groupings-${z?.id}`,
+                    label: (
+                      <UI.Text
+                        fontSize="16px"
+                        color="gray.600"
+                        fontWeight="bold">
+                        {z?.name}
+                      </UI.Text>
+                    ),
+                    disabled: isEmpty(z?.products),
+                    children: isEmpty(z?.products)
+                      ? undefined
+                      : z?.products.map((k) => ({
+                          value: k?.id,
+                          label: (
+                            <UI.HStack
+                              w="full"
+                              alignItems="center"
+                              justifyContent="flex-start"
+                              fontSize="16px"
+                              color="gray.500"
+                              fontWeight="medium">
+                              <BsDot fontSize="20px" />
+                              <UI.Text> {k?.name}</UI.Text>
+                            </UI.HStack>
+                          ),
+                        })),
+                  })),
+            })),
+      }));
+      setNodes(_nodes);
+    }
+  }, [dataApplication]);
 
   return (
     <UI.Box py={5} px={7} minH="90vh">
@@ -56,163 +150,41 @@ function TierDetail() {
           <LoadingComponent
             length={dataApplication?.records?.length}
             isLoading={loadingApplication}>
-            <UI.Accordion defaultIndex={[0]} allowMultiple>
-              {dataApplication?.records.map((x) => (
-                <UI.AccordionItem key={x?.id}>
-                  <UI.AccordionButton>
-                    <UI.Box
-                      fontWeight="semibold"
-                      fontSize="16px"
-                      flex="1"
-                      textAlign="left">
-                      {x?.name}
-                    </UI.Box>
-                    <UI.AccordionIcon />
-                    <UI.Center ml={3} w="20px">
-                      <UI.Checkbox size="md" />
-                    </UI.Center>
-                  </UI.AccordionButton>
-
-                  <UI.AccordionPanel position="relative" p={0}>
-                    <CategoriesAccordion idApplication={x?.id} />
-                  </UI.AccordionPanel>
-                </UI.AccordionItem>
-              ))}
-            </UI.Accordion>
+            <CheckboxTree
+              nodes={nodes}
+              checked={checked}
+              expanded={expanded}
+              onCheck={(checked) => setCheck(checked)}
+              onExpand={(expanded) => setExpadned(expanded)}
+              expandOnClick
+              icons={{
+                check: <MdCheckBox fontSize="20px" color="red" />,
+                uncheck: (
+                  <MdCheckBoxOutlineBlank fontSize="20px" color="grey" />
+                ),
+                halfCheck: (
+                  <MdIndeterminateCheckBox fontSize="20px" color="red" />
+                ),
+                expandClose: <MdKeyboardArrowRight fontSize="20px" />,
+                expandOpen: <MdKeyboardArrowDown fontSize="20px" />,
+              }}
+            />
+            <UI.HStack w="full" pt={3} justifyContent="flex-end">
+              <UI.Button
+                isLoading={updating}
+                onClick={() =>
+                  patch({productPermission: JSON.stringify(checked)})
+                }
+                isDisabled={isEmpty(checked)}
+                size="sm">
+                Save
+              </UI.Button>
+            </UI.HStack>
           </LoadingComponent>
         </UI.Box>
       </LoadingComponent>
     </UI.Box>
   );
 }
-
-const CategoriesAccordion = memo(({idApplication}: any) => {
-  const {getList, loading, data} = useGetList(`/categories`);
-  useEffect(() => {
-    getList({
-      filter: JSON.stringify([{application: idApplication}]),
-      limit: 1000,
-    });
-  }, []);
-
-  return (
-    <LoadingComponent isLoading={loading} length={data?.records?.length}>
-      <UI.Accordion position="relative" defaultIndex={[0]} allowMultiple>
-        <UI.Box
-          bottom="0px"
-          left="25px"
-          position="absolute"
-          width="1px"
-          height="100%"
-          bg="#B1B8C2"
-        />
-        {data?.records?.map((x, i) => (
-          <CategoriesItem
-            key={x?.id}
-            item={x}
-            index={i}
-            length={data?.records?.length}
-          />
-        ))}
-      </UI.Accordion>
-    </LoadingComponent>
-  );
-});
-
-const CategoriesItem = memo(({item, length, index}: any) => {
-  const [checkedItems, setCheckedItems] = React.useState([false, false]);
-
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-
-  return (
-    <UI.AccordionItem border="none">
-      <UI.AccordionButton
-        _hover={{background: 'none', fontWeight: 'bold'}}
-        position="relative">
-        <UI.Box
-          left="25px"
-          position="absolute"
-          width="15px"
-          height="1px"
-          bg="#B1B8C2"
-        />
-        {index + 1 === length && (
-          <UI.Box
-            left="22px"
-            position="absolute"
-            width="5px"
-            height="19px"
-            bg="white"
-            bottom={0}
-          />
-        )}
-        <UI.Box pl={7} fontSize="16px" flex="1" textAlign="left">
-          {item?.name}
-        </UI.Box>
-        <UI.AccordionIcon />
-        <UI.Center ml={3} w="20px">
-          <UI.Checkbox
-            isChecked={allChecked}
-            isIndeterminate={isIndeterminate}
-            onChange={(e) =>
-              setCheckedItems([e.target.checked, e.target.checked])
-            }
-          />
-        </UI.Center>
-      </UI.AccordionButton>
-      <UI.AccordionPanel position="relative">
-        {index + 1 === length && (
-          <UI.Box
-            left="23px"
-            bottom="0px"
-            position="absolute"
-            width="5px"
-            height="100%"
-            bg="white"
-          />
-        )}
-        <GroupingsList
-          checkedItems={checkedItems}
-          setCheckedItems={setCheckedItems}
-          categorieId={item?.id}
-        />
-      </UI.AccordionPanel>
-    </UI.AccordionItem>
-  );
-});
-
-const GroupingsList = memo(
-  ({categorieId, checkedItems, setCheckedItems}: any) => {
-    const {getList, loading, data} = useGetList(`/groupings`);
-    useEffect(() => {
-      getList({
-        filter: JSON.stringify([{category: categorieId}]),
-        limit: 1000,
-      });
-    }, []);
-
-    return (
-      <LoadingComponent isLoading={loading} length={data?.records?.length}>
-        <UI.VStack position="relative" alignItems="flex-start" w="full" pl={7}>
-          {data?.records?.map((x, i) => (
-            <UI.HStack w="full" justifyContent="space-between" key={x?.id}>
-              <UI.HStack color="#6C6F84">
-                <BsDot fontSize="29px" />
-                <UI.Text>{x?.name}</UI.Text>
-              </UI.HStack>
-              <UI.Checkbox
-                isChecked={checkedItems[i]}
-                onChange={(e) =>
-                  setCheckedItems([checkedItems[i], e.target.checked])
-                }
-              />
-            </UI.HStack>
-          ))}
-        </UI.VStack>
-      </LoadingComponent>
-    );
-  },
-);
 
 export default TierDetail;

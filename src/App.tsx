@@ -8,6 +8,7 @@ import LoadingScreen from '@components/LoadingScreen';
 import {serverInterceptors} from '@services';
 
 import '@assets/css/datePicker.css';
+import '@assets/css/reactCheckboxTree.css';
 
 logs();
 serverInterceptors();

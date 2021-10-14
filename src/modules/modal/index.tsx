@@ -7,6 +7,7 @@ import FileViewer from './modals/FileViewer.modal';
 import FileViewer2 from './modals/FileViewer.modal';
 import AllowDomainModal from './modals/AllowDomain.modal';
 import AddBlacklistDomainModal from './modals/AddBlacklistDomain.modal';
+import AddNewTier from './modals/AddNewTier.modal';
 
 function InitModal() {
   return (
@@ -19,6 +20,7 @@ function InitModal() {
       <FileViewer2 />
       <AllowDomainModal />
       <AddBlacklistDomainModal />
+      <AddNewTier />
     </>
   );
 }

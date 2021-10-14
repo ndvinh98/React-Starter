@@ -4,10 +4,12 @@ import * as UI from '@chakra-ui/react';
 import {useGetList, useRouter} from '@utils/hooks';
 import {ITier} from '@types';
 import LoadingComponent from '@components/LoadingComponent';
+import {useModalController} from '@modules/modal';
 
 function TierList() {
   const {getList, loading, data} = useGetList<ITier>('/tiers');
   const {push} = useRouter();
+  const {openModal} = useModalController();
 
   useEffect(() => {
     getList({
@@ -22,7 +24,17 @@ function TierList() {
           Tier Management
         </UI.Text>
         <UI.HStack w="full" alignItems="flex-start">
-          <UI.Button>Add New Tier</UI.Button>
+          <UI.Button
+            onClick={() =>
+              openModal('addNewTier', {
+                cb: () =>
+                  getList({
+                    limit: 1000,
+                  }),
+              })
+            }>
+            Add New Tier
+          </UI.Button>
         </UI.HStack>
         <LoadingComponent isLoading={loading} length={data?.records?.length}>
           <UI.VStack pt={3} w="full">
