@@ -50,6 +50,7 @@ function TierDetail() {
   useEffect(() => {
     if (data) {
       setCheck(JSON.parse(data?.productPermission) || []);
+      setExpadned(JSON.parse(data?.parentPermission) || []);
     }
   }, [data]);
   const toast = UI.useToast();
@@ -156,6 +157,7 @@ function TierDetail() {
               expanded={expanded}
               onCheck={(checked) => setCheck(checked)}
               onExpand={(expanded) => setExpadned(expanded)}
+              showNodeIcon={false}
               expandOnClick
               icons={{
                 check: <MdCheckBox fontSize="20px" color="red" />,
@@ -173,7 +175,10 @@ function TierDetail() {
               <UI.Button
                 isLoading={updating}
                 onClick={() =>
-                  patch({productPermission: JSON.stringify(checked)})
+                  patch({
+                    productPermission: JSON.stringify(checked),
+                    parentPermission: JSON.stringify(expanded),
+                  })
                 }
                 isDisabled={isEmpty(checked)}
                 size="sm">

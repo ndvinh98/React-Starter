@@ -15,7 +15,7 @@ import {
 import {isEmpty} from 'lodash';
 
 function TierDetail({partnerId}: {partnerId: number}) {
-  const {getItem, loading, data} = useGetItem<string[]>(
+  const {getItem, loading, data} = useGetItem<any>(
     `/tiers/permissionByPartnerId`,
   );
 
@@ -38,7 +38,10 @@ function TierDetail({partnerId}: {partnerId: number}) {
   const [nodes, setNodes] = useState([]);
 
   useEffect(() => {
-    if (data) setCheck(data);
+    if (data) {
+      setCheck(data?.productPermission);
+      setExpadned(data?.parentPermission);
+    }
   }, [data]);
 
   useEffect(() => {
