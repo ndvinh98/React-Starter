@@ -8,8 +8,8 @@ import {HiDotsHorizontal} from 'react-icons/hi';
 import {useRouter, useGetItem} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import {IPartnerUsers} from '@types';
-import LinkUpload from '@components/LinkUpLoad';
 import UpLoadCertificates from '@components/UpLoadCertificates';
+import CertificateAwarded from '@components/CertificatesAwarded';
 
 import {format} from 'date-fns';
 import {keyBy} from 'lodash';
@@ -161,13 +161,17 @@ function UserPartnerDetail() {
       ) : (
         <UI.Box bg={'white'} mt={8} w="full">
           <UI.Center pt="4">
-            <LinkUpload
-              displayName={profileData?.firstName + ' ' + profileData?.lastName}
-              name="avatar"
+            <UI.Avatar
+              sx={{img: {objectFit: 'contain'}}}
+              name={profileData?.firstName + ' ' + profileData?.lastName}
+              bg={
+                profileData?.partnerUserProfiles[0]?.avatarMediaDestination
+                  ? 'white'
+                  : undefined
+              }
               boxSize="100px"
               userId={profileData?.id}
               src={profileData?.partnerUserProfiles[0]?.avatarMediaDestination}
-              cb={() => getUserProfile()}
             />
           </UI.Center>
           <UI.Box p="4">
@@ -310,6 +314,7 @@ function UserPartnerDetail() {
         </UI.Box>
       )}
       <UpLoadCertificates partnerUserId={profileData?.id} />
+      <CertificateAwarded partnerUserId={profileData?.id} />
     </UI.VStack>
   );
 }

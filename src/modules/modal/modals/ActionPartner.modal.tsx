@@ -3,17 +3,17 @@ import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 
 import {useModalController} from '../modals.controller';
-import {usePost} from '@utils/hooks';
+import {usePatch} from '@utils/hooks';
 
-function ActionModal() {
-  const {action, closeModal, data} = useModalController();
+function ActionPartnerModal() {
+  const {actionPartner, closeModal, data} = useModalController();
   const toast = UI.useToast();
 
-  const {data: resData, post, loading} = usePost(`/users/activeUser`);
+  const {data: resData, patch, loading} = usePatch(`/partners/${data?.id}`);
 
   useEffect(() => {
     if (resData) {
-      closeModal('action');
+      closeModal('actionPartner');
       data?.cb();
       toast({
         title: 'Successfully!',
@@ -25,7 +25,10 @@ function ActionModal() {
     }
   }, [resData]);
   return (
-    <UI.Modal isCentered isOpen={action} onClose={() => closeModal('action')}>
+    <UI.Modal
+      isCentered
+      isOpen={actionPartner}
+      onClose={() => closeModal('actionPartner')}>
       <UI.ModalOverlay />
       <UI.ModalContent w="350px" position={'relative'}>
         <UI.Circle
@@ -56,9 +59,8 @@ function ActionModal() {
               isLoading={loading}
               mr={3}
               onClick={() => {
-                post(
+                patch(
                   {
-                    id: data?.id,
                     isActive: data?.type === 'Activate' ? 1 : 0,
                   },
                   {},
@@ -79,4 +81,4 @@ function ActionModal() {
   );
 }
 
-export default memo(ActionModal);
+export default memo(ActionPartnerModal);

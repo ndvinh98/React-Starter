@@ -458,7 +458,7 @@ function Detail() {
                   type: 'decor',
                   DecorComponent: () => (
                     <FieldView
-                      name={` `}
+                      name={``}
                       value={handleNameAttachment(
                         data?.partnerApplicationAttachments[1]
                           ?.mediaDestination,
@@ -552,7 +552,7 @@ export const FieldView = memo(({name, value, data}: any) => {
         bg={'#F7F7F7'}
         justifyContent={'space-between'}
         p={2}
-        w={'600px'}>
+        w={'full'}>
         <UI.Text fontWeight={'bold'}>{value || '---'}</UI.Text>
         <UI.Button
           onClick={() =>

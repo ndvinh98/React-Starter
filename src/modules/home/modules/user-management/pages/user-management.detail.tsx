@@ -82,7 +82,7 @@ function UserDetail() {
   }, [data]);
 
   return (
-    <UI.VStack py={6} px={8}>
+    <UI.Box py={6} px={8}>
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
@@ -90,7 +90,7 @@ function UserDetail() {
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
-      <UI.Text fontWeight={'bold'} fontSize={'20px'}>
+      <UI.Text fontWeight={'bold'} fontSize={'24px'} pt="5">
         {profileData?.firstName + ' ' + profileData?.lastName}
       </UI.Text>
 
@@ -133,26 +133,26 @@ function UserDetail() {
                   <UI.MenuList>
                     <UI.MenuItem
                       hidden={isProfileActive}
-                      onClick={() =>
+                      onClick={() => {
                         openModal('action', {
                           title: 'Activate Access',
                           type: 'Activate',
-                          //   cb: () => getUserProfile(),
-                          id: profileData?.id,
-                        })
-                      }>
+                          cb: () => getUserProfile(),
+                          id: params?.id,
+                        });
+                      }}>
                       Activate Access
                     </UI.MenuItem>
                     <UI.MenuItem
                       hidden={!isProfileActive}
-                      onClick={() =>
+                      onClick={() => {
                         openModal('action', {
                           title: 'Deactivate Access',
                           type: 'Deactivate',
-                          //   cb: () => getUserProfile(),
-                          id: profileData?.id,
-                        })
-                      }>
+                          cb: () => getUserProfile(),
+                          id: params?.id,
+                        });
+                      }}>
                       Deactivate Access
                     </UI.MenuItem>
                   </UI.MenuList>
@@ -395,7 +395,7 @@ function UserDetail() {
           </UI.Box>
         </UI.Box>
       )}
-    </UI.VStack>
+    </UI.Box>
   );
 }
 
