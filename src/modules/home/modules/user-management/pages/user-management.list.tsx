@@ -72,8 +72,6 @@ function userManagement() {
     {textSearch = undefined, status, userType},
     fieldChange,
   ) => {
-    console.log(textSearch, status, userType);
-
     if (fieldChange.name === 'textSearch') {
       if (textSearch && textSearch.length < 3) return;
 
@@ -194,7 +192,7 @@ function userManagement() {
                           options={[
                             {
                               label: '10',
-                              value: 5,
+                              value: 10,
                             },
                             {
                               label: '20',

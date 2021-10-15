@@ -71,7 +71,7 @@ function ActionPartnerModal() {
             <UI.Button
               variant="outline"
               w={'120px'}
-              onClick={() => closeModal('action')}>
+              onClick={() => closeModal('actionPartner')}>
               Cancel
             </UI.Button>
           </UI.Center>
