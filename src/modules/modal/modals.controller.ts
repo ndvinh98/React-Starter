@@ -17,6 +17,8 @@ export interface IModalController {
   fileViewer: boolean;
   fileViewer2: boolean;
   assignPartnerAdmin: boolean;
+  addNewTier: boolean;
+  removeTier: boolean;
 }
 
 export const useModalController = create<IModalController>((set) => ({
@@ -32,6 +34,8 @@ export const useModalController = create<IModalController>((set) => ({
   allowDomain: false,
   action: false,
   reject: false,
+  addNewTier: false,
+  removeTier: false,
   data: null,
   openModal: (name: string, data?: any) => set({[name]: true, data}),
   closeModal: (name: string) => set({[name]: false, data: null}),

@@ -123,7 +123,7 @@ function Appearance() {
           Footer={
             <UI.Tr>
               <UI.Td fontWeight="bold" colSpan={1000}>
-                {data?.total} User
+                {data?.total} Domain
               </UI.Td>
             </UI.Tr>
           }

@@ -16,8 +16,8 @@ function LoadingComponent(props: ILoadingComponent) {
   ) : !length ? (
     <UI.Center w="full">
       <UI.VStack>
-        <UI.Image src="https://i.imgur.com/nvdeBu8.png" />
-        <UI.Text>No data</UI.Text>
+        <UI.Image w="90px" src="https://i.imgur.com/nvdeBu8.png" />
+        <UI.Text fontSize="12px">No data</UI.Text>
       </UI.VStack>
     </UI.Center>
   ) : (

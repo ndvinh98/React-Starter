@@ -34,6 +34,7 @@ function List() {
           totalCount={data?.total}
           currentPage={page}
           linkAddNew="/home/content-management/line-of-business/add-new"
+          linkToChild="/home/content-management/line-of-product"
           name="Content Management - Line of Business"
         />
       )}

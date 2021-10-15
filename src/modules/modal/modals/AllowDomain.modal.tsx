@@ -14,14 +14,16 @@ function AllowDomainModal() {
   const toast = UI.useToast();
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     if (patchData) {
       data?.cb();
       closeModal('allowDomain');
-      toast({status: 'success', description: 'Successfully!', duration: 2000});
+      toast({
+        status: 'success',
+        position: 'top-right',
+        isClosable: true,
+        description: 'Successfully!',
+        duration: 2000,
+      });
     }
   }, [patchData]);
 
@@ -77,7 +79,6 @@ function AllowDomainModal() {
             </UI.Button>
           </UI.Center>
         </UI.ModalBody>
-
         <UI.ModalFooter></UI.ModalFooter>
       </UI.ModalContent>
     </UI.Modal>

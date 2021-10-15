@@ -13,6 +13,7 @@ interface IUploadFilesPorps {
   isDisabled?: boolean;
   isHiddenLabel?: boolean;
   isLoading?: boolean;
+  description?: string;
 }
 
 function UploadFiles(props: IUploadFilesPorps) {
@@ -22,6 +23,7 @@ function UploadFiles(props: IUploadFilesPorps) {
     defaultValue,
     isDisabled,
     isLoading,
+    description,
   } = props;
 
   const [files, setFiles] = useState<any[]>(defaultValue);
@@ -88,7 +90,7 @@ function UploadFiles(props: IUploadFilesPorps) {
         </UI.Box>
       </UI.Center>
       <UI.Text fontStyle="italic" color="#BDBDBD">
-        Recommended size: 300px x 200px
+        {description ? description : 'Recommended size: 300px x 200px'}
       </UI.Text>
     </>
   );

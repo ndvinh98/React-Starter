@@ -9,6 +9,8 @@ import AllowDomainModal from './modals/AllowDomain.modal';
 import AddBlacklistDomainModal from './modals/AddBlacklistDomain.modal';
 import AssignPartnertAdminModal from './modals/AssignPartnertAdmin.modal';
 import ActionPartnerModal from './modals/ActionPartner.modal';
+import AddNewTier from './modals/AddNewTier.modal';
+import RemoveTier from './modals/RemoveTier.modal';
 
 function InitModal() {
   return (
@@ -23,6 +25,8 @@ function InitModal() {
       <AddBlacklistDomainModal />
       <AssignPartnertAdminModal />
       <ActionPartnerModal />
+      <AddNewTier />
+      <RemoveTier />
     </>
   );
 }
