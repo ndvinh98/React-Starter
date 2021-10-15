@@ -6,6 +6,7 @@ import {useRouter} from '@utils/hooks';
 
 import CompanyInfo from '@components/CompanyInfo';
 import UserTable from '@components/UserTable';
+import TierToParter from '@components/AddTierToParter';
 
 import {IUserManagement} from '@types';
 import {
@@ -139,7 +140,7 @@ function CompanyDetail() {
   };
 
   return (
-    <UI.VStack py={6} px={8} spacing={4} w="full">
+    <UI.VStack alignItems="flex-start" py={6} px={8} spacing={4} w="full">
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
@@ -163,6 +164,10 @@ function CompanyDetail() {
         loading={loadingSales}
         handleFilterData={handleFilterDataSales}
         setPage={setPageSales}
+      />
+      <TierToParter
+        companyName={dataCompany?.companyName}
+        partnerId={params?.id}
       />
     </UI.VStack>
   );

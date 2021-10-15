@@ -7,3 +7,4 @@ export {usePatch} from './usePatch';
 export {useGetList} from './useGetList';
 export {useGetItem} from './useGetItem';
 export {useFilter} from './useFilter';
+export {useRemove} from './useRemove';
