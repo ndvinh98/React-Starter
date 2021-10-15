@@ -110,7 +110,7 @@ function ContentView(props: IContentView) {
             minChildWidth="300px"
             spacing="40px">
             <LoadingComponent isLoading={isLoading}>
-              {data?.map((x) => (
+              {!isModulesView && data?.map((x) => (
                 <UI.Box
                   onClick={() => {push(linkToChild)}}
                   bg="white"
@@ -132,6 +132,24 @@ function ContentView(props: IContentView) {
                     bottom={0}>
                     <UI.Text color="white">{x?.name}</UI.Text>
                   </UI.Center>
+                </UI.Box>
+              ))}
+
+              {isModulesView && data?.map((x) => (
+                <UI.Box
+                  onClick={() => {push(linkToChild)}}
+                  cursor="pointer"
+                  shadow="sm"
+                  height="200px"
+                  size="20px"
+                  borderWidth="2px"
+                  key={x?.id}>
+                    <UI.VStack h={'full'} w={'full'} justifyContent={'center'} alignItems={'center'}>
+                      <UI.Box w={'68px'} h={'68px'} bg={'white'} p={3}>
+                        <UI.Image src={x?.mediaDestination}></UI.Image>
+                      </UI.Box>
+                      <UI.Text fontWeight={'bold'} color={'#828282'}>{x?.name?.toUpperCase()}</UI.Text>
+                    </UI.VStack>
                 </UI.Box>
               ))}
             </LoadingComponent>
@@ -158,7 +176,7 @@ function ContentView(props: IContentView) {
         {showType === 'LIST' && (
           <UI.VStack w="full">
             <LoadingComponent isLoading={isLoading}>
-              {data?.map((x) => (
+              {!isModulesView && data?.map((x) => (
                 <UI.HStack
                   onClick={() => {push(linkToChild)}}
                   key={x?.id}
@@ -175,6 +193,34 @@ function ContentView(props: IContentView) {
                     shadow="md"
                     w="90px"
                     h="60px"></UI.Center>
+                  <UI.Text
+                    textTransform="uppercase"
+                    color="#828282"
+                    fontWeight="bold"
+                    fontSize="18px">
+                    {x?.name}
+                  </UI.Text>
+                </UI.HStack>
+              ))}
+
+              {isModulesView && data?.map((x) => (
+                <UI.HStack
+                  onClick={() => {push(linkToChild)}}
+                  key={x?.id}
+                  cursor="pointer"
+                  w="full"
+                  borderTopWidth={2}
+                  py={5}>
+                  <UI.Box
+                    bg={'white'}
+                    cursor="pointer"
+                    mr={3}
+                    shadow="md"
+                    p={4}
+                    w="68px"
+                    h="68px">
+                      <UI.Image src={x?.mediaDestination}></UI.Image>
+                    </UI.Box>
                   <UI.Text
                     textTransform="uppercase"
                     color="#828282"

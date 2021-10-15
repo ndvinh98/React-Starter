@@ -63,6 +63,7 @@ function List() {
         totalCount={modulesData?.total}
         currentPage={page}
         filterBarWidth="full"
+        isModulesView={true}
         filterBar={
           <FormGenerate
             onChangeValue={handleOnChange}
