@@ -23,6 +23,7 @@ export interface IContentView {
   currentPage?: number;
   linkAddNew?: string;
   linkToChild?: string;
+  isModulesView?: boolean;
 }
 
 function ContentView(props: IContentView) {
@@ -36,7 +37,8 @@ function ContentView(props: IContentView) {
     currentPage,
     linkAddNew,
     isLoading,
-    linkToChild
+    linkToChild,
+    isModulesView,
   } = props;
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');

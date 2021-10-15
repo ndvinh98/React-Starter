@@ -6,42 +6,44 @@ import {IoMdCloseCircle} from 'react-icons/io';
 import {IProduct, ICategorie, IGrouping} from '@types';
 import UploadThumb from '@components/UploadThumb';
 import {uploadFile} from '@services';
-
+import { isEmpty } from 'lodash';
 const STOCK = [
-  '/modules/Case Study 4.png',
-  '/modules/Group 506.png',
-  '/modules/Group 508.png',
-  '/modules/Group 510.png',
-  '/modules/Group 511.png',
-  '/modules/Group 516.png',
-  '/modules/Group 517.png',
-  '/modules/Group 518.png',
-  '/modules/Group 519.png',
-  '/modules/Group 521.png',
-  '/modules/Group 523.png',
-  '/modules/Group 526.png',
-  '/modules/Group 527.png',
-  '/modules/Group 528.png',
-  '/modules/Group 529.png',
-  '/modules/Group 530.png',
-  '/modules/Group 531.png',
-  '/modules/Group 532.png',
-  '/modules/Group 533.png',
-  '/modules/Group 534.png',
-  '/modules/Group 603.png',
-  '/modules/Group 605.png',
-  '/modules/Group 606.png',
-  '/modules/Group 610.png',
-  '/modules/Group 17145.png',
-  '/modules/Group 17146.png',
-  '/modules/Group 17147.png',
-  '/modules/Group 17148.png',
-
+  'https://i.imgur.com/bkSeJLO.png',
+  'https://i.imgur.com/fdw9rPG.png',
+  'https://i.imgur.com/1rbFlw9.png',
+  'https://i.imgur.com/YrMF0sJ.png',
+  'https://i.imgur.com/6i8WZcA.png',
+  'https://i.imgur.com/UBtbu6v.png',
+  'https://i.imgur.com/W5a9L20.png',
+  'https://i.imgur.com/zCOxHFq.png',
+  'https://i.imgur.com/CB7v9TS.png',
+  'https://i.imgur.com/OeouoPm.png',
+  'https://i.imgur.com/C4orAXH.png',
+  'https://i.imgur.com/pWt4xGE.png',
+  'https://i.imgur.com/uzqxhL6.png',
+  'https://i.imgur.com/qPM9VTA.png',
+  'https://i.imgur.com/ic4gKes.png',
+  'https://i.imgur.com/9HGgUZv.png',
+  'https://i.imgur.com/QfdgXMP.png',
+  'https://i.imgur.com/GUCcNGx.png',
+  'https://i.imgur.com/EKpwL6c.png',
+  'https://i.imgur.com/cicFJvg.png',
+  'https://i.imgur.com/OQTAPtF.png',
+  'https://i.imgur.com/VIOUKbE.png',
+  'https://i.imgur.com/xWUDb9W.png',
+  'https://i.imgur.com/pZumQI2.png',
+  'https://i.imgur.com/Ql4ZYtL.png',
+  'https://i.imgur.com/iSxfB38.png'
 ];
+
+const MEDIA_TYPE = ["VIDEOS", "DOCUMENTS", "IMAGES"]
 
 function AddNew() {
   const {getItem: getAllMenu, data: menuData} = useGetItem('applications/menu');
   const [name, setName] = useState('');
+  const [moduleType, setModuleType] = useState('');
+  const [mediaType, setMediaType] = useState('');
+
   const [application, setApplication] = useState('');
   const [category, setCategory] = useState('');
   const [grouping, setGroup] = useState('');
@@ -52,38 +54,65 @@ function AddNew() {
 
   const {getList: getListCategories, data: categoriesData} =
     useGetList<ICategorie>('categories');
-  const {getList: getListGroupings, data: groupingsData} =
+  const {getList: getListGroupings, data: groupingsData, setData: setGroupingsData} =
     useGetList<IGrouping>('groupings');
-  const {getList: getListProduct, data: productsData} =
+  const {getList: getListProduct, data: productsData, setData: setProductsData} =
     useGetList<IProduct>('products');
 
   useEffect(() => {
     if (application)
-      getListCategories({limit: 9999,filter: JSON.stringify([{application: application}])});
+      getListCategories({
+        limit: 9999,
+        filter: JSON.stringify([{application: application}]),
+      });
+      setGroupingsData({});
+      setProductsData({});
+      setGroup('');
+      setProduct('');
+      setCategory('');
+  }, [application]);
+
+  useEffect(() => {
     if (category)
-      getListGroupings({limit: 9999,filter: JSON.stringify([{category: category}])});
+      getListGroupings({
+        limit: 9999,
+        filter: JSON.stringify([{category: category}]),
+      });
+      setProductsData({});
+      setGroup('');
+      setProduct('');
+  }, [category]);
+
+  useEffect(() => {
     if (grouping)
-      getListProduct({limit: 9999,filter: JSON.stringify([{grouping: grouping}])});
-  }, [grouping, category, application]);
+      getListProduct({
+        limit: 9999,
+        filter: JSON.stringify([{grouping: grouping}]),
+      });
+  }, [grouping]);
+
+
 
   const {push} = useRouter();
   const toast = UI.useToast();
 
-  const handleChange = (event) => setName(event.target.value);
+  const handleChange = (event) => {
+    setName(event.target.value);
+    setModuleType(event.target.value.split(' ').join(''));
+  };
+
+  const handleChangeMediaType = (event) => {
+    setMediaType(event.target.value);
+  };
+
   const handleChangeSelectBusiness = (event) => {
     setApplication(event.target.value);
-    setCategory('');
-    setGroup('');
-    setProduct('');
   };
   const handleChangeSelectCategory = (event) => {
     setCategory(event.target.value);
-    setGroup('');
-    setProduct('');
   };
   const handleChangeSelectGroup = (event) => {
     setGroup(event.target.value);
-    setProduct('');
   };
 
   const handleChangeSelectProduct = (event) => {
@@ -92,7 +121,7 @@ function AddNew() {
 
   const [thumb, setThumb] = useState('');
   const canCreate =
-    name && thumb && application && category && grouping && product;
+    name && product && mediaType && moduleType;
 
   const [file, setFile] = useState();
 
@@ -102,7 +131,7 @@ function AddNew() {
     '/products/uploadThumbnailUrl',
   );
 
-  const {post, loading, data: postData} = usePost('/products');
+  const {post, loading, data: postData} = usePost('/productModules');
 
   useEffect(() => {
     if (data) {
@@ -129,12 +158,12 @@ function AddNew() {
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/content-management/line-of-business')}>
+        onClick={() => push('/home/content-management/modules')}>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
       <UI.Text fontSize="24px" fontWeight="bold">
-        Content Management - Products
+        Content Management - Modules
       </UI.Text>
       <UI.VStack
         spacing="20px"
@@ -145,18 +174,29 @@ function AddNew() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-          ADD NEW PRODUCT
+          ADD NEW MODULE
         </UI.Text>
         <UI.HStack w="full">
           <UI.Text w="300px">Module Name</UI.Text>
           <UI.Input value={name} onChange={handleChange} />
         </UI.HStack>
         <UI.HStack w="full">
+          <UI.Text w="300px">Select Media Type</UI.Text>
+          <UI.Select
+            placeholder={'Select Media Type'}
+            onChange={handleChangeMediaType}>
+            {
+              MEDIA_TYPE.map((x) => {
+                return <option value={x}>{x}</option>;
+              })}
+          </UI.Select>
+        </UI.HStack>
+        <UI.HStack w="full">
           <UI.Text w="300px">Select Line of Business</UI.Text>
           <UI.Select
             placeholder={'Select Line of Business'}
             onChange={handleChangeSelectBusiness}>
-            {menuData &&
+            {!isEmpty(menuData) &&
               menuData.map((x) => {
                 return <option value={x?.id}>{x?.name}</option>;
               })}
@@ -168,7 +208,7 @@ function AddNew() {
             placeholder={'Select Line of Product'}
             isDisabled={application ? false : true}
             onChange={handleChangeSelectCategory}>
-            {categoriesData &&
+            {!isEmpty(categoriesData) &&
               categoriesData?.records.map((x) => {
                 return <option value={x?.id}>{x?.name}</option>;
               })}
@@ -180,7 +220,7 @@ function AddNew() {
             placeholder={'Select Product Group'}
             isDisabled={category ? false : true}
             onChange={handleChangeSelectGroup}>
-            {groupingsData &&
+            {!isEmpty(groupingsData) &&
               groupingsData?.records.map((x) => {
                 return <option value={x?.id}>{x?.name}</option>;
               })}
@@ -192,7 +232,7 @@ function AddNew() {
             placeholder={'Select Product Group'}
             isDisabled={grouping ? false : true}
             onChange={handleChangeSelectProduct}>
-            {productsData &&
+            {!isEmpty(productsData) &&
               productsData?.records.map((x) => {
                 return <option value={x?.id}>{x?.name}</option>;
               })}
@@ -261,8 +301,10 @@ function AddNew() {
             isLoading={loading}
             onClick={() =>
               post({
-                grouping,
+                productId: product,
                 name,
+                moduleType,
+                mediaType,
                 mediaDestination: thumb,
               })
             }

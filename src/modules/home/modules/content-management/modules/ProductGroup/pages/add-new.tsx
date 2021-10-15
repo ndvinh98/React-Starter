@@ -83,7 +83,7 @@ function AddNew() {
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/content-management/line-of-business')}>
+        onClick={() => push('/home/content-management/product-group')}>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>

@@ -3,7 +3,7 @@ import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
 import {useGetList, useFilter, useGetItem} from '@utils/hooks';
-import {IProduct, ICategorie, IGrouping} from '@types';
+import {IProduct, ICategorie, IGrouping, IModules} from '@types';
 
 function List() {
   const {getItem: getAllMenu, data: menuData} = useGetItem('applications/menu');
@@ -11,11 +11,13 @@ function List() {
     getAllMenu();
   }, []);
 
-  const handleOnChange = ({application, category, grouping}) => {
+  const handleOnChange = ({application, category, grouping, product}) => {
     if (application) getListCategories({limit: 9999,filter: JSON.stringify([{application: application}])});
     if (category) getListGroupings({limit: 9999,filter: JSON.stringify([{category: category}])});
-    if (grouping) getListProduct({filter: JSON.stringify([{grouping: grouping}])});
-
+    if (grouping) getListProduct({limit: 9999,filter: JSON.stringify([{grouping: grouping}])});
+    getListModules({
+      filter: product ? JSON.stringify([{productId: product}]) : undefined,
+    });
   };
 
   const categoryRef = useRef<any>(null);
@@ -42,11 +44,11 @@ function List() {
   const {getList: getListCategories, data: categoriesData} = useGetList<ICategorie>('categories');
   const {getList: getListGroupings, data: groupingsData} = useGetList<IGrouping>('groupings');
   const {getList: getListProduct, data: productsData} = useGetList<IProduct>('products');
-
+  const {getList: getListModules, data: modulesData} = useGetList<IModules>('productModules');
 
   const {page, limit} = useFilter({limit: 10, page: 1});
   useEffect(() => {
-    getListProduct({
+    getListModules({
       page,
       limit,
     });
@@ -56,9 +58,9 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <ContentView
-        data={productsData?.records}
+        data={modulesData?.records}
         limit={limit}
-        totalCount={productsData?.total}
+        totalCount={modulesData?.total}
         currentPage={page}
         filterBarWidth="full"
         filterBar={
@@ -122,7 +124,7 @@ function List() {
             ]}
           />
         }
-        name="Content Management - Products"
+        name="Content Management - Modules"
         linkAddNew="/home/content-management/modules/add-new"
       />
     </UI.Box>
