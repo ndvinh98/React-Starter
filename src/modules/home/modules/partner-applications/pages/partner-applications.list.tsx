@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {isEmpty} from 'lodash';
+import React, {useEffect, useMemo} from 'react';
+import {isEmpty, chain} from 'lodash';
 import {useFilter} from '@utils/hooks';
 import {useGetList} from '@utils/hooks';
 import {IPartnerApplicationForms} from '@types';
@@ -8,21 +8,27 @@ import {IFormControl} from '@components/FormGenerate/FormControl';
 import LineAplication from '@components/LineApplication';
 import * as UI from '@chakra-ui/react';
 import {AiOutlineSearch} from 'react-icons/ai';
+import {format} from 'date-fns';
 
 const FIELDS: IFormControl[] = [
   {
     type: 'input-group',
-    name: 'search',
+    name: 'textSearch',
     colSpan: 3,
     placeholder: 'Search...',
     leftIcon: <AiOutlineSearch size={20} />,
   },
   {
+    isClearable: false,
     type: 'select',
     name: 'status',
     colSpan: 3,
-    defaultValue: {label: 'Pending requests', value: '-1'},
+    defaultValue: {label: 'Access requests', value: 'PENDING'},
     options: [
+      {
+        label: 'Access requests',
+        value: 'PENDING',
+      },
       {
         label: 'Accepted requests',
         value: 'APPROVED',
@@ -34,6 +40,40 @@ const FIELDS: IFormControl[] = [
     ],
   },
 ];
+
+const FeedbackCategory = ({data}) => {
+  const groupedMessages = useMemo(
+    () =>
+      chain(data)
+        .groupBy((item) => format(new Date(item?.updatedAt), 'dd MMM yyyy'))
+        .sortBy((group) => data.indexOf(group[0]))
+        .valueOf(),
+    [data],
+  );
+
+  return (
+    <UI.Box w={'full'}>
+      {groupedMessages.map((group, gr_index) => {
+        const section = format(new Date(group[0].updatedAt), 'dd MMM yyyy');
+        return (
+          <UI.Box key={gr_index} pt={4} mb={4}>
+            <UI.Text pb={2} fontWeight="600">
+              {' '}
+              {section}{' '}
+            </UI.Text>
+            {group.map((item) => {
+              return (
+                <UI.HStack key={item?.id} spacing={8} width="full" pb="5">
+                  <LineAplication aplicationData={item} />
+                </UI.HStack>
+              );
+            })}
+          </UI.Box>
+        );
+      })}
+    </UI.Box>
+  );
+};
 
 function Main() {
   const {page, limit, textSearch, setTextSearch, filter, setFilter, setLimit} =
@@ -56,47 +96,14 @@ function Main() {
         : JSON.stringify([
             {partnerApplicationSubmission: {status: filter.status}},
           ]),
-      textSearch: textSearch
-        ? JSON.stringify([
-            {firstName: textSearch},
-            {email: textSearch},
-            {lastName: textSearch},
-          ])
-        : undefined,
+      textSearch: isEmpty(textSearch)
+        ? undefined
+        : JSON.stringify([{companyName: textSearch}]),
     });
-  }, [page, textSearch, filter]);
-
-  useEffect(() => {
-    if (limit !== 10)
-      getList(
-        {
-          page,
-          limit,
-          relations: JSON.stringify([
-            'partnerApplicationSubmission',
-            'partnerApplicationSubmission.submittedByPartnerUser',
-          ]),
-          filter: isEmpty(filter)
-            ? JSON.stringify([
-                {partnerApplicationSubmission: {status: 'PENDING'}},
-              ])
-            : JSON.stringify([
-                {partnerApplicationSubmission: {status: filter.status}},
-              ]),
-          textSearch: textSearch
-            ? JSON.stringify([
-                {firstName: textSearch},
-                {email: textSearch},
-                {lastName: textSearch},
-              ])
-            : undefined,
-        },
-        {hiddenLoading: true},
-      );
-  }, [limit]);
+  }, [page, textSearch, filter, limit]);
 
   const handleFilterData = ({textSearch, status}) => {
-    if (textSearch !== undefined) setTextSearch(textSearch);
+    setTextSearch(textSearch);
     setFilter((filter) => ({
       ...filter,
     }));
@@ -128,22 +135,19 @@ function Main() {
           <UI.Text>No data</UI.Text>
         </UI.Center>
       ) : (
-        data.records.map((x) => (
-          <UI.HStack key={x?.id} spacing={8} width="full">
-            <LineAplication aplicationData={x} />
-          </UI.HStack>
-        ))
+        <UI.VStack w={'full'}>
+          <FeedbackCategory data={data?.records} />
+          <UI.Center hidden={data?.total <= limit}>
+            <UI.Button
+              onClick={handleLoadMore}
+              color="#54565A"
+              bg="#E9E9E9"
+              borderRadius="2">
+              Load more
+            </UI.Button>
+          </UI.Center>
+        </UI.VStack>
       )}
-
-      <UI.Center hidden={data?.total <= limit}>
-        <UI.Button
-          onClick={handleLoadMore}
-          color="#54565A"
-          bg="#E9E9E9"
-          borderRadius="2">
-          Load more
-        </UI.Button>
-      </UI.Center>
     </UI.VStack>
   );
 }

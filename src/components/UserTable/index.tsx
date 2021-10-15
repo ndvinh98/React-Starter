@@ -38,11 +38,6 @@ function UserTable(props) {
   const {push} = useRouter();
   const {isBase} = useMedia();
 
-  // const handleFilterData = ({textSearch, status, userType}) => {
-  //   // handleFilterDataUser(textSearch, status, userType);
-  //   console.log(textSearch, status, userType, 'hahahah');
-  // };
-
   return (
     <UI.VStack py={6} px={8} spacing={4} width="full" bgColor="white">
       <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
@@ -272,28 +267,17 @@ export const ActionColum = (props: any) => {
         </UI.MenuButton>
         <UI.MenuList>
           <UI.MenuItem
-            hidden={row?.isActive === 1}
-            onClick={() =>
-              openModal('action', {
-                title: 'Activate Access',
-                type: 'Activate',
-                // cb: () => getUserProfile(),
-                id: row?.id,
-              })
-            }>
-            Activate Access
-          </UI.MenuItem>
-          <UI.MenuItem
             hidden={row?.isActive === 0}
-            onClick={() =>
-              openModal('action', {
-                title: 'Deactivate Access',
-                type: 'Deactivate',
-                // cb: () => getUserProfile(),
+            onClick={(e) => {
+              e.stopPropagation();
+              openModal('assignPartnerAdmin', {
+                // cb: () => refresh(),
                 id: row?.id,
-              })
-            }>
-            Deactivate Access
+                firstName: row?.firstName,
+                lastName: row?.lastName,
+              });
+            }}>
+            Assign as Partner Admin
           </UI.MenuItem>
         </UI.MenuList>
       </UI.Menu>

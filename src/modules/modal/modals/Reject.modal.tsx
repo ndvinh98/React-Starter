@@ -26,7 +26,7 @@ function RejectModal() {
   return (
     <UI.Modal isCentered isOpen={reject} onClose={() => closeModal('reject')}>
       <UI.ModalOverlay />
-      <UI.ModalContent minW="654px" h="550px" position={'relative'}>
+      <UI.ModalContent minW="654px" minH="500px" position={'relative'}>
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -47,7 +47,6 @@ function RejectModal() {
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <UI.VStack>
-            <UI.HStack></UI.HStack>
             <FormGenerate
               onSubmit={({
                 reasonMessage,
@@ -109,10 +108,10 @@ function RejectModal() {
                       </UI.Text>
                     </UI.VStack>
                   ),
-                  h: '250px',
+                  h: '170px',
                 },
               ]}>
-              <UI.Center w={'full'}>
+              <UI.Center w={'full'} pt="10">
                 <UI.Button
                   colorScheme="blue"
                   type="button"

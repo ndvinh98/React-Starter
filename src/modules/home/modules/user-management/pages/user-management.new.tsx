@@ -51,12 +51,12 @@ function Addnew() {
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
-      <UI.Text fontWeight={'bold'} fontSize={'20px'}>
+      <UI.Text fontWeight={'bold'} fontSize={'20px'} pt={'3'}>
         New User
       </UI.Text>
       <UI.Box bgColor={'white'} p={{lg: 12, md: 4}} mt={4}>
         <UI.Text fontWeight={'bold'} mb={4} fontSize={'20px'}>
-          User Information
+          USER INFORMATION
         </UI.Text>
         <FormGenerate
           ref={formRef}
@@ -80,6 +80,7 @@ function Addnew() {
           }}
           fields={[
             {
+              isClearable: false,
               name: 'salutation',
               type: 'select',
               colSpan: 12,
@@ -88,7 +89,6 @@ function Addnew() {
               layout: isBase ? 'horizontal' : 'vertical',
               label: 'Salutation',
               placeholder: 'Salutation',
-
               options: [
                 {value: 'MR', label: 'Mr'},
                 {value: 'MRS', label: 'Mrs'},
@@ -129,6 +129,7 @@ function Addnew() {
               layout: isBase ? 'horizontal' : 'vertical',
             },
             {
+              isClearable: false,
               name: 'userType',
               type: 'select',
               colSpan: 12,
@@ -143,6 +144,7 @@ function Addnew() {
               ],
             },
             {
+              isClearable: false,
               name: 'salesId',
               type: 'select',
               colSpan: 12,
@@ -167,6 +169,7 @@ function Addnew() {
               layout: isBase ? 'horizontal' : 'vertical',
             },
             {
+              isClearable: false,
               name: 'countryName',
               type: 'select',
               colSpan: 12,
@@ -222,6 +225,7 @@ function Addnew() {
               layout: isBase ? 'horizontal' : 'vertical',
             },
             {
+              isClearable: false,
               name: 'languageId',
               type: 'select',
               label: 'Preferred Language',

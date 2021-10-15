@@ -13,13 +13,17 @@ export interface IModalController {
   data: any;
   reject: boolean;
   action: boolean;
+  actionPartner: boolean;
   fileViewer: boolean;
   fileViewer2: boolean;
+  assignPartnerAdmin: boolean;
   addNewTier: boolean;
   removeTier: boolean;
 }
 
 export const useModalController = create<IModalController>((set) => ({
+  assignPartnerAdmin: false,
+  actionPartner: false,
   fileViewer: false,
   fileViewer2: false,
   addBlacklistDomain: false,

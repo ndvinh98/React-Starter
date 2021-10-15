@@ -290,3 +290,8 @@ export interface ICategories extends BaseSchema {
   name?: string;
   mediaDestination?: string;
 }
+
+export interface ICertificates extends BaseSchema {
+  name?: string;
+  mediaDestination?: string;
+}
