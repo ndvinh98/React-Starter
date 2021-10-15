@@ -114,7 +114,7 @@ function ContentView(props: IContentView) {
                 <UI.Box
                   onClick={() => {push(linkToChild)}}
                   bg="white"
-                  bgImage={`url(${x?.mediaDestination})`}
+                  bgImage={`url(${x?.thumbnailMediaDestination?.replace(' ', '%20')||x?.mediaDestination})`}
                   bgSize="cover"
                   bgRepeat="no-repeat"
                   cursor="pointer"
@@ -130,14 +130,16 @@ function ContentView(props: IContentView) {
                     height="50px"
                     bg="#000000a7"
                     bottom={0}>
-                    <UI.Text color="white">{x?.name}</UI.Text>
+                    <UI.Text color="white">{x?.name || x?.resourceName}</UI.Text>
                   </UI.Center>
                 </UI.Box>
               ))}
 
               {isModulesView && data?.map((x) => (
                 <UI.Box
-                  onClick={() => {push(linkToChild)}}
+                  //onClick={() => {push(linkToChild)}}
+                  onClick={() => {push(linkToChild+"/product/"+x?.id)}}
+                  //onClick={() => {push(linkToChild+"?mediaType="+x?.mediaType+"&productId="+x?.productId)}}
                   cursor="pointer"
                   shadow="sm"
                   height="200px"
@@ -146,7 +148,7 @@ function ContentView(props: IContentView) {
                   key={x?.id}>
                     <UI.VStack h={'full'} w={'full'} justifyContent={'center'} alignItems={'center'}>
                       <UI.Box w={'68px'} h={'68px'} bg={'white'} p={3}>
-                        <UI.Image src={x?.mediaDestination}></UI.Image>
+                        <UI.Image src={x?.thumbnailMediaDestination?.replace(' ', '%20') || x?.mediaDestination}></UI.Image>
                       </UI.Box>
                       <UI.Text fontWeight={'bold'} color={'#828282'}>{x?.name?.toUpperCase()}</UI.Text>
                     </UI.VStack>
@@ -185,7 +187,7 @@ function ContentView(props: IContentView) {
                   borderTopWidth={2}
                   py={5}>
                   <UI.Center
-                    bgImage={`url(${x?.mediaDestination})`}
+                    bgImage={`url(${x?.thumbnailMediaDestination?.replace(' ', '%20') || x?.mediaDestination})`}
                     bgSize="cover"
                     bgRepeat="no-repeat"
                     cursor="pointer"
@@ -198,14 +200,15 @@ function ContentView(props: IContentView) {
                     color="#828282"
                     fontWeight="bold"
                     fontSize="18px">
-                    {x?.name}
+                    {x?.name || x?.resourceName}
                   </UI.Text>
                 </UI.HStack>
               ))}
 
               {isModulesView && data?.map((x) => (
                 <UI.HStack
-                  onClick={() => {push(linkToChild)}}
+                  //onClick={() => {push(linkToChild)}}
+                  onClick={() => {push(linkToChild+"/product/"+x?.id)}}
                   key={x?.id}
                   cursor="pointer"
                   w="full"
@@ -219,7 +222,7 @@ function ContentView(props: IContentView) {
                     p={4}
                     w="68px"
                     h="68px">
-                      <UI.Image src={x?.mediaDestination}></UI.Image>
+                      <UI.Image src={x?.thumbnailMediaDestination?.replace(' ', '%20') || x?.mediaDestination}></UI.Image>
                     </UI.Box>
                   <UI.Text
                     textTransform="uppercase"
