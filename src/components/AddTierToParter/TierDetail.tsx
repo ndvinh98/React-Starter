@@ -27,9 +27,10 @@ function TierDetail({partnerId}: {partnerId: number}) {
 
   useEffect(() => {
     getListApplication();
-    getItem({
-      partnerId,
-    });
+    if (partnerId)
+      getItem({
+        partnerId,
+      });
   }, [partnerId]);
 
   const [checked, setCheck] = useState([]);
