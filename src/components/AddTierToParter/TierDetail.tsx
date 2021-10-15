@@ -30,7 +30,7 @@ function TierDetail({partnerId}: {partnerId: number}) {
     getItem({
       partnerId,
     });
-  }, []);
+  }, [partnerId]);
 
   const [checked, setCheck] = useState([]);
   const [expanded, setExpadned] = useState([]);
