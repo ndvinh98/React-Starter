@@ -1,37 +1,37 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import {useModalController} from '../modals.controller';
-import {usePatch} from '@utils/hooks';
+import {useRemove} from '@utils/hooks';
 
-function AllowDomainModal() {
-  const {allowDomain, closeModal, data} = useModalController();
+function RemoveTier() {
+  const {removeTier, closeModal, data} = useModalController();
   const {
-    data: patchData,
+    data: postData,
     loading,
-    patch,
-  } = usePatch(`/partnerDomains/${data?.id}`);
+    remove,
+  } = useRemove(`/partnerTierRelations/${data?.id}`);
   const toast = UI.useToast();
 
-  useEffect(() => {
-    if (patchData) {
-      data?.cb();
-      closeModal('allowDomain');
+  React.useEffect(() => {
+    if (postData) {
+      data?.cb?.();
+      closeModal('removeTier');
       toast({
         status: 'success',
+        description: 'Successfully!',
         position: 'top-right',
         isClosable: true,
-        description: 'Successfully!',
         duration: 2000,
       });
     }
-  }, [patchData]);
+  }, [postData]);
 
   return (
     <UI.Modal
       isCentered
-      isOpen={allowDomain}
-      onClose={() => closeModal('allowDomain')}>
+      isOpen={removeTier}
+      onClose={() => closeModal('removeTier')}>
       <UI.ModalOverlay />
       <UI.ModalContent position={'relative'} w="360px" minH="211px">
         <UI.Circle
@@ -48,20 +48,14 @@ function AllowDomainModal() {
 
         <UI.ModalHeader mt={8}>
           <UI.Center fontSize={'lg'} color={'ste.red'} textAlign="center">
-            {data?.isAllowed ? 'Blacklist' : 'Whitelist'} Domain
+            Are you sure you want to delete this tier for {data?.companyName}?
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          <UI.Center fontSize={'lg'} textAlign="center">
-            Are you sure you want to{' '}
-            {data?.isAllowed ? 'blacklist' : 'whitelist'} {data?.domain} ?
-          </UI.Center>
           <UI.Center mt={8} w={'full'}>
             <UI.Button
               colorScheme="blue"
-              onClick={() => {
-                patch({isAllowed: data?.isAllowed ? 0 : 1});
-              }}
+              onClick={() => remove()}
               mr={3}
               w={'120px'}
               type="submit"
@@ -72,7 +66,7 @@ function AllowDomainModal() {
               w={'120px'}
               type="button"
               onClick={() => {
-                closeModal('allowDomain');
+                closeModal('removeTier');
               }}
               variant="outline">
               Cancel
@@ -85,4 +79,4 @@ function AllowDomainModal() {
   );
 }
 
-export default memo(AllowDomainModal);
+export default memo(RemoveTier);
