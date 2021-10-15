@@ -284,7 +284,8 @@ export interface IPartnerUser extends BaseSchema {
 export interface ITier extends BaseSchema {
   name?: string;
   productPermission?: string;
-  parentPermission?: string;
+  categoryPermission?: string;
+  groupingPermission?: string;
 }
 
 export interface ICategories extends BaseSchema {

@@ -39,53 +39,61 @@ function TierDetail({partnerId}: {partnerId: number}) {
 
   useEffect(() => {
     if (data) {
-      const {productPermission, categoryPermission, groupingPermission} = data;
-      setCheck(productPermission || []);
-      const expand = [
-        'applications-1',
-        ...(categoryPermission?.map?.((x) => `categories-${x}`) || []),
-        ...(groupingPermission?.map?.((y) => `groupings-${y}`) || []),
-      ];
-      setExpadned(expand);
+      setCheck(data?.productPermission);
+      setExpadned(data?.parentPermission);
     }
   }, [data]);
 
   useEffect(() => {
     if (!isEmpty(dataApplication)) {
-      const _nodes = dataApplication?.[0].categories?.map?.((y) => ({
-        value: `categories-${y?.id}`,
+      const _nodes = dataApplication?.map?.((x) => ({
+        value: `applications-${x?.id}`,
         label: (
           <UI.Text fontSize="16px" fontWeight="bold">
-            {y?.name}
+            {x?.name}
           </UI.Text>
         ),
-        disabled: isEmpty(y?.groupings),
-        children: isEmpty(y?.groupings)
+        disabled: isEmpty(x?.categories),
+        children: isEmpty(x?.categories)
           ? undefined
-          : y?.groupings?.map?.((z) => ({
-              value: `groupings-${z?.id}`,
+          : x?.categories?.map?.((y) => ({
+              value: `categories-${y?.id}`,
               label: (
-                <UI.Text fontSize="16px" color="gray.600" fontWeight="bold">
-                  {z?.name}
+                <UI.Text fontSize="16px" fontWeight="bold">
+                  {y?.name}
                 </UI.Text>
               ),
-              disabled: isEmpty(z?.products),
-              children: isEmpty(z?.products)
+              disabled: isEmpty(y?.groupings),
+              children: isEmpty(y?.groupings)
                 ? undefined
-                : z?.products.map((k) => ({
-                    value: k?.id,
+                : y?.groupings?.map?.((z) => ({
+                    value: `groupings-${z?.id}`,
                     label: (
-                      <UI.HStack
-                        w="full"
-                        alignItems="center"
-                        justifyContent="flex-start"
+                      <UI.Text
                         fontSize="16px"
-                        color="gray.500"
-                        fontWeight="medium">
-                        <BsDot fontSize="20px" />
-                        <UI.Text> {k?.name}</UI.Text>
-                      </UI.HStack>
+                        color="gray.600"
+                        fontWeight="bold">
+                        {z?.name}
+                      </UI.Text>
                     ),
+                    disabled: isEmpty(z?.products),
+                    children: isEmpty(z?.products)
+                      ? undefined
+                      : z?.products.map((k) => ({
+                          value: k?.id,
+                          label: (
+                            <UI.HStack
+                              w="full"
+                              alignItems="center"
+                              justifyContent="flex-start"
+                              fontSize="16px"
+                              color="gray.500"
+                              fontWeight="medium">
+                              <BsDot fontSize="20px" />
+                              <UI.Text> {k?.name}</UI.Text>
+                            </UI.HStack>
+                          ),
+                        })),
                   })),
             })),
       }));

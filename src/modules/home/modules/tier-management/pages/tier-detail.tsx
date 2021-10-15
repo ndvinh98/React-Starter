@@ -14,12 +14,22 @@ import {
   MdKeyboardArrowDown,
   MdKeyboardArrowRight,
 } from 'react-icons/md';
-import {isEmpty} from 'lodash';
+import {isEmpty, chain} from 'lodash';
+import {useTierManagementContoller} from '../tier-management.contoller';
+
+const JSONParse = (text: string) => {
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    return [];
+  }
+};
 
 function TierDetail() {
   const {params} = useRouterController();
   const {push} = useRouter();
   const {getItem, loading, data} = useGetItem<ITier>(`/tiers/${params?.id}`);
+  const products = useTierManagementContoller((s) => s?.products);
 
   const {
     getItem: getListApplication,
@@ -49,8 +59,16 @@ function TierDetail() {
 
   useEffect(() => {
     if (data) {
-      setCheck(JSON.parse(data?.productPermission) || []);
-      setExpadned(JSON.parse(data?.parentPermission) || []);
+      const productPermission = JSONParse(data?.productPermission);
+      const categoryPermission = JSONParse(data?.categoryPermission);
+      const groupingPermission = JSONParse(data?.groupingPermission);
+      setCheck(productPermission || []);
+      const expand = [
+        'applications-1',
+        ...(categoryPermission?.map?.((x) => `categories-${x}`) || []),
+        ...(groupingPermission?.map?.((y) => `groupings-${y}`) || []),
+      ];
+      setExpadned(expand);
     }
   }, [data]);
   const toast = UI.useToast();
@@ -68,54 +86,40 @@ function TierDetail() {
 
   useEffect(() => {
     if (!isEmpty(dataApplication)) {
-      const _nodes = dataApplication?.map?.((x) => ({
-        value: `applications-${x?.id}`,
+      const _nodes = dataApplication?.[0].categories?.map?.((y) => ({
+        value: `categories-${y?.id}`,
         label: (
           <UI.Text fontSize="16px" fontWeight="bold">
-            {x?.name}
+            {y?.name}
           </UI.Text>
         ),
-        disabled: isEmpty(x?.categories),
-        children: isEmpty(x?.categories)
+        disabled: isEmpty(y?.groupings),
+        children: isEmpty(y?.groupings)
           ? undefined
-          : x?.categories?.map?.((y) => ({
-              value: `categories-${y?.id}`,
+          : y?.groupings?.map?.((z) => ({
+              value: `groupings-${z?.id}`,
               label: (
-                <UI.Text fontSize="16px" fontWeight="bold">
-                  {y?.name}
+                <UI.Text fontSize="16px" color="gray.600" fontWeight="bold">
+                  {z?.name}
                 </UI.Text>
               ),
-              disabled: isEmpty(y?.groupings),
-              children: isEmpty(y?.groupings)
+              disabled: isEmpty(z?.products),
+              children: isEmpty(z?.products)
                 ? undefined
-                : y?.groupings?.map?.((z) => ({
-                    value: `groupings-${z?.id}`,
+                : z?.products.map((k) => ({
+                    value: k?.id,
                     label: (
-                      <UI.Text
+                      <UI.HStack
+                        w="full"
+                        alignItems="center"
+                        justifyContent="flex-start"
                         fontSize="16px"
-                        color="gray.600"
-                        fontWeight="bold">
-                        {z?.name}
-                      </UI.Text>
+                        color="gray.500"
+                        fontWeight="medium">
+                        <BsDot fontSize="20px" />
+                        <UI.Text> {k?.name}</UI.Text>
+                      </UI.HStack>
                     ),
-                    disabled: isEmpty(z?.products),
-                    children: isEmpty(z?.products)
-                      ? undefined
-                      : z?.products.map((k) => ({
-                          value: k?.id,
-                          label: (
-                            <UI.HStack
-                              w="full"
-                              alignItems="center"
-                              justifyContent="flex-start"
-                              fontSize="16px"
-                              color="gray.500"
-                              fontWeight="medium">
-                              <BsDot fontSize="20px" />
-                              <UI.Text> {k?.name}</UI.Text>
-                            </UI.HStack>
-                          ),
-                        })),
                   })),
             })),
       }));
@@ -174,12 +178,22 @@ function TierDetail() {
             <UI.HStack w="full" pt={3} justifyContent="flex-end">
               <UI.Button
                 isLoading={updating}
-                onClick={() =>
+                onClick={() => {
+                  const categoryPermission = chain(checked)
+                    .map((x) => products[x]?.grouping?.category?.id)
+                    .union()
+                    .valueOf();
+
+                  const groupingPermission = chain(checked)
+                    .map((x) => products[x]?.grouping?.id)
+                    .union()
+                    .valueOf();
                   patch({
                     productPermission: JSON.stringify(checked),
-                    parentPermission: JSON.stringify(expanded),
-                  })
-                }
+                    groupingPermission: JSON.stringify(groupingPermission),
+                    categoryPermission: JSON.stringify(categoryPermission),
+                  });
+                }}
                 isDisabled={isEmpty(checked)}
                 size="sm">
                 Save

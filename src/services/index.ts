@@ -6,3 +6,4 @@ export {loginVerifyOtp} from './partnerUsers/loginVerifyOtp';
 export {fetchMe} from './partnerUsers/fetchMe';
 
 export {uploadFile} from './attachments/uploadFile';
+export {getProducts} from './products/getProducts';
