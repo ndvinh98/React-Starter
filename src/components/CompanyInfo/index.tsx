@@ -33,7 +33,8 @@ function CompanyInfo(props: any) {
             <UI.Text
               fontSize={{md: 'md', lg: 'xl'}}
               fontWeight={'semibold'}
-              color={'ste.black'}>
+              color={'ste.black'}
+              bgColor={'#EEEEEC'}>
               Company Infomation
             </UI.Text>
             <UI.Accordion allowMultiple>
