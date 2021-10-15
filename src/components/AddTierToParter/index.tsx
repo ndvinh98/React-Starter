@@ -6,6 +6,7 @@ import Select from '@components/Select';
 import {useModalController} from '@modules/modal';
 
 import {ITier} from '@types';
+import TierDetail from './TierDetail';
 
 function AddTierToParter({
   partnerId,
@@ -22,6 +23,8 @@ function AddTierToParter({
     loading: partnerTierRelationsLoading,
     getList: getPartnerTierRelations,
   } = useGetList<any>('/partnerTierRelations');
+
+  const [key, setKey] = useState(1);
 
   const {post, data: partnerTierRelationsPostData} = usePost(
     '/partnerTierRelations',
@@ -44,6 +47,7 @@ function AddTierToParter({
         relations: JSON.stringify(['tier']),
         limit: 1000,
       });
+      setKey(key + 1);
     }
   }, [partnerTierRelationsPostData]);
 
@@ -73,9 +77,9 @@ function AddTierToParter({
             Add
           </UI.Button>
         </UI.HStack>
-        <UI.HStack mt={2} flexWrap="wrap">
+        <UI.HStack spacing={0} mt={2} flexWrap="wrap">
           {partnerTierRelationsData?.records?.map((x) => (
-            <UI.Box pt={2} key={x?.id}>
+            <UI.Box pt={2} pl={2} key={x?.id}>
               <UI.Tag
                 size="md"
                 borderRadius="full"
@@ -89,18 +93,21 @@ function AddTierToParter({
                     openModal('removeTier', {
                       companyName,
                       id: x?.id,
-                      cb: () =>
+                      cb: () => {
                         getPartnerTierRelations({
                           filter: JSON.stringify([{partnerId: +partnerId}]),
                           relations: JSON.stringify(['tier']),
                           limit: 1000,
-                        }),
+                        });
+                        setKey(key + 1);
+                      },
                     })
                   }
                 />
               </UI.Tag>
             </UI.Box>
           ))}
+          <TierDetail key={key} partnerId={partnerId} />
         </UI.HStack>
       </LoadingComponent>
     </UI.Box>
