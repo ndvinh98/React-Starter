@@ -2,17 +2,16 @@ import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 
-import FormGenerate from '@components/FormGenerate';
 import {useModalController} from '../modals.controller';
-import {usePatch} from '@utils/hooks';
+import {usePost} from '@utils/hooks';
 
 function AssignPartnerAdminModal() {
   const {assignPartnerAdmin, closeModal, data} = useModalController();
   const {
     data: patchData,
     loading,
-    patch,
-  } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
+    post,
+  } = usePost(`/partnerUsers/${data?.id}/assignAsPartnerAdmin`);
   const toast = UI.useToast();
 
   useEffect(() => {
@@ -44,44 +43,32 @@ function AssignPartnerAdminModal() {
         <UI.ModalHeader mt={8}>
           <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
             Are you sure you want to asign {data?.firstName} {', '}{' '}
-            {data?.lastName}
+            {data?.lastName} for
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          <FormGenerate
-            onSubmit={({}) => {
-              patch({
-                status: 'APPROVED',
-              });
-            }}
-            fields={[
-              {
-                name: 'date',
-                type: 'input',
-                size: 'lg',
-                placeholder: '',
-              },
-            ]}>
-            <UI.Center w={'full'} pt="10">
-              <UI.Button
-                colorScheme="blue"
-                mr={3}
-                w={'120px'}
-                type="submit"
-                isLoading={loading}>
-                Confirm
-              </UI.Button>
-              <UI.Button
-                w={'120px'}
-                type="button"
-                onClick={() => {
-                  closeModal('confirmRequest');
-                }}
-                variant="outline">
-                Cancel
-              </UI.Button>
-            </UI.Center>
-          </FormGenerate>
+          <UI.Center mt={8} w={'full'}>
+            <UI.Button
+              colorScheme="blue"
+              onClick={() => {
+                post({});
+              }}
+              mr={3}
+              w={'120px'}
+              type="submit"
+              isLoading={loading}>
+              Confirm
+            </UI.Button>
+            <UI.Button
+              w={'120px'}
+              type="button"
+              onClick={() => {
+                closeModal('confirmRequest');
+              }}
+              variant="outline">
+              Cancel
+            </UI.Button>
+          </UI.Center>
         </UI.ModalBody>
 
         <UI.ModalFooter></UI.ModalFooter>

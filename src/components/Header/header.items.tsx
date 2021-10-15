@@ -1,4 +1,4 @@
-import React, {memo,useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {debounce} from 'lodash';
 import Highlighter from 'react-highlight-words';
 
@@ -94,9 +94,9 @@ export const HEADER_ITEMS = {
     //const {me} = useHomeController();
     const {me, getMe} = useAuthController();
 
-    useEffect(()=> {
+    useEffect(() => {
       getMe();
-    },[])
+    }, []);
 
     const {push} = useRouter();
 

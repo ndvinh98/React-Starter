@@ -13,10 +13,9 @@ function AllowDomainModal() {
   } = usePatch(`/partnerDomains/${data?.id}`);
   const toast = UI.useToast();
 
-
   useEffect(() => {
-    console.log(data)
-  },[data])
+    console.log(data);
+  }, [data]);
 
   useEffect(() => {
     if (patchData) {
@@ -51,31 +50,32 @@ function AllowDomainModal() {
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-            <UI.Center fontSize={'lg'} textAlign="center">
-                Are you sure you want to {data?.isAllowed ? 'blacklist' : 'whitelist'} {data?.domain} ?
-            </UI.Center>
-            <UI.Center mt={8} w={'full'}>
-              <UI.Button
-                colorScheme="blue"
-                onClick={() =>{
-                    patch({isAllowed: data?.isAllowed ? 0 : 1});
-                }}
-                mr={3}
-                w={'120px'}
-                type="submit"
-                isLoading={loading}>
-                Confirm
-              </UI.Button>
-              <UI.Button
-                w={'120px'}
-                type="button"
-                onClick={() => {
-                  closeModal('allowDomain');
-                }}
-                variant="outline">
-                Cancel
-              </UI.Button>
-            </UI.Center>
+          <UI.Center fontSize={'lg'} textAlign="center">
+            Are you sure you want to{' '}
+            {data?.isAllowed ? 'blacklist' : 'whitelist'} {data?.domain} ?
+          </UI.Center>
+          <UI.Center mt={8} w={'full'}>
+            <UI.Button
+              colorScheme="blue"
+              onClick={() => {
+                patch({isAllowed: data?.isAllowed ? 0 : 1});
+              }}
+              mr={3}
+              w={'120px'}
+              type="submit"
+              isLoading={loading}>
+              Confirm
+            </UI.Button>
+            <UI.Button
+              w={'120px'}
+              type="button"
+              onClick={() => {
+                closeModal('allowDomain');
+              }}
+              variant="outline">
+              Cancel
+            </UI.Button>
+          </UI.Center>
         </UI.ModalBody>
 
         <UI.ModalFooter></UI.ModalFooter>

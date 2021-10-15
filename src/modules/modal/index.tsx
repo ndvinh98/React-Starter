@@ -8,6 +8,7 @@ import FileViewer2 from './modals/FileViewer2.modal';
 import AllowDomainModal from './modals/AllowDomain.modal';
 import AddBlacklistDomainModal from './modals/AddBlacklistDomain.modal';
 import AssignPartnertAdminModal from './modals/AssignPartnertAdmin.modal';
+import ActionPartnerModal from './modals/ActionPartner.modal';
 
 function InitModal() {
   return (
@@ -21,6 +22,7 @@ function InitModal() {
       <AllowDomainModal />
       <AddBlacklistDomainModal />
       <AssignPartnertAdminModal />
+      <ActionPartnerModal />
     </>
   );
 }

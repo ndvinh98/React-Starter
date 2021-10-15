@@ -284,3 +284,8 @@ export interface IPartnerUser extends BaseSchema {
 export interface ITier extends BaseSchema {
   name?: string;
 }
+
+export interface ICertificates extends BaseSchema {
+  name?: string;
+  mediaDestination?: string;
+}

@@ -68,13 +68,25 @@ function userManagement() {
     });
   }, [page, limit, textSearch, filter]);
 
-  const handleFilterData = ({textSearch, status, userType}) => {
-    setTextSearch(textSearch === undefined ? '' : textSearch);
-    setFilter((filter) => ({
-      ...filter,
-      status: status === '-1' ? undefined : status,
-      userType: userType === '-1' ? undefined : userType,
-    }));
+  const handleFilterData = (
+    {textSearch = undefined, status, userType},
+    fieldChange,
+  ) => {
+    console.log(textSearch, status, userType);
+
+    if (fieldChange.name === 'textSearch') {
+      if (textSearch && textSearch.length < 3) return;
+
+      setTextSearch(textSearch);
+    }
+
+    if (['status', 'userType'].includes(fieldChange.name)) {
+      setFilter((filter) => ({
+        ...filter,
+        status: status === '-1' ? undefined : status,
+        userType: userType === '-1' ? undefined : userType,
+      }));
+    }
   };
 
   return (
@@ -334,7 +346,7 @@ export const ActionColum = (props: any) => {
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
   // const {openModal} = useModalStore();
-  const {row} = props;
+  const {row, refresh} = props;
   return (
     <UI.Center>
       <UI.Menu onClose={onClose} isOpen={isOpen}>
@@ -350,26 +362,28 @@ export const ActionColum = (props: any) => {
         <UI.MenuList>
           <UI.MenuItem
             hidden={row?.isActive === 1}
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               openModal('action', {
                 title: 'Activate Access',
                 type: 'Activate',
-                // cb: () => getUserProfile(),
+                cb: () => refresh(),
                 id: row?.id,
-              })
-            }>
+              });
+            }}>
             Activate Access
           </UI.MenuItem>
           <UI.MenuItem
             hidden={row?.isActive === 0}
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               openModal('action', {
                 title: 'Deactivate Access',
                 type: 'Deactivate',
-                // cb: () => getUserProfile(),
+                cb: () => refresh(),
                 id: row?.id,
-              })
-            }>
+              });
+            }}>
             Deactivate Access
           </UI.MenuItem>
         </UI.MenuList>

@@ -300,29 +300,31 @@ export const ActionColum = (props: any) => {
         </UI.MenuButton>
         <UI.MenuList>
           <UI.MenuItem
-            isDisabled={row?.isActive === 1}
-            onClick={(e) =>{
+            hidden={row?.isActive === 1}
+            onClick={(e) => {
               e.stopPropagation();
-              openModal('action', {
+              openModal('actionPartner', {
                 title: 'Activate Access',
                 type: 'Activate',
+                path: 'partners',
                 cb: () => refresh(),
                 id: row?.id,
-              })}
-            }>
+              });
+            }}>
             Activate Access
           </UI.MenuItem>
           <UI.MenuItem
-            isDisabled={row?.isActive === 0}
-            onClick={(e) =>{
+            hidden={row?.isActive === 0}
+            onClick={(e) => {
               e.stopPropagation();
-              openModal('action', {
+              openModal('actionPartner', {
                 title: 'Deactivate Access',
                 type: 'Deactivate',
+                path: 'partners',
                 cb: () => refresh(),
                 id: row?.id,
-              })}
-            }>
+              });
+            }}>
             Deactivate Access
           </UI.MenuItem>
         </UI.MenuList>

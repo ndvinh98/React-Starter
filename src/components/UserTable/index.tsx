@@ -268,14 +268,15 @@ export const ActionColum = (props: any) => {
         <UI.MenuList>
           <UI.MenuItem
             hidden={row?.isActive === 0}
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               openModal('assignPartnerAdmin', {
-                // cb: () => getUserProfile(),
+                // cb: () => refresh(),
                 id: row?.id,
                 firstName: row?.firstName,
                 lastName: row?.lastName,
-              })
-            }>
+              });
+            }}>
             Assign as Partner Admin
           </UI.MenuItem>
         </UI.MenuList>
