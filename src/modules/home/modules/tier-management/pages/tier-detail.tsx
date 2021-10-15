@@ -133,7 +133,7 @@ function TierDetail() {
           <UI.Text fontSize={'14px'}>Back</UI.Text>
         </UI.HStack>
         <UI.Text fontSize="24px" fontWeight="bold">
-          Silver - Perimeter Intrusion Detection System
+          {data?.name}
         </UI.Text>
         <UI.Box w="70%" mt={3} bg="white" p={3} shadow="sm">
           <UI.VStack w="full" alignItems="flex-start">
