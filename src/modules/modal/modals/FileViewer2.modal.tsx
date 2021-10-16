@@ -1,7 +1,7 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import {useModalController} from '../modals.controller';
-
+import {useGetItem} from '@utils/hooks';
 import ReactFileViewer from 'react-file-viewer';
 
 const getFileType = (name: string) => {
@@ -14,6 +14,20 @@ const getFileType = (name: string) => {
 function FileViewer2() {
   const {fileViewer2, closeModal, data} = useModalController();
 
+  const [typeUrl, setTypeUrl] = useState(
+    data?.title === 'Certificate'
+      ? 'partnerUserCertificates/downloadFileUrl'
+      : 'partnerApplicationAttachments/downloadFileUrl',
+  );
+
+  const {getItem, data: item} = useGetItem(typeUrl);
+
+  useEffect(() => {
+    if (data != null) {
+      getItem({name: JSON.stringify([data?.mediaDestination])});
+    }
+  }, [data]);
+
   return (
     <UI.Modal
       isCentered
@@ -23,12 +37,14 @@ function FileViewer2() {
       <UI.ModalContent>
         <UI.ModalHeader>{data?.title}</UI.ModalHeader>
         <UI.ModalCloseButton />
-        <UI.ModalBody p={5} textAlign={'center'}>
-          <UI.Text>{data?.payload?.[0]?.name}</UI.Text>
-          {data?.payload?.[0]?.url && (
+        <UI.ModalBody p={5}>
+          <UI.Text fontSize={{md: 'md', lg: 'xl'}} fontWeight="600">
+            {item?.[0]?.name}
+          </UI.Text>
+          {item?.[0]?.url && (
             <ReactFileViewer
-              fileType={getFileType(data?.payload?.[0]?.name)}
-              filePath={data?.payload?.[0]?.url}
+              fileType={getFileType(item?.[0]?.name)}
+              filePath={item?.[0]?.url}
             />
           )}
         </UI.ModalBody>

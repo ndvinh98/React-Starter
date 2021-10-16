@@ -532,15 +532,6 @@ export const FieldData = memo(({name, value}: any) => {
 export const FieldView = memo(({name, value, data}: any) => {
   const {isBase} = useMedia();
   const {openModal} = useModalController();
-  const {getItem, data: item} = useGetItem(
-    'partnerApplicationAttachments/downloadFileUrl',
-  );
-
-  useEffect(() => {
-    if (data != null) {
-      getItem({name: JSON.stringify([data])});
-    }
-  }, [data]);
 
   return (
     <UI.Stack
@@ -557,7 +548,8 @@ export const FieldView = memo(({name, value, data}: any) => {
         <UI.Button
           onClick={() =>
             openModal('fileViewer2', {
-              payload: item,
+              mediaDestination: data,
+              title: 'Attachment',
             })
           }
           bgColor={'#E9E9E9'}
