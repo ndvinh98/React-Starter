@@ -102,12 +102,17 @@ function Main() {
     });
   }, [page, textSearch, filter, limit]);
 
-  const handleFilterData = ({textSearch, status}) => {
-    setTextSearch(textSearch);
-    setFilter((filter) => ({
-      ...filter,
-    }));
-    if (status === '-1') setFilter(null);
+  const handleFilterData = ({textSearch, status}, fieldChange) => {
+    if (fieldChange.name === 'textSearch') {
+      if (textSearch && textSearch.length < 3) return;
+      setTextSearch(textSearch);
+    }
+
+    if (fieldChange.name === 'status')
+      setFilter((filter) => ({
+        ...filter,
+      }));
+    if (status === '-1') setFilter(undefined);
     else setFilter({status});
   };
 
