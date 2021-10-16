@@ -180,30 +180,32 @@ function userManagement() {
                         w={'full'}
                         justifyContent={'flex-end'}>
                         <UI.Text> View Item</UI.Text>
-                        <Select
-                          isClearable={false}
-                          size="sm"
-                          name="limit"
-                          onChangeValue={(data) => setLimit(data.value)}
-                          defaultValue={{
-                            label: '10',
-                            value: 10,
-                          }}
-                          options={[
-                            {
+                        <UI.Box w="80px">
+                          <Select
+                            isClearable={false}
+                            size="sm"
+                            name="limit"
+                            onChangeValue={(data) => setLimit(data.value)}
+                            defaultValue={{
                               label: '10',
                               value: 10,
-                            },
-                            {
-                              label: '20',
-                              value: 20,
-                            },
-                            {
-                              label: 'all',
-                              value: 1000,
-                            },
-                          ]}
-                        />
+                            }}
+                            options={[
+                              {
+                                label: '10',
+                                value: 10,
+                              },
+                              {
+                                label: '20',
+                                value: 20,
+                              },
+                              {
+                                label: 'all',
+                                value: 1000,
+                              },
+                            ]}
+                          />
+                        </UI.Box>
                       </UI.HStack>
                     </UI.HStack>
                   </UI.VStack>
