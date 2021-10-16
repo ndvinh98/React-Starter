@@ -104,7 +104,7 @@ export interface IPartners extends BaseSchema {
 }
 
 export interface IPartnerApplicationSubmissions extends BaseSchema {
-  submittedByPartnerUser?: number | IPartnerUsers;
+  submittedByPartnerUser?: IPartnerUsers;
   partner?: number | IPartners;
   status?: TStatus;
   partnerApplicationForms?: IPartnerApplicationForms;

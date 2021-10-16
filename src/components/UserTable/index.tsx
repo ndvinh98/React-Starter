@@ -122,7 +122,9 @@ function UserTable(props) {
             isLoading={loading}
             currentPage={data?.page}
             totalpage={data?.totalPages}
+            totalCount={data?.total}
             data={data?.records || []}
+            pageSize={data?.limit}
             onChangePage={setPage}
             Footer={
               <UI.Tr>
