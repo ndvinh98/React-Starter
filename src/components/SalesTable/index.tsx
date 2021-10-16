@@ -91,6 +91,8 @@ function SalesTable(props: any) {
             currentPage={data?.page}
             totalpage={data?.totalPages}
             data={data?.records || []}
+            totalCount={data?.total}
+            pageSize={data?.limit}
             onChangePage={setPage}
             Footer={
               <UI.Tr>

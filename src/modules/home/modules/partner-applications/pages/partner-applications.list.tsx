@@ -126,7 +126,7 @@ function Main() {
 
   return (
     <UI.VStack py={6} px={8} spacing={4} width="full">
-      <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
+      <UI.Text fontSize={{md: 'md', lg: '2xl'}} fontWeight="semibold" w="full">
         Partner Applications
       </UI.Text>
       <FormGenerate onChangeValue={handleFilterData} fields={FIELDS} />

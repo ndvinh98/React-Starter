@@ -53,6 +53,7 @@ function userManagement() {
     getList({
       page,
       limit,
+      relations: JSON.stringify(['userProfiles']),
       filter: isEmpty(filter)
         ? undefined
         : JSON.stringify([
@@ -244,13 +245,12 @@ function userManagement() {
                         },
                       }}
                       bg={
-                        row?.partnerUserProfiles?.[0]?.avatarMediaDestination
+                        row?.userProfiles?.[0]?.avatarMediaDestination
                           ? 'white'
                           : undefined
                       }
-                      src={
-                        row?.partnerUserProfiles?.[0]?.avatarMediaDestination
-                      }
+                      src={row?.userProfiles?.[0]?.avatarMediaDestination}
+                      userId={row?.id}
                       name={row?.firstName + ' ' + row?.lastName}
                       size={'sm'}
                     />
