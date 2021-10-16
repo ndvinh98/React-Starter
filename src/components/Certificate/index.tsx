@@ -1,14 +1,11 @@
 import React, {memo} from 'react';
-import {useRouter} from '@utils/hooks';
-import {useRouterController} from '@modules/router';
+import {useModalController} from '@modules/modal';
 import * as UI from '@chakra-ui/react';
 import {TiDelete} from 'react-icons/ti';
 
 const Certificate = ({data}) => {
-  const {push} = useRouter();
-  const {path} = useRouterController();
+  const {openModal} = useModalController();
 
-  console.log(data);
   return (
     <UI.Box>
       <UI.HStack
@@ -18,13 +15,20 @@ const Certificate = ({data}) => {
         shadow="sm"
         p={5}
         bgColor={'#EEEEEC'}
-        justifyContent="start"
+        justifyContent="space-between"
         border="none"
         alignItems="center">
-        <UI.Text fontSize={{md: 'md', lg: 'lg'}} fontWeight="600" pl={2}>
-          {data?.name}
-        </UI.Text>
-        <UI.Spacer />
+        <UI.Box
+          onClick={() =>
+            openModal('fileViewer2', {
+              mediaDestination: data?.mediaDestination,
+              title: 'Certificate',
+            })
+          }>
+          <UI.Text fontSize={{md: 'md', lg: 'lg'}} fontWeight="600" pl={2}>
+            {data?.name}
+          </UI.Text>
+        </UI.Box>
         <TiDelete />
       </UI.HStack>
     </UI.Box>
