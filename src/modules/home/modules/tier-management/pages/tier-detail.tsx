@@ -189,7 +189,7 @@ function TierDetail() {
                     .union()
                     .valueOf();
                   patch({
-                    productPermission: JSON.stringify(checked),
+                    productPermission: JSON.stringify(checked.map((x) => +x)),
                     groupingPermission: JSON.stringify(groupingPermission),
                     categoryPermission: JSON.stringify(categoryPermission),
                   });
