@@ -313,8 +313,11 @@ function UserPartnerDetail() {
           </UI.Box>
         </UI.Box>
       )}
-      <UpLoadCertificates partnerUserId={profileData?.id} />
-      <CertificateAwarded partnerUserId={profileData?.id} />
+
+      <UI.Box bgColor={'white'} borderRadius="md" mt={4} w="full" pt={5}>
+        <UpLoadCertificates partnerUserId={profileData?.id} />
+        <CertificateAwarded partnerUserId={profileData?.id} />
+      </UI.Box>
     </UI.Box>
   );
 }

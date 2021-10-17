@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
-import {useRouter, useGetList} from '@utils/hooks';
+import {useGetList} from '@utils/hooks';
 import {isEmpty} from 'lodash';
-import {useRouterController} from '@modules/router';
+
 import * as UI from '@chakra-ui/react';
 import Certificate from '@components/Certificate';
 import {ICertificates} from 'types';
@@ -10,8 +10,6 @@ const CertificateAwarded = ({partnerUserId}) => {
   const {loading, getList, data} = useGetList<ICertificates>(
     '/partnerUserCertificates',
   );
-
-  const toast = UI.useToast();
 
   useEffect(() => {
     if (partnerUserId) {

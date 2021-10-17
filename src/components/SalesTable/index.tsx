@@ -37,6 +37,7 @@ function SalesTable(props: any) {
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
+  const {openModal} = useModalController();
 
   return (
     <UI.VStack py={6} px={5} spacing={4} width="full" bgColor="white">
@@ -72,7 +73,12 @@ function SalesTable(props: any) {
                       justifyContent={'space-between'}>
                       <UI.Button
                         minW={110}
-                        onClick={() => push(path + '/create-user')}
+                        onClick={() =>
+                          openModal('addSale', {
+                            companyName: data?.companyName,
+                            id: data?.partnerApplicationSubmission?.id,
+                          })
+                        }
                         size={'md'}>
                         Add Sales Manager
                       </UI.Button>
