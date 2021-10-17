@@ -19,7 +19,6 @@ import {SettingIcon} from '@components/icons';
 import AsyncSelect from '@components/AsyncSelect';
 
 import {useModalController} from '@modules/modal';
-import {useHomeController} from '@modules/home';
 import {useAuthController} from '@modules/auth';
 import {useRouter} from '@utils/hooks';
 
@@ -227,7 +226,11 @@ export const HEADER_ITEMS = {
     };
     const loadOptionsDb = debounce((text, cb) => loadOptions(text, cb), 500);
     return (
-      <UI.HStack>
+      <UI.HStack
+        borderRightColor="#AA1514"
+        borderRightWidth="1px"
+        marginRight="10px"
+        paddingRight="20px">
         {isOpen && (
           <UI.Box w={'500px'}>
             <AsyncSelect

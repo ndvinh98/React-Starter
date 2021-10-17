@@ -7,5 +7,4 @@ export default mount({
   '/products': lazy(() => import('./modules/Products/router')),
   '/modules': lazy(() => import('./modules/Modules/router')),
   '/resources': lazy(() => import('./modules/Resources/router')),
-
 });

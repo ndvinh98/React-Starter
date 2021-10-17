@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
-import {useRouter, usePost, useGetItem, usePatch} from '@utils/hooks';
+import {useRouter, useGetItem, usePatch} from '@utils/hooks';
 import UploadFileContent from '@components/UploadFileContent';
 import FormGenerate from '@components/FormGenerate';
 import * as yup from 'yup';

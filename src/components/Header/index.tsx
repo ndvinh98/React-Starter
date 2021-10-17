@@ -13,12 +13,12 @@ const headerButton = [
   },
   {
     headerButtonType: 'setting',
-    isShow: true,
+    isShow: false,
     position: 2,
   },
   {
     headerButtonType: 'notify',
-    isShow: true,
+    isShow: false,
     position: 3,
   },
   {

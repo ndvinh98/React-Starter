@@ -1,7 +1,7 @@
 import React from 'react';
 import {mount, map, redirect, withView, compose, lazy} from 'navi';
 import HomeLayout from './home.layout';
-import {useHomeController} from './controller';
+import {useHomeController} from './home.controller';
 import {useConfigStore} from '@services/config';
 
 useConfigStore.getState?.()?.initDashboardConfig?.();

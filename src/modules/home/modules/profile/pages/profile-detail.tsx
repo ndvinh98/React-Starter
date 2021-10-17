@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import {useConfigStore} from '@services/config';
 import LinkUpload from '@components/LinkUpLoad';
 import {useAuthController} from '@modules/auth';
-import {useHomeController} from '@modules/home';
+// import {useHomeController} from '@modules/home';
 
 const SALUATION_OPITONS = [
   {value: 'MR', label: 'MR'},
