@@ -24,6 +24,8 @@ export interface IContentView {
   linkAddNew?: string;
   linkToChild?: string;
   isModulesView?: boolean;
+  isVideo?: boolean;
+  isBrochures?: boolean;
 }
 
 function ContentView(props: IContentView) {
@@ -39,6 +41,8 @@ function ContentView(props: IContentView) {
     isLoading,
     linkToChild,
     isModulesView,
+    isVideo,
+    isBrochures,
   } = props;
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
@@ -110,50 +114,104 @@ function ContentView(props: IContentView) {
             minChildWidth="300px"
             spacing="40px">
             <LoadingComponent isLoading={isLoading}>
-              {!isModulesView && data?.map((x) => (
-                <UI.Box
-                  onClick={() => {push(linkToChild)}}
-                  bg="white"
-                  bgImage={`url(${x?.thumbnailMediaDestination?.replace(' ', '%20')||x?.mediaDestination})`}
-                  bgSize="cover"
-                  bgRepeat="no-repeat"
-                  cursor="pointer"
-                  shadow="sm"
-                  height="200px"
-                  size="20px"
-                  fontWeight="bold"
-                  position="relative"
-                  key={x?.id}>
-                  <UI.Center
-                    position="absolute"
-                    w="full"
-                    height="50px"
-                    bg="#000000a7"
-                    bottom={0}>
-                    <UI.Text color="white">{x?.name || x?.resourceName}</UI.Text>
-                  </UI.Center>
-                </UI.Box>
-              ))}
-
-              {isModulesView && data?.map((x) => (
-                <UI.Box
-                  //onClick={() => {push(linkToChild)}}
-                  onClick={() => {push(linkToChild+"/module/"+x?.id)}}
-                  //onClick={() => {push(linkToChild+"?mediaType="+x?.mediaType+"&moduleId="+x?.moduleId)}}
-                  cursor="pointer"
-                  shadow="sm"
-                  height="200px"
-                  size="20px"
-                  borderWidth="2px"
-                  key={x?.id}>
-                    <UI.VStack h={'full'} w={'full'} justifyContent={'center'} alignItems={'center'}>
-                      <UI.Box w={'68px'} h={'68px'} bg={'white'} p={3}>
-                        <UI.Image src={x?.thumbnailMediaDestination?.replace(' ', '%20') || x?.mediaDestination}></UI.Image>
+              {!isModulesView &&
+                data?.map((x) => (
+                  <UI.Box
+                    onClick={() => {
+                      push(linkToChild);
+                    }}
+                    bg="white"
+                    bgImage={`url(${
+                      x?.thumbnailMediaDestination?.replace(' ', '%20') ||
+                      x?.mediaDestination
+                    })`}
+                    bgSize="cover"
+                    bgRepeat="no-repeat"
+                    cursor="pointer"
+                    shadow="sm"
+                    height="200px"
+                    size="20px"
+                    fontWeight="bold"
+                    position="relative"
+                    key={x?.id}>
+                    {isVideo && (
+                      <UI.Image
+                        //left= {0}
+                        position="absolute"
+                        zIndex={1}
+                        top={'50%'}
+                        left={'50%'}
+                        transform={'translate(-50%, -50%);'}
+                        w="100px"
+                        src={'/images/playback.png'}
+                      />
+                    )}
+                    {!isVideo && !isBrochures ? (
+                      <UI.Center
+                        position="absolute"
+                        w="full"
+                        height="50px"
+                        bg="#000000a7"
+                        bottom={0}>
+                        <UI.Text color="white">
+                          {x?.name || x?.resourceName}
+                        </UI.Text>
+                      </UI.Center>
+                    ) : (
+                      <UI.Box
+                        position="absolute"
+                        w="full"
+                        //height="50px"
+                        bg="#000000a7"
+                        bottom={0}
+                        p={2}>
+                        <UI.Text color="white">
+                          {x?.name || x?.resourceName}
+                        </UI.Text>
+                        <UI.HStack>
+                          <UI.Text color={'white'} fontSize={'12px'}>
+                            {isVideo
+                              ? x?.videoLength + ' | ' + x?.videoFileType
+                              : x?.noOfPages + ' pages | ' + x?.brochureFormat}
+                          </UI.Text>
+                        </UI.HStack>
                       </UI.Box>
-                      <UI.Text fontWeight={'bold'} color={'#828282'}>{x?.name?.toUpperCase()}</UI.Text>
+                    )}
+                  </UI.Box>
+                ))}
+
+              {isModulesView &&
+                data?.map((x) => (
+                  <UI.Box
+                    //onClick={() => {push(linkToChild)}}
+                    onClick={() => {
+                      push(linkToChild + '/module/' + x?.id);
+                    }}
+                    //onClick={() => {push(linkToChild+"?mediaType="+x?.mediaType+"&moduleId="+x?.moduleId)}}
+                    cursor="pointer"
+                    shadow="sm"
+                    height="200px"
+                    size="20px"
+                    borderWidth="2px"
+                    key={x?.id}>
+                    <UI.VStack
+                      h={'full'}
+                      w={'full'}
+                      justifyContent={'center'}
+                      alignItems={'center'}>
+                      <UI.Box w={'68px'} h={'68px'} bg={'white'} p={3}>
+                        <UI.Image
+                          src={
+                            x?.thumbnailMediaDestination?.replace(' ', '%20') ||
+                            x?.mediaDestination
+                          }></UI.Image>
+                      </UI.Box>
+                      <UI.Text fontWeight={'bold'} color={'#828282'}>
+                        {x?.name?.toUpperCase()}
+                      </UI.Text>
                     </UI.VStack>
-                </UI.Box>
-              ))}
+                  </UI.Box>
+                ))}
             </LoadingComponent>
 
             <UI.Center
@@ -178,61 +236,98 @@ function ContentView(props: IContentView) {
         {showType === 'LIST' && (
           <UI.VStack w="full">
             <LoadingComponent isLoading={isLoading}>
-              {!isModulesView && data?.map((x) => (
-                <UI.HStack
-                  onClick={() => {push(linkToChild)}}
-                  key={x?.id}
-                  cursor="pointer"
-                  w="full"
-                  borderTopWidth={2}
-                  py={5}>
-                  <UI.Center
-                    bgImage={`url(${x?.thumbnailMediaDestination?.replace(' ', '%20') || x?.mediaDestination})`}
-                    bgSize="cover"
-                    bgRepeat="no-repeat"
+              {!isModulesView &&
+                data?.map((x) => (
+                  <UI.HStack
+                    onClick={() => {
+                      push(linkToChild);
+                    }}
+                    key={x?.id}
                     cursor="pointer"
-                    mr={3}
-                    shadow="md"
-                    w="90px"
-                    h="60px"></UI.Center>
-                  <UI.Text
-                    textTransform="uppercase"
-                    color="#828282"
-                    fontWeight="bold"
-                    fontSize="18px">
-                    {x?.name || x?.resourceName}
-                  </UI.Text>
-                </UI.HStack>
-              ))}
+                    w="full"
+                    borderTopWidth={2}
+                    py={5}>
+                    <UI.Center
+                      bgImage={`url(${
+                        x?.thumbnailMediaDestination?.replace(' ', '%20') ||
+                        x?.mediaDestination
+                      })`}
+                      bgSize="cover"
+                      bgRepeat="no-repeat"
+                      cursor="pointer"
+                      mr={3}
+                      shadow="md"
+                      position="relative"
+                      w="90px"
+                      h="60px">
+                      {isVideo && (
+                        <UI.Image
+                          //left= {0}
+                          position="absolute"
+                          zIndex={1}
+                          top={'50%'}
+                          left={'50%'}
+                          transform={'translate(-50%, -50%);'}
+                          w="30px"
+                          src={'/images/playback.png'}
+                        />
+                      )}
+                    </UI.Center>
 
-              {isModulesView && data?.map((x) => (
-                <UI.HStack
-                  //onClick={() => {push(linkToChild)}}
-                  onClick={() => {push(linkToChild+"/module/"+x?.id)}}
-                  key={x?.id}
-                  cursor="pointer"
-                  w="full"
-                  borderTopWidth={2}
-                  py={5}>
-                  <UI.Box
-                    bg={'white'}
+                    <UI.VStack alignItems={'start'}>
+                      <UI.Text
+                        textTransform="uppercase"
+                        color="#828282"
+                        fontWeight="bold"
+                        fontSize="18px">
+                        {x?.name || x?.resourceName}
+                      </UI.Text>
+                      {(isVideo || isBrochures) && (
+                        <UI.Text color={'#828282'} fontSize={'12px'}>
+                          {isVideo
+                            ? x?.videoLength + ' | ' + x?.videoFileType
+                            : x?.noOfPages + ' pages | ' + x?.brochureFormat}
+                        </UI.Text>
+                      )}
+                    </UI.VStack>
+                  </UI.HStack>
+                ))}
+
+              {isModulesView &&
+                data?.map((x) => (
+                  <UI.HStack
+                    //onClick={() => {push(linkToChild)}}
+                    onClick={() => {
+                      push(linkToChild + '/module/' + x?.id);
+                    }}
+                    key={x?.id}
                     cursor="pointer"
-                    mr={3}
-                    shadow="md"
-                    p={4}
-                    w="68px"
-                    h="68px">
-                      <UI.Image src={x?.thumbnailMediaDestination?.replace(' ', '%20') || x?.mediaDestination}></UI.Image>
+                    w="full"
+                    borderTopWidth={2}
+                    py={5}>
+                    <UI.Box
+                      bg={'white'}
+                      cursor="pointer"
+                      mr={3}
+                      shadow="md"
+                      p={4}
+                      w="68px"
+                      h="68px">
+                      <UI.Image
+                        src={
+                          x?.thumbnailMediaDestination?.replace(' ', '%20') ||
+                          x?.mediaDestination
+                        }></UI.Image>
                     </UI.Box>
-                  <UI.Text
-                    textTransform="uppercase"
-                    color="#828282"
-                    fontWeight="bold"
-                    fontSize="18px">
-                    {x?.name}
-                  </UI.Text>
-                </UI.HStack>
-              ))}
+                    <UI.Text
+                      textTransform="uppercase"
+                      color="#828282"
+                      fontWeight="bold"
+                      fontSize="18px">
+                      {x?.name}
+                    </UI.Text>
+                  </UI.HStack>
+                ))}
             </LoadingComponent>
             <UI.HStack
               onClick={() => push(linkAddNew)}

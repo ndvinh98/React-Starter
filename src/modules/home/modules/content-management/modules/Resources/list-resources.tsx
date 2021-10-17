@@ -2,11 +2,13 @@ import React, {useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
-import {useGetList, useFilter} from '@utils/hooks';
+import {useGetList, useFilter, useRouter} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import LoadingComponent from '@components/LoadingComponent';
+import {BsArrowLeft} from 'react-icons/bs';
 
 function List() {
+  const {push} = useRouter();
   const {page, limit, filter, setFilter} = useFilter({limit: 10, page: 1});
   const {params} = useRouterController();
   const {getList: getListResources, data: resourcesData} = useGetList(
@@ -43,9 +45,24 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <LoadingComponent isLoading={loading}>
+        <UI.HStack
+          mt={4}
+          ml={8}
+          w="full"
+          _hover={{cursor: 'pointer'}}
+          onClick={() => push('/home/content-management/modules')}>
+          <BsArrowLeft size={20} />
+          <UI.Text fontSize={'14px'}>Back</UI.Text>
+        </UI.HStack>
         <ContentView
           data={resourcesData?.records}
           limit={limit}
+          isVideo={
+            modulesData?.records?.[0]?.mediaType == 'VIDEOS' ? true : false
+          }
+          isBrochures={
+            modulesData?.records?.[0]?.mediaType == 'VIDEOS' ? false : true
+          }
           totalCount={resourcesData?.total}
           currentPage={page}
           filterBar={
