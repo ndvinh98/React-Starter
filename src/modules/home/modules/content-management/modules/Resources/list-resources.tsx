@@ -69,8 +69,8 @@ function List() {
         }
         linkAddNew={
           modulesData?.records?.[0]?.mediaType == 'VIDEOS'
-            ? '/home/content-management/modules/add-new-video'
-            : '/home/content-management/modules/add-new-document'
+            ? '/home/content-management/resources/add-video'
+            : '/home/content-management/resources/add-brochures'
         }
       />
       </LoadingComponent>

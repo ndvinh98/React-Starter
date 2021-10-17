@@ -127,7 +127,7 @@ function List() {
         }
         name="Content Management - Modules"
         linkAddNew="/home/content-management/modules/add-new"
-        linkToChild="/home/content-management/modules/list-resources"
+        linkToChild="/home/content-management/resources"
       />
     </UI.Box>
   );

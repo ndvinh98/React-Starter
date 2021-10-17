@@ -138,8 +138,8 @@ function ContentView(props: IContentView) {
               {isModulesView && data?.map((x) => (
                 <UI.Box
                   //onClick={() => {push(linkToChild)}}
-                  onClick={() => {push(linkToChild+"/product/"+x?.id)}}
-                  //onClick={() => {push(linkToChild+"?mediaType="+x?.mediaType+"&productId="+x?.productId)}}
+                  onClick={() => {push(linkToChild+"/module/"+x?.id)}}
+                  //onClick={() => {push(linkToChild+"?mediaType="+x?.mediaType+"&moduleId="+x?.moduleId)}}
                   cursor="pointer"
                   shadow="sm"
                   height="200px"
@@ -208,7 +208,7 @@ function ContentView(props: IContentView) {
               {isModulesView && data?.map((x) => (
                 <UI.HStack
                   //onClick={() => {push(linkToChild)}}
-                  onClick={() => {push(linkToChild+"/product/"+x?.id)}}
+                  onClick={() => {push(linkToChild+"/module/"+x?.id)}}
                   key={x?.id}
                   cursor="pointer"
                   w="full"
