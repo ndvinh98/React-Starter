@@ -12,8 +12,11 @@ function List() {
   const {getList: getListResources, data: resourcesData} = useGetList(
     'productModuleResources',
   );
-  const {getList: getListModules, data: modulesData, loading} = useGetList('productModules');
-  
+  const {
+    getList: getListModules,
+    data: modulesData,
+    loading,
+  } = useGetList('productModules');
 
   useEffect(() => {
     if (params?.id) {
@@ -22,7 +25,7 @@ function List() {
   }, [params]);
 
   useEffect(() => {
-    if (params?.id){
+    if (params?.id) {
       getListResources({
         page,
         limit,
@@ -32,47 +35,45 @@ function List() {
           : undefined,
       });
       getListModules({
-        filter: JSON.stringify([{id: params?.id}])
+        filter: JSON.stringify([{id: params?.id}]),
       });
     }
   }, [page, limit, filter]);
 
   return (
-    
     <UI.Box minH="89vh">
       <LoadingComponent isLoading={loading}>
-      <ContentView
-        data={resourcesData?.records}
-        limit={limit}
-        totalCount={resourcesData?.total}
-        currentPage={page}
-        filterBar={
-          <FormGenerate
-            //onChangeValue={handleOnChange}
-            gap="10px"
-            w="60vw"
-            mb={4}
-            fields={[
-              {
-                name: 'search',
-                type: 'input',
-                size: 'md',
-                colSpan: 3,
-                placeholder: 'Search...',
-              },
-            ]}
-          />
-        }
-        name={
-          'Content Management - ' +
-          modulesData?.records?.[0]?.name 
-        }
-        linkAddNew={
-          modulesData?.records?.[0]?.mediaType == 'VIDEOS'
-            ? '/home/content-management/resources/add-video'
-            : '/home/content-management/resources/add-brochures'
-        }
-      />
+        <ContentView
+          data={resourcesData?.records}
+          limit={limit}
+          totalCount={resourcesData?.total}
+          currentPage={page}
+          filterBar={
+            <FormGenerate
+              //onChangeValue={handleOnChange}
+              gap="10px"
+              w="60vw"
+              mb={4}
+              fields={[
+                {
+                  name: 'search',
+                  type: 'input',
+                  size: 'md',
+                  colSpan: 3,
+                  placeholder: 'Search...',
+                },
+              ]}
+            />
+          }
+          name={'Content Management - ' + modulesData?.records?.[0]?.name}
+          linkAddNew={
+            modulesData?.records?.[0]?.mediaType == 'VIDEOS'
+              ? '/home/content-management/resources/add-videos/module/' +
+                modulesData?.records?.[0]?.id
+              : '/home/content-management/resources/add-brochures/module/' +
+                modulesData?.records?.[0]?.id
+          }
+        />
       </LoadingComponent>
     </UI.Box>
   );

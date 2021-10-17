@@ -4,32 +4,35 @@ import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, usePost} from '@utils/hooks';
 import UploadFileContent from '@components/UploadFileContent';
 import FormGenerate from '@components/FormGenerate';
-import {useGetItem} from '@utils/hooks';
+import {useGetItem, usePatch} from '@utils/hooks';
 import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
 import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
 
-function AddNew() {
+function Edit() {
   const {push} = useRouter();
   const toast = UI.useToast();
   const {params} = useRouterController();
   const {languages} = useConfigStore();
   let mediaDestination = '';
   let thumbnailMediaDestination = '';
-  const {post, loading, data: postData} = usePost('/productModuleResources');
   const {
-    data: moduleData,
-    loading: loadModuleData,
+    data: resourceData,
+    loading: loadResourceData,
     getItem,
-  } = useGetItem('/productModules/');
+  } = useGetItem('/productModuleResources/');
 
   useEffect(() => {
     if (params?.id) getItem({}, {path: params?.id});
   }, [params]);
 
+  const {patch, loading, data} = usePatch(
+    `productModuleResources/${resourceData?.id}`,
+  );
+
   useEffect(() => {
-    if (postData) {
+    if (data) {
       toast({
         title: 'Successfully!',
         status: 'success',
@@ -38,16 +41,21 @@ function AddNew() {
         isClosable: true,
       });
     }
-  }, [postData]);
+  }, [data]);
 
   const handleSubmit = (value) => {
-    if (value && mediaDestination && thumbnailMediaDestination && moduleData) {
-      post({
-        productModuleId: moduleData?.id,
+    if (
+      value &&
+      mediaDestination &&
+      thumbnailMediaDestination &&
+      resourceData
+    ) {
+      patch({
+        productModuleId: resourceData?.id,
         resourceName: value.name,
         languageId: value.language,
-        brochureFormat: value.brochureFormat,
-        noOfPages: value.noOfPages,
+        videoFileType: value.videoFileType,
+        videoLength: value.videoLength,
         thumbnailMediaDestination,
         mediaDestination,
       });
@@ -56,18 +64,20 @@ function AddNew() {
 
   return (
     <UI.Box py={5} px={7}>
-      <LoadingComponent isLoading={loadModuleData}>
+      <LoadingComponent isLoading={loadResourceData}>
         <UI.HStack
           w="full"
           _hover={{cursor: 'pointer'}}
           onClick={() =>
-            push('/home/content-management/resources/module/' + moduleData?.id)
+            push(
+              '/home/content-management/resources/module/' + resourceData?.id,
+            )
           }>
           <BsArrowLeft size={20} />
           <UI.Text fontSize={'14px'}>Back</UI.Text>
         </UI.HStack>
         <UI.Text fontSize="24px" fontWeight="bold">
-          Content Management - Brochures
+          Content Management - Videos
         </UI.Text>
         <UI.VStack
           spacing="20px"
@@ -78,7 +88,7 @@ function AddNew() {
           bg="white"
           shadow="md">
           <UI.Text fontSize="16px" fontWeight="bold">
-            ADD NEW BROCHURE
+            EDIT VIDEO
           </UI.Text>
           <FormGenerate
             spacing={6}
@@ -86,21 +96,32 @@ function AddNew() {
               handleSubmit(value);
             }}
             schema={{
-              name: yup.string().required('Brochure Name is required'),
-              language: yup.number().required('Language is required'),
-              brochureFormat: yup
+              name: yup
                 .string()
-                .required('Brochure Format is required'),
-              noOfPages: yup.number().required('Number of Page is required'),
+                .required('Resource Name is required')
+                .default(resourceData?.resourceName),
+              videoFileType: yup
+                .string()
+                .required('Video Type is required')
+                .default(resourceData?.videoFileType),
+              videoLength: yup
+                .string()
+                .required('Number of Pages is required')
+                .default(resourceData?.videoLength),
+              language: yup
+                .number()
+                .required('Language is required')
+                .default(resourceData?.language),
             }}
             fields={[
               {
                 name: 'name',
                 type: 'input',
-                label: 'Brochure Name',
+                label: 'Video Name',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                defaultValue: resourceData?.resourceName,
               },
               {
                 type: 'decor',
@@ -110,10 +131,10 @@ function AddNew() {
                 size: 'md',
                 DecorComponent: () => (
                   <UploadFileContent
-                    name={'brochures'}
-                    productModuleId={moduleData?.id}
+                    name={'videos'}
+                    productModuleId={resourceData?.id}
                     urlPath={'productModuleResources/uploadFileUrl'}
-                    label={'Upload File'}
+                    label={'Upload Video'}
                     description={' '}
                     callBack={(value) => {
                       mediaDestination = value;
@@ -129,9 +150,7 @@ function AddNew() {
                 size: 'md',
                 DecorComponent: () => (
                   <UploadFileContent
-                    
-                    description={' '}
-                    label={'Upload Thumbnail'}
+                    label={'Upload Splash Screen'}
                     urlPath={'/products/uploadThumbnailUrl'}
                     callBack={(value) => {
                       thumbnailMediaDestination = value;
@@ -140,20 +159,22 @@ function AddNew() {
                 ),
               },
               {
-                name: 'brochureFormat',
+                name: 'videoFileType',
                 type: 'input',
-                label: 'Brochure Format',
+                label: 'Video Type',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                defaultValue: resourceData?.videoFileType,
               },
               {
-                name: 'noOfPages',
+                name: 'videoLength',
                 type: 'input',
-                label: 'Number Of Pages',
+                label: 'Video Length',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                defaultValue: resourceData?.videoLength,
               },
               {
                 name: 'language',
@@ -167,11 +188,15 @@ function AddNew() {
                   value: x?.id,
                   label: x?.name,
                 })),
+                defaultValue: {
+                  value: resourceData?.languageId,
+                  label: languages.map((x) => { if(x?.id === resourceData?.languageId) return x?.name ;})
+                },
               },
             ]}>
             <UI.Center mt={4} w="full">
               <UI.Button type={'submit'} isLoading={loading} w="150px">
-                Create
+                Save
               </UI.Button>
             </UI.Center>
           </FormGenerate>
@@ -181,4 +206,4 @@ function AddNew() {
   );
 }
 
-export default AddNew;
+export default Edit;

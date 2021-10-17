@@ -257,6 +257,8 @@ function AddNew() {
                   isChooseStock={true}
                   listStock={STOCK}
                   isListStockIcon={true}
+                  description={'Recommended size: 48px x 48px'}
+                  label={'Add Icon'}
                   callBack={(value) => {
                     mediaDestination = value;
                     //console.log(thumb);

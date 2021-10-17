@@ -4,32 +4,35 @@ import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, usePost} from '@utils/hooks';
 import UploadFileContent from '@components/UploadFileContent';
 import FormGenerate from '@components/FormGenerate';
-import {useGetItem} from '@utils/hooks';
+import {useGetItem, usePatch} from '@utils/hooks';
 import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
 import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
 
-function AddNew() {
+function Edit() {
   const {push} = useRouter();
   const toast = UI.useToast();
   const {params} = useRouterController();
   const {languages} = useConfigStore();
   let mediaDestination = '';
   let thumbnailMediaDestination = '';
-  const {post, loading, data: postData} = usePost('/productModuleResources');
   const {
-    data: moduleData,
-    loading: loadModuleData,
+    data: resourceData,
+    loading: loadResourceData,
     getItem,
-  } = useGetItem('/productModules/');
+  } = useGetItem('/productModuleResources/');
 
   useEffect(() => {
     if (params?.id) getItem({}, {path: params?.id});
   }, [params]);
 
+  const {patch, loading, data} = usePatch(
+    `productModuleResources/${resourceData?.id}`,
+  );
+
   useEffect(() => {
-    if (postData) {
+    if (data) {
       toast({
         title: 'Successfully!',
         status: 'success',
@@ -38,12 +41,17 @@ function AddNew() {
         isClosable: true,
       });
     }
-  }, [postData]);
+  }, [data]);
 
   const handleSubmit = (value) => {
-    if (value && mediaDestination && thumbnailMediaDestination && moduleData) {
-      post({
-        productModuleId: moduleData?.id,
+    if (
+      value &&
+      mediaDestination &&
+      thumbnailMediaDestination &&
+      resourceData
+    ) {
+      patch({
+        productModuleId: resourceData?.id,
         resourceName: value.name,
         languageId: value.language,
         brochureFormat: value.brochureFormat,
@@ -56,12 +64,14 @@ function AddNew() {
 
   return (
     <UI.Box py={5} px={7}>
-      <LoadingComponent isLoading={loadModuleData}>
+      <LoadingComponent isLoading={loadResourceData}>
         <UI.HStack
           w="full"
           _hover={{cursor: 'pointer'}}
           onClick={() =>
-            push('/home/content-management/resources/module/' + moduleData?.id)
+            push(
+              '/home/content-management/resources/module/' + resourceData?.id,
+            )
           }>
           <BsArrowLeft size={20} />
           <UI.Text fontSize={'14px'}>Back</UI.Text>
@@ -86,12 +96,22 @@ function AddNew() {
               handleSubmit(value);
             }}
             schema={{
-              name: yup.string().required('Brochure Name is required'),
-              language: yup.number().required('Language is required'),
+              name: yup
+                .string()
+                .required('Resource Name is required')
+                .default(resourceData?.resourceName),
               brochureFormat: yup
                 .string()
-                .required('Brochure Format is required'),
-              noOfPages: yup.number().required('Number of Page is required'),
+                .required('Brochure Format is required')
+                .default(resourceData?.brochureFormat),
+              noOfPages: yup
+                .number()
+                .required('Number of Pages is required')
+                .default(resourceData?.noOfPages),
+              language: yup
+                .number()
+                .required('Language is required')
+                .default(resourceData?.language),
             }}
             fields={[
               {
@@ -101,6 +121,7 @@ function AddNew() {
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                defaultValue: resourceData?.resourceName,
               },
               {
                 type: 'decor',
@@ -111,7 +132,7 @@ function AddNew() {
                 DecorComponent: () => (
                   <UploadFileContent
                     name={'brochures'}
-                    productModuleId={moduleData?.id}
+                    productModuleId={resourceData?.id}
                     urlPath={'productModuleResources/uploadFileUrl'}
                     label={'Upload File'}
                     description={' '}
@@ -129,7 +150,6 @@ function AddNew() {
                 size: 'md',
                 DecorComponent: () => (
                   <UploadFileContent
-                    
                     description={' '}
                     label={'Upload Thumbnail'}
                     urlPath={'/products/uploadThumbnailUrl'}
@@ -146,6 +166,7 @@ function AddNew() {
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                defaultValue: resourceData?.brochureFormat,
               },
               {
                 name: 'noOfPages',
@@ -154,6 +175,7 @@ function AddNew() {
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                defaultValue: resourceData?.noOfPages,
               },
               {
                 name: 'language',
@@ -167,11 +189,15 @@ function AddNew() {
                   value: x?.id,
                   label: x?.name,
                 })),
+                defaultValue: {
+                  value: resourceData?.languageId,
+                  label: languages.map((x) => { if(x?.id === resourceData?.languageId) return x?.name ;})
+                },
               },
             ]}>
             <UI.Center mt={4} w="full">
               <UI.Button type={'submit'} isLoading={loading} w="150px">
-                Create
+                Save
               </UI.Button>
             </UI.Center>
           </FormGenerate>
@@ -181,4 +207,4 @@ function AddNew() {
   );
 }
 
-export default AddNew;
+export default Edit;
