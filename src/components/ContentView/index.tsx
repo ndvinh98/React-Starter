@@ -144,7 +144,12 @@ function ContentView(props: IContentView) {
                   }}
                   isDisabled={itemSelected.length > 1}
                   color="ste.red">
-                  Edit
+                  <UI.Text mr="5px">Edit</UI.Text>
+                  {itemSelected.length > 1 && (
+                    <UI.Text fontSize="12px" color="gray.500">
+                      (Only one item can be edited)
+                    </UI.Text>
+                  )}
                 </UI.MenuItem>
                 <UI.MenuItem color="ste.red">Delete</UI.MenuItem>
               </UI.MenuList>

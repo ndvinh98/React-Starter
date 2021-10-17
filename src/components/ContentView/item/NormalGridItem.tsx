@@ -11,7 +11,7 @@ function GridItem({item, linkToChild, isVideo, isBrochures}) {
   const removeItem = useContentManagementController((s) => s.removeItem);
 
   return (
-    <UI.Box ref={hoverRef} position="relative" key={item?.id}>
+    <UI.Box width="full" ref={hoverRef} position="relative">
       <UI.Checkbox
         onChange={(e) => {
           e.stopPropagation();
