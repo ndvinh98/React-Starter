@@ -47,17 +47,24 @@ function Edit() {
     if (
       value &&
       mediaDestination &&
-      thumbnailMediaDestination &&
-      resourceData
+      thumbnailMediaDestination 
     ) {
       patch({
-        productModuleId: resourceData?.id,
         resourceName: value.name,
         languageId: value.language,
         videoFileType: value.videoFileType,
         videoLength: value.videoLength,
         thumbnailMediaDestination,
         mediaDestination,
+      });
+    }
+    if (!mediaDestination || !thumbnailMediaDestination){
+      toast({
+        title: 'Please upload file!',
+        status: 'error',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
       });
     }
   };
@@ -106,12 +113,12 @@ function Edit() {
                 .default(resourceData?.videoFileType),
               videoLength: yup
                 .string()
-                .required('Number of Pages is required')
+                .required('Video Length is required')
                 .default(resourceData?.videoLength),
               language: yup
                 .number()
                 .required('Language is required')
-                .default(resourceData?.language),
+                .default(resourceData?.languageId),
             }}
             fields={[
               {

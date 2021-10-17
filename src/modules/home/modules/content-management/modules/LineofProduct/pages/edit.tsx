@@ -64,6 +64,15 @@ function Edit() {
         application: value.application,
         mediaDestination,
       });
+    };
+    if (!mediaDestination){
+      toast({
+        title: 'Please upload file!',
+        status: 'error',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
     }
   };
 
