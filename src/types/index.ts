@@ -104,7 +104,7 @@ export interface IPartners extends BaseSchema {
 }
 
 export interface IPartnerApplicationSubmissions extends BaseSchema {
-  submittedByPartnerUser?: number | IPartnerUsers;
+  submittedByPartnerUser?: IPartnerUsers;
   partner?: number | IPartners;
   status?: TStatus;
   partnerApplicationForms?: IPartnerApplicationForms;
@@ -284,6 +284,8 @@ export interface IPartnerUser extends BaseSchema {
 export interface ITier extends BaseSchema {
   name?: string;
   productPermission?: string;
+  categoryPermission?: string;
+  groupingPermission?: string;
 }
 
 export interface ICategories extends BaseSchema {

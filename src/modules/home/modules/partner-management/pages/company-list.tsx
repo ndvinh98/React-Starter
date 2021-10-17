@@ -66,13 +66,18 @@ function CompanyManagement() {
     });
   }, [page, limit, textSearch, filter]);
 
-  const handleFilterData = ({textSearch, status, userType}) => {
-    setTextSearch(textSearch === undefined ? '' : textSearch);
-    setFilter((filter) => ({
-      ...filter,
-      status: status === '-1' ? undefined : status,
-      userType: userType === '-1' ? undefined : userType,
-    }));
+  const handleFilterData = ({textSearch, status}, fieldChange) => {
+    if (fieldChange.name === 'textSearch') {
+      if (textSearch && textSearch.length < 3) return;
+      setTextSearch(textSearch === undefined ? '' : textSearch);
+    }
+
+    if (fieldChange.name === 'status') {
+      setFilter((filter) => ({
+        ...filter,
+        status: status === '-1' ? undefined : status,
+      }));
+    }
   };
 
   return (

@@ -23,7 +23,7 @@ const CertificateAwarded = ({partnerUserId}) => {
   }, [partnerUserId]);
 
   return (
-    <UI.Box w="full" bgColor={'#FFFFFF'}>
+    <UI.Box w="full" bgColor={'#FFFFFF'} py={6} px={8} spacing={4}>
       <UI.Text bgColor={'#EEEEEC'} p={3} fontSize="lg" fontWeight="600">
         {' '}
         Certificates Awarded
@@ -39,11 +39,11 @@ const CertificateAwarded = ({partnerUserId}) => {
           <UI.Text>No data</UI.Text>
         </UI.Center>
       ) : (
-        <>
+        <UI.SimpleGrid columns={2} spacingX="40px" spacingY="20px" pt={5}>
           {data?.records.map((x) => (
             <Certificate key={x?.id} data={x} />
           ))}
-        </>
+        </UI.SimpleGrid>
       )}
     </UI.Box>
   );

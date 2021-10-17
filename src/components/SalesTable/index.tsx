@@ -39,10 +39,12 @@ function SalesTable(props: any) {
   const {isBase} = useMedia();
 
   return (
-    <UI.VStack py={6} px={8} spacing={4} width="full" bgColor="white">
-      <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
-        Sales Manager
-      </UI.Text>
+    <UI.VStack py={6} px={5} spacing={4} width="full" bgColor="white">
+      <UI.Box w="full" bgColor={'#EEEEEC'}>
+        <UI.Text fontSize="2xl" fontWeight="semibold" w="full" pl={3}>
+          Sales Manager
+        </UI.Text>
+      </UI.Box>
       <UI.Box width="full">
         <FormGenerate
           gap={isBase ? 1 : 2}
@@ -89,6 +91,8 @@ function SalesTable(props: any) {
             currentPage={data?.page}
             totalpage={data?.totalPages}
             data={data?.records || []}
+            totalCount={data?.total}
+            pageSize={data?.limit}
             onChangePage={setPage}
             Footer={
               <UI.Tr>

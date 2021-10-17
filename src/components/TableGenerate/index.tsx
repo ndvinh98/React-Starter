@@ -51,7 +51,7 @@ const TableGenerate = (props: ITableGenerate, ref?: any) => {
     useTable({columns, data});
 
   return (
-    <UI.Box bgColor={'white'} px={4} py={4} borderRadius="md" mt={4}>
+    <UI.Box bgColor={'white'} py={4} borderRadius="md" mt={4}>
       <UI.Table bg={'white'} size={'md'} variant="simple" {...getTableProps()}>
         <UI.Thead>
           {headerGroups?.map((headerGroup, i1) => {

@@ -9,7 +9,15 @@ import Header from '@components/Header';
 import Sidebar from '@components/Sidebar';
 import InitModals from '@modules/modal';
 
+import {useTierManagementContoller} from '@modules/home/modules/tier-management/tier-management.contoller';
+
 function HomeLayout() {
+  const getProducts = useTierManagementContoller((s) => s?.getProducts);
+
+  React.useEffect(() => {
+    getProducts();
+  }, []);
+
   return (
     <NotFoundBoundary render={() => <NotFound />}>
       <UI.HStack spacing={0}>

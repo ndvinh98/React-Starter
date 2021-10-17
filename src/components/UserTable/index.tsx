@@ -39,10 +39,17 @@ function UserTable(props) {
   const {isBase} = useMedia();
 
   return (
-    <UI.VStack py={6} px={8} spacing={4} width="full" bgColor="white">
-      <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
-        User Infomation
-      </UI.Text>
+    <UI.VStack py={6} px={4} spacing={4} width="full" bgColor="white">
+      <UI.Box w="full">
+        <UI.Text
+          fontSize="2xl"
+          fontWeight="semibold"
+          w="full"
+          bgColor={'#EEEEEC'}
+          pl={3}>
+          User Infomation
+        </UI.Text>
+      </UI.Box>
       <UI.Box width="full">
         <FormGenerate
           gap={isBase ? 4 : 6}
@@ -115,7 +122,9 @@ function UserTable(props) {
             isLoading={loading}
             currentPage={data?.page}
             totalpage={data?.totalPages}
+            totalCount={data?.total}
             data={data?.records || []}
+            pageSize={data?.limit}
             onChangePage={setPage}
             Footer={
               <UI.Tr>

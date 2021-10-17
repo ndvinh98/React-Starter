@@ -29,11 +29,12 @@ function CompanyInfo(props: any) {
         </UI.Center>
       ) : (
         <UI.Box width="full">
-          <UI.Box width="full" bg="white" pt={4} py={6} px={8}>
+          <UI.Box width="full" bg="white" pt={4} py={6} px={4}>
             <UI.Text
               fontSize={{md: 'md', lg: 'xl'}}
               fontWeight={'semibold'}
-              color={'ste.black'}>
+              color={'ste.black'}
+              bgColor={'#EEEEEC'}>
               Company Infomation
             </UI.Text>
             <UI.Accordion allowMultiple>

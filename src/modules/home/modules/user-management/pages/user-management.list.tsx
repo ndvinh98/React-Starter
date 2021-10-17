@@ -53,6 +53,7 @@ function userManagement() {
     getList({
       page,
       limit,
+      relations: JSON.stringify(['userProfiles']),
       filter: isEmpty(filter)
         ? undefined
         : JSON.stringify([
@@ -72,8 +73,6 @@ function userManagement() {
     {textSearch = undefined, status, userType},
     fieldChange,
   ) => {
-    console.log(textSearch, status, userType);
-
     if (fieldChange.name === 'textSearch') {
       if (textSearch && textSearch.length < 3) return;
 
@@ -182,30 +181,32 @@ function userManagement() {
                         w={'full'}
                         justifyContent={'flex-end'}>
                         <UI.Text> View Item</UI.Text>
-                        <Select
-                          isClearable={false}
-                          size="sm"
-                          name="limit"
-                          onChangeValue={(data) => setLimit(data.value)}
-                          defaultValue={{
-                            label: '10',
-                            value: 10,
-                          }}
-                          options={[
-                            {
+                        <UI.Box w="80px">
+                          <Select
+                            isClearable={false}
+                            size="sm"
+                            name="limit"
+                            onChangeValue={(data) => setLimit(data.value)}
+                            defaultValue={{
                               label: '10',
-                              value: 5,
-                            },
-                            {
-                              label: '20',
-                              value: 20,
-                            },
-                            {
-                              label: 'all',
-                              value: 1000,
-                            },
-                          ]}
-                        />
+                              value: 10,
+                            }}
+                            options={[
+                              {
+                                label: '10',
+                                value: 10,
+                              },
+                              {
+                                label: '20',
+                                value: 20,
+                              },
+                              {
+                                label: 'all',
+                                value: 1000,
+                              },
+                            ]}
+                          />
+                        </UI.Box>
                       </UI.HStack>
                     </UI.HStack>
                   </UI.VStack>
@@ -244,13 +245,12 @@ function userManagement() {
                         },
                       }}
                       bg={
-                        row?.partnerUserProfiles?.[0]?.avatarMediaDestination
+                        row?.userProfiles?.[0]?.avatarMediaDestination
                           ? 'white'
                           : undefined
                       }
-                      src={
-                        row?.partnerUserProfiles?.[0]?.avatarMediaDestination
-                      }
+                      src={row?.userProfiles?.[0]?.avatarMediaDestination}
+                      userId={row?.id}
                       name={row?.firstName + ' ' + row?.lastName}
                       size={'sm'}
                     />

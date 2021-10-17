@@ -30,6 +30,7 @@ function Detail() {
         relations: JSON.stringify([
           'partnerApplicationSubmission',
           'partnerApplicationAttachments',
+          'partnerApplicationSubmission.submittedByPartnerUser',
         ]),
       });
   }, [params]);
@@ -62,10 +63,11 @@ function Detail() {
           </UI.Link>
           <UI.Text
             m={4}
-            fontSize={{md: 'md', lg: 'lg'}}
+            fontSize={{md: 'md', lg: '2xl'}}
             fontWeight={'semibold'}
             color={'ste.black'}>
-            {data.countryName}
+            {`
+            Partner Applications - ${data?.companyName} < ${data?.partnerApplicationSubmission?.submittedByPartnerUser?.email} > `}
           </UI.Text>
           <UI.Box width="full" bg="white" pt={4} py={6} px={8}>
             <UI.Text
@@ -122,7 +124,13 @@ function Detail() {
                 {
                   type: 'decor',
                   DecorComponent: () => (
-                    <FieldData name={'Work Email Address'} value={'data?.'} />
+                    <FieldData
+                      name={'Work Email Address'}
+                      value={
+                        data?.partnerApplicationSubmission
+                          ?.submittedByPartnerUser?.email
+                      }
+                    />
                   ),
                 },
                 {
@@ -149,15 +157,7 @@ function Detail() {
                     <FieldData name={'Country'} value={data?.countryName} />
                   ),
                 },
-                {
-                  type: 'decor',
-                  DecorComponent: () => (
-                    <FieldData
-                      name={'Name of Company'}
-                      value={data?.companyName}
-                    />
-                  ),
-                },
+
                 {
                   type: 'decor',
                   DecorComponent: () => (
@@ -532,15 +532,6 @@ export const FieldData = memo(({name, value}: any) => {
 export const FieldView = memo(({name, value, data}: any) => {
   const {isBase} = useMedia();
   const {openModal} = useModalController();
-  const {getItem, data: item} = useGetItem(
-    'partnerApplicationAttachments/downloadFileUrl',
-  );
-
-  useEffect(() => {
-    if (data != null) {
-      getItem({name: JSON.stringify([data])});
-    }
-  }, [data]);
 
   return (
     <UI.Stack
@@ -557,7 +548,8 @@ export const FieldView = memo(({name, value, data}: any) => {
         <UI.Button
           onClick={() =>
             openModal('fileViewer2', {
-              payload: item,
+              mediaDestination: data,
+              title: 'Attachment',
             })
           }
           bgColor={'#E9E9E9'}
