@@ -60,7 +60,7 @@ function List() {
       </UI.Button> */}
 
       <ContentView
-        isLoading={loadingMenu}
+        isLoading={loading}
         data={groupingsData?.records}
         limit={limit}
         totalCount={groupingsData?.total}

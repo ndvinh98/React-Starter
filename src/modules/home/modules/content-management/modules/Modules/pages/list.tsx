@@ -6,7 +6,7 @@ import {useGetList, useFilter, useGetItem} from '@utils/hooks';
 import {IProduct, ICategorie, IGrouping, IModules} from '@types';
 
 function List() {
-  const {getItem: getAllMenu,loading: loadingMenu, data: menuData} = useGetItem('applications/menu');
+  const {getItem: getAllMenu, data: menuData} = useGetItem('applications/menu');
   useEffect(() => {
     getAllMenu();
   }, []);
@@ -44,7 +44,7 @@ function List() {
   const {getList: getListCategories, data: categoriesData} = useGetList<ICategorie>('categories');
   const {getList: getListGroupings, data: groupingsData} = useGetList<IGrouping>('groupings');
   const {getList: getListProduct, data: productsData} = useGetList<IProduct>('products');
-  const {getList: getListModules, data: modulesData} = useGetList<IModules>('productModules');
+  const {getList: getListModules,loading: loadingModule, data: modulesData} = useGetList<IModules>('productModules');
 
   const {page, limit} = useFilter({limit: 10, page: 1});
   useEffect(() => {
@@ -58,7 +58,7 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <ContentView
-        isLoading={loadingMenu}
+        isLoading={loadingModule}
         data={modulesData?.records}
         limit={limit}
         totalCount={modulesData?.total}

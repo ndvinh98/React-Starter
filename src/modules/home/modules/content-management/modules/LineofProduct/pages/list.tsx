@@ -12,9 +12,9 @@ function List() {
     });
   };
 
-  const {getList: getListApplications,loading: loadingApplications, data: lineOfBusinessData} =
+  const {getList: getListApplications, data: lineOfBusinessData} =
     useGetList<IApplication>('applications');
-  const {getList: getListCategories, data: categoriesData} =
+  const {getList: getListCategories,loading: loadingCategory, data: categoriesData} =
     useGetList<ICategorie>('categories');
 
   useEffect(() => {
@@ -34,7 +34,7 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <ContentView
-        isLoading={loadingApplications}
+        isLoading={loadingCategory}
         data={categoriesData?.records}
         limit={limit}
         totalCount={categoriesData?.total}
