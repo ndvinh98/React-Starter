@@ -42,7 +42,7 @@ function UserTable(props) {
     <UI.VStack py={6} px={4} spacing={4} width="full" bgColor="white">
       <UI.Box w="full">
         <UI.Text
-          fontSize="2xl"
+          fontSize={{md: 'md', lg: 'xl'}}
           fontWeight="semibold"
           w="full"
           bgColor={'#EEEEEC'}
@@ -109,7 +109,7 @@ function UserTable(props) {
                   value: 'ADMIN',
                 },
                 {
-                  label: 'Sales Manager',
+                  label: 'User',
                   value: 'USER',
                 },
               ],
@@ -260,7 +260,7 @@ export const ActionColum = (props: any) => {
   const {openModal} = useModalController();
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
-  // const {openModal} = useModalStore();
+
   const {row} = props;
   return (
     <UI.Center>
