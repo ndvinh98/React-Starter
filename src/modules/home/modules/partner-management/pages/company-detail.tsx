@@ -137,9 +137,9 @@ function CompanyDetail() {
 
         textSearch: textSearchSales
           ? JSON.stringify([
-              {firstName: textSearchSales},
-              {email: textSearchSales},
-              {lastName: textSearchSales},
+              {user: {firstName: textSearchSales}},
+              {user: {email: textSearchSales}},
+              {user: {lastName: textSearchSales}},
             ])
           : undefined,
       });

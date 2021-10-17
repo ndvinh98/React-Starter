@@ -41,7 +41,7 @@ function ActionModal() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
-          <UI.Center textTransform="uppercase" ontSize={'lg'} color={'ste.red'}>
+          <UI.Center ontSize={'lg'} color={'ste.red'}>
             {data?.title}
           </UI.Center>
         </UI.ModalHeader>
