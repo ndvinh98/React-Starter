@@ -3,6 +3,9 @@ import * as UI from '@chakra-ui/react';
 import {AiOutlineAppstore, AiOutlineUnorderedList} from 'react-icons/ai';
 import {IoIosAddCircleOutline} from 'react-icons/io';
 import {useRouter} from '@utils/hooks';
+import {ChevronDownIcon} from '@chakra-ui/icons';
+import {useContentManagementController} from '@modules/home/modules/content-management';
+import {useRouterController} from '@modules/router';
 
 import Select from '@components/Select';
 import Pagination from '@components/Pagination';
@@ -12,6 +15,7 @@ import NormalGridItem from './item/NormalGridItem';
 import ModuleGridItem from './item/ModuleGridItem';
 import NormalListItem from './item/NormalListItem';
 import ModuleListItem from './item/ModuleListItem';
+import {isEmpty} from 'lodash';
 
 export interface IContentView {
   name?: string;
@@ -51,6 +55,14 @@ function ContentView(props: IContentView) {
   } = props;
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
+  const itemSelected = useContentManagementController((s) => s.itemSelected);
+  const clear = useContentManagementController((s) => s.clear);
+
+  const pathname = useRouterController((s) => s.pathname);
+
+  React.useEffect(() => {
+    if (pathname) clear();
+  }, [pathname]);
 
   return (
     <UI.VStack
@@ -65,51 +77,79 @@ function ContentView(props: IContentView) {
         <UI.HStack
           w={'full'}
           justifyContent={'space-between'}
-          spacingY={'20px'}
-          spacingX={'0px'}
-          flexWrap="wrap"
-          pb={5}>
-          {filterBar && (
-            <UI.Box w={filterBarWidth ? filterBarWidth : '300px'}>
-              {filterBar}
-            </UI.Box>
-          )}
-          <UI.HStack>
-            <UI.Text>View Item</UI.Text>
-            <UI.Box w="80px">
-              <Select
-                defaultValue={{label: '10', value: 10}}
-                isClearable={false}
-                options={[
-                  {label: '10', value: 10},
-                  {label: '15', value: 15},
-                  {label: '20', value: 20},
-                ]}
-              />
-            </UI.Box>
-            <UI.Center
-              onClick={() => {
-                setShowType('GRID');
-              }}
-              cursor="pointer"
-              pl={1}>
-              <AiOutlineAppstore
-                color={showType === 'GRID' ? '#D94645' : '#ADADAD'}
-                fontSize="26px"
-              />
-            </UI.Center>
-            <UI.Center
-              onClick={() => {
-                setShowType('LIST');
-              }}
-              cursor="pointer"
-              px={1}>
-              <AiOutlineUnorderedList
-                color={showType === 'LIST' ? '#D94645' : '#ADADAD'}
-                fontSize="26px"
-              />
-            </UI.Center>
+          alignItems="flex-start">
+          <UI.HStack
+            w={'full'}
+            justifyContent={'space-between'}
+            alignItems="center"
+            spacingY={'20px'}
+            spacingX={'0px'}
+            flexWrap="wrap"
+            pb={5}>
+            {filterBar && (
+              <UI.Box w={filterBarWidth ? filterBarWidth : '300px'}>
+                {filterBar}
+              </UI.Box>
+            )}
+            <UI.HStack>
+              <UI.Text>View Item</UI.Text>
+              <UI.Box w="80px">
+                <Select
+                  defaultValue={{label: '10', value: 10}}
+                  isClearable={false}
+                  options={[
+                    {label: '10', value: 10},
+                    {label: '15', value: 15},
+                    {label: '20', value: 20},
+                  ]}
+                />
+              </UI.Box>
+              <UI.Center
+                onClick={() => {
+                  setShowType('GRID');
+                }}
+                cursor="pointer"
+                pl={1}>
+                <AiOutlineAppstore
+                  color={showType === 'GRID' ? '#D94645' : '#ADADAD'}
+                  fontSize="26px"
+                />
+              </UI.Center>
+              <UI.Center
+                onClick={() => {
+                  setShowType('LIST');
+                }}
+                cursor="pointer"
+                px={1}>
+                <AiOutlineUnorderedList
+                  color={showType === 'LIST' ? '#D94645' : '#ADADAD'}
+                  fontSize="26px"
+                />
+              </UI.Center>
+            </UI.HStack>
           </UI.HStack>
+          <UI.Box position="relative" top="10px">
+            <UI.Menu isOpen={isEmpty(itemSelected) ? false : undefined}>
+              <UI.MenuButton
+                cursor={isEmpty(itemSelected) ? 'no-drop' : 'pointer'}>
+                <UI.HStack borderRadius="md" bg="ste.red" px={3} py={2}>
+                  <UI.Checkbox isChecked={!isEmpty(itemSelected)} size="lg" />
+                  <ChevronDownIcon color="white" />
+                </UI.HStack>
+              </UI.MenuButton>
+              <UI.MenuList>
+                <UI.MenuItem
+                  onClick={() => {
+                    push(`${pathname}/edit/${itemSelected?.[0]}`);
+                  }}
+                  isDisabled={itemSelected.length > 1}
+                  color="ste.red">
+                  Edit
+                </UI.MenuItem>
+                <UI.MenuItem color="ste.red">Delete</UI.MenuItem>
+              </UI.MenuList>
+            </UI.Menu>
+          </UI.Box>
         </UI.HStack>
 
         {showType === 'GRID' && (

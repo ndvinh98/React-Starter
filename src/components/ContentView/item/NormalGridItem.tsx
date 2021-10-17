@@ -9,6 +9,7 @@ function GridItem({item, linkToChild, isVideo, isBrochures}) {
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
   const removeItem = useContentManagementController((s) => s.removeItem);
+
   return (
     <UI.Box ref={hoverRef} position="relative" key={item?.id}>
       <UI.Checkbox
@@ -17,7 +18,8 @@ function GridItem({item, linkToChild, isVideo, isBrochures}) {
           if (e?.target?.checked) addItem(item?.id);
           else removeItem(item?.id);
         }}
-        hidden={!isHovered && !itemSelected.includes(item?.id)}
+        defaultChecked={itemSelected.includes(+item?.id)}
+        hidden={!isHovered && !itemSelected.includes(+item?.id)}
         position={'absolute'}
         bg={'white'}
         borderRadius={'md'}

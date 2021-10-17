@@ -3,6 +3,7 @@ export const Checkbox = {
     control: {
       borderRadius: 'md',
       border: '2px solid',
+      backgroundColor: 'white',
       _checked: {
         bg: 'ste.red',
         borderColor: 'ste.red_lighter',
