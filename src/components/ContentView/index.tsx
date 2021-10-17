@@ -137,7 +137,7 @@ function ContentView(props: IContentView) {
                   <ChevronDownIcon color="white" />
                 </UI.HStack>
               </UI.MenuButton>
-              <UI.MenuList>
+              <UI.MenuList zIndex={999}>
                 <UI.MenuItem
                   onClick={() => {
                     push(`${pathname}/edit/${itemSelected?.[0]}`);
