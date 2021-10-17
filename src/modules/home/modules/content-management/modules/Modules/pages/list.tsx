@@ -6,7 +6,7 @@ import {useGetList, useFilter, useGetItem} from '@utils/hooks';
 import {IProduct, ICategorie, IGrouping, IModules} from '@types';
 
 function List() {
-  const {getItem: getAllMenu, data: menuData} = useGetItem('applications/menu');
+  const {getItem: getAllMenu,loading: loadingMenu, data: menuData} = useGetItem('applications/menu');
   useEffect(() => {
     getAllMenu();
   }, []);
@@ -58,6 +58,7 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <ContentView
+        isLoading={loadingMenu}
         data={modulesData?.records}
         limit={limit}
         totalCount={modulesData?.total}

@@ -104,6 +104,7 @@ function ContentView(props: IContentView) {
                 fontSize="26px"
               />
             </UI.Center>
+            
           </UI.HStack>
         </UI.HStack>
 

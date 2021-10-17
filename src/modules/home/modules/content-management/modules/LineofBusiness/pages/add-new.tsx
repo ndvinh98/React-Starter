@@ -33,82 +33,82 @@ function AddNew() {
   }, [postData]);
 
   const handleSubmit = (value) => {
-    if(value && mediaDestination){
+    if (value && mediaDestination) {
       post({
         name: value.name,
         lineOfBusiness: 1,
-        mediaDestination
-      })
+        mediaDestination,
+      });
     }
   };
 
   return (
-    <UI.Box py={5} px={7}>
-      <UI.HStack
-        w="full"
-        _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/content-management/line-of-business')}>
-        <BsArrowLeft size={20} />
-        <UI.Text fontSize={'14px'}>Back</UI.Text>
-      </UI.HStack>
-      <UI.Text fontSize="24px" fontWeight="bold">
-        Content Management - Line of Business
-      </UI.Text>
-      <UI.VStack
-        spacing="20px"
-        alignItems="flex-start"
-        mt={3}
-        py={5}
-        px={7}
-        bg="white"
-        shadow="md">
-        <UI.Text fontSize="16px" fontWeight="bold">
-          ADD NEW LINE OF BUSINESS
+      <UI.Box py={5} px={7}>
+        <UI.HStack
+          w="full"
+          _hover={{cursor: 'pointer'}}
+          onClick={() => push('/home/content-management/line-of-business')}>
+          <BsArrowLeft size={20} />
+          <UI.Text fontSize={'14px'}>Back</UI.Text>
+        </UI.HStack>
+        <UI.Text fontSize="24px" fontWeight="bold">
+          Content Management - Line of Business
         </UI.Text>
-        <FormGenerate
-          spacing={6}
-          onSubmit={(value) => {
-            handleSubmit(value);
-          }}
-          schema={{
-            name: yup.string().required('Line of Business Name is required'),
-          }}
-          fields={[
-            {
-              name: 'name',
-              type: 'input',
-              label: 'Line of Business Name',
-              size: 'md',
-              layout: 'horizontal',
-              width: '70%',
-            },
-            {
-              type: 'decor',
-              layout: 'horizontal',
-              colSpan: 12,
-              width: '100%',
-              size: 'md',
-              DecorComponent: () => (
-                <UploadFileContent
-                  urlPath={'/products/uploadThumbnailUrl'}
-                  isChooseStock={true}
-                  listStock={STOCK}
-                  callBack={(value) => {
-                    mediaDestination = value;
-                    //console.log(thumb);
-                  }}
-                />
-              ),
-            },
-          ]}>
-          <UI.Center mt={4} w="full">
-            <UI.Button type={'submit'} isLoading={loading} w="150px">
-              Create
-            </UI.Button>
-          </UI.Center>
-        </FormGenerate>
-      </UI.VStack>
-    </UI.Box>
+        <UI.VStack
+          spacing="20px"
+          alignItems="flex-start"
+          mt={3}
+          py={5}
+          px={7}
+          bg="white"
+          shadow="md">
+          <UI.Text fontSize="16px" fontWeight="bold">
+            ADD NEW LINE OF BUSINESS
+          </UI.Text>
+          <FormGenerate
+            spacing={6}
+            onSubmit={(value) => {
+              handleSubmit(value);
+            }}
+            schema={{
+              name: yup.string().required('Line of Business Name is required'),
+            }}
+            fields={[
+              {
+                name: 'name',
+                type: 'input',
+                label: 'Line of Business Name',
+                size: 'md',
+                layout: 'horizontal',
+                width: '70%',
+              },
+              {
+                type: 'decor',
+                layout: 'horizontal',
+                colSpan: 12,
+                width: '100%',
+                size: 'md',
+                DecorComponent: () => (
+                  <UploadFileContent
+                    urlPath={'/products/uploadThumbnailUrl'}
+                    isChooseStock={true}
+                    listStock={STOCK}
+                    callBack={(value) => {
+                      mediaDestination = value;
+                      //console.log(thumb);
+                    }}
+                  />
+                ),
+              },
+            ]}>
+            <UI.Center mt={4} w="full">
+              <UI.Button type={'submit'} isLoading={loading} w="150px">
+                Create
+              </UI.Button>
+            </UI.Center>
+          </FormGenerate>
+        </UI.VStack>
+      </UI.Box>
   );
 }
 

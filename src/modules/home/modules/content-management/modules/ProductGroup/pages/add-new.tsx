@@ -7,6 +7,8 @@ import FormGenerate from '@components/FormGenerate';
 import {useGetList} from '@utils/hooks';
 import {IApplication, ICategorie} from '@types';
 import * as yup from 'yup';
+import LoadingComponent from '@components/LoadingComponent';
+
 
 const STOCK = [
   'https://i.imgur.com/Q04dMOc.png',
@@ -46,7 +48,7 @@ function AddNew() {
 
   ///
 
-  const {getList: getListApplications, data: lineOfBusinessData} =
+  const {getList: getListApplications,loading: loadingApplication, data: lineOfBusinessData} =
     useGetList<IApplication>('applications');
 
   useEffect(() => {
@@ -77,6 +79,7 @@ function AddNew() {
   }, [applicationRef?.current?.state?.value?.value]);
 
   return (
+    <LoadingComponent isLoading={loadingApplication}>
     <UI.Box py={5} px={7}>
       <UI.HStack
         w="full"
@@ -175,6 +178,7 @@ function AddNew() {
         </FormGenerate>
       </UI.VStack>
     </UI.Box>
+    </LoadingComponent>
   );
 }
 

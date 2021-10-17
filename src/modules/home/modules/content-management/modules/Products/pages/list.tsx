@@ -29,7 +29,7 @@ function List() {
 
   const {getList: getListCategories, data: categoriesData} = useGetList<ICategorie>('categories');
   const {getList: getListGroupings, data: groupingsData} = useGetList<IGrouping>('groupings');
-  const {getList: getListProduct, data: productsData} = useGetList<IProduct>('products');
+  const {getList: getListProduct,loading: loadingProduct, data: productsData} = useGetList<IProduct>('products');
 
   const handleOnChange = ({application, category, grouping}) => {
     if (application) {
@@ -52,6 +52,7 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <ContentView
+        isLoading={loadingProduct}
         data={productsData?.records}
         limit={limit}
         totalCount={productsData?.total}

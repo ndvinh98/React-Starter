@@ -8,7 +8,7 @@ import {ICategorie, IGrouping} from '@types';
 import LoadingComponent from '@components/LoadingComponent';
 
 function List() {
-  const {getItem: getAllMenu, data: menuData} = useGetItem('applications/menu');
+  const {getItem: getAllMenu,loading: loadingMenu, data: menuData} = useGetItem('applications/menu');
   useEffect(() => {
     getAllMenu();
   }, []);
@@ -60,7 +60,7 @@ function List() {
       </UI.Button> */}
 
       <ContentView
-        isLoading={loading}
+        isLoading={loadingMenu}
         data={groupingsData?.records}
         limit={limit}
         totalCount={groupingsData?.total}
