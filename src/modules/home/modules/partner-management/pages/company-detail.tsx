@@ -23,23 +23,30 @@ import SalesTable from '@components/SalesTable';
 function CompanyDetail() {
   const {push} = useRouter();
   const {params} = useRouterController();
+
+  /// get Info Company
   const {
-    getItem: getItemPartner,
+    getList: getItemPartner,
     data: dataCompany,
     loading: loadingCompany,
-  } = useGetItem<IPartnerApplicationForms>(
-    `/partnerApplicationForms/${params?.id}`,
-  );
+  } = useGetList<IPartnerApplicationForms>(`/partnerApplicationForms`);
 
   useEffect(() => {
     if (params?.id)
       getItemPartner({
+        filter: JSON.stringify([
+          {
+            partnerApplicationSubmission: {partnerId: params?.id},
+          },
+        ]),
         relations: JSON.stringify([
           'partnerApplicationSubmission',
           'partnerApplicationAttachments',
         ]),
       });
   }, [params]);
+
+  console.log(dataCompany);
 
   const {getItem: getItemDomain, data: dataDomain} =
     useGetItem<IPartnerManagement>(`/partners/${params?.id}`);
@@ -152,10 +159,10 @@ function CompanyDetail() {
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
       <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
-        {dataCompany?.companyName}
+        {dataCompany?.records[0]?.companyName}
         {''} ({dataDomain?.partnerDomain?.domain})
       </UI.Text>
-      <CompanyInfo data={dataCompany} loading={loadingCompany} />
+      <CompanyInfo data={dataCompany?.records[0]} loading={loadingCompany} />
       <UserTable
         data={dataUser}
         loading={loadingUser}
@@ -169,7 +176,7 @@ function CompanyDetail() {
         setPage={setPageSales}
       />
       <TierToParter
-        companyName={dataCompany?.companyName}
+        companyName={dataCompany?.records[0]?.companyName}
         partnerId={params?.id}
       />
     </UI.VStack>

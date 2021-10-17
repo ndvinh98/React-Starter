@@ -20,7 +20,7 @@ import {HiDotsHorizontal} from 'react-icons/hi';
 export const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
   ADMIN: 'Admin',
-  USER: 'Sales Management',
+  USER: 'Sales Manager',
 };
 
 export const STATUS_STRING = {
@@ -216,92 +216,94 @@ function userManagement() {
           ]}
         />
         {isBase ? (
-          <TableGenerate
-            onClickRow={(row) => push(path + `/${row?.id}`)}
-            isLoading={loading}
-            currentPage={data?.page}
-            totalpage={data?.totalPages}
-            data={data?.records || []}
-            onChangePage={setPage}
-            totalCount={data?.total}
-            pageSize={data?.limit}
-            Footer={
-              <UI.Tr>
-                <UI.Td fontWeight="bold" colSpan={1000}>
-                  {data?.total} User
-                </UI.Td>
-              </UI.Tr>
-            }
-            columns={[
-              {
-                Header: 'User',
-                id: 'user',
-                accessor: (row) => (
-                  <UI.HStack>
-                    <UI.Avatar
-                      sx={{
-                        img: {
-                          objectFit: 'contain',
-                        },
-                      }}
-                      bg={
-                        row?.userProfiles?.[0]?.avatarMediaDestination
-                          ? 'white'
-                          : undefined
+          <UI.Box px={4} bgColor="white">
+            <TableGenerate
+              onClickRow={(row) => push(path + `/${row?.id}`)}
+              isLoading={loading}
+              currentPage={data?.page}
+              totalpage={data?.totalPages}
+              data={data?.records || []}
+              onChangePage={setPage}
+              totalCount={data?.total}
+              pageSize={data?.limit}
+              Footer={
+                <UI.Tr>
+                  <UI.Td fontWeight="bold" colSpan={1000}>
+                    {data?.total} User
+                  </UI.Td>
+                </UI.Tr>
+              }
+              columns={[
+                {
+                  Header: 'User',
+                  id: 'user',
+                  accessor: (row) => (
+                    <UI.HStack>
+                      <UI.Avatar
+                        sx={{
+                          img: {
+                            objectFit: 'contain',
+                          },
+                        }}
+                        bg={
+                          row?.userProfiles?.[0]?.avatarMediaDestination
+                            ? 'white'
+                            : undefined
+                        }
+                        src={row?.userProfiles?.[0]?.avatarMediaDestination}
+                        userId={row?.id}
+                        name={row?.firstName + ' ' + row?.lastName}
+                        size={'sm'}
+                      />
+                      <UI.Text>
+                        {row?.firstName} {row?.lastName}
+                      </UI.Text>
+                    </UI.HStack>
+                  ),
+                },
+                {
+                  Header: 'Email Address',
+                  id: 'emailAddress',
+                  accessor: (row) => <UI.Text>{row?.email}</UI.Text>,
+                },
+
+                {
+                  Header: 'Status',
+                  id: 'status',
+                  accessor: (row) => {
+                    return (
+                      <UI.Text>{STATUS_STRING?.[row?.isActive] || ''}</UI.Text>
+                    );
+                  },
+                },
+                {
+                  Header: 'Role',
+                  id: 'role',
+                  accessor: (row) => {
+                    return (
+                      <UI.Text>{USRTYPE_STRING?.[row?.userType] || ''}</UI.Text>
+                    );
+                  },
+                },
+
+                {
+                  Header: () => <UI.Center>Action</UI.Center>,
+                  id: 'action',
+                  accessor: (row) => (
+                    <ActionColum
+                      refresh={() =>
+                        getList({
+                          page: 1,
+                          limit: 10,
+                        })
                       }
-                      src={row?.userProfiles?.[0]?.avatarMediaDestination}
-                      userId={row?.id}
-                      name={row?.firstName + ' ' + row?.lastName}
-                      size={'sm'}
+                      row={row}
                     />
-                    <UI.Text>
-                      {row?.firstName} {row?.lastName}
-                    </UI.Text>
-                  </UI.HStack>
-                ),
-              },
-              {
-                Header: 'Email Address',
-                id: 'emailAddress',
-                accessor: (row) => <UI.Text>{row?.email}</UI.Text>,
-              },
-
-              {
-                Header: 'Status',
-                id: 'status',
-                accessor: (row) => {
-                  return (
-                    <UI.Text>{STATUS_STRING?.[row?.isActive] || ''}</UI.Text>
-                  );
+                  ),
                 },
-              },
-              {
-                Header: 'Role',
-                id: 'role',
-                accessor: (row) => {
-                  return (
-                    <UI.Text>{USRTYPE_STRING?.[row?.userType] || ''}</UI.Text>
-                  );
-                },
-              },
-
-              {
-                Header: () => <UI.Center>Action</UI.Center>,
-                id: 'action',
-                accessor: (row) => (
-                  <ActionColum
-                    refresh={() =>
-                      getList({
-                        page: 1,
-                        limit: 10,
-                      })
-                    }
-                    row={row}
-                  />
-                ),
-              },
-            ]}
-          />
+              ]}
+            />{' '}
+          </UI.Box>
         ) : (
           <UI.Box>
             {loading ? (

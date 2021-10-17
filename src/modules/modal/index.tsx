@@ -11,6 +11,7 @@ import AssignPartnertAdminModal from './modals/AssignPartnertAdmin.modal';
 import ActionPartnerModal from './modals/ActionPartner.modal';
 import AddNewTier from './modals/AddNewTier.modal';
 import RemoveTier from './modals/RemoveTier.modal';
+import AddSale from './modals/AddSale.modal';
 
 function InitModal() {
   return (
@@ -27,6 +28,7 @@ function InitModal() {
       <ActionPartnerModal />
       <AddNewTier />
       <RemoveTier />
+      <AddSale />
     </>
   );
 }
