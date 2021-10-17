@@ -175,77 +175,79 @@ function CompanyManagement() {
           ]}
         />
         {isBase ? (
-          <TableGenerate
-            onClickRow={(row) => push(path + `/company/${row?.id}`)}
-            isLoading={loading}
-            currentPage={data?.page}
-            totalpage={data?.totalPages}
-            totalCount={data?.total}
-            pageSize={data?.limit}
-            data={data?.records || []}
-            onChangePage={setPage}
-            Footer={
-              <UI.Tr>
-                <UI.Td fontWeight="bold" colSpan={1000}>
-                  {data?.total} User
-                </UI.Td>
-              </UI.Tr>
-            }
-            columns={[
-              {
-                Header: 'Company',
-                id: 'company',
-                accessor: (row) => <UI.Text>{row?.companyName}</UI.Text>,
-              },
-              {
-                Header: 'Status',
-                id: 'status',
-                accessor: (row) => {
-                  return (
-                    <UI.Text>{STATUS_STRING?.[row?.isActive] || ''}</UI.Text>
-                  );
+          <UI.Box px={4} bgColor="white">
+            <TableGenerate
+              onClickRow={(row) => push(path + `/company/${row?.id}`)}
+              isLoading={loading}
+              currentPage={data?.page}
+              totalpage={data?.totalPages}
+              totalCount={data?.total}
+              pageSize={data?.limit}
+              data={data?.records || []}
+              onChangePage={setPage}
+              Footer={
+                <UI.Tr>
+                  <UI.Td fontWeight="bold" colSpan={1000}>
+                    {data?.total} User
+                  </UI.Td>
+                </UI.Tr>
+              }
+              columns={[
+                {
+                  Header: 'Company',
+                  id: 'company',
+                  accessor: (row) => <UI.Text>{row?.companyName}</UI.Text>,
                 },
-              },
-              {
-                Header: 'Registered Date',
-                id: 'registDate',
-                accessor: (row) => (
-                  <UI.Text>
-                    {moment(row?.createdAt).format('DD MMM YYYY')}
-                  </UI.Text>
-                ),
-              },
-
-              {
-                Header: 'Validity Date',
-                id: 'validDate',
-                accessor: (row) => {
-                  return (
+                {
+                  Header: 'Status',
+                  id: 'status',
+                  accessor: (row) => {
+                    return (
+                      <UI.Text>{STATUS_STRING?.[row?.isActive] || ''}</UI.Text>
+                    );
+                  },
+                },
+                {
+                  Header: 'Registered Date',
+                  id: 'registDate',
+                  accessor: (row) => (
                     <UI.Text>
-                      {' '}
-                      {moment(row?.expiryDate).format('DD MMM YYYY')}
+                      {moment(row?.createdAt).format('DD MMM YYYY')}
                     </UI.Text>
-                  );
+                  ),
                 },
-              },
 
-              {
-                Header: () => <UI.Center>Action</UI.Center>,
-                id: 'action',
-                accessor: (row) => (
-                  <ActionColum
-                    refresh={() =>
-                      getList({
-                        page: 1,
-                        limit: 10,
-                      })
-                    }
-                    row={row}
-                  />
-                ),
-              },
-            ]}
-          />
+                {
+                  Header: 'Validity Date',
+                  id: 'validDate',
+                  accessor: (row) => {
+                    return (
+                      <UI.Text>
+                        {' '}
+                        {moment(row?.expiryDate).format('DD MMM YYYY')}
+                      </UI.Text>
+                    );
+                  },
+                },
+
+                {
+                  Header: () => <UI.Center>Action</UI.Center>,
+                  id: 'action',
+                  accessor: (row) => (
+                    <ActionColum
+                      refresh={() =>
+                        getList({
+                          page: 1,
+                          limit: 10,
+                        })
+                      }
+                      row={row}
+                    />
+                  ),
+                },
+              ]}
+            />
+          </UI.Box>
         ) : (
           <UI.Box>
             {loading ? (

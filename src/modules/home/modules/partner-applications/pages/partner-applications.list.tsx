@@ -23,10 +23,10 @@ const FIELDS: IFormControl[] = [
     type: 'select',
     name: 'status',
     colSpan: 3,
-    defaultValue: {label: 'Access requests', value: 'PENDING'},
+    defaultValue: {label: 'Pending requests', value: 'PENDING'},
     options: [
       {
-        label: 'Access requests',
+        label: 'Pending requests',
         value: 'PENDING',
       },
       {

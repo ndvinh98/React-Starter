@@ -32,6 +32,7 @@ function CompanyInfo(props: any) {
           <UI.Box width="full" bg="white" pt={4} py={6} px={4}>
             <UI.Text
               fontSize={{md: 'md', lg: 'xl'}}
+              pl={3}
               fontWeight={'semibold'}
               color={'ste.black'}
               bgColor={'#EEEEEC'}>
@@ -403,15 +404,6 @@ export const FieldView = memo(({name, value, data}: any) => {
   const {isBase} = useMedia();
 
   const {openModal} = useModalController();
-  const {getItem, data: item} = useGetItem(
-    'partnerApplicationAttachments/downloadFileUrl',
-  );
-
-  useEffect(() => {
-    if (data != null) {
-      getItem({name: JSON.stringify([data])});
-    }
-  }, [data]);
 
   return (
     <UI.Stack
@@ -428,7 +420,8 @@ export const FieldView = memo(({name, value, data}: any) => {
         <UI.Button
           onClick={() =>
             openModal('fileViewer2', {
-              payload: item,
+              mediaDestination: data,
+              title: 'Attachment',
             })
           }
           bgColor={'#E9E9E9'}

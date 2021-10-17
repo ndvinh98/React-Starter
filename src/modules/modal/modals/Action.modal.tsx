@@ -41,12 +41,13 @@ function ActionModal() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
-          <UI.Center textTransform="uppercase" ontSize={'lg'} color={'ste.red'}>
+          <UI.Center ontSize={'lg'} color={'ste.red'}>
             {data?.title}
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          <UI.Text>Are you sure you want to {data?.title}?</UI.Text>
+          <UI.Text>Are you sure you want to</UI.Text>
+          <UI.Text>{data?.title.toLowerCase()}?</UI.Text>
         </UI.ModalBody>
 
         <UI.ModalFooter>
