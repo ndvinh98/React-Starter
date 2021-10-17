@@ -46,9 +46,8 @@ function ActionModal() {
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          <UI.Text>
-            Are you sure you want to {data?.title.toLowerCase()}?
-          </UI.Text>
+          <UI.Text>Are you sure you want to</UI.Text>
+          <UI.Text>{data?.title.toLowerCase()}?</UI.Text>
         </UI.ModalBody>
 
         <UI.ModalFooter>
