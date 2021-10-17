@@ -9,4 +9,8 @@ export default mount({
     title: 'line-of-business-add',
     getView: () => import('./pages/add-new'),
   }),
+  '/edit/:id': route({
+    title: 'line-of-business-add',
+    getView: () => import('./pages/edit'),
+  }),
 });

@@ -1,11 +1,12 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useEffect, useRef} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
-import {useRouter, useGetItem, usePost} from '@utils/hooks';
-import {IoMdCloseCircle} from 'react-icons/io';
-
-import UploadThumb from '@components/UploadThumb';
-import {uploadFile} from '@services';
+import {useRouter, usePost} from '@utils/hooks';
+import UploadFileContent from '@components/UploadFileContent';
+import FormGenerate from '@components/FormGenerate';
+import {useGetList} from '@utils/hooks';
+import {IApplication, ICategorie} from '@types';
+import * as yup from 'yup';
 
 const STOCK = [
   'https://i.imgur.com/Q04dMOc.png',
@@ -16,56 +17,10 @@ const STOCK = [
 ];
 
 function AddNew() {
-  const {getItem: getAllMenu, data: menuData} = useGetItem('applications/menu');
-  const [name, setName] = useState('');
-  const [application, setApplication] = useState('');
-  const [category, setCategory] = useState('');
-
-  useEffect(() => {
-    getAllMenu();
-  }, []);
-
-  const listCategories = useMemo(() => {
-    if (application) {
-      for (let i = 0; i < menuData.length; i++) {
-        if (menuData[i].id == application) {
-          return menuData[i].categories;
-        }
-      }
-    }
-  }, [application]);
-
   const {push} = useRouter();
   const toast = UI.useToast();
-
-  const handleChange = (event) => setName(event.target.value);
-  const handleChangeSelectBusiness = (event) => {
-    setApplication(event.target.value);
-    setCategory('');
-  };
-  const handleChangeSelectProduct = (event) => setCategory(event.target.value);
-
-  const [thumb, setThumb] = useState('');
-  const canCreate = name && thumb && application && category;
-
-  const [file, setFile] = useState();
-
-  const [uploading, setUploading] = useState(false);
-
-  const {data, getItem} = useGetItem<{url: string; value: string}>(
-    '/products/uploadThumbnailUrl',
-  );
-
+  let mediaDestination = '';
   const {post, loading, data: postData} = usePost('/groupings');
-
-  useEffect(() => {
-    if (data) {
-      uploadFile(data.url, file)
-        .then(() => setThumb(data.value))
-        .finally(() => setUploading(false));
-    }
-  }, [data]);
-
   useEffect(() => {
     if (postData) {
       toast({
@@ -75,8 +30,51 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
+      push('/home/content-management/line-of-product');
     }
   }, [postData]);
+
+  const handleSubmit = (value) => {
+    if (value && mediaDestination) {
+      post({
+        name: value.name,
+        category: value.category,
+        mediaDestination,
+      });
+    }
+  };
+
+  ///
+
+  const {getList: getListApplications, data: lineOfBusinessData} =
+    useGetList<IApplication>('applications');
+
+  useEffect(() => {
+    getListApplications({
+      limit: 9999,
+    });
+  }, []);
+
+  const handleOnChange = ({application}) => {
+    if (application) {
+      getListCategories({
+        limit: 9999,
+        filter: JSON.stringify([{application: application}]),
+      });
+    }
+  };
+
+  const {
+    getList: getListCategories,
+    data: categoriesData,
+  } = useGetList<ICategorie>('categories');
+
+  const categoryRef = useRef<any>(null);
+  const applicationRef = useRef<any>(null);
+
+  useEffect(() => {
+    categoryRef?.current?.select?.clearValue();
+  }, [applicationRef?.current?.state?.value?.value]);
 
   return (
     <UI.Box py={5} px={7}>
@@ -101,105 +99,80 @@ function AddNew() {
         <UI.Text fontSize="16px" fontWeight="bold">
           ADD NEW PRODUCT GROUP
         </UI.Text>
-        <UI.HStack w="full">
-          <UI.Text w="300px">Product Group Name</UI.Text>
-          <UI.Input value={name} onChange={handleChange} />
-        </UI.HStack>
-        <UI.HStack w="full">
-          <UI.Text w="300px">Select Line of Business</UI.Text>
-          <UI.Select
-            placeholder={'Select Line of Business'}
-            onChange={handleChangeSelectBusiness}>
-            {menuData &&
-              menuData.map((x) => {
-                return <option value={x?.id}>{x?.name}</option>;
-              })}
-          </UI.Select>
-        </UI.HStack>
-        <UI.HStack w="full">
-          <UI.Text w="300px">Select Line of Product</UI.Text>
-          <UI.Select
-            placeholder={'Select Line of Product'}
-            isDisabled={application ? false : true}
-            onChange={handleChangeSelectProduct}>
-            {listCategories &&
-              listCategories.map((x) => {
-                return <option value={x?.id}>{x?.name}</option>;
-              })}
-          </UI.Select>
-        </UI.HStack>
-        <UI.HStack alignItems="flex-start" w="full">
-          <UI.Text w="300px">Upload Image</UI.Text>
-          <UI.VStack alignItems="flex-start" w="full">
-            <UploadThumb
-              name="thumb"
-              isLoading={uploading}
-              onChangeValue={({thumb}) => {
-                if (thumb?.[0]) {
-                  setUploading(true);
-                  setFile(thumb?.[0]);
-                  getItem({
-                    name: thumb?.[0]?.name,
-                    type: thumb?.[0]?.type,
-                  });
-                }
-              }}
-            />
-            {thumb && (
-              <UI.Box position="relative">
-                <UI.Circle
-                  onClick={() => {
-                    setThumb('');
-                    setFile(null);
+        <FormGenerate
+          onChangeValue={handleOnChange}
+          spacing={6}
+          onSubmit={(value) => {
+            handleSubmit(value);
+          }}
+          schema={{
+            name: yup.string().required('Product Group Name is required'),
+            application: yup.number().required('Line of Business is required'),
+            category: yup.number().required('Line of Product is required'),
+          }}
+          fields={[
+            {
+              name: 'name',
+              type: 'input',
+              label: 'Product Group Name',
+              size: 'md',
+              layout: 'horizontal',
+              width: '70%',
+            },
+            {
+              name: 'application',
+              type: 'select',
+              refEl: applicationRef,
+              label: 'Select Line of Business',
+              placeholder: 'Select Line of Business',
+              size: 'md',
+              layout: 'horizontal',
+              width: '70%',
+              options: lineOfBusinessData?.records?.map((x) => ({
+                value: x?.id,
+                label: x?.name,
+              })),
+            },
+            {
+              name: 'category',
+              refEl: categoryRef,
+              label:  'Select Line of Product',
+              placeholder: 'Select Line of Product',
+              layout: 'horizontal',
+              width: '70%',
+              isDisabled: applicationRef?.current?.state?.value?.value ? false : true,
+              type: 'select',
+              size: 'md',
+              options: categoriesData?.records?.map?.((x) => ({
+                value: x?.id,
+                label: x?.name,
+              })),
+            },
+            {
+              type: 'decor',
+              layout: 'horizontal',
+              colSpan: 12,
+              width: '100%',
+              size: 'md',
+              DecorComponent: () => (
+                <UploadFileContent
+                  urlPath={'/products/uploadThumbnailUrl'}
+                  isChooseStock={true}
+                  listStock={STOCK}
+                  callBack={(value) => {
+                    mediaDestination = value;
+                    //console.log(thumb);
                   }}
-                  cursor="pointer"
-                  bg="white"
-                  right={-2}
-                  top={-2}
-                  position="absolute">
-                  <IoMdCloseCircle fontSize="20px" color="red" />
-                </UI.Circle>
-                <UI.Image
-                  boxSize="120px"
-                  borderRadius="md"
-                  objectFit="cover"
-                  src={thumb}
                 />
-              </UI.Box>
-            )}
-          </UI.VStack>
-        </UI.HStack>
-        <UI.HStack alignItems="flex-start" w="full">
-          <UI.Text w="300px">Choose Stock Image</UI.Text>
-          <UI.SimpleGrid
-            borderWidth="2px"
-            borderRadius="md"
-            p={5}
-            w="full"
-            gap="20px"
-            templateColumns="repeat(auto-fill, 180px)">
-            {STOCK.map((x, i) => (
-              <UI.Box cursor="pointer" onClick={() => setThumb(x)} key={i}>
-                <UI.Image src={x} />
-              </UI.Box>
-            ))}
-          </UI.SimpleGrid>
-        </UI.HStack>
-        <UI.Center w="full">
-          <UI.Button
-            isLoading={loading}
-            onClick={() =>
-              post({
-                category,
-                name,
-                mediaDestination: thumb,
-              })
-            }
-            isDisabled={!canCreate}
-            w="150px">
-            Create
-          </UI.Button>
-        </UI.Center>
+              ),
+            },
+          ]}>
+          <UI.Center mt={4} w="full">
+            <UI.Button type={'submit'} isLoading={loading} w="150px">
+              Create
+            </UI.Button>
+          </UI.Center>
+        </FormGenerate>
       </UI.VStack>
     </UI.Box>
   );

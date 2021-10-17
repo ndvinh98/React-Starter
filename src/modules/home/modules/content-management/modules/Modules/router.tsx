@@ -11,14 +11,18 @@ export default mount({
   }),
   '/add-new-video': route({
     title: 'line-of-business-list',
-    getView: () => import('./pages/add-new-video'),
+    getView: () => import('./pages/videos/add-new-video'),
   }),
   '/add-new-document': route({
     title: 'line-of-business-list',
-    getView: () => import('./pages/add-new-document'),
+    getView: () => import('./pages/brochures/add-new-document'),
   }),
   '/add-new': route({
     title: 'line-of-business-add',
     getView: () => import('./pages/add-new'),
+  }),
+  '/edit/:id': route({
+    title: 'line-of-business-add',
+    getView: () => import('./pages/edit'),
   }),
 });
