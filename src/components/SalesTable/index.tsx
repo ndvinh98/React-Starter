@@ -42,7 +42,11 @@ function SalesTable(props: any) {
   return (
     <UI.VStack py={6} px={5} spacing={4} width="full" bgColor="white">
       <UI.Box w="full" bgColor={'#EEEEEC'}>
-        <UI.Text fontSize="2xl" fontWeight="semibold" w="full" pl={3}>
+        <UI.Text
+          fontSize={{md: 'md', lg: 'xl'}}
+          fontWeight="semibold"
+          w="full"
+          pl={3}>
           Sales Manager
         </UI.Text>
       </UI.Box>

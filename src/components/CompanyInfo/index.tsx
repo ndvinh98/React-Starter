@@ -1,5 +1,5 @@
-import React, {memo, useEffect} from 'react';
-import {useMedia, useGetItem} from '@utils/hooks';
+import React, {memo} from 'react';
+import {useMedia} from '@utils/hooks';
 import {useModalController} from '@modules/modal';
 
 import * as UI from '@chakra-ui/react';
@@ -284,7 +284,7 @@ function CompanyInfo(props: any) {
                         DecorComponent: () => (
                           <FieldData
                             name={`Person to contact and attention payment`}
-                            value={data?.billingContactDesignation}
+                            value={data?.billingContactName}
                           />
                         ),
                       },
