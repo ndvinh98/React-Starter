@@ -113,12 +113,12 @@ function Edit() {
                 .default(resourceData?.videoFileType),
               videoLength: yup
                 .string()
-                .required('Number of Pages is required')
+                .required('Video Length is required')
                 .default(resourceData?.videoLength),
               language: yup
                 .number()
                 .required('Language is required')
-                .default(resourceData?.language),
+                .default(resourceData?.languageId),
             }}
             fields={[
               {

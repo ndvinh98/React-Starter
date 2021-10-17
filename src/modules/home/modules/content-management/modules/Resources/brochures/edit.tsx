@@ -120,7 +120,7 @@ function Edit() {
               language: yup
                 .number()
                 .required('Language is required')
-                .default(resourceData?.language),
+                .default(resourceData?.languageId),
             }}
             fields={[
               {
