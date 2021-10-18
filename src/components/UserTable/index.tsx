@@ -1,5 +1,5 @@
-import React from 'react';
-import moment from 'moment';
+import React, {useState} from 'react';
+import {format} from 'date-fns';
 
 import TableGenerate from '@components/TableGenerate';
 import FormGenerate from '@components/FormGenerate';
@@ -33,7 +33,14 @@ export const ACTIVE_STRING = {
 };
 
 function UserTable(props) {
-  const {data, loading, setPage, handleFilterDataUser, totalCount} = props;
+  const {
+    data,
+    loading,
+    setPage,
+    handleFilterDataUser,
+    totalCount,
+    companyName,
+  } = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
@@ -167,8 +174,9 @@ function UserTable(props) {
                 id: 'lastActivity',
                 accessor: (row) => (
                   <UI.Text>
-                    {' '}
-                    {moment(row?.otpCodeExp).format('DD MMM YYYY')}
+                    {row?.otpCodeExp
+                      ? format(new Date(row?.otpCodeExp), 'dd MMM yyyy')
+                      : false}
                   </UI.Text>
                 ),
               },
@@ -196,8 +204,9 @@ function UserTable(props) {
                 id: 'registDate',
                 accessor: (row) => (
                   <UI.Text>
-                    {' '}
-                    {moment(row?.createdAt).format('DD MMM YYYY')}
+                    {row?.createdAt
+                      ? format(new Date(row?.createdAt), 'dd MMM yyyy')
+                      : false}
                   </UI.Text>
                 ),
               },
@@ -213,6 +222,7 @@ function UserTable(props) {
                     //   })
                     // }
                     row={row}
+                    companyName={companyName}
                   />
                 ),
               },
@@ -261,13 +271,21 @@ export const ActionColum = (props: any) => {
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
 
-  const {row} = props;
+  const {row, companyName} = props;
+
+  const isHiden = () => {
+    return row?.isActive === 0 || row?.userType === 'PARTNERADMIN'
+      ? true
+      : false;
+  };
+
   return (
     <UI.Center>
       <UI.Menu onClose={onClose} isOpen={isOpen}>
         <UI.MenuButton
           px={4}
           py={2}
+          hidden={isHiden()}
           onClick={(e) => {
             e.stopPropagation();
             onOpen();
@@ -276,7 +294,6 @@ export const ActionColum = (props: any) => {
         </UI.MenuButton>
         <UI.MenuList>
           <UI.MenuItem
-            hidden={row?.isActive === 0}
             onClick={(e) => {
               e.stopPropagation();
               openModal('assignPartnerAdmin', {
@@ -284,6 +301,7 @@ export const ActionColum = (props: any) => {
                 id: row?.id,
                 firstName: row?.firstName,
                 lastName: row?.lastName,
+                companyName: companyName,
               });
             }}>
             Assign as Partner Admin

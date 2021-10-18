@@ -46,12 +46,12 @@ function UserPartnerDetail() {
     data: profileData,
     loading,
     getItem,
-  } = useGetItem<IPartnerUsers>(`/partnerUsers/${params?.id}`);
+  } = useGetItem<IPartnerUsers>(`/partnerUsers/${params?.userId}`);
   const {openModal} = useModalController();
   const {isBase} = useMedia();
 
   useEffect(() => {
-    if (params?.id) getUserProfile();
+    if (params?.userId) getUserProfile();
   }, [params]);
 
   const getUserProfile = () => {
@@ -78,7 +78,7 @@ function UserPartnerDetail() {
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/partner-management')}>
+        onClick={() => push(`/home/partner-management/company/${params?.id}`)}>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
@@ -100,14 +100,14 @@ function UserPartnerDetail() {
           <UI.Tbody>
             <UI.Tr>
               <UI.Td>
-                {profileData?.updatedAt
-                  ? format(new Date(profileData?.updatedAt), 'dd MMM yyyy')
+                {profileData?.otpCodeExp
+                  ? format(new Date(profileData?.otpCodeExp), 'dd MMM yyyy')
                   : false}
               </UI.Td>
               <UI.Td>{STATUS_STRING[profileData?.isActive]}</UI.Td>
               <UI.Td>{USRTYPE_STRING[profileData?.userType]}</UI.Td>
               <UI.Td>
-                {profileData?.updatedAt
+                {profileData?.createdAt
                   ? format(new Date(profileData?.createdAt), 'dd MMM yyyy')
                   : false}
               </UI.Td>

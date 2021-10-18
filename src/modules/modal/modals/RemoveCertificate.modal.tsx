@@ -1,33 +1,39 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
-
 import {useModalController} from '../modals.controller';
-import {usePost} from '@utils/hooks';
+import {useRemove} from '@utils/hooks';
 
-function AssignPartnerAdminModal() {
-  const {assignPartnerAdmin, closeModal, data} = useModalController();
+function RemoveCertificate() {
+  const {removeCertificate, closeModal, data} = useModalController();
   const {
-    data: patchData,
+    data: postData,
     loading,
-    post,
-  } = usePost(`/partnerUsers/${data?.id}/assignAsPartnerAdmin`);
+    remove,
+  } = useRemove(`/partnerUserCertificates/${data?.id}`);
   const toast = UI.useToast();
 
-  useEffect(() => {
-    if (patchData) {
-      closeModal('assignPartnerAdmin');
-      toast({status: 'success', description: 'Successfully!', duration: 2000});
+  React.useEffect(() => {
+    if (postData) {
+      data?.cb?.();
+      closeModal('removeCertificate');
+      toast({
+        status: 'success',
+        description: 'Successfully!',
+        position: 'top-right',
+        isClosable: true,
+        duration: 2000,
+      });
     }
-  }, [patchData]);
+  }, [postData]);
 
   return (
     <UI.Modal
       isCentered
-      isOpen={assignPartnerAdmin}
-      onClose={() => closeModal('assignPartnerAdmin')}>
+      isOpen={removeCertificate}
+      onClose={() => closeModal('removeCertificate')}>
       <UI.ModalOverlay />
-      <UI.ModalContent position={'relative'} w="360px" minH="311px">
+      <UI.ModalContent position={'relative'} w="360px" minH="211px">
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -41,23 +47,16 @@ function AssignPartnerAdminModal() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
-          <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            Are you sure you want to assign
-          </UI.Center>
-          <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            {data?.firstName} {` `} {data?.lastName} as Partner
-          </UI.Center>
-          <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            for {data?.companyName}
-          </UI.Center>
+          <UI.Box fontSize={'lg'} color={'ste.red'} textAlign="center">
+            <UI.Text> Are you sure you want to</UI.Text>
+            <UI.Text>delete this certificate?</UI.Text>
+          </UI.Box>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <UI.Center mt={8} w={'full'}>
             <UI.Button
               colorScheme="blue"
-              onClick={() => {
-                post({});
-              }}
+              onClick={() => remove()}
               mr={3}
               w={'120px'}
               type="submit"
@@ -68,18 +67,17 @@ function AssignPartnerAdminModal() {
               w={'120px'}
               type="button"
               onClick={() => {
-                closeModal('assignPartnerAdmin');
+                closeModal('removeCertificate');
               }}
               variant="outline">
               Cancel
             </UI.Button>
           </UI.Center>
         </UI.ModalBody>
-
         <UI.ModalFooter></UI.ModalFooter>
       </UI.ModalContent>
     </UI.Modal>
   );
 }
 
-export default memo(AssignPartnerAdminModal);
+export default memo(RemoveCertificate);

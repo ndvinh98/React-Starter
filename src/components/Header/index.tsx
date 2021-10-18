@@ -8,7 +8,7 @@ import Mobile from './header.mobile';
 const headerButton = [
   {
     headerButtonType: 'search',
-    isShow: true,
+    isShow: false,
     position: 1,
   },
   {

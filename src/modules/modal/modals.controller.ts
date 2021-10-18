@@ -20,11 +20,13 @@ export interface IModalController {
   addNewTier: boolean;
   removeTier: boolean;
   addSale: boolean;
+  removeCertificate: boolean;
   deleteContent: boolean;
 }
 
 export const useModalController = create<IModalController>((set) => ({
   deleteContent: false,
+  removeCertificate: false,
   addSale: false,
   assignPartnerAdmin: false,
   actionPartner: false,

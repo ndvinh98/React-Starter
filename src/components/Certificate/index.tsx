@@ -29,7 +29,16 @@ const Certificate = ({data}) => {
             {data?.name}
           </UI.Text>
         </UI.Box>
-        <TiDelete />
+
+        <UI.Box
+          onClick={() =>
+            openModal('removeCertificate', {
+              id: data?.id,
+              certificate: data?.name,
+            })
+          }>
+          <TiDelete />
+        </UI.Box>
       </UI.HStack>
     </UI.Box>
   );
