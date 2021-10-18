@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import {format} from 'date-fns';
 
 import TableGenerate from '@components/TableGenerate';
 import FormGenerate from '@components/FormGenerate';
@@ -174,8 +174,9 @@ function UserTable(props) {
                 id: 'lastActivity',
                 accessor: (row) => (
                   <UI.Text>
-                    {' '}
-                    {moment(row?.otpCodeExp).format('DD MMM YYYY')}
+                    {row?.otpCodeExp
+                      ? format(new Date(row?.otpCodeExp), 'dd MMM yyyy')
+                      : false}
                   </UI.Text>
                 ),
               },
@@ -203,8 +204,9 @@ function UserTable(props) {
                 id: 'registDate',
                 accessor: (row) => (
                   <UI.Text>
-                    {' '}
-                    {moment(row?.createdAt).format('DD MMM YYYY')}
+                    {row?.createdAt
+                      ? format(new Date(row?.createdAt), 'dd MMM yyyy')
+                      : false}
                   </UI.Text>
                 ),
               },

@@ -100,14 +100,14 @@ function UserPartnerDetail() {
           <UI.Tbody>
             <UI.Tr>
               <UI.Td>
-                {profileData?.updatedAt
-                  ? format(new Date(profileData?.updatedAt), 'dd MMM yyyy')
+                {profileData?.otpCodeExp
+                  ? format(new Date(profileData?.otpCodeExp), 'dd MMM yyyy')
                   : false}
               </UI.Td>
               <UI.Td>{STATUS_STRING[profileData?.isActive]}</UI.Td>
               <UI.Td>{USRTYPE_STRING[profileData?.userType]}</UI.Td>
               <UI.Td>
-                {profileData?.updatedAt
+                {profileData?.createdAt
                   ? format(new Date(profileData?.createdAt), 'dd MMM yyyy')
                   : false}
               </UI.Td>
