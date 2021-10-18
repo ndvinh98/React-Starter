@@ -75,16 +75,16 @@ function userManagement() {
   ) => {
     if (fieldChange.name === 'textSearch') {
       if (textSearch && textSearch.length < 3) return;
-
-      setTextSearch(textSearch);
+      setPage(1), setTextSearch(textSearch);
     }
 
     if (['status', 'userType'].includes(fieldChange.name)) {
-      setFilter((filter) => ({
-        ...filter,
-        status: status === '-1' ? undefined : status,
-        userType: userType === '-1' ? undefined : userType,
-      }));
+      setPage(1),
+        setFilter((filter) => ({
+          ...filter,
+          status: status === '-1' ? undefined : status,
+          userType: userType === '-1' ? undefined : userType,
+        }));
     }
   };
 
