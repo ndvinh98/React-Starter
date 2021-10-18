@@ -60,7 +60,8 @@ function List() {
             ]}
           />
         }
-        name="Content Management - Line of Product"
+        name="Line of Product"
+        linkDeleteContent="/categories/"
         linkAddNew="/home/content-management/line-of-product/add-new"
         linkToChild="/home/content-management/product-group"
       />

@@ -12,6 +12,7 @@ import ActionPartnerModal from './modals/ActionPartner.modal';
 import AddNewTier from './modals/AddNewTier.modal';
 import RemoveTier from './modals/RemoveTier.modal';
 import AddSale from './modals/AddSale.modal';
+import DeleteContentModal from './modals/DeleteContent.modal'
 
 function InitModal() {
   return (
@@ -30,6 +31,7 @@ function InitModal() {
       <AddNewTier />
       <RemoveTier />
       <AddSale />
+      <DeleteContentModal/>
     </>
   );
 }

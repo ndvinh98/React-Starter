@@ -105,7 +105,8 @@ function List() {
             ]}
           />
         }
-        name="Content Management - Products"
+        name="Products"
+        linkDeleteContent="/products/"
         linkAddNew="/home/content-management/products/add-new"
         linkToChild="/home/content-management/modules"
       />

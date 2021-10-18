@@ -16,6 +16,7 @@ import ModuleGridItem from './item/ModuleGridItem';
 import NormalListItem from './item/NormalListItem';
 import ModuleListItem from './item/ModuleListItem';
 import {isEmpty} from 'lodash';
+import {useModalController} from '@modules/modal';
 
 export interface IContentView {
   name?: string;
@@ -32,6 +33,7 @@ export interface IContentView {
   currentPage?: number;
   linkAddNew?: string;
   linkToChild?: string;
+  linkDeleteContent?: string;
   isModulesView?: boolean;
   isVideo?: boolean;
   isBrochures?: boolean;
@@ -52,12 +54,14 @@ function ContentView(props: IContentView) {
     isModulesView,
     isVideo,
     isBrochures,
+    linkDeleteContent,
   } = props;
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
   const itemSelected = useContentManagementController((s) => s.itemSelected);
+  const itemDetailsSelected = useContentManagementController((s) => s.itemDetailsSelected);
   const clear = useContentManagementController((s) => s.clear);
-
+  const {openModal} = useModalController();
   const pathname = useRouterController((s) => s.pathname);
 
   React.useEffect(() => {
@@ -72,7 +76,7 @@ function ContentView(props: IContentView) {
       w="full">
       <UI.VStack flexGrow={1} w="full" py={5} px={7} alignItems="flex-start">
         <UI.Text fontSize="24px" fontWeight="bold">
-          {name}
+          {name ? "Content Management - "+name : "Content Management"}
         </UI.Text>
         <UI.HStack
           w={'full'}
@@ -151,7 +155,20 @@ function ContentView(props: IContentView) {
                     </UI.Text>
                   )}
                 </UI.MenuItem>
-                <UI.MenuItem color="ste.red">Delete</UI.MenuItem>
+                <UI.MenuItem
+                  onClick={() =>{
+                    console.log(itemDetailsSelected);
+                    openModal('deleteContent', {
+                      itemDetailsSelected,
+                      linkDeleteContent,
+                      name,
+                      url: linkDeleteContent,
+                      isResources: isVideo || isBrochures,
+                    })
+                  }}
+                  color="ste.red">
+                  Delete
+                </UI.MenuItem>
               </UI.MenuList>
             </UI.Menu>
           </UI.Box>

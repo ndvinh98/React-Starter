@@ -126,7 +126,8 @@ function List() {
             ]}
           />
         }
-        name="Content Management - Modules"
+        name="Modules"
+        linkDeleteContent="/productModules/"
         linkAddNew="/home/content-management/modules/add-new"
         linkToChild="/home/content-management/resources"
       />

@@ -19,12 +19,16 @@ function FileViewer() {
   );
 
   useEffect(() => {
-    if (fileViewer) {
+    if (fileViewer && data?.payload?.mediaDestination) {
       if (data?.type === 'feedback') {
         getItem({name: JSON.stringify([data?.payload?.mediaDestination])});
       }
     }
   }, [fileViewer]);
+
+  useEffect(()=>{
+    console.log(item)
+  },[item])
 
   return (
     <UI.Modal

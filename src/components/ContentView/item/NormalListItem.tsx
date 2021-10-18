@@ -9,13 +9,24 @@ function NormalListItem({item, linkToChild, isVideo, isBrochures}) {
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
   const removeItem = useContentManagementController((s) => s.removeItem);
+  const addDetailsItem = useContentManagementController(
+    (s) => s.addDetailsItem,
+  );
+  const removeDetailsItem = useContentManagementController(
+    (s) => s.removeDetailsItem,
+  );
   return (
     <UI.Box ref={hoverRef} w="full" position="relative">
       <UI.Checkbox
         onChange={(e) => {
           e.stopPropagation();
-          if (e?.target?.checked) addItem(item?.id);
-          else removeItem(item?.id);
+          if (e?.target?.checked) {
+            addItem(item?.id);
+            addDetailsItem(item);
+          } else {
+            removeItem(item?.id);
+            removeDetailsItem(item);
+          }
         }}
         isChecked={itemSelected.includes(+item?.id)}
         hidden={!isHovered && !itemSelected.includes(+item?.id)}

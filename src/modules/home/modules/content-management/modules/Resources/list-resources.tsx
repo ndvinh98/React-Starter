@@ -82,7 +82,8 @@ function List() {
               ]}
             />
           }
-          name={'Content Management - ' + modulesData?.records?.[0]?.name}
+          name={modulesData?.records?.[0]?.name}
+          linkDeleteContent="/productModuleResources/"
           linkAddNew={
             modulesData?.records?.[0]?.mediaType == 'VIDEOS'
               ? '/home/content-management/resources/add-videos/module/' +

@@ -125,7 +125,7 @@ function FeedbackList() {
           ])
         : undefined,
       filter: isEmpty(filter)
-        ? JSON.stringify([{isRead: 0}])
+        ? undefined
         : JSON.stringify([filter]),
       relations: JSON.stringify(['partnerUser']),
     });
@@ -165,12 +165,12 @@ function FeedbackList() {
               name: 'isRead',
               isClearable: false,
               defaultValue: {
-                label: 'Unread',
-                value: '0',
+                label: 'All Feedback',
+                value: '-1',
               },
               options: [
                 {
-                  label: 'All feedback',
+                  label: 'All Feedback',
                   value: '-1',
                 },
                 {
