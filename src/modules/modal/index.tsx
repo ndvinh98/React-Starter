@@ -12,11 +12,11 @@ import ActionPartnerModal from './modals/ActionPartner.modal';
 import AddNewTier from './modals/AddNewTier.modal';
 import RemoveTier from './modals/RemoveTier.modal';
 import AddSale from './modals/AddSale.modal';
+import RemoveCertificate from './modals/RemoveCertificate.modal';
 
 function InitModal() {
   return (
     <>
-      assignPartnerAdmin
       <LogoutModal />
       <RejectModal />
       <ConfirmModal />
@@ -30,6 +30,7 @@ function InitModal() {
       <AddNewTier />
       <RemoveTier />
       <AddSale />
+      <RemoveCertificate />
     </>
   );
 }
