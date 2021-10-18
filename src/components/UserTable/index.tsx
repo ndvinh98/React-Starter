@@ -276,6 +276,7 @@ export const ActionColum = (props: any) => {
         <UI.MenuButton
           px={4}
           py={2}
+          hidden={row?.isActive === 0}
           onClick={(e) => {
             e.stopPropagation();
             onOpen();
@@ -284,7 +285,6 @@ export const ActionColum = (props: any) => {
         </UI.MenuButton>
         <UI.MenuList>
           <UI.MenuItem
-            hidden={row?.isActive === 0}
             onClick={(e) => {
               e.stopPropagation();
               openModal('assignPartnerAdmin', {
