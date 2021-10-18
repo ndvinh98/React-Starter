@@ -81,7 +81,7 @@ function CompanyDetail() {
   useEffect(() => {
     if (dataDomain)
       getListUser({
-        pageUser,
+        page: pageUser,
         limit: limitUser,
         relations: JSON.stringify(['domain']),
         filter: JSON.stringify([
@@ -100,13 +100,23 @@ function CompanyDetail() {
       });
   }, [pageUser, limitUser, textSearchUser, filterUser, dataDomain]);
 
-  const handleFilterDataUser = ({textSearch, status, userType}) => {
-    setTextSearchUser(textSearch === undefined ? '' : textSearch);
-    setFilterUser((filter) => ({
-      ...filter,
-      status: status === '-1' ? undefined : status,
-      userType: userType === '-1' ? undefined : userType,
-    }));
+  const handleFilterDataUser = (
+    {textSearch, status, userType},
+    fieldChange,
+  ) => {
+    if (fieldChange.name === 'textSearch') {
+      if (textSearch && textSearch.length < 3) return;
+
+      setTextSearchUser(textSearch);
+    }
+
+    if (['status', 'userType'].includes(fieldChange.name)) {
+      setFilterUser((filterUser) => ({
+        ...filterUser,
+        isActive: status === '-1' ? undefined : status,
+        userType: userType === '-1' ? undefined : userType,
+      }));
+    }
   };
 
   // Import data Sale Manager
@@ -145,8 +155,12 @@ function CompanyDetail() {
       });
   }, [pageSales, limitSales, textSearchSales, params]);
 
-  const handleFilterDataSales = ({textSearch}) => {
-    setTextSearchSales(textSearch === undefined ? '' : textSearch);
+  const handleFilterDataSales = ({textSearch}, fieldChange) => {
+    if (fieldChange.name === 'textSearch') {
+      if (textSearch && textSearch.length < 3) return;
+
+      setTextSearchSales(textSearch);
+    }
   };
 
   return (

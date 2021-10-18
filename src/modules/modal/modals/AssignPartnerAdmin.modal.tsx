@@ -42,8 +42,13 @@ function AssignPartnerAdminModal() {
 
         <UI.ModalHeader mt={8}>
           <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            Are you sure you want to asign {data?.firstName} {', '}{' '}
-            {data?.lastName} for
+            Are you sure you want to assign
+          </UI.Center>
+          <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
+            {data?.firstName} {` `} {data?.lastName} as Partner
+          </UI.Center>
+          <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
+            for {data?.company}
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
@@ -63,7 +68,7 @@ function AssignPartnerAdminModal() {
               w={'120px'}
               type="button"
               onClick={() => {
-                closeModal('confirmRequest');
+                closeModal('assignPartnerAdmin');
               }}
               variant="outline">
               Cancel

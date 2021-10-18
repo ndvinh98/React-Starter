@@ -69,14 +69,15 @@ function CompanyManagement() {
   const handleFilterData = ({textSearch, status}, fieldChange) => {
     if (fieldChange.name === 'textSearch') {
       if (textSearch && textSearch.length < 3) return;
-      setTextSearch(textSearch === undefined ? '' : textSearch);
+      setPage(1), setTextSearch(textSearch === undefined ? '' : textSearch);
     }
 
     if (fieldChange.name === 'status') {
-      setFilter((filter) => ({
-        ...filter,
-        status: status === '-1' ? undefined : status,
-      }));
+      setPage(1),
+        setFilter((filter) => ({
+          ...filter,
+          status: status === '-1' ? undefined : status,
+        }));
     }
   };
 

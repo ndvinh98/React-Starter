@@ -7,7 +7,7 @@ import FileViewer from './modals/FileViewer.modal';
 import FileViewer2 from './modals/FileViewer2.modal';
 import AllowDomainModal from './modals/AllowDomain.modal';
 import AddBlacklistDomainModal from './modals/AddBlacklistDomain.modal';
-import AssignPartnertAdminModal from './modals/AssignPartnertAdmin.modal';
+import AssignPartnerAdminModal from './modals/AssignPartnerAdmin.modal';
 import ActionPartnerModal from './modals/ActionPartner.modal';
 import AddNewTier from './modals/AddNewTier.modal';
 import RemoveTier from './modals/RemoveTier.modal';
@@ -16,6 +16,7 @@ import AddSale from './modals/AddSale.modal';
 function InitModal() {
   return (
     <>
+      assignPartnerAdmin
       <LogoutModal />
       <RejectModal />
       <ConfirmModal />
@@ -24,7 +25,7 @@ function InitModal() {
       <FileViewer2 />
       <AllowDomainModal />
       <AddBlacklistDomainModal />
-      <AssignPartnertAdminModal />
+      <AssignPartnerAdminModal />
       <ActionPartnerModal />
       <AddNewTier />
       <RemoveTier />
