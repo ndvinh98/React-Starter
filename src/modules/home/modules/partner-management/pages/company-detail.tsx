@@ -46,8 +46,6 @@ function CompanyDetail() {
       });
   }, [params]);
 
-  console.log(dataCompany);
-
   const {getItem: getItemDomain, data: dataDomain} =
     useGetItem<IPartnerManagement>(`/partners/${params?.id}`);
 
@@ -182,6 +180,7 @@ function CompanyDetail() {
         loading={loadingUser}
         handleFilterDataUser={handleFilterDataUser}
         setPage={setPageUser}
+        companyName={dataCompany?.records[0]?.companyName}
       />
       <SalesTable
         data={dataSales}

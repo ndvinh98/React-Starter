@@ -46,12 +46,12 @@ function UserPartnerDetail() {
     data: profileData,
     loading,
     getItem,
-  } = useGetItem<IPartnerUsers>(`/partnerUsers/${params?.id}`);
+  } = useGetItem<IPartnerUsers>(`/partnerUsers/${params?.userId}`);
   const {openModal} = useModalController();
   const {isBase} = useMedia();
 
   useEffect(() => {
-    if (params?.id) getUserProfile();
+    if (params?.userId) getUserProfile();
   }, [params]);
 
   const getUserProfile = () => {
@@ -78,7 +78,7 @@ function UserPartnerDetail() {
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/partner-management')}>
+        onClick={() => push(`/home/partner-management/company/${params?.id}`)}>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>

@@ -48,7 +48,7 @@ function AssignPartnerAdminModal() {
             {data?.firstName} {` `} {data?.lastName} as Partner
           </UI.Center>
           <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            for {data?.company}
+            for {data?.companyName}
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
