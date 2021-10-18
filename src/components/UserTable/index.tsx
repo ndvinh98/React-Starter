@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {format} from 'date-fns';
 
 import TableGenerate from '@components/TableGenerate';
@@ -272,13 +272,20 @@ export const ActionColum = (props: any) => {
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
 
   const {row, companyName} = props;
+
+  const isHiden = () => {
+    return row?.isActive === 0 || row?.userType === 'PARTNERADMIN'
+      ? true
+      : false;
+  };
+
   return (
     <UI.Center>
       <UI.Menu onClose={onClose} isOpen={isOpen}>
         <UI.MenuButton
           px={4}
           py={2}
-          hidden={row?.isActive === 0}
+          hidden={isHiden()}
           onClick={(e) => {
             e.stopPropagation();
             onOpen();
