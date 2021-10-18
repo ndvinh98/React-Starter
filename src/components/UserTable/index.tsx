@@ -33,7 +33,14 @@ export const ACTIVE_STRING = {
 };
 
 function UserTable(props) {
-  const {data, loading, setPage, handleFilterDataUser, totalCount} = props;
+  const {
+    data,
+    loading,
+    setPage,
+    handleFilterDataUser,
+    totalCount,
+    companyName,
+  } = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
@@ -213,6 +220,7 @@ function UserTable(props) {
                     //   })
                     // }
                     row={row}
+                    companyName={companyName}
                   />
                 ),
               },
@@ -261,7 +269,7 @@ export const ActionColum = (props: any) => {
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
 
-  const {row} = props;
+  const {row, companyName} = props;
   return (
     <UI.Center>
       <UI.Menu onClose={onClose} isOpen={isOpen}>
@@ -284,6 +292,7 @@ export const ActionColum = (props: any) => {
                 id: row?.id,
                 firstName: row?.firstName,
                 lastName: row?.lastName,
+                companyName: companyName,
               });
             }}>
             Assign as Partner Admin
