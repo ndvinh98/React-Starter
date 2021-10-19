@@ -83,7 +83,7 @@ function List() {
             />
           }
           name={modulesData?.records?.[0]?.name}
-          linkDeleteContent="/productModuleResources/"
+          linkDeleteContent="/productModuleResources"
           linkAddNew={
             modulesData?.records?.[0]?.mediaType == 'VIDEOS'
               ? '/home/content-management/resources/add-videos/module/' +

@@ -106,7 +106,7 @@ function List() {
           />
         }
         name="Products"
-        linkDeleteContent="/products/"
+        linkDeleteContent="/products"
         linkAddNew="/home/content-management/products/add-new"
         linkToChild="/home/content-management/modules"
       />
