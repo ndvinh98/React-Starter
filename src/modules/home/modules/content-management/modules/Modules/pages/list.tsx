@@ -1,23 +1,25 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
-import {useGetList, useFilter, useGetItem} from '@utils/hooks';
+import {useGetList, useFilter} from '@utils/hooks';
 import {IProduct, ICategorie, IGrouping, IModules} from '@types';
+import {useContentManagementController} from '@modules/home';
 
 function List() {
-  const {getItem: getAllMenu, data: menuData} = useGetItem('applications/menu');
-  useEffect(() => {
-    getAllMenu();
-  }, []);
+  const allLineBusiness = useContentManagementController(
+    (s) => s.allLineBusiness,
+  );
+  const [applicationId, setApplicationId] = useState(-1);
+  const [categoryId, setCategoryId] = useState(-1);
+  const [groupingId, setGroupingId] = useState(-1);
+  const [productId, setProductId] = useState(-1);
 
   const handleOnChange = ({application, category, grouping, product}) => {
-    if (application) getListCategories({limit: 9999,filter: JSON.stringify([{application: application}])});
-    if (category) getListGroupings({limit: 9999,filter: JSON.stringify([{category: category}])});
-    if (grouping) getListProduct({limit: 9999,filter: JSON.stringify([{grouping: grouping}])});
-    getListModules({
-      filter: product ? JSON.stringify([{productId: product}]) : undefined,
-    });
+    setApplicationId(application || -1);
+    setCategoryId(category || -1);
+    setGroupingId(grouping || -1);
+    setProductId(product || -1);
   };
 
   const categoryRef = useRef<any>(null);
@@ -25,35 +27,129 @@ function List() {
   const groupingRef = useRef<any>(null);
   const productRef = useRef<any>(null);
 
-  useEffect(() => {
-    categoryRef?.current?.select?.clearValue();
-    groupingRef?.current?.select?.clearValue();
-    productRef?.current?.select?.clearValue();
-  }, [applicationRef?.current?.state?.value?.value]);
+  const {getList: getListCategories, data: categoriesData} =
+    useGetList<ICategorie>('categories');
+  const {getList: getListGroupings, data: groupingsData} =
+    useGetList<IGrouping>('groupings');
+  const {getList: getListProduct, data: productsData} =
+    useGetList<IProduct>('products');
+  const {
+    getList: getListModules,
+    loading: loadingModule,
+    data: modulesData,
+  } = useGetList<IModules>('productModules');
 
-  useEffect(() => {
-    groupingRef?.current?.select?.clearValue();
-    productRef?.current?.select?.clearValue();
-  }, [categoryRef?.current?.state?.value?.value]);
+  const {page, limit, setPage, setLimit} = useFilter({limit: 10, page: 1});
 
-  useEffect(() => {
-    productRef?.current?.select?.clearValue();
-  }, [groupingRef?.current?.state?.value?.value]);
+  const createFilter = React.useMemo(() => {
+    if (applicationId < 0) return {};
+    if (applicationId > 0 && categoryId < 0) {
+      return {
+        relations: JSON.stringify([
+          'product',
+          'product.grouping',
+          'product.grouping.category',
+          'product.grouping.category.application',
+        ]),
+        filter: JSON.stringify([
+          {product: {grouping: {category: {application: applicationId}}}},
+        ]),
+      };
+    }
+    if (applicationId > 0 && categoryId > 0 && groupingId < 0) {
+      return {
+        relations: JSON.stringify([
+          'product',
+          'product.grouping',
+          'product.grouping.category',
+        ]),
+        filter: JSON.stringify([{product: {grouping: {category: categoryId}}}]),
+      };
+    }
+    if (
+      applicationId > 0 &&
+      categoryId > 0 &&
+      groupingId > 0 &&
+      productId < 0
+    ) {
+      return {
+        relations: JSON.stringify(['product', 'product.grouping']),
+        filter: JSON.stringify([{product: {grouping: groupingId}}]),
+      };
+    }
+    if (
+      applicationId > 0 &&
+      categoryId > 0 &&
+      groupingId > 0 &&
+      productId > 0
+    ) {
+      return {
+        filter: JSON.stringify([{productId: productId}]),
+      };
+    }
+  }, [applicationId, categoryId, groupingId, productId]);
 
-  //const {getList: getListApplications, data: lineOfBusinessData} = useGetList<IApplication>('applications');
-  const {getList: getListCategories, data: categoriesData} = useGetList<ICategorie>('categories');
-  const {getList: getListGroupings, data: groupingsData} = useGetList<IGrouping>('groupings');
-  const {getList: getListProduct, data: productsData} = useGetList<IProduct>('products');
-  const {getList: getListModules,loading: loadingModule, data: modulesData} = useGetList<IModules>('productModules');
-
-  const {page, limit} = useFilter({limit: 10, page: 1});
   useEffect(() => {
     getListModules({
+      ...createFilter,
       page,
       limit,
     });
-  }, [page, limit]);
+  }, [applicationId, categoryId, groupingId, productId, page, limit]);
 
+  useEffect(() => {
+    if (applicationId < 0) {
+      categoryRef?.current?.select?.setValue({value: -1, label: 'All Product'});
+      groupingRef?.current?.select?.setValue({
+        value: -1,
+        label: 'All Grouping',
+      });
+      productRef?.current?.select?.setValue({
+        value: -1,
+        label: 'All Product Group',
+      });
+    }
+    if (applicationId > 0) {
+      getListCategories({
+        limit: 9999,
+        filter: JSON.stringify([{application: applicationId}]),
+      });
+    }
+  }, [applicationId]);
+
+  useEffect(() => {
+    if (categoryId < 0) {
+      groupingRef?.current?.select?.setValue({
+        value: -1,
+        label: 'All Grouping',
+      });
+      productRef?.current?.select?.setValue({
+        value: -1,
+        label: 'All Product Group',
+      });
+    }
+    if (categoryId > 0) {
+      getListGroupings({
+        limit: 9999,
+        filter: JSON.stringify([{category: categoryId}]),
+      });
+    }
+  }, [categoryId]);
+
+  useEffect(() => {
+    if (groupingId < 0) {
+      productRef?.current?.select?.setValue({
+        value: -1,
+        label: 'All Product Group',
+      });
+    }
+    if (groupingId > 0) {
+      getListProduct({
+        limit: 9999,
+        filter: JSON.stringify([{grouping: groupingId}]),
+      });
+    }
+  }, [groupingId]);
 
   return (
     <UI.Box minH="89vh">
@@ -65,9 +161,17 @@ function List() {
         currentPage={page}
         filterBarWidth="full"
         isModulesView={true}
+        onPageChange={setPage}
+        onLimitChange={setLimit}
         filterBar={
           <FormGenerate
             onChangeValue={handleOnChange}
+            defaultWatchValue={{
+              application: -1,
+              category: -1,
+              grouping: -1,
+              product: -1,
+            }}
             gap="10px"
             w="60vw"
             mb={4}
@@ -75,53 +179,104 @@ function List() {
               {
                 name: 'application',
                 refEl: applicationRef,
+                isClearable: false,
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Line of Business',
-                options: menuData?.map((x) => ({
-                  value: x?.id,
-                  label: x?.name,
-                })),
+                defaultValue: {
+                  value: -1,
+                  label: 'All Business',
+                },
+                options: [
+                  {value: -1, label: 'All Business'},
+                  ...allLineBusiness?.map?.((x) => ({
+                    value: x?.id,
+                    label: x?.name,
+                  })),
+                ],
               },
               {
                 name: 'category',
+                isClearable: false,
                 refEl: categoryRef,
-                isDisabled: applicationRef?.current?.state?.value?.value ? false : true,
+                isDisabled: applicationId < 0,
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Line of Product',
-                options: categoriesData?.records.map((x) => ({
-                  value: x?.id,
-                  label: x?.name,
-                })),
+                defaultValue: {value: -1, label: 'All Product'},
+                options: categoriesData?.records
+                  ? [
+                      {value: -1, label: 'All Product'},
+                      ...categoriesData?.records.map((x) => ({
+                        value: x?.id,
+                        label: x?.name,
+                      })),
+                    ]
+                  : [{value: -1, label: 'All Product'}],
               },
               {
                 name: 'grouping',
+                isClearable: false,
                 refEl: groupingRef,
-                isDisabled: categoryRef?.current?.state?.value?.value ? false : true,
+                isDisabled: categoryId < 0,
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Product Group',
-                options: groupingsData?.records.map((x) => ({
-                  value: x?.id,
-                  label: x?.name,
-                })),
+                defaultValue: {
+                  value: -1,
+                  label: 'All Product Group',
+                },
+                options: groupingsData?.records
+                  ? [
+                      {
+                        value: -1,
+                        label: 'All Product Group',
+                      },
+                      ...groupingsData?.records.map((x) => ({
+                        value: x?.id,
+                        label: x?.name,
+                      })),
+                    ]
+                  : [
+                      {
+                        value: -1,
+                        label: 'All Product Group',
+                      },
+                    ],
               },
               {
                 name: 'product',
+                isClearable: false,
                 refEl: productRef,
-                isDisabled: groupingRef?.current?.state?.value?.value ? false : true,
+                isDisabled: groupingId < 0,
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Products',
-                options: productsData?.records.map((x) => ({
-                  value: x?.id,
-                  label: x?.name,
-                })),
+                defaultValue: {
+                  value: -1,
+                  label: 'All Products',
+                },
+                options: productsData?.records
+                  ? [
+                      {
+                        value: -1,
+                        label: 'All Products',
+                      },
+                      ...productsData?.records.map((x) => ({
+                        value: x?.id,
+                        label: x?.name,
+                      })),
+                    ]
+                  : [
+                      {
+                        value: -1,
+                        label: 'All Products',
+                      },
+                    ],
               },
             ]}
           />

@@ -69,6 +69,7 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
   rightIcon?: React.ReactNode;
   refEl?: any;
   isClearable?: boolean;
+  styled?: any;
 }
 
 const DIRECTION = {
@@ -95,6 +96,7 @@ const FormControl = (props: IFormControl) => {
     defaultValue,
     align,
     isDisabled,
+    styled,
   } = props;
   const Field = type === 'decor' ? DecorComponent : FieldComponent?.[type];
 
@@ -103,7 +105,8 @@ const FormControl = (props: IFormControl) => {
       id={name}
       width={'full'}
       isDisabled={isDisabled}
-      isRequired={isRequiredDot}>
+      isRequired={isRequiredDot}
+      {...styled}>
       <UI.Stack
         width={'full'}
         justifyContent={'space-between'}

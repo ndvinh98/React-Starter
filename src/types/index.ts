@@ -297,3 +297,21 @@ export interface ICertificates extends BaseSchema {
   name?: string;
   mediaDestination?: string;
 }
+
+export interface ILineProduct extends BaseSchema {
+  mediaDestination?: string;
+  name?: string;
+}
+export interface IProductGroup extends BaseSchema {
+  mediaDestination?: string;
+  name?: string;
+}
+
+export interface IProducts extends BaseSchema {
+  mediaDestination?: string;
+  name?: string;
+}
+export interface IModules extends BaseSchema {
+  mediaDestination?: string;
+  name?: string;
+}

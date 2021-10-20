@@ -3,25 +3,27 @@ import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
 import {useGetList, useFilter} from '@utils/hooks';
-import {IApplication, ICategorie} from '@types';
+import {ICategorie} from '@types';
+import {useContentManagementController} from '@modules/home';
 
 function List() {
   const handleOnChange = ({business}) => {
-    getListCategories({
-      filter: business ? JSON.stringify([{application: business}]) : undefined,
-    });
+    if (business)
+      getListCategories({
+        filter:
+          business > 0 ? JSON.stringify([{application: business}]) : undefined,
+      });
   };
 
-  const {getList: getListApplications, data: lineOfBusinessData} =
-    useGetList<IApplication>('applications');
-  const {getList: getListCategories,loading: loadingCategory, data: categoriesData} =
-    useGetList<ICategorie>('categories');
+  const allLineBusiness = useContentManagementController(
+    (s) => s.allLineBusiness,
+  );
 
-  useEffect(() => {
-    getListApplications({
-      limit: 9999,
-    });
-  }, []);
+  const {
+    getList: getListCategories,
+    loading: loadingCategory,
+    data: categoriesData,
+  } = useGetList<ICategorie>('categories');
 
   const {page, limit} = useFilter({limit: 10, page: 1});
   useEffect(() => {
@@ -52,10 +54,18 @@ function List() {
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Line of Business',
-                options: lineOfBusinessData?.records?.map((x) => ({
-                  value: x?.id,
-                  label: x?.name,
-                })),
+                defaultValue: {
+                  label: 'All Business',
+                  value: -1,
+                },
+                isClearable: false,
+                options: [
+                  {label: 'All Business', value: -1},
+                  ...allLineBusiness?.map((x) => ({
+                    value: x?.id,
+                    label: x?.name,
+                  })),
+                ],
               },
             ]}
           />

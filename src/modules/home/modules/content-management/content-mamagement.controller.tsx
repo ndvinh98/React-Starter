@@ -1,20 +1,47 @@
 import create from 'zustand';
+import {
+  IApplication,
+  ILineProduct,
+  IProductGroup,
+  IProducts,
+  IModules,
+} from '@types';
+import {
+  getAllLineBusiness,
+  getAllLineProduct,
+  getAllProductGroup,
+  getAllProducts,
+  getAllModules,
+} from '@services';
 
 interface IContentManagementController {
   itemSelected: number[];
-  itemDetailsSelected: object[];
   addItem: (id: number) => void;
-  addDetailsItem: (item: object) => void;
   removeItem: (id: number) => void;
-  removeDetailsItem: (item: object) => void;
   clear: () => void;
+  allLineBusiness: IApplication[];
+  allLineProduct: ILineProduct[];
+  allProductGroup: IProductGroup[];
+  allProducts: IProducts[];
+  allModules: IModules[];
+  getAllLineBusiness: () => void;
+  getAllLineProduct: () => void;
+  getAllProducts: () => void;
+  getAllModules: () => void;
 }
 
 export const useContentManagementController =
   create<IContentManagementController>((set) => ({
+    allLineBusiness: [],
+    allLineProduct: [],
+    allProductGroup: [],
+    allProducts: [],
+    allModules: [],
+
     itemSelected: [],
-    itemDetailsSelected: [],
-    clear: () => {set({itemDetailsSelected: []});set({itemSelected: []})},
+    clear: () => {
+      set({itemSelected: []});
+    },
     addItem: (id: number) =>
       set((s) => ({...s, itemSelected: [...s.itemSelected, id]})),
     removeItem: (id: number) =>
@@ -22,11 +49,19 @@ export const useContentManagementController =
         ...s,
         itemSelected: s.itemSelected.filter((x) => x !== id),
       })),
-    addDetailsItem: (item: object) =>
-      set((s) => ({...s, itemDetailsSelected: [...s.itemDetailsSelected, item]})),
-    removeDetailsItem: (item: object) =>
-      set((s) => ({
-        ...s,
-        itemDetailsSelected: s.itemDetailsSelected.filter((x) => x !== item),
-      })),
+
+    getAllLineBusiness: () =>
+      getAllLineBusiness().then((res) => {
+        set({allLineBusiness: res});
+      }),
+    getAllLineProduct: () =>
+      getAllLineProduct().then((res) => set({allLineProduct: res})),
+
+    getAllProductGroup: () =>
+      getAllProductGroup().then((res) => set({allProductGroup: res})),
+
+    getAllProducts: () =>
+      getAllProducts().then((res) => set({allProducts: res})),
+
+    getAllModules: () => getAllModules().then((res) => set({allModules: res})),
   }));

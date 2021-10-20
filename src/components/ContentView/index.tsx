@@ -55,11 +55,12 @@ function ContentView(props: IContentView) {
     isVideo,
     isBrochures,
     linkDeleteContent,
+    onLimitChange,
+    onPageChange,
   } = props;
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
   const itemSelected = useContentManagementController((s) => s.itemSelected);
-  const itemDetailsSelected = useContentManagementController((s) => s.itemDetailsSelected);
   const clear = useContentManagementController((s) => s.clear);
   const {openModal} = useModalController();
   const pathname = useRouterController((s) => s.pathname);
@@ -76,7 +77,7 @@ function ContentView(props: IContentView) {
       w="full">
       <UI.VStack flexGrow={1} w="full" py={5} px={7} alignItems="flex-start">
         <UI.Text fontSize="24px" fontWeight="bold">
-          {name ? "Content Management - "+name : "Content Management"}
+          {name ? 'Content Management - ' + name : 'Content Management'}
         </UI.Text>
         <UI.HStack
           w={'full'}
@@ -85,7 +86,7 @@ function ContentView(props: IContentView) {
           <UI.HStack
             w={'full'}
             justifyContent={'space-between'}
-            alignItems="center"
+            alignItems="flex-start"
             spacingY={'20px'}
             spacingX={'0px'}
             flexWrap="wrap"
@@ -99,6 +100,7 @@ function ContentView(props: IContentView) {
               <UI.Text>View Item</UI.Text>
               <UI.Box w="80px">
                 <Select
+                  name="pageSize"
                   defaultValue={{label: '10', value: 10}}
                   isClearable={false}
                   options={[
@@ -106,6 +108,9 @@ function ContentView(props: IContentView) {
                     {label: '15', value: 15},
                     {label: '20', value: 20},
                   ]}
+                  onChangeValue={(pageSize) => {
+                    if (pageSize?.value) onLimitChange(pageSize?.value);
+                  }}
                 />
               </UI.Box>
               <UI.Center
@@ -132,7 +137,7 @@ function ContentView(props: IContentView) {
               </UI.Center>
             </UI.HStack>
           </UI.HStack>
-          <UI.Box position="relative" top="10px">
+          <UI.Box position="relative" top="0px">
             <UI.Menu isOpen={isEmpty(itemSelected) ? false : undefined}>
               <UI.MenuButton
                 cursor={isEmpty(itemSelected) ? 'no-drop' : 'pointer'}>
@@ -156,15 +161,13 @@ function ContentView(props: IContentView) {
                   )}
                 </UI.MenuItem>
                 <UI.MenuItem
-                  onClick={() =>{
-                    console.log(itemDetailsSelected);
+                  onClick={() => {
                     openModal('deleteContent', {
-                      itemDetailsSelected,
                       linkDeleteContent,
                       name,
                       url: linkDeleteContent,
                       isResources: isVideo || isBrochures,
-                    })
+                    });
                   }}
                   color="ste.red">
                   Delete
@@ -265,6 +268,7 @@ function ContentView(props: IContentView) {
         currentPage={currentPage}
         totalCount={totalCount}
         pageSize={limit}
+        onChangePage={onPageChange}
       />
     </UI.VStack>
   );

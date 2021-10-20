@@ -9,12 +9,7 @@ function ModuleGridItem({item, linkToChild}) {
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
   const removeItem = useContentManagementController((s) => s.removeItem);
-  const addDetailsItem = useContentManagementController(
-    (s) => s.addDetailsItem,
-  );
-  const removeDetailsItem = useContentManagementController(
-    (s) => s.removeDetailsItem,
-  );
+
   return (
     <UI.Box ref={hoverRef} w="full" position="relative">
       <UI.HStack
@@ -28,10 +23,8 @@ function ModuleGridItem({item, linkToChild}) {
             e.stopPropagation();
             if (e?.target?.checked) {
               addItem(item?.id);
-              addDetailsItem(item);
             } else {
               removeItem(item?.id);
-              removeDetailsItem(item);
             }
           }}
           isChecked={itemSelected.includes(+item?.id)}

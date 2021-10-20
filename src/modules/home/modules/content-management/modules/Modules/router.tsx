@@ -1,4 +1,4 @@
-import {mount, route, lazy} from 'navi';
+import {mount, route} from 'navi';
 
 export default mount({
   '/': route({
@@ -13,5 +13,4 @@ export default mount({
     title: 'line-of-business-add',
     getView: () => import('./pages/edit'),
   }),
-  
 });
