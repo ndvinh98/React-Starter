@@ -128,10 +128,11 @@ function CompanyManagement() {
             {
               type: 'decor',
               name: 'demo',
-              colSpan: isBase ? 3 : 12,
+              colSpan: isBase ? 6 : 12,
               DecorComponent: () => {
                 return (
                   <UI.VStack>
+                    <UI.Spacer />
                     <UI.HStack
                       position={{md: 'absolute', lg: 'static'}}
                       top={'-166px'}
@@ -147,7 +148,10 @@ function CompanyManagement() {
                           isClearable={false}
                           size="sm"
                           name="limit"
-                          onChangeValue={(data) => setLimit(data.value)}
+                          onChangeValue={(data) => {
+                            setLimit(data.value);
+                            setPage(1);
+                          }}
                           defaultValue={{
                             label: '10',
                             value: 10,
@@ -189,7 +193,7 @@ function CompanyManagement() {
               Footer={
                 <UI.Tr>
                   <UI.Td fontWeight="bold" colSpan={1000}>
-                    {data?.total} User
+                    {data?.total} Companies
                   </UI.Td>
                 </UI.Tr>
               }

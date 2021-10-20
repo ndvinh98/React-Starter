@@ -1,12 +1,10 @@
 import React, {memo} from 'react';
-import {useRouter} from '@utils/hooks';
-import {useRouterController} from '@modules/router';
+import {useModalController} from '@modules/modal';
 import * as UI from '@chakra-ui/react';
+import {TiDelete} from 'react-icons/ti';
 
-const LineApplication = (props) => {
-  const {aplicationData} = props;
-  const {push} = useRouter();
-  const {path} = useRouterController();
+const CardSale = () => {
+  //const {openModal} = useModalController();
 
   return (
     <UI.HStack
@@ -14,32 +12,27 @@ const LineApplication = (props) => {
       cursor="pointer"
       w="full"
       shadow="sm"
-      p={3}
-      bg="white"
+      p={2}
+      bgColor={'#EEEEEC'}
       justifyContent="start"
-      border="none"
+      rounded="3xl"
       alignItems="center">
       <UI.Text fontSize={{md: 'md', lg: 'lg'}} pl={2}>
         Tom Jones (email@gmail.com)
       </UI.Text>
       <UI.Spacer />
-      <UI.Box pr="20px">
-        <UI.Button
-          w="62px"
-          h="30px"
-          onClick={() => push(path + `/${aplicationData?.id}`)}
-          color="#54565A"
-          bg="#E9E9E9"
-          borderRadius="0"
-          fontSize={12}
-          disabled={
-            aplicationData?.partnerApplicationSubmission.status === 'PENDING'
-              ? false
-              : true
-          }></UI.Button>
+      <UI.Box
+      // onClick={() =>
+      //   openModal('removeCertificate', {
+      //     id: data?.id,
+      //     certificate: data?.name,
+      //   })
+      // }
+      >
+        <TiDelete />
       </UI.Box>
     </UI.HStack>
   );
 };
 
-export default memo(LineApplication);
+export default memo(CardSale);
