@@ -71,7 +71,7 @@ function List() {
           />
         }
         name="Line of Product"
-        linkDeleteContent="/categories/"
+        linkDeleteContent="/categories"
         linkAddNew="/home/content-management/line-of-product/add-new"
         linkToChild="/home/content-management/product-group"
       />

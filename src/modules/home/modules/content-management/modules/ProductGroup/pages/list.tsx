@@ -142,7 +142,7 @@ function List() {
           />
         }
         name="Product Group"
-        linkDeleteContent="/groupings/"
+        linkDeleteContent="/groupings"
         linkAddNew="/home/content-management/product-group/add-new"
         linkToChild="/home/content-management/products"
       />

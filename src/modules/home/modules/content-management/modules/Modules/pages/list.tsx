@@ -282,7 +282,7 @@ function List() {
           />
         }
         name="Modules"
-        linkDeleteContent="/productModules/"
+        linkDeleteContent="/productModules"
         linkAddNew="/home/content-management/modules/add-new"
         linkToChild="/home/content-management/resources"
       />

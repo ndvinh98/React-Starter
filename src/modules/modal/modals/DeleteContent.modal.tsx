@@ -6,12 +6,16 @@ import {useRemove} from '@utils/hooks';
 
 function DeleteContentModal() {
   const {deleteContent, closeModal, data} = useModalController();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDone, setIsDone] = useState<boolean>(false);
   const toast = UI.useToast();
 
+  const {
+    data: resData,
+    loading,
+    remove,
+  } = useRemove(data?.url);
+
   useEffect(()=>{
-    if (isDone) {
+    if (resData) {
       data?.cb?.();
       closeModal('deleteContent');
       toast({
@@ -21,21 +25,10 @@ function DeleteContentModal() {
         isClosable: true,
         duration: 2000,
       });
+      location.reload()
     }
-  },[isDone])
+  },[resData])
 
-
-  const handleDeleteContent =() => {
-    if (data?.itemDetailsSelected){
-      //setIsLoading(true);
-      for(let i=0; i< data?.itemDetailsSelected.length; i++){
-        let {remove} = useRemove(data?.url+data?.itemDetailsSelected?.[i]?.id);
-        remove();
-      };
-      //setIsLoading(false);
-      setIsDone(true);
-    };
-  }
 
   return (
     <UI.Modal
@@ -62,7 +55,7 @@ function DeleteContentModal() {
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'md'} textAlign={'center'}>
-          <UI.Box fontSize={'md'} textAlign="center">
+          <UI.Box mv={2} pr={2} pl={2} fontSize={'md'} w={'full'} textAlign="justify">
             {!data?.isResources ? (
               <UI.VStack>
                 <UI.Text>
@@ -70,6 +63,7 @@ function DeleteContentModal() {
                   note that all content in this {data?.name} will be deleted. This
                   action cannot be undone.
                 </UI.Text>
+                <UI.Box pl={4} w={'full'}>
                 {data?.itemDetailsSelected?.map((x, index)=>{ 
                   return (
                     <UI.Text fontSize={'16px'} key={x?.id}>
@@ -77,6 +71,7 @@ function DeleteContentModal() {
                     </UI.Text>
                   )
                 })}
+                </UI.Box>
               </UI.VStack>
             ) : (
               <UI.VStack>
@@ -84,6 +79,7 @@ function DeleteContentModal() {
                 Are you sure you want to delete the following content? This
                 action cannot be undone.
               </UI.Text>
+              <UI.Box pl={4} w={'full'}>
               {data?.itemDetailsSelected?.map((x, index)=>{ 
                 return (
                   <UI.Text fontSize={'16px'} key={x?.id}>
@@ -91,6 +87,7 @@ function DeleteContentModal() {
                   </UI.Text>
                 )
               })}
+              </UI.Box>
             </UI.VStack>
             )}
           </UI.Box>
@@ -98,12 +95,12 @@ function DeleteContentModal() {
             <UI.Button
               colorScheme="blue"
               onClick={() => {
-                handleDeleteContent()
+                remove({ids: JSON.stringify(data?.itemSelected)})
               }}
               mr={3}
               w={'120px'}
               type="submit"
-              isLoading={isLoading}>
+              isLoading={loading}>
               Confirm
             </UI.Button>
             <UI.Button

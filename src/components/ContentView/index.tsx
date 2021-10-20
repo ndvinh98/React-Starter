@@ -9,7 +9,6 @@ import {useRouterController} from '@modules/router';
 
 import Select from '@components/Select';
 import Pagination from '@components/Pagination';
-import LoadingComponent from '@components/LoadingComponent';
 
 import NormalGridItem from './item/NormalGridItem';
 import ModuleGridItem from './item/ModuleGridItem';
@@ -49,7 +48,6 @@ function ContentView(props: IContentView) {
     totalCount,
     currentPage,
     linkAddNew,
-    isLoading,
     linkToChild,
     isModulesView,
     isVideo,
@@ -61,6 +59,7 @@ function ContentView(props: IContentView) {
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
   const itemSelected = useContentManagementController((s) => s.itemSelected);
+
   const clear = useContentManagementController((s) => s.clear);
   const {openModal} = useModalController();
   const pathname = useRouterController((s) => s.pathname);
@@ -86,7 +85,7 @@ function ContentView(props: IContentView) {
           <UI.HStack
             w={'full'}
             justifyContent={'space-between'}
-            alignItems="flex-start"
+            alignItems="center"
             spacingY={'20px'}
             spacingX={'0px'}
             flexWrap="wrap"
@@ -100,7 +99,6 @@ function ContentView(props: IContentView) {
               <UI.Text>View Item</UI.Text>
               <UI.Box w="80px">
                 <Select
-                  name="pageSize"
                   defaultValue={{label: '10', value: 10}}
                   isClearable={false}
                   options={[
@@ -108,9 +106,7 @@ function ContentView(props: IContentView) {
                     {label: '15', value: 15},
                     {label: '20', value: 20},
                   ]}
-                  onChangeValue={(pageSize) => {
-                    if (pageSize?.value) onLimitChange(pageSize?.value);
-                  }}
+                  onChangeValue={(data) => onLimitChange(data?.value)}
                 />
               </UI.Box>
               <UI.Center
@@ -137,7 +133,7 @@ function ContentView(props: IContentView) {
               </UI.Center>
             </UI.HStack>
           </UI.HStack>
-          <UI.Box position="relative" top="0px">
+          <UI.Box position="relative" top="10px">
             <UI.Menu isOpen={isEmpty(itemSelected) ? false : undefined}>
               <UI.MenuButton
                 cursor={isEmpty(itemSelected) ? 'no-drop' : 'pointer'}>
@@ -163,7 +159,7 @@ function ContentView(props: IContentView) {
                 <UI.MenuItem
                   onClick={() => {
                     openModal('deleteContent', {
-                      linkDeleteContent,
+                      itemSelected,
                       name,
                       url: linkDeleteContent,
                       isResources: isVideo || isBrochures,
@@ -183,27 +179,25 @@ function ContentView(props: IContentView) {
             templateColumns="repeat(auto-fill, 300px);"
             minChildWidth="300px"
             spacing="40px">
-            <LoadingComponent isLoading={isLoading}>
-              {!isModulesView &&
-                data?.map((item) => (
-                  <NormalGridItem
-                    key={item?.id}
-                    isBrochures={isBrochures}
-                    isVideo={isVideo}
-                    item={item}
-                    linkToChild={linkToChild}
-                  />
-                ))}
+            {!isModulesView &&
+              data?.map((item) => (
+                <NormalGridItem
+                  key={item?.id}
+                  isBrochures={isBrochures}
+                  isVideo={isVideo}
+                  item={item}
+                  linkToChild={linkToChild}
+                />
+              ))}
 
-              {isModulesView &&
-                data?.map((x) => (
-                  <ModuleGridItem
-                    item={x}
-                    key={x?.id}
-                    linkToChild={linkToChild}
-                  />
-                ))}
-            </LoadingComponent>
+            {isModulesView &&
+              data?.map((x) => (
+                <ModuleGridItem
+                  item={x}
+                  key={x?.id}
+                  linkToChild={linkToChild}
+                />
+              ))}
 
             <UI.Center
               cursor="pointer"
@@ -226,27 +220,25 @@ function ContentView(props: IContentView) {
         )}
         {showType === 'LIST' && (
           <UI.VStack w="full">
-            <LoadingComponent isLoading={isLoading}>
-              {!isModulesView &&
-                data?.map((x) => (
-                  <NormalListItem
-                    item={x}
-                    key={x?.id}
-                    isBrochures={isBrochures}
-                    isVideo={isVideo}
-                    linkToChild={linkToChild}
-                  />
-                ))}
+            {!isModulesView &&
+              data?.map((x) => (
+                <NormalListItem
+                  item={x}
+                  key={x?.id}
+                  isBrochures={isBrochures}
+                  isVideo={isVideo}
+                  linkToChild={linkToChild}
+                />
+              ))}
 
-              {isModulesView &&
-                data?.map((x) => (
-                  <ModuleListItem
-                    item={x}
-                    linkToChild={linkToChild}
-                    key={x?.id}
-                  />
-                ))}
-            </LoadingComponent>
+            {isModulesView &&
+              data?.map((x) => (
+                <ModuleListItem
+                  item={x}
+                  linkToChild={linkToChild}
+                  key={x?.id}
+                />
+              ))}
             <UI.HStack
               onClick={() => push(linkAddNew)}
               cursor="pointer"

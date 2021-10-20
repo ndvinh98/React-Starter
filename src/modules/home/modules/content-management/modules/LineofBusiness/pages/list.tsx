@@ -36,7 +36,7 @@ function List() {
           linkAddNew="/home/content-management/line-of-business/add-new"
           linkToChild="/home/content-management/line-of-product"
           name="Line of Business"
-          linkDeleteContent="/applications/"
+          linkDeleteContent="/applications"
         />
       )}
     </UI.Box>
