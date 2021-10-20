@@ -46,7 +46,10 @@ function List() {
             onChangeValue={handleOnChange}
             gap="10px"
             w="60vw"
-            mb={4}
+            display="stack"
+            styled={{
+              direction: 'row',
+            }}
             fields={[
               {
                 name: 'business',
@@ -57,6 +60,9 @@ function List() {
                 defaultValue: {
                   label: 'All Business',
                   value: -1,
+                },
+                styled: {
+                  width: '30%',
                 },
                 isClearable: false,
                 options: [

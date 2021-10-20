@@ -94,7 +94,6 @@ function List() {
                 name: 'application',
                 type: 'select',
                 refEl: applicationRef,
-                colSpan: 3,
                 placeholder: 'Line of Business',
                 isClearable: false,
                 styled: {
