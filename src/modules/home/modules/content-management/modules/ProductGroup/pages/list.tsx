@@ -9,13 +9,14 @@ import {useContentManagementController} from '@modules/home';
 function List() {
   const [applicationId, setApplicationId] = useState(-1);
   const [categoryId, setCategoryId] = useState(-1);
+  const {page, limit, setPage, setLimit} = useFilter({limit: 10, page: 1});
 
   const allLineBusiness = useContentManagementController(
     (s) => s.allLineBusiness,
   );
   const handleOnChange = ({application, category}) => {
-    setApplicationId(application);
-    setCategoryId(category);
+    setApplicationId(application || -1);
+    setCategoryId(category || -1);
   };
   useEffect(() => {
     if (applicationId > 0) {
@@ -23,31 +24,31 @@ function List() {
         limit: 9999,
         filter: JSON.stringify([{application: applicationId}]),
       });
-      getListGroupings({
-        relations: JSON.stringify(['category', 'category.application']),
-        filter: JSON.stringify([{category: {application: applicationId}}]),
-      });
-    }
-
-    if (applicationId < 0) {
-      getListGroupings();
     }
   }, [applicationId]);
 
-  useEffect(() => {
-    if (categoryId > 0)
-      getListGroupings({
-        filter: JSON.stringify([{category: categoryId}]),
-      });
-    if (categoryId < 0)
-      getListGroupings({
+  const createFilter = React.useMemo(() => {
+    if (applicationId < 0) return {};
+    if (applicationId > 0 && categoryId < 0) {
+      return {
         relations: JSON.stringify(['category', 'category.application']),
-        filter:
-          applicationId < 0
-            ? undefined
-            : JSON.stringify([{category: {application: applicationId}}]),
-      });
-  }, [categoryId]);
+        filter: JSON.stringify([{category: {application: applicationId}}]),
+      };
+    }
+    if (applicationId > 0 && categoryId > 0) {
+      return {
+        filter: JSON.stringify([{category: categoryId}]),
+      };
+    }
+  }, [applicationId, categoryId]);
+
+  useEffect(() => {
+    getListGroupings({
+      ...createFilter,
+      page,
+      limit,
+    });
+  }, [applicationId, categoryId, page, limit]);
 
   const {getList: getListCategories, data: categoriesData} =
     useGetList<ICategorie>('categories');
@@ -60,17 +61,10 @@ function List() {
 
   const categoryRef = useRef<any>(null);
   const applicationRef = useRef<any>(null);
+
   useEffect(() => {
     categoryRef?.current?.select?.setValue({value: -1, label: 'All Business'});
-  }, [applicationRef?.current?.state?.value?.value]);
-
-  const {page, limit} = useFilter({limit: 10, page: 1});
-  useEffect(() => {
-    getListGroupings({
-      page,
-      limit,
-    });
-  }, [page, limit]);
+  }, [applicationId]);
 
   return (
     <UI.Box minH="89vh">
@@ -80,12 +74,13 @@ function List() {
         limit={limit}
         totalCount={groupingsData?.total}
         currentPage={page}
+        onPageChange={setPage}
+        onLimitChange={setLimit}
         filterBar={
           <FormGenerate
             onChangeValue={handleOnChange}
             w="60vw"
             display="stack"
-            mb={4}
             styled={{
               direction: 'row',
             }}

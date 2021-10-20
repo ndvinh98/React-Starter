@@ -10,7 +10,6 @@ function List() {
   const allLineBusiness = useContentManagementController(
     (s) => s.allLineBusiness,
   );
-
   const categoryRef = useRef<any>(null);
   const applicationRef = useRef<any>(null);
   const groupingRef = useRef<any>(null);
@@ -18,6 +17,8 @@ function List() {
   const [applicationId, setApplicationId] = useState(-1);
   const [categoryId, setCategoryId] = useState(-1);
   const [groupingId, setGroupingId] = useState(-1);
+
+  const {page, limit, setPage, setLimit} = useFilter({limit: 10, page: 1});
 
   useEffect(() => {
     categoryRef?.current?.select?.setValue({value: -1, label: 'All Product'});
@@ -39,21 +40,15 @@ function List() {
   } = useGetList<IProduct>('products');
 
   const handleOnChange = ({application, category, grouping}) => {
-    if (application) setApplicationId(application);
-    if (category) setCategoryId(category);
-    if (grouping) setGroupingId(grouping);
+    setApplicationId(application || -1);
+    setCategoryId(category || -1);
+    setGroupingId(grouping || -1);
   };
 
-  useEffect(() => {
-    if (applicationId < 0) {
-      getListProduct();
-    }
-    if (applicationId > 0) {
-      getListCategories({
-        limit: 9999,
-        filter: JSON.stringify([{application: applicationId}]),
-      });
-      getListProduct({
+  const createFilter = React.useMemo(() => {
+    if (applicationId < 0) return {};
+    if (applicationId > 0 && categoryId < 0) {
+      return {
         relations: JSON.stringify([
           'grouping',
           'grouping.category',
@@ -62,6 +57,41 @@ function List() {
         filter: JSON.stringify([
           {grouping: {category: {application: applicationId}}},
         ]),
+      };
+    }
+    if (applicationId > 0 && categoryId > 0 && groupingId < 0) {
+      return {
+        relations: JSON.stringify(['grouping', 'grouping.category']),
+        filter: JSON.stringify([{grouping: {category: categoryId}}]),
+      };
+    }
+    if (applicationId > 0 && categoryId > 0 && groupingId > 0) {
+      return {
+        filter: JSON.stringify([{grouping: groupingId}]),
+      };
+    }
+  }, [applicationId, categoryId, groupingId]);
+
+  useEffect(() => {
+    getListProduct({
+      ...createFilter,
+      page,
+      limit,
+    });
+  }, [applicationId, categoryId, groupingId, page, limit]);
+
+  useEffect(() => {
+    if (applicationId < 0) {
+      categoryRef?.current?.select?.setValue({value: -1, label: 'All Product'});
+      groupingRef?.current?.select?.setValue({
+        value: -1,
+        label: 'All Product Group',
+      });
+    }
+    if (applicationId > 0) {
+      getListCategories({
+        limit: 9999,
+        filter: JSON.stringify([{application: applicationId}]),
       });
     }
   }, [applicationId]);
@@ -72,53 +102,8 @@ function List() {
         limit: 9999,
         filter: JSON.stringify([{category: categoryId}]),
       });
-      getListProduct({
-        relations: JSON.stringify(['grouping', 'grouping.category']),
-        filter: JSON.stringify([{grouping: {category: categoryId}}]),
-      });
-    }
-    if (categoryId < 0) {
-      getListProduct({
-        relations: JSON.stringify([
-          'grouping',
-          'grouping.category',
-          'grouping.category.application',
-        ]),
-        filter:
-          applicationId < 0
-            ? undefined
-            : JSON.stringify([
-                {grouping: {category: {application: applicationId}}},
-              ]),
-      });
     }
   }, [categoryId]);
-
-  useEffect(() => {
-    if (groupingId > 0) {
-      getListProduct({
-        relations: JSON.stringify(['grouping']),
-        filter: JSON.stringify([{grouping: groupingId}]),
-      });
-    }
-    if (groupingId < 0) {
-      getListProduct({
-        relations: JSON.stringify(['grouping', 'grouping.category']),
-        filter:
-          categoryId < 0
-            ? undefined
-            : JSON.stringify([{grouping: {category: categoryId}}]),
-      });
-    }
-  }, [groupingId]);
-
-  const {page, limit} = useFilter({limit: 10, page: 1});
-  useEffect(() => {
-    getListProduct({
-      page,
-      limit,
-    });
-  }, [page, limit]);
 
   return (
     <UI.Box minH="89vh">
@@ -128,6 +113,8 @@ function List() {
         limit={limit}
         totalCount={productsData?.total}
         currentPage={page}
+        onPageChange={setPage}
+        onLimitChange={setLimit}
         filterBar={
           <FormGenerate
             onChangeValue={handleOnChange}
@@ -138,7 +125,6 @@ function List() {
               direction: 'row',
               flexWrap: 'wrap',
             }}
-            mb={4}
             fields={[
               {
                 name: 'application',
