@@ -37,6 +37,7 @@ export interface IContentView {
   isModulesView?: boolean;
   isVideo?: boolean;
   isBrochures?: boolean;
+  onReloadPage?: () => void;
 }
 
 function ContentView(props: IContentView) {
@@ -57,6 +58,7 @@ function ContentView(props: IContentView) {
     onLimitChange,
     onPageChange,
     isLoading,
+    onReloadPage,
   } = props;
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
@@ -164,6 +166,7 @@ function ContentView(props: IContentView) {
                       name,
                       url: linkDeleteContent,
                       isResources: isVideo || isBrochures,
+                      cb: () => onReloadPage?.(),
                     });
                   }}
                   color="ste.red">

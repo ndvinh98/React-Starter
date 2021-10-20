@@ -14,8 +14,6 @@ function DeleteContentModal() {
 
   useEffect(() => {
     if (resData) {
-      data?.cb?.();
-      closeModal('deleteContent');
       toast({
         status: 'success',
         description: 'Successfully!',
@@ -23,7 +21,8 @@ function DeleteContentModal() {
         isClosable: true,
         duration: 2000,
       });
-      location.reload();
+      data?.cb?.();
+      closeModal('deleteContent');
     }
   }, [resData]);
 

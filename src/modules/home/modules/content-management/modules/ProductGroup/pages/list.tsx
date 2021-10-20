@@ -137,7 +137,7 @@ function List() {
         }
         name="Product Group"
         linkDeleteContent="/groupings"
-        linkAddNew="/home/content-management/product-group/add-new"
+        linkAddNew="/home/content-management/product-group/detail/add"
         linkToChild="/home/content-management/products"
       />
     </UI.Box>

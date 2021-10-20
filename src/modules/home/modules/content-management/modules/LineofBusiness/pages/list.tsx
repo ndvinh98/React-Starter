@@ -18,6 +18,12 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <ContentView
+        onReloadPage={() =>
+          getList({
+            page,
+            limit,
+          })
+        }
         isLoading={loading}
         onPageChange={setPage}
         onLimitChange={setLimit}

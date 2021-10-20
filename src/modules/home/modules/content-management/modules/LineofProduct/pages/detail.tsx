@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
-import {useRouter, usePost, useGetItem, usePatch} from '@utils/hooks';
+import {useRouter, usePost, usePatch, useGetItem} from '@utils/hooks';
 import FormGenerate from '@components/FormGenerate';
 import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
+import {useContentManagementController} from '@modules/home';
+import {isNull, keyBy} from 'lodash';
 import LoadingComponent from '@components/LoadingComponent';
-import {isNull} from 'lodash';
 
 const STOCK = [
   'https://i.imgur.com/Q04dMOc.png',
@@ -17,27 +18,25 @@ const STOCK = [
 ];
 
 function AddNew() {
+  const allLineBusiness = useContentManagementController(
+    (s) => s.allLineBusiness,
+  );
+
   const {push} = useRouter();
   const toast = UI.useToast();
   const {params} = useRouterController();
-  const {getItem, data} = useGetItem(`/applications/${params?.id}`);
-  const [mode, setMode] = useState<'ADD' | 'EDIT'>('ADD');
 
-  useEffect(() => {
-    if (params?.id && params?.id !== 'add') {
-      getItem();
-      setMode('EDIT');
-    } else {
-      setMode('ADD');
-    }
-  }, [params]);
+  const applicationRef = useRef<any>(null);
 
-  const {post, loading: postLoading, data: postData} = usePost('/applications');
+  const {post, loading: postLoading, data: postData} = usePost('/categories');
   const {
     patch,
     loading: pathLoading,
     data: pathData,
-  } = usePatch(`/applications/${params?.id}`);
+  } = usePatch(`/categories/${params?.id}`);
+
+  const {getItem, data} = useGetItem(`/categories/${params?.id}`);
+  const [mode, setMode] = useState<'ADD' | 'EDIT'>('ADD');
 
   useEffect(() => {
     if (postData || pathData) {
@@ -48,25 +47,46 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
-      push('/home/content-management/line-of-business');
+      push('/home/content-management/line-of-product');
     }
   }, [postData, pathData]);
 
-  const handleSubmit = ({name, thumb}) => {
+  useEffect(() => {
+    if (params?.id && params?.id !== 'add') {
+      getItem({
+        relations: JSON.stringify(['application']),
+      });
+      setMode('EDIT');
+    } else {
+      setMode('ADD');
+    }
+  }, [params]);
+
+  const handleSubmit = ({name, thumb, application}) => {
     if (mode === 'ADD')
       post({
         name,
-        lineOfBusiness: 1,
+        application,
         mediaDestination: thumb,
       });
     if (mode === 'EDIT') {
       patch({
         name,
-        lineOfBusiness: 1,
+        application,
         mediaDestination: thumb,
       });
     }
   };
+
+  useEffect(() => {
+    const applicationId = data?.application?.id;
+    if (applicationId) {
+      applicationRef?.current?.select?.setValue({
+        value: applicationId,
+        label: keyBy(allLineBusiness, 'id')?.[applicationId]?.name,
+      });
+    }
+  }, [data]);
 
   return (
     <UI.Box py={5} px={7}>
@@ -78,7 +98,7 @@ function AddNew() {
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
       <UI.Text fontSize="24px" fontWeight="bold">
-        Content Management - Line of Business
+        Content Management - Line of Product
       </UI.Text>
       <UI.VStack
         spacing="20px"
@@ -89,17 +109,23 @@ function AddNew() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-          ADD NEW LINE OF BUSINESS
+          ADD NEW LINE OF PRODUCT
         </UI.Text>
         <LoadingComponent isError={isNull(data)}>
           <FormGenerate
             spacing={6}
-            onSubmit={handleSubmit}
+            onSubmit={(value) => {
+              handleSubmit(value);
+            }}
             schema={{
               name: yup
                 .string()
                 .default(data?.name)
-                .required('Line of Business Name is required'),
+                .required('Line of Product Name is required'),
+              application: yup
+                .number()
+                .default(data?.application?.id)
+                .required('Line of Business is required'),
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)
@@ -109,11 +135,30 @@ function AddNew() {
               {
                 name: 'name',
                 type: 'input',
-                label: 'Line of Business Name',
+                label: 'Line of Product Name',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
                 defaultValue: data?.name,
+              },
+              {
+                name: 'application',
+                type: 'select',
+                label: 'Select Line of Business',
+                placeholder: 'Select Line of Business',
+                size: 'md',
+                layout: 'horizontal',
+                width: '70%',
+                refEl: applicationRef,
+                isClearable: false,
+                defaultValue: {
+                  value: data?.id,
+                  label: keyBy(allLineBusiness, 'id')?.[data?.id]?.name,
+                },
+                options: allLineBusiness?.map((x) => ({
+                  value: x?.id,
+                  label: x?.name,
+                })),
               },
               {
                 type: 'upload-file-contnet',
