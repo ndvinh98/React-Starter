@@ -5,6 +5,7 @@ import {RiErrorWarningFill} from 'react-icons/ri';
 import {AiOutlineSearch} from 'react-icons/ai';
 import {IUserManagement} from '@types';
 import FormGenerate from '@components/FormGenerate';
+import CardSale from '@components/CardSale';
 
 import {useModalController} from '../modals.controller';
 import {usePatch, useFilter, useGetList} from '@utils/hooks';
@@ -94,6 +95,9 @@ function AddSale() {
                 },
               ]}
             />
+
+            <CardSale />
+
             <UI.Center mt={8} w={'full'}>
               <UI.Button
                 colorScheme="blue"

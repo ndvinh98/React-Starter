@@ -11,8 +11,9 @@ import AssignPartnerAdminModal from './modals/AssignPartnerAdmin.modal';
 import ActionPartnerModal from './modals/ActionPartner.modal';
 import AddNewTier from './modals/AddNewTier.modal';
 import RemoveTier from './modals/RemoveTier.modal';
+import RemoveSale from './modals/RemoveSale.modal';
 import AddSale from './modals/AddSale.modal';
-import DeleteContentModal from './modals/DeleteContent.modal'
+import DeleteContentModal from './modals/DeleteContent.modal';
 import RemoveCertificate from './modals/RemoveCertificate.modal';
 
 function InitModal() {
@@ -31,8 +32,9 @@ function InitModal() {
       <AddNewTier />
       <RemoveTier />
       <AddSale />
-      <DeleteContentModal/>
+      <DeleteContentModal />
       <RemoveCertificate />
+      <RemoveSale />
     </>
   );
 }

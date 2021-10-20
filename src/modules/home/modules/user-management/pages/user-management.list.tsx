@@ -186,7 +186,10 @@ function userManagement() {
                             isClearable={false}
                             size="sm"
                             name="limit"
-                            onChangeValue={(data) => setLimit(data.value)}
+                            onChangeValue={(data) => {
+                              setLimit(data.value);
+                              setPage(1);
+                            }}
                             defaultValue={{
                               label: '10',
                               value: 10,
@@ -201,7 +204,7 @@ function userManagement() {
                                 value: 20,
                               },
                               {
-                                label: 'all',
+                                label: 'All',
                                 value: 1000,
                               },
                             ]}

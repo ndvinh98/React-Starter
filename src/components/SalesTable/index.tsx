@@ -33,7 +33,7 @@ export const ACTIVE_STRING = {
 };
 
 function SalesTable(props: any) {
-  const {data, loading, setPage, handleFilterData} = props;
+  const {data, loading, setPage, handleFilterData, companyName} = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
@@ -179,6 +179,7 @@ function SalesTable(props: any) {
                     //   })
                     // }
                     row={row}
+                    companyName={companyName}
                   />
                 ),
               },
@@ -225,8 +226,8 @@ export const ActionColum = (props: any) => {
   const {openModal} = useModalController();
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
-  // const {openModal} = useModalStore();
-  const {row} = props;
+
+  const {row, companyName} = props;
   return (
     <UI.Center>
       <UI.Menu onClose={onClose} isOpen={isOpen}>
@@ -241,28 +242,16 @@ export const ActionColum = (props: any) => {
         </UI.MenuButton>
         <UI.MenuList>
           <UI.MenuItem
-            hidden={row?.isActive === 1}
             onClick={() =>
-              openModal('action', {
-                title: 'Activate Access',
-                type: 'Activate',
+              openModal('removeSale', {
                 // cb: () => getUserProfile(),
+                companyName: companyName,
                 id: row?.id,
+                firstName: row?.firstName,
+                lastName: row?.lastName,
               })
             }>
-            Activate Access
-          </UI.MenuItem>
-          <UI.MenuItem
-            hidden={row?.isActive === 0}
-            onClick={() =>
-              openModal('action', {
-                title: 'Deactivate Access',
-                type: 'Deactivate',
-                // cb: () => getUserProfile(),
-                id: row?.id,
-              })
-            }>
-            Deactivate Access
+            Remove
           </UI.MenuItem>
         </UI.MenuList>
       </UI.Menu>
