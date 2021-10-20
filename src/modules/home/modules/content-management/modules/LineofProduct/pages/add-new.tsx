@@ -50,8 +50,8 @@ function AddNew() {
         application: value.application,
         mediaDestination,
       });
-    };
-    if (!mediaDestination){
+    }
+    if (!mediaDestination) {
       toast({
         title: 'Please upload file!',
         status: 'error',

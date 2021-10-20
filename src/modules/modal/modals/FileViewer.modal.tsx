@@ -26,10 +26,6 @@ function FileViewer() {
     }
   }, [fileViewer]);
 
-  useEffect(()=>{
-    console.log(item)
-  },[item])
-
   return (
     <UI.Modal
       isCentered

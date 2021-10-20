@@ -25,7 +25,7 @@ function List() {
         limit={limit}
         totalCount={data?.total}
         currentPage={page}
-        linkAddNew="/home/content-management/line-of-business/add-new"
+        linkAddNew="/home/content-management/line-of-business/detail/add"
         linkToChild="/home/content-management/line-of-product"
         name="Line of Business"
         linkDeleteContent="/applications"

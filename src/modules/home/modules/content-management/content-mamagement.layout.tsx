@@ -5,14 +5,10 @@ import NotFound from '@components/404NotFound';
 import {useContentManagementController} from './content-mamagement.controller';
 
 function ContentMamagementLayout() {
-  const {getAllLineBusiness, getAllLineProduct, getAllModules, getAllProducts} =
-    useContentManagementController();
+  const {getAllLineBusiness} = useContentManagementController();
 
   React.useEffect(() => {
     getAllLineBusiness();
-    getAllLineProduct();
-    getAllModules();
-    getAllProducts();
   }, []);
 
   return (

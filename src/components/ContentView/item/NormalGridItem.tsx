@@ -16,13 +16,15 @@ function GridItem({item, linkToChild, isVideo, isBrochures}) {
         onChange={(e) => {
           e.stopPropagation();
           if (e?.target?.checked) {
-            addItem(item?.id);
+            addItem(item);
           } else {
-            removeItem(item?.id);
+            removeItem(item);
           }
         }}
-        defaultChecked={itemSelected.includes(+item?.id)}
-        hidden={!isHovered && !itemSelected.includes(+item?.id)}
+        defaultChecked={itemSelected?.map((x) => x?.id).includes(+item?.id)}
+        hidden={
+          !isHovered && !itemSelected?.map((x) => x?.id).includes(+item?.id)
+        }
         position={'absolute'}
         bg={'white'}
         borderRadius={'md'}

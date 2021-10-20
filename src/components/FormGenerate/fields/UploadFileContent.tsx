@@ -1,4 +1,4 @@
-import React, {memo, useState, useEffect, useRef} from 'react';
+import React, {memo, useState, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {useGetItem} from '@utils/hooks';
 import {IoMdCloseCircle} from 'react-icons/io';
@@ -7,7 +7,7 @@ import {uploadFile} from '@services';
 
 export interface IUploadFileContent {
   urlPath: string;
-  onChangeValue?: (value) => void;
+  onChange?: (value: any) => void;
   defaultValue?: string;
   name?: string;
   isChooseStock?: boolean;
@@ -22,15 +22,16 @@ function UploadFileContent(props: IUploadFileContent) {
   const {
     urlPath,
     isChooseStock,
-    listStock,
     isListStockIcon,
     description,
     label,
     productModuleId,
-    onChangeValue,
+    onChange,
     name,
+    listStock,
     defaultValue = '',
   } = props;
+
   const [thumb, setThumb] = useState(defaultValue);
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState();
@@ -43,12 +44,12 @@ function UploadFileContent(props: IUploadFileContent) {
     }
   }, [data]);
 
-  const initThumb = useRef(true);
   useEffect(() => {
-    if (!initThumb.current) {
-      onChangeValue(thumb);
-      initThumb.current = false;
-    }
+    if (defaultValue) setThumb(defaultValue);
+  }, [defaultValue]);
+
+  useEffect(() => {
+    onChange({target: {value: thumb, name}});
   }, [thumb]);
 
   const handleOnchange = (thumb) => {
@@ -84,12 +85,11 @@ function UploadFileContent(props: IUploadFileContent) {
         <UI.Text w="42%">{label ? label : 'Upload Image'}</UI.Text>
         <UI.VStack alignItems="flex-start" w="full">
           <UploadThumb
-            name={name ? name : 'thumb'}
+            name={name}
             isLoading={uploading}
             description={description ? description : undefined}
             onChangeValue={(res) => {
-              const thumb = res?.[name] || res?.thumb;
-              handleOnchange(thumb);
+              handleOnchange(res?.[name]);
             }}
           />
           {thumb && (

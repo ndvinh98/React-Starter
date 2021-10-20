@@ -147,7 +147,7 @@ function ContentView(props: IContentView) {
               <UI.MenuList zIndex={999}>
                 <UI.MenuItem
                   onClick={() => {
-                    push(`${pathname}/edit/${itemSelected?.[0]}`);
+                    push(`${pathname}/detail/${itemSelected?.[0]?.id}`);
                   }}
                   isDisabled={itemSelected.length > 1}
                   color="ste.red">
@@ -161,7 +161,6 @@ function ContentView(props: IContentView) {
                 <UI.MenuItem
                   onClick={() => {
                     openModal('deleteContent', {
-                      itemSelected,
                       name,
                       url: linkDeleteContent,
                       isResources: isVideo || isBrochures,

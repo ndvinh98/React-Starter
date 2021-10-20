@@ -22,13 +22,15 @@ function ModuleGridItem({item, linkToChild}) {
           onChange={(e) => {
             e.stopPropagation();
             if (e?.target?.checked) {
-              addItem(item?.id);
+              addItem(item);
             } else {
-              removeItem(item?.id);
+              removeItem(item);
             }
           }}
-          isChecked={itemSelected.includes(+item?.id)}
-          hidden={!isHovered && !itemSelected.includes(+item?.id)}
+          defaultChecked={itemSelected?.map((x) => x?.id).includes(+item?.id)}
+          hidden={
+            !isHovered && !itemSelected?.map((x) => x?.id).includes(+item?.id)
+          }
           size="lg"
           zIndex={9}
         />

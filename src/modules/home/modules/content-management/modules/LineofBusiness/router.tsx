@@ -5,12 +5,8 @@ export default mount({
     title: 'line-of-business-list',
     getView: () => import('./pages/list'),
   }),
-  '/add-new': route({
-    title: 'line-of-business-add',
-    getView: () => import('./pages/add-new'),
-  }),
-  '/edit/:id': route({
-    title: 'line-of-business-add',
-    getView: () => import('./pages/edit'),
+  '/detail/:id': route({
+    title: 'line-of-business-detail',
+    getView: () => import('./pages/detail'),
   }),
 });

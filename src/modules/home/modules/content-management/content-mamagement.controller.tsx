@@ -15,9 +15,9 @@ import {
 } from '@services';
 
 interface IContentManagementController {
-  itemSelected: number[];
-  addItem: (id: number) => void;
-  removeItem: (id: number) => void;
+  itemSelected: any[];
+  addItem: (id: any) => void;
+  removeItem: (id: any) => void;
   clear: () => void;
   allLineBusiness: IApplication[];
   allLineProduct: ILineProduct[];
@@ -39,17 +39,14 @@ export const useContentManagementController =
     allModules: [],
 
     itemSelected: [],
-    clear: () => {
-      set({itemSelected: []});
-    },
-    addItem: (id: number) =>
-      set((s) => ({...s, itemSelected: [...s.itemSelected, id]})),
-    removeItem: (id: number) =>
+    clear: () => set({itemSelected: []}),
+    addItem: (item: any) =>
+      set((s) => ({...s, itemSelected: [...s.itemSelected, item]})),
+    removeItem: (item: any) =>
       set((s) => ({
         ...s,
-        itemSelected: s.itemSelected.filter((x) => x !== id),
+        itemSelected: s.itemSelected.filter((x) => x?.id !== item?.id),
       })),
-
     getAllLineBusiness: () =>
       getAllLineBusiness().then((res) => {
         set({allLineBusiness: res});

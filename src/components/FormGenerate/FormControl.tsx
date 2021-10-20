@@ -12,6 +12,7 @@ import Recaptcha from './fields/Recaptcha';
 import CheckboxGroup from './fields/CheckboxGroup';
 import RadioGroup from './fields/RadioGroup';
 import UploadFile from './fields/UploadFile';
+import UploadFileContent from './fields/UploadFileContent';
 
 const FieldComponent = {
   input: UI.Input,
@@ -26,6 +27,7 @@ const FieldComponent = {
   'radio-group': RadioGroup,
   'checkbox-group': CheckboxGroup,
   'upload-file': UploadFile,
+  'upload-file-contnet': UploadFileContent,
 };
 
 export interface IFormControl extends HTMLChakraProps<'div'> {
@@ -44,6 +46,8 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
     | 'input-group'
     | 'recaptcha'
     | 'checkbox-group'
+    | 'upload-file'
+    | 'upload-file-contnet'
     | 'radio-group';
 
   label?: string | React.ReactNode;
@@ -70,6 +74,8 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
   refEl?: any;
   isClearable?: boolean;
   styled?: any;
+  listStock?: string[];
+  isChooseStock?: boolean;
 }
 
 const DIRECTION = {
