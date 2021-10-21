@@ -54,7 +54,7 @@ function AddTierToParter({
   return (
     <UI.Box shadow="sm" p={5} w="70%" bg="white">
       <LoadingComponent isLoading={loading || partnerTierRelationsLoading}>
-        <UI.Text fontSize="20px" fontWeight="bold" bg="#EEEEEC" px={3} py={2}>
+        <UI.Text fontSize="18px" fontWeight="bold" bg="#EEEEEC" px={3} py={2}>
           Tier Management
         </UI.Text>
         <UI.HStack justifyContent="space-between" mt={3}>
