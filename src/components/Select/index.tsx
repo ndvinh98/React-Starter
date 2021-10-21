@@ -91,7 +91,6 @@ const Select: React.FC<ISelect> = (props) => {
           ...provided,
           '& *': {
             color: '#9ba3af',
-            width: '20px',
             padding: '0px',
             margin: '0px',
           },
@@ -99,11 +98,6 @@ const Select: React.FC<ISelect> = (props) => {
         indicatorSeparator: () => {
           return {
             disabled: 'none',
-          };
-        },
-        indicatorsContainer: () => {
-          return {
-            padding: '0px',
           };
         },
 

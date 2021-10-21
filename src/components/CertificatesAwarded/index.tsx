@@ -10,12 +10,16 @@ const CertificateAwarded = ({partnerUserId}) => {
     '/partnerUserCertificates',
   );
 
+  const hanldeLoadData = () => {
+    getList({
+      relations: JSON.stringify(['partnerUser']),
+      filter: JSON.stringify([{partnerUser: {id: partnerUserId}}]),
+    });
+  };
+
   useEffect(() => {
     if (partnerUserId) {
-      getList({
-        relations: JSON.stringify(['partnerUser']),
-        filter: JSON.stringify([{partnerUser: {id: partnerUserId}}]),
-      });
+      hanldeLoadData();
     }
   }, [partnerUserId]);
 
@@ -38,7 +42,7 @@ const CertificateAwarded = ({partnerUserId}) => {
       ) : (
         <UI.SimpleGrid columns={2} spacingX="40px" spacingY="20px" pt={5}>
           {data?.records.map((x) => (
-            <Certificate key={x?.id} data={x} />
+            <Certificate key={x?.id} data={x} getList={hanldeLoadData} />
           ))}
         </UI.SimpleGrid>
       )}
