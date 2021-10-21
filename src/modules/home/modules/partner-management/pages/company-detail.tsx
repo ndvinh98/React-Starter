@@ -81,7 +81,7 @@ function CompanyDetail() {
       getListUser({
         page: pageUser,
         limit: limitUser,
-        relations: JSON.stringify(['domain']),
+        relations: JSON.stringify(['domain', 'partnerUserProfiles']),
         filter: JSON.stringify([
           {
             ...filterUser,

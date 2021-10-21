@@ -113,6 +113,10 @@ function UserTable(props) {
                   value: '-1',
                 },
                 {
+                  label: 'Owner',
+                  value: 'PARTNERADMIN',
+                },
+                {
                   label: 'Admin',
                   value: 'ADMIN',
                 },

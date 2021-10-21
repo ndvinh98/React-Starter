@@ -2,7 +2,9 @@ import React, {memo} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import {useModalController} from '../modals.controller';
-import {useRemove} from '@utils/hooks';
+import {useRemove, useGetList} from '@utils/hooks';
+import {ICertificates} from '@types';
+import {useRouterController} from '@modules/router';
 
 function RemoveCertificate() {
   const {removeCertificate, closeModal, data} = useModalController();
@@ -15,7 +17,6 @@ function RemoveCertificate() {
 
   React.useEffect(() => {
     if (postData) {
-      data?.cb?.();
       closeModal('removeCertificate');
       toast({
         status: 'success',
@@ -24,6 +25,7 @@ function RemoveCertificate() {
         isClosable: true,
         duration: 2000,
       });
+      data?.getList();
     }
   }, [postData]);
 
@@ -49,7 +51,7 @@ function RemoveCertificate() {
         <UI.ModalHeader mt={8}>
           <UI.Box fontSize={'lg'} color={'ste.red'} textAlign="center">
             <UI.Text> Are you sure you want to</UI.Text>
-            <UI.Text>delete this certificate?</UI.Text>
+            <UI.Text>delete this certificate? {data?.name}</UI.Text>
           </UI.Box>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>

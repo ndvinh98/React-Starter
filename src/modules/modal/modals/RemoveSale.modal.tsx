@@ -24,6 +24,7 @@ function RemoveSale() {
         isClosable: true,
         duration: 2000,
       });
+      data?.getList?.();
     }
   }, [postData]);
 
