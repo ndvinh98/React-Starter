@@ -17,7 +17,12 @@ const sidebarMenu = [
 ];
 
 function SideBar() {
-  const {isOpen, onToggle} = UI.useDisclosure({defaultIsOpen: true});
+  const IS_OPEN_MENU = +localStorage.getItem('IS_OPEN_MENU');
+  const {isOpen, onToggle} = UI.useDisclosure({defaultIsOpen: !!IS_OPEN_MENU});
+  React.useEffect(() => {
+    if (isOpen) localStorage.setItem('IS_OPEN_MENU', '1');
+    else localStorage.setItem('IS_OPEN_MENU', '0');
+  }, [isOpen]);
   return (
     <UI.VStack
       alignItems={'start'}

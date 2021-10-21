@@ -87,98 +87,84 @@ function CompanyManagement() {
         Partner Management
       </UI.Text>
       <UI.Box width="full">
-        <FormGenerate
-          gap={isBase ? 4 : 6}
-          onChangeValue={handleFilterData}
-          fields={[
-            {
-              name: 'textSearch',
-              type: 'input-group',
-              colSpan: isBase ? 3 : 12,
-              size: 'md',
-              placeholder: 'Search...',
-              leftIcon: <AiOutlineSearch size={20} />,
-            },
-            {
-              name: 'status',
-              type: 'select',
-              colSpan: isBase ? 3 : 6,
-              size: 'md',
-              defaultValue: {
-                label: 'All Status',
-                value: '-1',
+        <UI.HStack>
+          <FormGenerate
+            gap={isBase ? 4 : 6}
+            onChangeValue={handleFilterData}
+            fields={[
+              {
+                name: 'textSearch',
+                type: 'input-group',
+                colSpan: isBase ? 3 : 12,
+                size: 'md',
+                placeholder: 'Search...',
+                leftIcon: <AiOutlineSearch size={20} />,
               },
-              isClearable: false,
-              options: [
-                {
+              {
+                name: 'status',
+                type: 'select',
+                colSpan: isBase ? 3 : 6,
+                size: 'md',
+                defaultValue: {
                   label: 'All Status',
                   value: '-1',
                 },
-                {
-                  label: 'Active',
-                  value: '1',
-                },
-                {
-                  label: 'Inactive',
-                  value: '0',
-                },
-              ],
-            },
-
-            {
-              type: 'decor',
-              name: 'demo',
-              colSpan: isBase ? 6 : 12,
-              DecorComponent: () => {
-                return (
-                  <UI.VStack>
-                    <UI.Spacer />
-                    <UI.HStack
-                      position={{md: 'absolute', lg: 'static'}}
-                      top={'-166px'}
-                      w={'full'}
-                      justifyContent={'space-between'}>
-                      <UI.HStack
-                        position={{md: 'absolute', lg: 'static'}}
-                        top={'-166px'}
-                        w={'full'}
-                        justifyContent={'flex-end'}>
-                        <UI.Text> View Item</UI.Text>
-                        <Select
-                          isClearable={false}
-                          size="sm"
-                          name="limit"
-                          onChangeValue={(data) => {
-                            setLimit(data.value);
-                            setPage(1);
-                          }}
-                          defaultValue={{
-                            label: '10',
-                            value: 10,
-                          }}
-                          options={[
-                            {
-                              label: '10',
-                              value: 10,
-                            },
-                            {
-                              label: '20',
-                              value: 20,
-                            },
-                            {
-                              label: 'all',
-                              value: 1000,
-                            },
-                          ]}
-                        />
-                      </UI.HStack>
-                    </UI.HStack>
-                  </UI.VStack>
-                );
+                isClearable: false,
+                options: [
+                  {
+                    label: 'All Status',
+                    value: '-1',
+                  },
+                  {
+                    label: 'Active',
+                    value: '1',
+                  },
+                  {
+                    label: 'Inactive',
+                    value: '0',
+                  },
+                ],
               },
-            },
-          ]}
-        />
+            ]}
+          />
+          <UI.HStack>
+            <UI.Text w="70px">View Item</UI.Text>
+            <UI.Box w="80px">
+              <Select
+                isClearable={false}
+                size="sm"
+                name="limit"
+                onChangeValue={(data) => {
+                  setLimit(data.value);
+                  setPage(1);
+                }}
+                defaultValue={{
+                  label: '10',
+                  value: 10,
+                }}
+                options={[
+                  {
+                    label: '10',
+                    value: 10,
+                  },
+                  {
+                    label: '20',
+                    value: 20,
+                  },
+                  {
+                    label: '30',
+                    value: 30,
+                  },
+                  {
+                    label: '50',
+                    value: 50,
+                  },
+                ]}
+              />
+            </UI.Box>
+          </UI.HStack>
+        </UI.HStack>
+
         {isBase ? (
           <UI.Box px={4} bgColor="white">
             <TableGenerate
