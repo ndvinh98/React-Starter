@@ -283,7 +283,7 @@ function List() {
         }
         name="Modules"
         linkDeleteContent="/productModules"
-        linkAddNew="/home/content-management/modules/add-new"
+        linkAddNew="/home/content-management/modules/detail/add"
         linkToChild="/home/content-management/resources"
       />
     </UI.Box>
