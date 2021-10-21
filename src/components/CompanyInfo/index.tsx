@@ -31,8 +31,9 @@ function CompanyInfo(props: any) {
         <UI.Box width="full">
           <UI.Box width="full" bg="white" pt={4} py={6} px={4}>
             <UI.Text
-              fontSize={{md: 'md', lg: 'xl'}}
-              pl={3}
+              fontSize={{md: 'md', lg: '18px'}}
+              px={3}
+              py={2}
               fontWeight={'semibold'}
               color={'ste.black'}
               bgColor={'#EEEEEC'}>
@@ -41,7 +42,7 @@ function CompanyInfo(props: any) {
             <UI.Accordion allowMultiple>
               <UI.AccordionItem>
                 <UI.AccordionButton>
-                  <UI.Box flex="1" textAlign="left">
+                  <UI.Box flex="1" textAlign="left" fontWeight={'semibold'}>
                     Section A
                   </UI.Box>
                   <UI.AccordionIcon />
@@ -128,7 +129,7 @@ function CompanyInfo(props: any) {
 
               <UI.AccordionItem>
                 <UI.AccordionButton>
-                  <UI.Box flex="1" textAlign="left">
+                  <UI.Box flex="1" textAlign="left" fontWeight={'semibold'}>
                     Section B
                   </UI.Box>
                   <UI.AccordionIcon />
@@ -223,7 +224,7 @@ function CompanyInfo(props: any) {
               </UI.AccordionItem>
               <UI.AccordionItem>
                 <UI.AccordionButton>
-                  <UI.Box flex="1" textAlign="left">
+                  <UI.Box flex="1" textAlign="left" fontWeight={'semibold'}>
                     Section C
                   </UI.Box>
                   <UI.AccordionIcon />
@@ -321,7 +322,7 @@ function CompanyInfo(props: any) {
               </UI.AccordionItem>
               <UI.AccordionItem>
                 <UI.AccordionButton>
-                  <UI.Box flex="1" textAlign="left">
+                  <UI.Box flex="1" textAlign="left" fontWeight={'semibold'}>
                     Attachments
                   </UI.Box>
                   <UI.AccordionIcon />
