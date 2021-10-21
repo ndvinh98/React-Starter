@@ -208,7 +208,7 @@ function List() {
         }
         name="Products"
         linkDeleteContent="/products"
-        linkAddNew="/home/content-management/products/add-new"
+        linkAddNew="/home/content-management/products/detail/add"
         linkToChild="/home/content-management/modules"
       />
     </UI.Box>

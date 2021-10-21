@@ -3,18 +3,18 @@ import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {
   useRouter,
-  useGetItem,
   useGetList,
-  usePost,
+  useGetItem,
   usePatch,
+  usePost,
 } from '@utils/hooks';
 import FormGenerate from '@components/FormGenerate';
 import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
-import {useContentManagementController} from '@modules/home';
-import {ICategorie} from '@types';
-import {isNull, keyBy} from 'lodash';
+import {ICategorie, IGrouping} from '@types';
 import LoadingComponent from '@components/LoadingComponent';
+import {useContentManagementController} from '@modules/home';
+import {keyBy} from 'lodash';
 
 const STOCK = [
   'https://i.imgur.com/Q04dMOc.png',
@@ -28,26 +28,25 @@ function Edit() {
   const allLineBusiness = useContentManagementController(
     (s) => s.allLineBusiness,
   );
-  const categoryRef = useRef<any>(null);
-  const applicationRef = useRef<any>(null);
-
-  const {params} = useRouterController();
-  const [mode, setMode] = useState<'ADD' | 'EDIT'>('ADD');
   const {push} = useRouter();
-  const {data, getItem} = useGetItem(`/groupings/${params?.id}`);
+  const toast = UI.useToast();
+
+  const [mode, setMode] = useState<'ADD' | 'EDIT'>('ADD');
+  const {params} = useRouterController();
+  const {data, getItem} = useGetItem(`/products/${params?.id}`);
+
   const [applicationId, setApplicationId] = useState(-1);
   const [categoryId, setCategoryId] = useState(-1);
-
-  const {
-    getList: getListCategories,
-    data: categoriesData,
-    loading: categoriesLoading,
-  } = useGetList<ICategorie>('categories');
+  const [groupingId, setGroupingId] = useState(-1);
 
   useEffect(() => {
     if (params?.id && params?.id !== 'add') {
       getItem({
-        relations: JSON.stringify(['category', 'category.application']),
+        relations: JSON.stringify([
+          'grouping',
+          'grouping.category',
+          'grouping.category.application',
+        ]),
       });
       setMode('EDIT');
     } else {
@@ -55,47 +54,16 @@ function Edit() {
     }
   }, [params]);
 
-  const {post, loading: postLoading, data: postData} = usePost('/categories');
   const {
     patch,
+    data: patchData,
     loading: pathLoading,
-    data: pathData,
-  } = usePatch(`/groupings/${params?.id}`);
+  } = usePatch(`products/${params?.id}`);
 
-  const handleSubmit = ({application, category, name, thumb}) => {
-    if (mode === 'ADD')
-      post({
-        name,
-        application,
-        category,
-        mediaDestination: thumb,
-      });
-    if (mode === 'EDIT') {
-      patch({
-        name,
-        application,
-        category,
-        mediaDestination: thumb,
-      });
-    }
-  };
-  const handleOnChange = ({application}) => {
-    setApplicationId(application || -1);
-  };
+  const {post, data: postData, loading: postLoading} = usePost(`products`);
 
   useEffect(() => {
-    if (applicationId > 0) {
-      categoryRef?.current?.select?.clearValue();
-      getListCategories({
-        limit: 9999,
-        filter: JSON.stringify([{application: applicationId}]),
-      });
-    }
-  }, [applicationId]);
-
-  const toast = UI.useToast();
-  useEffect(() => {
-    if (postData || pathData) {
+    if (postData || patchData) {
       toast({
         title: 'Successfully!',
         status: 'success',
@@ -103,13 +71,81 @@ function Edit() {
         position: 'top-right',
         isClosable: true,
       });
-      push('/home/content-management/product-group');
+      push('/home/content-management/products');
     }
-  }, [postData, pathData]);
+  }, [postData, patchData]);
+
+  const handleSubmit = ({name, category, thumb, grouping}) => {
+    if (mode === 'ADD')
+      post({
+        name,
+        category,
+        grouping,
+        mediaDestination: thumb,
+      });
+    if (mode === 'EDIT') {
+      patch({
+        name,
+        category,
+        grouping,
+        mediaDestination: thumb,
+      });
+    }
+  };
+
+  const categoryRef = useRef<any>(null);
+  const applicationRef = useRef<any>(null);
+  const groupingRef = useRef<any>(null);
 
   useEffect(() => {
-    const applicationId = data?.category?.application?.id;
-    const categoryId = data?.category?.id;
+    categoryRef?.current?.select?.clearValue();
+    groupingRef?.current?.select?.clearValue();
+  }, [applicationId]);
+
+  useEffect(() => {
+    groupingRef?.current?.select?.clearValue();
+  }, [categoryId]);
+
+  const {
+    getList: getListCategories,
+    data: categoriesData,
+    loading: categoriesLoading,
+  } = useGetList<ICategorie>('categories');
+  const {
+    getList: getListGroupings,
+    data: groupingsData,
+    loading: groupingsLoading,
+  } = useGetList<IGrouping>('groupings');
+
+  const handleOnChange = ({application, category, grouping}) => {
+    if (application && application > 0) setApplicationId(application);
+    if (category && category > 0) setCategoryId(category);
+    if (grouping && grouping > 0) setGroupingId(grouping);
+  };
+
+  useEffect(() => {
+    if (applicationId > 0) {
+      getListCategories({
+        limit: 9999,
+        filter: JSON.stringify([{application: applicationId}]),
+      });
+    }
+  }, [applicationId]);
+
+  useEffect(() => {
+    if (categoryId > 0) {
+      getListGroupings({
+        limit: 9999,
+        filter: JSON.stringify([{category: categoryId}]),
+      });
+    }
+  }, [categoryId]);
+
+  useEffect(() => {
+    const applicationId = data?.grouping?.category?.application?.id;
+    const categoryId = data?.grouping?.category?.id;
+    const groupingId = data?.grouping?.id;
+
     if (applicationId) {
       applicationRef?.current?.select?.setValue({
         value: applicationId,
@@ -118,30 +154,38 @@ function Edit() {
       setApplicationId(applicationId);
     }
     if (categoryId) setCategoryId(categoryId);
+    if (groupingId) setGroupingId(groupingId);
   }, [data]);
 
-  const initData = useRef(true);
   useEffect(() => {
-    if (categoriesData?.records && categoryId && initData.current) {
+    if (categoriesData?.records && categoryId > 0) {
       categoryRef?.current?.select?.setValue({
         value: categoryId,
         label: keyBy(categoriesData?.records, 'id')?.[categoryId]?.name,
       });
-      initData.current = false;
     }
-  }, [categoriesData]);
+  }, [categoriesData, categoryId]);
+
+  useEffect(() => {
+    if (groupingsData?.records && groupingId > 0) {
+      groupingRef?.current?.select?.setValue({
+        value: groupingId,
+        label: keyBy(groupingsData?.records, 'id')?.[groupingId]?.name,
+      });
+    }
+  }, [groupingsData, groupingId]);
 
   return (
     <UI.Box py={5} px={7}>
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/content-management/product-group')}>
+        onClick={() => push('/home/content-management/products')}>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
       <UI.Text fontSize="24px" fontWeight="bold">
-        Content Management - Product Group
+        Content Management - Products
       </UI.Text>
       <UI.VStack
         spacing="20px"
@@ -152,9 +196,9 @@ function Edit() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-          EDIT PRODUCT GROUP
+          EDIT PRODUCT
         </UI.Text>
-        <LoadingComponent isError={isNull(data)}>
+        <LoadingComponent>
           <FormGenerate
             spacing={6}
             onChangeValue={handleOnChange}
@@ -169,10 +213,8 @@ function Edit() {
               application: yup
                 .number()
                 .required('Line of Business is required'),
-              category: yup
-                .number()
-                .typeError('Line of Product is required')
-                .required('Line of Product is required'),
+              category: yup.number().required('Line of Product is required'),
+              grouping: yup.number().required('Product Group is required'),
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)
@@ -196,8 +238,8 @@ function Edit() {
                 placeholder: 'Select Line of Business',
                 size: 'md',
                 layout: 'horizontal',
-                width: '70%',
                 isClearable: false,
+                width: '70%',
                 options: allLineBusiness?.map((x) => ({
                   value: x?.id,
                   label: x?.name,
@@ -210,12 +252,29 @@ function Edit() {
                 placeholder: 'Select Line of Product',
                 layout: 'horizontal',
                 width: '70%',
+                isClearable: false,
                 isDisabled: applicationId < 0,
                 type: 'select',
                 size: 'md',
                 isLoading: categoriesLoading,
-                isClearable: false,
                 options: categoriesData?.records?.map?.((x) => ({
+                  value: x?.id,
+                  label: x?.name,
+                })),
+              },
+              {
+                name: 'grouping',
+                refEl: groupingRef,
+                label: 'Select Product Group',
+                placeholder: 'Select Product Group',
+                layout: 'horizontal',
+                width: '70%',
+                isDisabled: categoryId < 0,
+                isLoading: groupingsLoading,
+                isClearable: false,
+                type: 'select',
+                size: 'md',
+                options: groupingsData?.records?.map?.((x) => ({
                   value: x?.id,
                   label: x?.name,
                 })),
