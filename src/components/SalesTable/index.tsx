@@ -38,15 +38,15 @@ function SalesTable(props: any) {
   const {push} = useRouter();
   const {isBase} = useMedia();
   const {openModal} = useModalController();
-
   return (
     <UI.VStack py={6} px={5} spacing={4} width="full" bgColor="white">
       <UI.Box w="full" bgColor={'#EEEEEC'}>
         <UI.Text
-          fontSize={{md: 'md', lg: 'xl'}}
+          fontSize={{md: 'md', lg: '18px'}}
           fontWeight="semibold"
           w="full"
-          pl={3}>
+          px={3}
+          py={2}>
           Sales Manager
         </UI.Text>
       </UI.Box>
