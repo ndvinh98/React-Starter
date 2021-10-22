@@ -81,6 +81,13 @@ function UserDetail() {
     }
   }, [data]);
 
+  const [showMobileNumber, setShowMobileNumber] = React.useState(false);
+
+  useEffect(() => {
+    const showMobileNumber = +profileData?.userProfiles?.[0]?.showMobileNumber;
+    setShowMobileNumber(!!showMobileNumber);
+  }, [profileData]);
+
   return (
     <UI.Box py={6} px={8}>
       <UI.HStack
@@ -181,9 +188,9 @@ function UserDetail() {
           <UI.Box p="4">
             {profileData && userProfiles && (
               <FormGenerate
-                onSubmit={(data) => {
-                  patch(data);
-                }}
+                onSubmit={(data) =>
+                  patch({...data, showMobileNumber: showMobileNumber ? 1 : 0})
+                }
                 schema={{
                   firstName: yup
                     .string()
@@ -345,7 +352,22 @@ function UserDetail() {
                   {
                     name: 'mobileNumber',
                     type: 'input',
-                    label: 'Mobile No.',
+                    checkboxLabel: 'Display to Partners',
+                    checkboxName: 'showMobileNumber',
+                    checkboxDefaultValue: userProfiles?.showWorkNumber,
+                    label: (
+                      <UI.HStack justifyContent="space-between" w="full">
+                        <UI.Text> Mobile No.</UI.Text>
+                        <UI.Checkbox
+                          isChecked={showMobileNumber}
+                          onChange={(e) =>
+                            setShowMobileNumber(e.target.checked)
+                          }
+                          isDisabled={isDisabled}>
+                          <UI.Text fontSize="14px">Display to Partners</UI.Text>
+                        </UI.Checkbox>
+                      </UI.HStack>
+                    ),
                     placeholder: 'Mobile No.',
                     colSpan: isBase ? 6 : 12,
                     size: 'md',

@@ -70,7 +70,7 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
       {display === 'grid' && (
         <UI.Grid templateColumns="repeat(12, 1fr)" gap={gap}>
           {fields?.map?.((x, i) => (
-            <UI.GridItem colSpan={x?.colSpan || 12} key={i}>
+            <UI.GridItem sx={x?.colSytled} colSpan={x?.colSpan || 12} key={i}>
               <FormControl
                 {...x}
                 defaultValue={x?.defaultValue}
