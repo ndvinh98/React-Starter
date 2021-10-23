@@ -12,6 +12,7 @@ export default compose(
     '*': map(async (request) => {
       const {guard} = useHomeController.getState();
       return guard().then((res) => {
+        console.log('🚀 ~ res', res);
         return res === 'admin'
           ? mount({
               '/': redirect('partner-applications'),
@@ -104,11 +105,19 @@ export default compose(
                   ),
               ),
             })
-          : redirect(
+          : res === 'deactived'
+          ? redirect(
               '/auth/login?redirectTo=' +
                 encodeURIComponent(request.originalUrl),
               {exact: false},
-            );
+            )
+          : res === 'unauthorized'
+          ? redirect(
+              '/auth/login?redirectTo=' +
+                encodeURIComponent(request.originalUrl),
+              {exact: false},
+            )
+          : null;
       });
     }),
   }),

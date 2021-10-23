@@ -16,7 +16,7 @@ export const useHomeController = create<IHomeContoller>((set, get) => ({
     if (me) {
       return guardAuth(me);
     } else
-      fetchMe().then((me) => {
+      return fetchMe().then((me) => {
         return guardAuth(me);
       });
   },
