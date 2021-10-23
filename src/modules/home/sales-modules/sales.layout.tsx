@@ -26,7 +26,7 @@ function HomeLayout() {
         </UI.Box>
 
         <UI.Box w={'full'} bg={'ste.gray_lighter'}>
-          <Header.base />
+          <Header.base type="sales" />
           <UI.Box
             bg={'ste.gray_lighter'}
             h={'calc(100vh - 60px)'}

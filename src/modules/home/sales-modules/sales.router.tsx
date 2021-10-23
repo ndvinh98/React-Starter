@@ -15,5 +15,7 @@ export default compose(
     '/partner-information': lazy(
       () => import('./partner-information/partner-information.router'),
     ),
+    '/your-profile': lazy(() => import('./profile/profile.router')),
+    '/notification': lazy(() => import('./notification/notification.router')),
   }),
 );
