@@ -17,23 +17,39 @@ function Addnew() {
   const formRef = useRef(null);
 
   useEffect(() => {
+    console.log(data);
     if (!isEmpty(data)) {
       formRef?.current?.reset?.({
-        salutation: '',
-        firstName: '',
-        lastName: '',
-        salesId: '',
-        email: '',
-        userType: '',
-        jobTitle: '',
-        countryName: '',
-        cityName: '',
-        postalCode: '',
-        workNumber: '',
-        mobileNumber: '',
-        languageId: 1,
+        // salutation: '',
+        // firstName: '',
+        // lastName: '',
+        // salesId: '',
+        // email: '',
+        // userType: '',
+        // jobTitle: '',
+        // countryName: '',
+        // cityName: '',
+        // postalCode: '',
+        // workNumber: '',
+        // mobileNumber: '',
+        // languageId: 1,
+        // showMobileNumber: 0,
+        // showWorkNumber: 0,
+        cityName: 'HCM',
+        countryName: 'Albania',
+        email: 'nguyennguyen1@gmail.com',
+        firstName: 'Nguyen',
+        jobTitle: '1212',
+        languageId: '2',
+        lastName: 'Nguyen',
+        mobileNumber: '123 3123 3123',
+        postalCode: '21333',
+        salesId: '1',
+        salutation: 'MRS',
         showMobileNumber: 1,
         showWorkNumber: 1,
+        userType: 'USER',
+        workNumber: '12312 213 312',
       });
       toast({
         title: 'Success',
@@ -44,6 +60,15 @@ function Addnew() {
       });
     }
   }, [data]);
+
+  const onFormSubmit = (value) => {
+    value = {
+      ...value,
+      showWorkNumber: value.showWorkNumber ? 1 : 0,
+      showMobileNumber: value.showMobileNumber ? 1 : 0,
+    };
+    post(value);
+  };
 
   return (
     <UI.Box py={6} px={8} spacing={4} width="full">
@@ -62,7 +87,7 @@ function Addnew() {
         </UI.Text>
         <FormGenerate
           ref={formRef}
-          onSubmit={(value) => post(value)}
+          onSubmit={(value) => onFormSubmit(value)}
           schema={{
             salutation: yup.string().required('Salutation is required'),
             firstName: yup.string().required('First Name is required'),

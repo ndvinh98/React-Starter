@@ -87,6 +87,9 @@ function UserDetail() {
   useEffect(() => {
     const showMobileNumber = +profileData?.userProfiles?.[0]?.showMobileNumber;
     setShowMobileNumber(!!showMobileNumber);
+    const showWorkNumber = +profileData?.userProfiles?.[0]?.showWorkNumber;
+    setShowMobileNumber(!!showMobileNumber);
+    setShowWorkNumber(!!showWorkNumber);
   }, [profileData]);
 
   return (

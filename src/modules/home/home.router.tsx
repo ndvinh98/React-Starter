@@ -5,6 +5,7 @@ import {useHomeController} from './home.controller';
 import {useConfigStore} from '@services/config';
 
 useConfigStore.getState?.()?.initDashboardConfig?.();
+
 export default compose(
   withView(<HomeLayout />),
   mount({
