@@ -1,2 +1,2 @@
 export {useHomeController} from './home.controller';
-export {useContentManagementController} from './modules/content-management';
+export {useContentManagementController} from './admin-modules/content-management';

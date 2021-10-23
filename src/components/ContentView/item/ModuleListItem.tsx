@@ -1,6 +1,6 @@
 import React from 'react';
 import * as UI from '@chakra-ui/react';
-import {useContentManagementController} from '@modules/home/modules/content-management';
+import {useContentManagementController} from '@modules/home/admin-modules/content-management';
 import {useRouter, useHover} from '@utils/hooks';
 
 function ModuleGridItem({item, linkToChild}) {

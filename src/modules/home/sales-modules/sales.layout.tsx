@@ -22,7 +22,7 @@ function HomeLayout() {
     <NotFoundBoundary render={() => <NotFound />}>
       <UI.HStack spacing={0}>
         <UI.Box w={'min-content'}>
-          <Sidebar.base />
+          <Sidebar.base type="sales" />
         </UI.Box>
 
         <UI.Box w={'full'} bg={'ste.gray_lighter'}>
