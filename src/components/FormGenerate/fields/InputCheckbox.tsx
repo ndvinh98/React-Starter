@@ -5,7 +5,7 @@ const InputGroup: React.FC<any> = (props) => {
   const {checkboxLabel, onChange, name} = props;
 
   return (
-    <UI.Box>
+    <UI.Box justifyContent="start">
       <UI.Checkbox
         onChange={(e) => {
           onChange({

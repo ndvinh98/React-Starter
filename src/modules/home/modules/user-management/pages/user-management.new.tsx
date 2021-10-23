@@ -32,6 +32,8 @@ function Addnew() {
         workNumber: '',
         mobileNumber: '',
         languageId: 1,
+        showMobileNumber: 1,
+        showWorkNumber: 1,
       });
       toast({
         title: 'Success',
@@ -213,17 +215,41 @@ function Addnew() {
               width: isBase ? '70%' : '100%',
               layout: isBase ? 'horizontal' : 'vertical',
             },
+            {
+              name: 'showWorkNumber',
+              type: 'input-checkbox',
+              colSpan: 12,
+              checkboxLabel: 'Display to Partners',
+              checkboxName: 'showWorkNumber',
+              checkboxDefaultValue: false,
+              label: <UI.Text></UI.Text>,
+              layout: isBase ? 'horizontal' : 'vertical',
+              width: isBase ? '70%' : '100%',
+            },
 
             {
               name: 'mobileNumber',
               type: 'input-tel',
-              label: 'Mobile No.',
+              label: 'Mobile No',
               placeholder: 'Mobile No.',
               colSpan: 12,
               size: 'md',
               width: isBase ? '70%' : '100%',
               layout: isBase ? 'horizontal' : 'vertical',
             },
+
+            {
+              name: 'showMobileNumber',
+              type: 'input-checkbox',
+              colSpan: 12,
+              checkboxLabel: 'Display to Partners',
+              checkboxName: 'showMobileNumber',
+              checkboxDefaultValue: false,
+              label: <UI.Text></UI.Text>,
+              layout: isBase ? 'horizontal' : 'vertical',
+              width: isBase ? '70%' : '100%',
+            },
+
             {
               isClearable: false,
               name: 'languageId',

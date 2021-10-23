@@ -82,6 +82,7 @@ function UserDetail() {
   }, [data]);
 
   const [showMobileNumber, setShowMobileNumber] = React.useState(false);
+  const [showWorkNumber, setShowWorkNumber] = React.useState(false);
 
   useEffect(() => {
     const showMobileNumber = +profileData?.userProfiles?.[0]?.showMobileNumber;
@@ -189,7 +190,11 @@ function UserDetail() {
             {profileData && userProfiles && (
               <FormGenerate
                 onSubmit={(data) =>
-                  patch({...data, showMobileNumber: showMobileNumber ? 1 : 0})
+                  patch({
+                    ...data,
+                    showMobileNumber: showMobileNumber ? 1 : 0,
+                    showWorkNumber: showWorkNumber ? 1 : 0,
+                  })
                 }
                 schema={{
                   firstName: yup
@@ -271,6 +276,7 @@ function UserDetail() {
                       SALUATION_OPITONS_VALUE?.[profileData?.salutation],
                     options: SALUATION_OPITONS,
                     isDisabled: isDisabled,
+                    isClearable: false,
                   },
                   {
                     type: 'input',
@@ -318,6 +324,7 @@ function UserDetail() {
                       value: userProfiles?.countryName,
                       label: userProfiles?.countryName,
                     },
+                    isClearable: false,
                   },
                   {
                     name: 'cityName',
@@ -342,7 +349,20 @@ function UserDetail() {
                   {
                     name: 'workNumber',
                     type: 'input',
-                    label: 'Work No.',
+                    checkboxLabel: 'Display to Partners',
+                    checkboxName: 'showWorkNumber',
+                    checkboxDefaultValue: userProfiles?.showWorkNumber,
+                    label: (
+                      <UI.HStack justifyContent="space-between" w="full">
+                        <UI.Text> Work No.</UI.Text>
+                        <UI.Checkbox
+                          isChecked={showWorkNumber}
+                          onChange={(e) => setShowWorkNumber(e.target.checked)}
+                          isDisabled={isDisabled}>
+                          <UI.Text fontSize="14px">Display to Partners</UI.Text>
+                        </UI.Checkbox>
+                      </UI.HStack>
+                    ),
                     placeholder: 'Work Number',
                     colSpan: isBase ? 6 : 12,
                     size: 'md',
@@ -354,7 +374,7 @@ function UserDetail() {
                     type: 'input',
                     checkboxLabel: 'Display to Partners',
                     checkboxName: 'showMobileNumber',
-                    checkboxDefaultValue: userProfiles?.showWorkNumber,
+                    checkboxDefaultValue: userProfiles?.showMobileNumber,
                     label: (
                       <UI.HStack justifyContent="space-between" w="full">
                         <UI.Text> Mobile No.</UI.Text>
