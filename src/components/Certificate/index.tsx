@@ -38,7 +38,7 @@ const Certificate = ({data, getList}) => {
               getList: getList,
             })
           }>
-          <TiDelete />
+          <TiDelete size="25px" color="#E0E0E0" />
         </UI.Box>
       </UI.HStack>
     </UI.Box>
