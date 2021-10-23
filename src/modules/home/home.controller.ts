@@ -13,7 +13,10 @@ export const useHomeController = create<IHomeContoller>((set, get) => ({
   me: null,
   guard: async () => {
     const {me} = get();
-    if (me && !!+me?.isActive) {
+    if (
+      (me && !!+me?.isActive && me.userType === 'ADMIN') ||
+      me?.userType === 'PARTNERADMIN'
+    ) {
       return true;
     }
     if (me && !+me?.isActive) {
