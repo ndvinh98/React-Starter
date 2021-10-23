@@ -3,6 +3,7 @@ import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import {AiOutlineSearch} from 'react-icons/ai';
+import {isEmpty} from 'lodash';
 import {IUserManagement} from '@types';
 import FormGenerate from '@components/FormGenerate';
 import CardSale from '@components/CardSale';
@@ -13,7 +14,7 @@ import {usePatch, useFilter, useGetList} from '@utils/hooks';
 function AddSale() {
   const {addSale, closeModal, data} = useModalController();
 
-  const {data: patchData, loading} = usePatch(
+  const {data: patchData, loading: loadingData} = usePatch(
     `/partnerApplicationSubmissions/${data?.id}`,
   );
   const toast = UI.useToast();
@@ -29,7 +30,11 @@ function AddSale() {
     page: 1,
     limit: 10,
   });
-  const {getList} = useGetList<IUserManagement>('/users');
+  const {
+    loading,
+    getList,
+    data: dataUser,
+  } = useGetList<IUserManagement>('/users');
 
   useEffect(() => {
     getList({
@@ -60,9 +65,10 @@ function AddSale() {
       isCentered
       autoFocus={false}
       isOpen={addSale}
+      scrollBehavior="inside"
       onClose={() => closeModal('addSale')}>
       <UI.ModalOverlay />
-      <UI.ModalContent position={'relative'} w="360px" minH="311px">
+      <UI.ModalContent position={'relative'} w="360px" maxH="360px">
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -96,17 +102,30 @@ function AddSale() {
               ]}
             />
 
-            <CardSale />
+            {loading ? (
+              <UI.Center minH="300px">
+                <UI.Spinner size="lg" color="ste.red" />
+              </UI.Center>
+            ) : isEmpty(dataUser?.records) ? (
+              <UI.Center>
+                <UI.Image src="" />
+                <UI.Text>No data</UI.Text>
+              </UI.Center>
+            ) : (
+              <UI.Box w={'full'}>
+                {dataUser?.records.map((item) => {
+                  return (
+                    <UI.HStack key={item?.id} spacing={8} width="full" pb="5">
+                      <CardSale data={item} />
+                    </UI.HStack>
+                  );
+                })}
+              </UI.Box>
+            )}
 
             <UI.Center mt={8} w={'full'}>
               <UI.Button
                 colorScheme="blue"
-                // onClick={() => {
-                //   patch({
-                //     status: 'APPROVED',
-                //     expiryDate: `${selectedDay.month}/${selectedDay.day}/${selectedDay.year}`,
-                //   });
-                // }}
                 mr={3}
                 w={'120px'}
                 type="submit"
