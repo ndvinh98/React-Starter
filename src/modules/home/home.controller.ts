@@ -17,14 +17,20 @@ export const useHomeController = create<IHomeContoller>((set, get) => ({
       return guardAuth(me);
     } else
       return fetchMe().then((me) => {
+        set({me});
         return guardAuth(me);
       });
   },
 }));
 
 const guardAuth = (me: IMe) => {
-  if (!me) return 'unauthorized';
+  if (!me) {
+    localStorage.clear();
+    return 'unauthorized';
+  }
   if (me && !me?.isActive) return 'deactived';
   if (me && ['ADMIN', 'SUPERADMIN'].includes(me?.userType)) return 'admin';
-  if (me && ['SALES'].includes(me?.userType)) return 'sales';
+  if (me && ['USER'].includes(me?.userType)) return 'sales';
+  localStorage.clear();
+  return 'unauthorized';
 };
