@@ -5,7 +5,7 @@ import {fetchMe} from '@services';
 interface IHomeContoller {
   name: string;
   me: IMe;
-  guard: () => Promise<boolean>;
+  guard: () => Promise<'unauthorized' | 'deactived' | 'sales' | 'admin'>;
 }
 
 export const useHomeController = create<IHomeContoller>((set, get) => ({
@@ -13,20 +13,18 @@ export const useHomeController = create<IHomeContoller>((set, get) => ({
   me: null,
   guard: async () => {
     const {me} = get();
-    if (
-      (me && !!+me?.isActive && me.userType === 'ADMIN') ||
-      me?.userType === 'PARTNERADMIN'
-    ) {
-      return true;
-    }
-    if (me && !+me?.isActive) {
-      return false;
-    }
-    return fetchMe().then((me) => {
-      if (me?.isActive) {
-        set({me});
-        return true;
-      } else return false;
-    });
+    if (me) {
+      return guardAuth(me);
+    } else
+      fetchMe().then((me) => {
+        return guardAuth(me);
+      });
   },
 }));
+
+const guardAuth = (me: IMe) => {
+  if (!me) return 'unauthorized';
+  if (me && !me?.isActive) return 'deactived';
+  if (me && ['ADMIN', 'SUPERADMIN'].includes(me?.userType)) return 'admin';
+  if (me && ['SALES'].includes(me?.userType)) return 'sales';
+};

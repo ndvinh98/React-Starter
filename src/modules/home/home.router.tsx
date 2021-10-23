@@ -12,44 +12,96 @@ export default compose(
     '*': map(async (request) => {
       const {guard} = useHomeController.getState();
       return guard().then((res) => {
-        return res
+        return res === 'admin'
           ? mount({
               '/': redirect('partner-applications'),
               '/partner-applications': lazy(
                 () =>
                   import(
-                    './modules/partner-applications/partner-applications.router'
+                    './admin-modules/partner-applications/partner-applications.router'
                   ),
               ),
               '/partner-management': lazy(
                 () =>
                   import(
-                    './modules/partner-management/partner-management.router'
+                    './admin-modules/partner-management/partner-management.router'
                   ),
               ),
               '/user-management': lazy(
                 () =>
-                  import('./modules/user-management/user-management.router'),
+                  import(
+                    './admin-modules/user-management/user-management.router'
+                  ),
               ),
               '/content-management': lazy(
                 () =>
                   import(
-                    './modules/content-management/content-mamagement.router'
+                    './admin-modules/content-management/content-mamagement.router'
                   ),
               ),
               '/tier-management': lazy(
                 () =>
-                  import('./modules/tier-management/tier-management.router'),
+                  import(
+                    './admin-modules/tier-management/tier-management.router'
+                  ),
               ),
               '/feedback': lazy(
-                () => import('./modules/feedback/feedback.router'),
+                () => import('./admin-modules/feedback/feedback.router'),
               ),
               '/your-profile': lazy(
-                () => import('./modules/profile/profile.router'),
+                () => import('./admin-modules/profile/profile.router'),
               ),
               '/system-settings': lazy(
                 () =>
-                  import('./modules/system-settings/system-settings.router'),
+                  import(
+                    './admin-modules/system-settings/system-settings.router'
+                  ),
+              ),
+            })
+          : res === 'sales'
+          ? mount({
+              '/': redirect('partner-applications'),
+              '/partner-applications': lazy(
+                () =>
+                  import(
+                    './admin-modules/partner-applications/partner-applications.router'
+                  ),
+              ),
+              '/partner-management': lazy(
+                () =>
+                  import(
+                    './admin-modules/partner-management/partner-management.router'
+                  ),
+              ),
+              '/user-management': lazy(
+                () =>
+                  import(
+                    './admin-modules/user-management/user-management.router'
+                  ),
+              ),
+              '/content-management': lazy(
+                () =>
+                  import(
+                    './admin-modules/content-management/content-mamagement.router'
+                  ),
+              ),
+              '/tier-management': lazy(
+                () =>
+                  import(
+                    './admin-modules/tier-management/tier-management.router'
+                  ),
+              ),
+              '/feedback': lazy(
+                () => import('./admin-modules/feedback/feedback.router'),
+              ),
+              '/your-profile': lazy(
+                () => import('./admin-modules/profile/profile.router'),
+              ),
+              '/system-settings': lazy(
+                () =>
+                  import(
+                    './admin-modules/system-settings/system-settings.router'
+                  ),
               ),
             })
           : redirect(

@@ -49,7 +49,7 @@ export interface IMe {
   firstName?: string;
   lastName?: string;
   email?: string;
-  userType?: 'PARTNERADMIN' | 'ADMIN' | 'USER';
+  userType?: 'SUPERADMIN' | 'ADMIN' | 'USER';
   avatarMediaDestination?: null;
   cityName?: string;
   companyName?: string;

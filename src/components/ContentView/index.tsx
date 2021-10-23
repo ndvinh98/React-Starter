@@ -4,7 +4,7 @@ import {AiOutlineAppstore, AiOutlineUnorderedList} from 'react-icons/ai';
 import {IoIosAddCircleOutline} from 'react-icons/io';
 import {useRouter} from '@utils/hooks';
 import {ChevronDownIcon} from '@chakra-ui/icons';
-import {useContentManagementController} from '@modules/home/modules/content-management';
+import {useContentManagementController} from '@modules/home/admin-modules/content-management';
 import {useRouterController} from '@modules/router';
 
 import Select from '@components/Select';

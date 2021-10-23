@@ -9,7 +9,7 @@ import Header from '@components/Header';
 import Sidebar from '@components/Sidebar';
 import InitModals from '@modules/modal';
 
-import {useTierManagementContoller} from '@modules/home/modules/tier-management/tier-management.contoller';
+import {useTierManagementContoller} from '@modules/home/admin-modules/tier-management/tier-management.contoller';
 
 function HomeLayout() {
   const getProducts = useTierManagementContoller((s) => s?.getProducts);
