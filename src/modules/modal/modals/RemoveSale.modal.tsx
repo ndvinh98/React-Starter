@@ -48,13 +48,13 @@ function RemoveSale() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
-          <UI.Center fontSize={'lg'} color={'ste.red'} textAlign="center">
+          <UI.Box fontSize={'lg'} color={'ste.red'} textAlign="center">
+            <UI.Text>Are you sure you want to </UI.Text>
             <UI.Text>
-              Are you sure you want to remove{' '}
-              {` ${data?.firstName} ${data?.lastName}`}
-              for {data?.companyName}
+              remove {` ${data?.firstName} ${data?.lastName} as a `}
             </UI.Text>
-          </UI.Center>
+            <UI.Text>Sales Manager for {data?.companyName}</UI.Text>
+          </UI.Box>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <UI.Center mt={8} w={'full'}>

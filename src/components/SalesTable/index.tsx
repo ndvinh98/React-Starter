@@ -242,15 +242,16 @@ export const ActionColum = (props: any) => {
         </UI.MenuButton>
         <UI.MenuList>
           <UI.MenuItem
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               openModal('removeSale', {
                 // cb: () => getUserProfile(),
                 companyName: companyName,
                 id: row?.id,
-                firstName: row?.firstName,
-                lastName: row?.lastName,
-              })
-            }>
+                firstName: row?.user?.firstName,
+                lastName: row?.user?.lastName,
+              });
+            }}>
             Remove
           </UI.MenuItem>
         </UI.MenuList>
