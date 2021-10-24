@@ -268,35 +268,35 @@ function AddNew() {
             name: yup
               .string()
               .default(data?.name)
-              .required('Module Name is required'),
+              .required('Please enter Module Name'),
             mediaType: yup
               .string()
               .default(data?.mediaType)
-              .required('Media Type is required'),
+              .required('Please select Media Type'),
             application: yup
               .number()
               .default(data?.product?.grouping?.category?.application?.id)
-              .typeError('Line of Business is required')
-              .required('Line of Business is required'),
+              .typeError('Please select Line of Business')
+              .required('Please select Line of Business'),
             category: yup
               .number()
-              .typeError('Line of Business is required')
+              .typeError('Please select Line of Business')
               .default(data?.product?.grouping?.category?.id)
-              .required('Line of Product is required'),
+              .required('Please select Line of Product'),
             grouping: yup
               .number()
-              .typeError('Line of Business is required')
+              .typeError('Please select Line of Business')
               .default(data?.product?.grouping?.id)
-              .required('Product Group is required'),
+              .required('Please select Product Group'),
             product: yup
               .number()
-              .typeError('Line of Business is required')
+              .typeError('Please select Line of Business')
               .default(data?.product?.id)
-              .required('Product is required'),
+              .required('Please select Product'),
             thumb: yup
               .string()
               .default(data?.mediaDestination)
-              .required('Image is required'),
+              .required('Please upload or select an icon'),
           }}
           fields={[
             {

@@ -168,11 +168,11 @@ function Edit() {
                 .default(data?.name),
               application: yup
                 .number()
-                .required('Line of Business is required'),
+                .required('Please select Line of Business'),
               category: yup
                 .number()
-                .typeError('Line of Product is required')
-                .required('Line of Product is required'),
+                .typeError('Please select Line of Product')
+                .required('Please select Line of Product'),
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)

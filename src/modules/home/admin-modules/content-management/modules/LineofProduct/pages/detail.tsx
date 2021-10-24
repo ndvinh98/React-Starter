@@ -125,7 +125,7 @@ function AddNew() {
               application: yup
                 .number()
                 .default(data?.application?.id)
-                .required('Line of Business is required'),
+                .required('Please select Line of Business'),
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)
