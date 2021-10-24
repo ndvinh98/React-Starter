@@ -21,12 +21,12 @@ function List() {
   const {page, limit, setPage, setLimit} = useFilter({limit: 10, page: 1});
 
   useEffect(() => {
-    categoryRef?.current?.select?.setValue({value: -1, label: 'All Product'});
-    groupingRef?.current?.select?.setValue({value: -1, label: 'All Grouping'});
+    categoryRef?.current?.select?.setValue({value: -1, label: 'All Line of Product'});
+    groupingRef?.current?.select?.setValue({value: -1, label: 'All Product Group'});
   }, [applicationId]);
 
   useEffect(() => {
-    groupingRef?.current?.select?.setValue({value: -1, label: 'All Grouping'});
+    groupingRef?.current?.select?.setValue({value: -1, label: 'All Product Group'});
   }, [categoryId]);
 
   const {getList: getListCategories, data: categoriesData} =
@@ -82,7 +82,7 @@ function List() {
 
   useEffect(() => {
     if (applicationId < 0) {
-      categoryRef?.current?.select?.setValue({value: -1, label: 'All Product'});
+      categoryRef?.current?.select?.setValue({value: -1, label: 'All Line of Product'});
       groupingRef?.current?.select?.setValue({
         value: -1,
         label: 'All Product Group',
@@ -137,7 +137,7 @@ function List() {
                 },
                 defaultValue: {
                   value: -1,
-                  label: 'All Business',
+                  label: 'All Line of Business',
                 },
                 placeholder: 'Line of Business',
                 options: [
@@ -158,17 +158,17 @@ function List() {
                 styled: {
                   width: '28%',
                 },
-                defaultValue: {value: -1, label: 'All Product'},
+                defaultValue: {value: -1, label: 'All Line of Product'},
                 placeholder: 'Line of Product',
                 options: categoriesData?.records
                   ? [
-                      {value: -1, label: 'All Product'},
+                      {value: -1, label: 'All Line of Product'},
                       ...categoriesData?.records.map((x) => ({
                         value: x?.id,
                         label: x?.name,
                       })),
                     ]
-                  : [{value: -1, label: 'All Product'}],
+                  : [{value: -1, label: 'All Line of Product'}],
               },
               {
                 name: 'grouping',

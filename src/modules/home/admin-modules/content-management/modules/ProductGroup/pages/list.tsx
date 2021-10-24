@@ -63,7 +63,7 @@ function List() {
   const applicationRef = useRef<any>(null);
 
   useEffect(() => {
-    categoryRef?.current?.select?.setValue({value: -1, label: 'All Business'});
+    categoryRef?.current?.select?.setValue({value: -1, label: 'All Line of Product'});
   }, [applicationId]);
 
   return (
@@ -96,10 +96,10 @@ function List() {
                 },
                 defaultValue: {
                   value: -1,
-                  label: 'All Business',
+                  label: 'All Line of Business',
                 },
                 options: [
-                  {value: -1, label: 'All Business'},
+                  {value: -1, label: 'All Line of Business'},
                   ...allLineBusiness?.map?.((x) => ({
                     value: x?.id,
                     label: x?.name,
@@ -120,17 +120,17 @@ function List() {
                 },
                 defaultValue: {
                   value: -1,
-                  label: 'All Product',
+                  label: 'All Line of Product',
                 },
                 options: categoriesData?.records
                   ? [
-                      {value: -1, label: 'All Product'},
+                      {value: -1, label: 'All Line of Product'},
                       ...categoriesData?.records?.map?.((x) => ({
                         value: x?.id,
                         label: x?.name,
                       })),
                     ]
-                  : [{value: -1, label: 'All Product'}],
+                  : [{value: -1, label: 'All Line of Product'}],
               },
             ]}
           />

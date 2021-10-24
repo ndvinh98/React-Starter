@@ -99,14 +99,14 @@ function List() {
 
   useEffect(() => {
     if (applicationId < 0) {
-      categoryRef?.current?.select?.setValue({value: -1, label: 'All Product'});
+      categoryRef?.current?.select?.setValue({value: -1, label: 'All Line of Product'});
       groupingRef?.current?.select?.setValue({
         value: -1,
-        label: 'All Grouping',
+        label: 'All Product Group',
       });
       productRef?.current?.select?.setValue({
         value: -1,
-        label: 'All Product Group',
+        label: 'All Products',
       });
     }
     if (applicationId > 0) {
@@ -121,11 +121,11 @@ function List() {
     if (categoryId < 0) {
       groupingRef?.current?.select?.setValue({
         value: -1,
-        label: 'All Grouping',
+        label: 'All Product Group',
       });
       productRef?.current?.select?.setValue({
         value: -1,
-        label: 'All Product Group',
+        label: 'All Products',
       });
     }
     if (categoryId > 0) {
@@ -140,7 +140,7 @@ function List() {
     if (groupingId < 0) {
       productRef?.current?.select?.setValue({
         value: -1,
-        label: 'All Product Group',
+        label: 'All Products',
       });
     }
     if (groupingId > 0) {
@@ -186,10 +186,10 @@ function List() {
                 placeholder: 'Line of Business',
                 defaultValue: {
                   value: -1,
-                  label: 'All Business',
+                  label: 'All Line of Business',
                 },
                 options: [
-                  {value: -1, label: 'All Business'},
+                  {value: -1, label: 'All Line of Business'},
                   ...allLineBusiness?.map?.((x) => ({
                     value: x?.id,
                     label: x?.name,
@@ -205,16 +205,16 @@ function List() {
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Line of Product',
-                defaultValue: {value: -1, label: 'All Product'},
+                defaultValue: {value: -1, label: 'All Line of Product'},
                 options: categoriesData?.records
                   ? [
-                      {value: -1, label: 'All Product'},
+                      {value: -1, label: 'All Line of Product'},
                       ...categoriesData?.records.map((x) => ({
                         value: x?.id,
                         label: x?.name,
                       })),
                     ]
-                  : [{value: -1, label: 'All Product'}],
+                  : [{value: -1, label: 'All Line of Product'}],
               },
               {
                 name: 'grouping',

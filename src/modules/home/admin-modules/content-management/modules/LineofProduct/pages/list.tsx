@@ -56,9 +56,9 @@ function List() {
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
-                placeholder: 'Line of Business',
+                placeholder: 'All Line of Business',
                 defaultValue: {
-                  label: 'All Business',
+                  label: 'All Line of Business',
                   value: -1,
                 },
                 styled: {
@@ -66,7 +66,7 @@ function List() {
                 },
                 isClearable: false,
                 options: [
-                  {label: 'All Business', value: -1},
+                  {label: 'All Line of Business', value: -1},
                   ...allLineBusiness?.map((x) => ({
                     value: x?.id,
                     label: x?.name,
