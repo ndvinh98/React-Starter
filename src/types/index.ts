@@ -316,3 +316,9 @@ export interface IModules extends BaseSchema {
   mediaDestination?: string;
   name?: string;
 }
+
+export interface IPartnerSale extends BaseSchema {
+  partnerId: number;
+  userId: number;
+  partner: IPartnerManagement;
+}

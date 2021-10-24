@@ -5,7 +5,7 @@ import ContentMamagementLayout from './sales.layout';
 export default compose(
   withView(<ContentMamagementLayout />),
   mount({
-    '/': redirect('file-transfer'),
+    '/': redirect('partner-information'),
     '/file-transfer': lazy(
       () => import('./file-transfer/file-transfer.router'),
     ),
