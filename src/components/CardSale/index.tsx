@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import * as UI from '@chakra-ui/react';
 import {TiDelete} from 'react-icons/ti';
 
-const CardSale = ({data}) => {
+const CardSale = ({data, addItem}) => {
   return (
     <UI.HStack
       flexDirection={{md: 'column', lg: 'row'}}
@@ -12,21 +12,19 @@ const CardSale = ({data}) => {
       shadow="sm"
       px={2}
       bgColor={'#EEEEEC'}
-      justifyContent="start"
+      justifyContent="space-between"
       rounded="3xl"
       alignItems="center">
-      <UI.Text fontSize={{md: 'md', lg: 'lg'}} pl={2}>
+      <UI.Text
+        fontSize={{md: 'md', lg: 'lg'}}
+        pl={2}
+        onClick={() => {
+          console.log(data);
+        }}>
         {data?.firstName}
       </UI.Text>
-      <UI.Spacer />
-      <UI.Box
-      // onClick={() =>
-      //   openModal('removeCertificate', {
-      //     id: data?.id,
-      //     certificate: data?.name,
-      //   })
-      // }
-      >
+
+      <UI.Box onClick={() => addItem(data)}>
         <TiDelete />
       </UI.Box>
     </UI.HStack>

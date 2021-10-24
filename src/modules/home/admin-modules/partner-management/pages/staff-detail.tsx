@@ -251,7 +251,7 @@ function UserPartnerDetail() {
                     placeholder: 'Country',
                     isDisabled: isDisabled,
                     defaultValue:
-                      profileData?.partnerUserProfiles[0]?.companyName,
+                      profileData?.partnerUserProfiles[0]?.countryName,
                   },
                   {
                     name: 'cityName',
