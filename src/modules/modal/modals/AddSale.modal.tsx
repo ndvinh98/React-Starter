@@ -54,7 +54,7 @@ function AddSale() {
 
   const handleFilterData = ({textSearch = undefined}, fieldChange) => {
     if (fieldChange.name === 'textSearch') {
-      if (textSearch && textSearch.length < 3) return;
+      if (textSearch.length < 3) return;
 
       setTextSearch(textSearch);
     }
@@ -93,19 +93,23 @@ function AddSale() {
         </UI.ModalHeader>
         <UI.ModalBody>
           <UI.Stack>
-            <FormGenerate
-              onChangeValue={handleFilterData}
-              fields={[
-                {
-                  name: 'textSearch',
-                  type: 'input-group',
+            <UI.HStack>
+              <FormGenerate
+                onChangeValue={handleFilterData}
+                fields={[
+                  {
+                    name: 'textSearch',
+                    type: 'input-group',
 
-                  size: 'md',
-                  placeholder: 'Search...',
-                  leftIcon: <AiOutlineSearch size={20} />,
-                },
-              ]}
-            />
+                    size: 'md',
+                    placeholder: 'Search...',
+                    leftIcon: <AiOutlineSearch size={20} />,
+                  },
+                ]}
+              />
+
+              <UI.Button>Add</UI.Button>
+            </UI.HStack>
 
             {loading ? (
               <UI.Center minH="300px">

@@ -15,7 +15,6 @@ function RemoveSale() {
 
   React.useEffect(() => {
     if (postData) {
-      data?.cb?.();
       closeModal('removeSale');
       toast({
         status: 'success',
@@ -24,7 +23,7 @@ function RemoveSale() {
         isClosable: true,
         duration: 2000,
       });
-      data?.getList?.();
+      data?.cb();
     }
   }, [postData]);
 

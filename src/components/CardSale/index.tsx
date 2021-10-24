@@ -21,7 +21,7 @@ const CardSale = ({data, addItem}) => {
         onClick={() => {
           console.log(data);
         }}>
-        {data?.firstName}
+        {`${data?.firstName} ${data?.lastName}`}
       </UI.Text>
 
       <UI.Box onClick={() => addItem(data)}>

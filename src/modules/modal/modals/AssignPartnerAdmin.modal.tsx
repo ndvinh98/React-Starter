@@ -28,7 +28,7 @@ function AssignPartnerAdminModal() {
       isOpen={assignPartnerAdmin}
       onClose={() => closeModal('assignPartnerAdmin')}>
       <UI.ModalOverlay />
-      <UI.ModalContent position={'relative'} w="360px" minH="311px">
+      <UI.ModalContent position={'relative'} w="360px">
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -42,14 +42,14 @@ function AssignPartnerAdminModal() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
-          <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
+          <UI.Center fontSize={'lg'} textAlign="center" fontWeight="400">
             Are you sure you want to assign
           </UI.Center>
-          <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
+          <UI.Center fontSize={'lg'} textAlign="center" fontWeight="400">
             {data?.firstName} {` `} {data?.lastName} as Partner
           </UI.Center>
-          <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            for {data?.companyName}
+          <UI.Center fontSize={'lg'} textAlign="center" fontWeight="400">
+            Admin for {data?.companyName}
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
