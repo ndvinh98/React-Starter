@@ -9,13 +9,13 @@ import FormGenerate from '@components/FormGenerate';
 import CardSale from '@components/CardSale';
 
 import {useModalController} from '../modals.controller';
-import {usePatch, useFilter, useGetList} from '@utils/hooks';
+import {usePost, useFilter, useGetList} from '@utils/hooks';
 
 function AddSale() {
   const {addSale, closeModal, data} = useModalController();
 
-  const {data: patchData, loading: loadingData} = usePatch(
-    `/partnerApplicationSubmissions/${data?.id}`,
+  const {data: patchData, loading: loadingData} = usePost(
+    `/partnerUserRelations`,
   );
   const toast = UI.useToast();
 
@@ -58,6 +58,11 @@ function AddSale() {
 
       setTextSearch(textSearch);
     }
+  };
+
+  const addItem = (dataNewUser) => {
+    console.log(dataNewUser);
+    console.log('hâhha');
   };
 
   return (
@@ -116,7 +121,7 @@ function AddSale() {
                 {dataUser?.records.map((item) => {
                   return (
                     <UI.HStack key={item?.id} spacing={8} width="full" pb="5">
-                      <CardSale data={item} />
+                      <CardSale data={item} addItem={addItem} />
                     </UI.HStack>
                   );
                 })}
