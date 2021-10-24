@@ -40,6 +40,7 @@ function UserTable(props) {
     handleFilterDataUser,
     totalCount,
     companyName,
+    getList,
   } = props;
   const {path} = useRouterController();
   const {push} = useRouter();
@@ -55,7 +56,7 @@ function UserTable(props) {
           bgColor={'#EEEEEC'}
           px={3}
           py={2}>
-          User Infomation
+          User Information
         </UI.Text>
       </UI.Box>
       <UI.Box width="full">
@@ -220,12 +221,12 @@ function UserTable(props) {
                 id: 'action',
                 accessor: (row) => (
                   <ActionColum
-                    // refresh={() =>
-                    //   getList({
-                    //     page: 1,
-                    //     limit: 10,
-                    //   })
-                    // }
+                    refresh={() =>
+                      getList({
+                        page: 1,
+                        limit: 10,
+                      })
+                    }
                     row={row}
                     companyName={companyName}
                   />
@@ -276,7 +277,7 @@ export const ActionColum = (props: any) => {
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
 
-  const {row, companyName} = props;
+  const {row, companyName, refresh} = props;
 
   const isHiden = () => {
     return row?.isActive === 0 || row?.userType === 'PARTNERADMIN'
@@ -302,7 +303,7 @@ export const ActionColum = (props: any) => {
             onClick={(e) => {
               e.stopPropagation();
               openModal('assignPartnerAdmin', {
-                // cb: () => refresh(),
+                cb: refresh,
                 id: row?.id,
                 firstName: row?.firstName,
                 lastName: row?.lastName,

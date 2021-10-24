@@ -181,6 +181,7 @@ function CompanyDetail() {
         handleFilterDataUser={handleFilterDataUser}
         setPage={setPageUser}
         companyName={dataCompany?.records[0]?.companyName}
+        getList={getListUser}
       />
       <SalesTable
         data={dataSales}

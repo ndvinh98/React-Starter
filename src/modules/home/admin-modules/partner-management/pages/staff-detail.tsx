@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import FormGenerate from '@components/FormGenerate';
 
@@ -38,8 +38,6 @@ const SALUATION_OPITONS = [
 const SALUATION_OPITONS_VALUE = keyBy(SALUATION_OPITONS, 'value');
 
 function UserPartnerDetail() {
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [isProfileActive, setIsProfileActive] = useState<boolean>(true);
   const {push} = useRouter();
   const {params} = useRouterController();
   const {
@@ -59,19 +57,18 @@ function UserPartnerDetail() {
       relations: JSON.stringify([
         'partnerUserProfiles',
         'partnerUserProfiles.language',
+        'domain',
+        'domain.partners',
       ]),
     });
   };
 
-  useEffect(() => {
-    setIsProfileActive(profileData?.isActive === 1 ? true : false);
-  }, [profileData]);
-
-  useEffect(() => {
-    if (profileData) {
-      setIsDisabled(true);
-    }
-  }, [profileData]);
+  const isHiden = () => {
+    return profileData?.isActive === 0 ||
+      profileData?.userType === 'PARTNERADMIN'
+      ? true
+      : false;
+  };
 
   return (
     <UI.Box py={6} px={8}>
@@ -115,6 +112,7 @@ function UserPartnerDetail() {
                 <UI.Menu>
                   <UI.MenuButton>
                     <UI.IconButton
+                      hidden={isHiden()}
                       pl={4}
                       aria-label="setting"
                       variant="unstyled"
@@ -124,28 +122,17 @@ function UserPartnerDetail() {
                   </UI.MenuButton>
                   <UI.MenuList>
                     <UI.MenuItem
-                      hidden={isProfileActive}
                       onClick={() =>
-                        openModal('action', {
-                          title: 'Activate Access',
-                          type: 'Activate',
-                          //   cb: () => getUserProfile(),
+                        openModal('assignPartnerAdmin', {
+                          cb: () => getUserProfile(),
                           id: profileData?.id,
+                          firstName: profileData?.firstName,
+                          lastName: profileData?.lastName,
+                          companyName:
+                            profileData?.domain?.partners?.[0]?.companyName,
                         })
                       }>
-                      Activate Access
-                    </UI.MenuItem>
-                    <UI.MenuItem
-                      hidden={!isProfileActive}
-                      onClick={() =>
-                        openModal('action', {
-                          title: 'Deactivate Access',
-                          type: 'Deactivate',
-                          //   cb: () => getUserProfile(),
-                          id: profileData?.id,
-                        })
-                      }>
-                      Deactivate Access
+                      Assign as Partner Admin
                     </UI.MenuItem>
                   </UI.MenuList>
                 </UI.Menu>
@@ -208,7 +195,7 @@ function UserPartnerDetail() {
                     defaultValue:
                       SALUATION_OPITONS_VALUE?.[profileData?.salutation],
                     options: SALUATION_OPITONS,
-                    isDisabled: isDisabled,
+                    isDisabled: true,
                   },
                   {
                     type: 'input',
@@ -227,7 +214,7 @@ function UserPartnerDetail() {
                     placeholder: 'Sales Id',
                     colSpan: isBase ? 6 : 12,
                     size: 'md',
-                    isDisabled: isDisabled,
+                    isDisabled: true,
                     defaultValue:
                       profileData?.partnerUserProfiles[0]?.jobFunction,
                   },
@@ -238,7 +225,7 @@ function UserPartnerDetail() {
                     placeholder: 'Job Title',
                     colSpan: isBase ? 6 : 12,
                     size: 'md',
-                    isDisabled: isDisabled,
+                    isDisabled: true,
                     defaultValue:
                       profileData?.partnerUserProfiles[0]?.jobFunction,
                   },
@@ -249,7 +236,7 @@ function UserPartnerDetail() {
                     label: 'Country',
                     size: 'md',
                     placeholder: 'Country',
-                    isDisabled: isDisabled,
+                    isDisabled: true,
                     defaultValue:
                       profileData?.partnerUserProfiles[0]?.countryName,
                   },
@@ -260,7 +247,7 @@ function UserPartnerDetail() {
                     placeholder: 'City',
                     colSpan: isBase ? 6 : 12,
                     size: 'md',
-                    isDisabled: isDisabled,
+                    isDisabled: true,
                     defaultValue: profileData?.partnerUserProfiles[0]?.cityName,
                   },
                   {
@@ -270,7 +257,7 @@ function UserPartnerDetail() {
                     placeholder: 'Postal Code',
                     colSpan: isBase ? 6 : 12,
                     size: 'md',
-                    isDisabled: isDisabled,
+                    isDisabled: true,
                     defaultValue:
                       profileData?.partnerUserProfiles[0]?.postalCode,
                   },
@@ -281,7 +268,7 @@ function UserPartnerDetail() {
                     placeholder: 'Work Number',
                     colSpan: isBase ? 6 : 12,
                     size: 'md',
-                    isDisabled: isDisabled,
+                    isDisabled: true,
                     defaultValue:
                       profileData?.partnerUserProfiles[0]?.workNumber,
                   },
@@ -292,7 +279,7 @@ function UserPartnerDetail() {
                     placeholder: 'Mobile No.',
                     colSpan: isBase ? 6 : 12,
                     size: 'md',
-                    isDisabled: isDisabled,
+                    isDisabled: true,
                     defaultValue:
                       profileData?.partnerUserProfiles[0]?.mobileNumber,
                   },
@@ -306,7 +293,7 @@ function UserPartnerDetail() {
                     defaultValue:
                       profileData?.partnerUserProfiles[0]?.language?.name,
 
-                    isDisabled: isDisabled,
+                    isDisabled: true,
                   },
                 ]}></FormGenerate>
             )}
