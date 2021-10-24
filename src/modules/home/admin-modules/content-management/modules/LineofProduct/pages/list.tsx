@@ -1,10 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
 import {useGetList, useFilter} from '@utils/hooks';
 import {ICategorie} from '@types';
 import {useContentManagementController} from '@modules/home';
+import {useRouterController} from '@modules/router';
+import {keyBy} from 'lodash';
 
 function List() {
   const handleOnChange = ({business}) => {
@@ -32,6 +34,18 @@ function List() {
       limit,
     });
   }, [page, limit]);
+
+  const applicationRef = useRef<any>(null);
+  const {query} = useRouterController();
+
+  useEffect(() => {
+    if (query?.parentId){
+      applicationRef?.current?.select?.setValue({
+        value: query?.parentId,
+        label: keyBy(allLineBusiness, 'id')?.[query?.parentId]?.name,
+      });
+    }
+  }, [query]);
 
   return (
     <UI.Box minH="89vh">
@@ -65,6 +79,7 @@ function List() {
                   width: '30%',
                 },
                 isClearable: false,
+                refEl: applicationRef,
                 options: [
                   {label: 'All Line of Business', value: -1},
                   ...allLineBusiness?.map((x) => ({
@@ -78,7 +93,7 @@ function List() {
         }
         name="Line of Product"
         linkDeleteContent="/categories"
-        linkAddNew="/home/content-management/line-of-product/add-new"
+        linkAddNew="/home/content-management/line-of-product/detail/add"
         linkToChild="/home/content-management/product-group"
       />
     </UI.Box>

@@ -55,7 +55,7 @@ function Edit() {
     }
   }, [params]);
 
-  const {post, loading: postLoading, data: postData} = usePost('/categories');
+  const {post, loading: postLoading, data: postData} = usePost('/groupings');
   const {
     patch,
     loading: pathLoading,

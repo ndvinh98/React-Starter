@@ -176,7 +176,7 @@ function ContentView(props: IContentView) {
             </UI.Menu>
           </UI.Box>
         </UI.HStack>
-        <LoadingComponent length={data?.length} isLoading={isLoading}>
+        <LoadingComponent isLoading={isLoading}>
           {showType === 'GRID' && (
             <UI.SimpleGrid
               w="full"
@@ -190,7 +190,7 @@ function ContentView(props: IContentView) {
                     isBrochures={isBrochures}
                     isVideo={isVideo}
                     item={item}
-                    linkToChild={linkToChild}
+                    linkToChild={linkToChild + '?parentId=' + item?.id}
                   />
                 ))}
 
@@ -231,7 +231,7 @@ function ContentView(props: IContentView) {
                     key={x?.id}
                     isBrochures={isBrochures}
                     isVideo={isVideo}
-                    linkToChild={linkToChild}
+                    linkToChild={linkToChild + '?parentId=' + x?.id}
                   />
                 ))}
 

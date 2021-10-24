@@ -2,9 +2,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
-import {useGetList, useFilter} from '@utils/hooks';
+import {useGetList, useFilter, useGetItem} from '@utils/hooks';
 import {ICategorie, IGrouping} from '@types';
 import {useContentManagementController} from '@modules/home';
+import {useRouterController} from '@modules/router';
+import {keyBy} from 'lodash';
+
 
 function List() {
   const [applicationId, setApplicationId] = useState(-1);
@@ -63,8 +66,46 @@ function List() {
   const applicationRef = useRef<any>(null);
 
   useEffect(() => {
-    categoryRef?.current?.select?.setValue({value: -1, label: 'All Line of Product'});
+    if (!initData.current){
+      categoryRef?.current?.select?.setValue({value: -1, label: 'All Line of Product'});
+    }
   }, [applicationId]);
+
+  const {query} = useRouterController();
+  const {data, getItem} = useGetItem(`/categories/`);
+
+  useEffect(() => {
+    if (query?.parentId){
+      getItem({relations: JSON.stringify(['application'])},{path: query?.parentId});
+    }
+  },[query])
+
+  useEffect(() => {
+    const applicationId = data?.application?.id;
+    const categoryId = data?.id;
+    if (applicationId) {
+      applicationRef?.current?.select?.setValue({
+        value: applicationId,
+        label: keyBy(allLineBusiness, 'id')?.[applicationId]?.name,
+      });
+      setApplicationId(applicationId);
+    }
+    if (categoryId){ 
+      setCategoryId(categoryId);
+    }
+  }, [data]);
+  
+  const initData = useRef(true);
+  useEffect(() => {
+    if (categoriesData?.records && categoryId && initData.current && keyBy(categoriesData?.records, 'id')?.[categoryId]?.name) {
+      console.log(keyBy(categoriesData?.records, 'id')?.[categoryId]?.name)
+      categoryRef?.current?.select?.setValue({
+        value: categoryId,
+        label: keyBy(categoriesData?.records, 'id')?.[categoryId]?.name,
+      });
+      initData.current = false;
+    }
+  }, [categoriesData, categoryId]);
 
   return (
     <UI.Box minH="89vh">
