@@ -18,6 +18,7 @@ function AssignPartnerAdminModal() {
     if (patchData) {
       closeModal('assignPartnerAdmin');
       toast({status: 'success', description: 'Successfully!', duration: 2000});
+      data?.cb();
     }
   }, [patchData]);
 

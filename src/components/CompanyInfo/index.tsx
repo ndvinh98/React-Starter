@@ -37,7 +37,7 @@ function CompanyInfo(props: any) {
               fontWeight={'semibold'}
               color={'ste.black'}
               bgColor={'#EEEEEC'}>
-              Company Infomation
+              Company Information
             </UI.Text>
             <UI.Accordion allowMultiple>
               <UI.AccordionItem>

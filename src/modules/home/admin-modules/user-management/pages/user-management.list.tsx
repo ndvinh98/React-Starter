@@ -181,7 +181,7 @@ function userManagement() {
                         w={'full'}
                         justifyContent={'flex-end'}>
                         <UI.Text> View Item</UI.Text>
-                        <UI.Box w="80px">
+                        <UI.Box>
                           <Select
                             isClearable={false}
                             size="sm"
