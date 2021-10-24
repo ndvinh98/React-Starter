@@ -188,6 +188,7 @@ function CompanyDetail() {
         loading={loadingSales}
         handleFilterData={handleFilterDataSales}
         setPage={setPageSales}
+        getList={getListSales}
         companyName={dataCompany?.records[0]?.companyName}
       />
       <TierToParter
