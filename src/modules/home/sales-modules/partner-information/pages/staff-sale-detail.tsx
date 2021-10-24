@@ -3,17 +3,13 @@ import * as UI from '@chakra-ui/react';
 import FormGenerate from '@components/FormGenerate';
 
 import {BsArrowLeft} from 'react-icons/bs';
-import {HiDotsHorizontal} from 'react-icons/hi';
 
 import {useRouter, useGetItem} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import {IPartnerUsers} from '@types';
-import UpLoadCertificates from '@components/UpLoadCertificates';
-import CertificateAwarded from '@components/CertificatesAwarded';
 
 import {format} from 'date-fns';
 import {keyBy} from 'lodash';
-import {useModalController} from '@modules/modal';
 
 import {useMedia} from '@utils/hooks';
 
@@ -45,7 +41,7 @@ function UserPartnerDetail() {
     loading,
     getItem,
   } = useGetItem<IPartnerUsers>(`/partnerUsers/${params?.userId}`);
-  const {openModal} = useModalController();
+
   const {isBase} = useMedia();
 
   useEffect(() => {
@@ -63,19 +59,12 @@ function UserPartnerDetail() {
     });
   };
 
-  const isHiden = () => {
-    return profileData?.isActive === 0 ||
-      profileData?.userType === 'PARTNERADMIN'
-      ? true
-      : false;
-  };
-
   return (
     <UI.Box py={6} px={8}>
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push(`/home/partner-management/company/${params?.id}`)}>
+        onClick={() => push(`/home/partner-information/company/${params?.id}`)}>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
@@ -83,7 +72,7 @@ function UserPartnerDetail() {
         {profileData?.firstName + ' ' + profileData?.lastName}
       </UI.Text>
 
-      <UI.Box bgColor={'white'} px={4} py={4} borderRadius="md" mt={4} w="full">
+      <UI.Box bgColor={'white'} px={4} py={4} borderRadius="md" mt={5} w="full">
         <UI.Table variant="simple">
           <UI.Thead>
             <UI.Tr bgColor={'#EEEEEC'}>
@@ -91,7 +80,6 @@ function UserPartnerDetail() {
               <UI.Th>Status</UI.Th>
               <UI.Th>Role</UI.Th>
               <UI.Th>Registered Date</UI.Th>
-              <UI.Th>Action</UI.Th>
             </UI.Tr>
           </UI.Thead>
           <UI.Tbody>
@@ -107,35 +95,6 @@ function UserPartnerDetail() {
                 {profileData?.createdAt
                   ? format(new Date(profileData?.createdAt), 'dd MMM yyyy')
                   : false}
-              </UI.Td>
-              <UI.Td>
-                <UI.Menu>
-                  <UI.MenuButton>
-                    <UI.IconButton
-                      hidden={isHiden()}
-                      pl={4}
-                      aria-label="setting"
-                      variant="unstyled"
-                      size="sm"
-                      icon={<HiDotsHorizontal size={20} />}
-                    />
-                  </UI.MenuButton>
-                  <UI.MenuList>
-                    <UI.MenuItem
-                      onClick={() =>
-                        openModal('assignPartnerAdmin', {
-                          cb: () => getUserProfile(),
-                          id: profileData?.id,
-                          firstName: profileData?.firstName,
-                          lastName: profileData?.lastName,
-                          companyName:
-                            profileData?.domain?.partners?.[0]?.companyName,
-                        })
-                      }>
-                      Assign as Partner Admin
-                    </UI.MenuItem>
-                  </UI.MenuList>
-                </UI.Menu>
               </UI.Td>
             </UI.Tr>
           </UI.Tbody>
@@ -300,11 +259,6 @@ function UserPartnerDetail() {
           </UI.Box>
         </UI.Box>
       )}
-
-      <UI.Box bgColor={'white'} borderRadius="md" mt={4} w="full" pt={5}>
-        <UpLoadCertificates partnerUserId={profileData?.id} />
-        <CertificateAwarded partnerUserId={profileData?.id} />
-      </UI.Box>
     </UI.Box>
   );
 }

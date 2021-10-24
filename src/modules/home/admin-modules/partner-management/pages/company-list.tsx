@@ -282,7 +282,7 @@ export const ActionColum = (props: any) => {
   const {openModal} = useModalController();
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
-  // const {openModal} = useModalStore();
+
   const {row, refresh} = props;
   return (
     <UI.Center>
