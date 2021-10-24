@@ -12,6 +12,8 @@ import Recaptcha from './fields/Recaptcha';
 import CheckboxGroup from './fields/CheckboxGroup';
 import RadioGroup from './fields/RadioGroup';
 import UploadFile from './fields/UploadFile';
+import UploadFileContent from './fields/UploadFileContent';
+import InputCheckbox from './fields/InputCheckbox';
 
 const FieldComponent = {
   input: UI.Input,
@@ -26,6 +28,8 @@ const FieldComponent = {
   'radio-group': RadioGroup,
   'checkbox-group': CheckboxGroup,
   'upload-file': UploadFile,
+  'upload-file-contnet': UploadFileContent,
+  'input-checkbox': InputCheckbox,
 };
 
 export interface IFormControl extends HTMLChakraProps<'div'> {
@@ -42,8 +46,11 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
     | 'upload-file'
     | 'input-tel'
     | 'input-group'
+    | 'input-checkbox'
     | 'recaptcha'
     | 'checkbox-group'
+    | 'upload-file'
+    | 'upload-file-contnet'
     | 'radio-group';
 
   label?: string | React.ReactNode;
@@ -69,6 +76,10 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
   rightIcon?: React.ReactNode;
   refEl?: any;
   isClearable?: boolean;
+  styled?: any;
+  listStock?: string[];
+  isChooseStock?: boolean;
+  colSytled?: any;
 }
 
 const DIRECTION = {
@@ -95,6 +106,7 @@ const FormControl = (props: IFormControl) => {
     defaultValue,
     align,
     isDisabled,
+    styled,
   } = props;
   const Field = type === 'decor' ? DecorComponent : FieldComponent?.[type];
 
@@ -103,7 +115,8 @@ const FormControl = (props: IFormControl) => {
       id={name}
       width={'full'}
       isDisabled={isDisabled}
-      isRequired={isRequiredDot}>
+      isRequired={isRequiredDot}
+      {...styled}>
       <UI.Stack
         width={'full'}
         justifyContent={'space-between'}

@@ -1,6 +1,6 @@
 import React from 'react';
 import * as UI from '@chakra-ui/react';
-import {useContentManagementController} from '@modules/home/modules/content-management';
+import {useContentManagementController} from '@modules/home/admin-modules/content-management';
 import {useRouter, useHover} from '@utils/hooks';
 
 function NormalListItem({item, linkToChild, isVideo, isBrochures}) {
@@ -9,27 +9,22 @@ function NormalListItem({item, linkToChild, isVideo, isBrochures}) {
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
   const removeItem = useContentManagementController((s) => s.removeItem);
-  const addDetailsItem = useContentManagementController(
-    (s) => s.addDetailsItem,
-  );
-  const removeDetailsItem = useContentManagementController(
-    (s) => s.removeDetailsItem,
-  );
+
   return (
     <UI.Box ref={hoverRef} w="full" position="relative">
       <UI.Checkbox
         onChange={(e) => {
           e.stopPropagation();
           if (e?.target?.checked) {
-            addItem(item?.id);
-            addDetailsItem(item);
+            addItem(item);
           } else {
-            removeItem(item?.id);
-            removeDetailsItem(item);
+            removeItem(item);
           }
         }}
-        isChecked={itemSelected.includes(+item?.id)}
-        hidden={!isHovered && !itemSelected.includes(+item?.id)}
+        defaultChecked={itemSelected?.map((x) => x?.id).includes(+item?.id)}
+        hidden={
+          !isHovered && !itemSelected?.map((x) => x?.id).includes(+item?.id)
+        }
         borderRadius="md"
         position="absolute"
         left="65px"

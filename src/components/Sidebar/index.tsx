@@ -1,23 +1,28 @@
 import React, {memo} from 'react';
 import * as UI from '@chakra-ui/react';
 
-import {chain} from 'lodash';
-import {MENU_ITEMS} from './menu.items';
 import * as SB from 'react-pro-sidebar';
 import {SidebarWarp} from './styled';
 import {BiMenu} from 'react-icons/bi';
 import Mobile from './mobile';
 
-const sidebarMenu = [
-  {
-    sidebarMenuType: 'dashboard',
-    position: 1,
-    isShow: true,
-  },
-];
+import AdminBar from './items/admin';
+import SalesBar from './items/sales';
 
-function SideBar() {
-  const {isOpen, onToggle} = UI.useDisclosure({defaultIsOpen: true});
+const SIDE_BAR_MENU = {
+  admin: AdminBar,
+  sales: SalesBar,
+};
+
+function SideBar(porps: {type?: 'admin' | 'sales'}) {
+  const {type} = porps;
+  const IS_OPEN_MENU = +localStorage.getItem('IS_OPEN_MENU');
+  const {isOpen, onToggle} = UI.useDisclosure({defaultIsOpen: !!IS_OPEN_MENU});
+  React.useEffect(() => {
+    if (isOpen) localStorage.setItem('IS_OPEN_MENU', '1');
+    else localStorage.setItem('IS_OPEN_MENU', '0');
+  }, [isOpen]);
+  const Component = SIDE_BAR_MENU?.[type];
   return (
     <UI.VStack
       alignItems={'start'}
@@ -43,14 +48,8 @@ function SideBar() {
             </UI.HStack>
           </SB.SidebarHeader>
           <SB.SidebarContent>
-            {chain(sidebarMenu)
-              .filter((x) => x?.isShow)
-              .orderBy(['position'], ['asc'])
-              .map((menu, i) => {
-                const Component = MENU_ITEMS?.[menu.sidebarMenuType];
-                return <Component key={i} isCollapsed={!isOpen} />;
-              })
-              .valueOf()}
+            {/* @ts-ignore */}
+            <Component isCollapsed={!isOpen} />
           </SB.SidebarContent>
         </SB.ProSidebar>
       </SidebarWarp>

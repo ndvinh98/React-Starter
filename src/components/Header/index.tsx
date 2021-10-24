@@ -5,7 +5,7 @@ import {HStack} from '@chakra-ui/react';
 import {HEADER_ITEMS} from './header.items';
 import Mobile from './header.mobile';
 
-const headerButton = [
+const AdminHeaderButton = [
   {
     headerButtonType: 'search',
     isShow: false,
@@ -34,10 +34,45 @@ const headerButton = [
   },
 ];
 
-function Header() {
+const ClientHeaderButton = [
+  {
+    headerButtonType: 'search',
+    isShow: false,
+    position: 1,
+  },
+  {
+    headerButtonType: 'setting',
+    isShow: false,
+    position: 2,
+  },
+  {
+    headerButtonType: 'notify',
+    isShow: true,
+    position: 3,
+  },
+  {
+    headerButtonType: 'user-info',
+    isShow: true,
+    position: 4,
+  },
+  {
+    headerButtonType: 'logout',
+    isShow: true,
+    position: 5,
+    props: null,
+  },
+];
+
+const HEADER_BUTTONS = {
+  admin: AdminHeaderButton,
+  sales: ClientHeaderButton,
+};
+
+function Header(props: {type?: 'admin' | 'sales'}) {
+  const {type} = props;
   return (
     <HStack justifyContent={'flex-end'} px={3} height={'60px'} bg={'ste.red'}>
-      {chain(headerButton)
+      {chain(HEADER_BUTTONS?.[type])
         .filter((x) => x.isShow)
         .orderBy(['position'], ['asc'])
         .map((x, i) => {

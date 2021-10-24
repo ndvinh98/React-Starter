@@ -4,7 +4,7 @@ import {IParams} from '@types';
 
 export const useGetItem = <T = any>(url?: string) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<T>(null);
+  const [data, setData] = useState<T>(undefined);
   const [error, setError] = useState<any>();
 
   const getItem = async (params?: IParams, options?: {path?: string}) => {

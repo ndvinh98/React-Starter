@@ -63,7 +63,7 @@ const HEADER_MENU = [
 export const HEADER_ITEMS = {
   notify: memo((porps: any) => {
     const {isDisabled} = porps;
-    // const {push} = useRouter();
+    const {push} = useRouter();
     return (
       <UI.Box position="relative" pr={2}>
         <UI.Circle
@@ -81,7 +81,7 @@ export const HEADER_ITEMS = {
         </UI.Circle>
         <UI.IconButton
           disabled={isDisabled}
-          // onClick={() => push('/partner/notification')}
+          onClick={() => push('/notification/notification')}
           variant={'ghost'}
           aria-label="Notify"
           icon={<FiBell size={20} />}

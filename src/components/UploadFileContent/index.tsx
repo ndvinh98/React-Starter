@@ -1,4 +1,4 @@
-import React, {memo, useState, useEffect} from 'react';
+import React, {memo, useState, useEffect, useRef} from 'react';
 import * as UI from '@chakra-ui/react';
 import {useGetItem} from '@utils/hooks';
 import {IoMdCloseCircle} from 'react-icons/io';
@@ -7,7 +7,8 @@ import {uploadFile} from '@services';
 
 export interface IUploadFileContent {
   urlPath: string;
-  callBack?: (value) => void;
+  onChangeValue?: (value) => void;
+  defaultValue?: string;
   name?: string;
   isChooseStock?: boolean;
   listStock?: string[];
@@ -20,16 +21,17 @@ export interface IUploadFileContent {
 function UploadFileContent(props: IUploadFileContent) {
   const {
     urlPath,
-    name,
     isChooseStock,
     listStock,
     isListStockIcon,
     description,
     label,
     productModuleId,
-    callBack,
+    onChangeValue,
+    name,
+    defaultValue = '',
   } = props;
-  const [thumb, setThumb] = useState('');
+  const [thumb, setThumb] = useState(defaultValue);
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState();
   const {data, getItem} = useGetItem<{url: string; value: string}>(urlPath);
@@ -41,8 +43,12 @@ function UploadFileContent(props: IUploadFileContent) {
     }
   }, [data]);
 
+  const initThumb = useRef(true);
   useEffect(() => {
-    callBack(thumb);
+    if (!initThumb.current) {
+      onChangeValue(thumb);
+      initThumb.current = false;
+    }
   }, [thumb]);
 
   const handleOnchange = (thumb) => {
@@ -101,7 +107,12 @@ function UploadFileContent(props: IUploadFileContent) {
                 <IoMdCloseCircle fontSize="20px" color="red" />
               </UI.Circle>
               {productModuleId ? (
-                <UI.Box p={2} borderRadius={"15px"} border={"1px solid #E0E0E0"}><UI.Text>{getFileName(data?.value)}</UI.Text></UI.Box>
+                <UI.Box
+                  p={2}
+                  borderRadius={'15px'}
+                  border={'1px solid #E0E0E0'}>
+                  <UI.Text>{getFileName(data?.value)}</UI.Text>
+                </UI.Box>
               ) : (
                 <UI.Image
                   boxSize={isListStockIcon ? '48px' : '120px'}

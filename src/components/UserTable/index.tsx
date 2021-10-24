@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {format} from 'date-fns';
 
 import TableGenerate from '@components/TableGenerate';
@@ -49,11 +49,12 @@ function UserTable(props) {
     <UI.VStack py={6} px={4} spacing={4} width="full" bgColor="white">
       <UI.Box w="full">
         <UI.Text
-          fontSize={{md: 'md', lg: 'xl'}}
+          fontSize={{md: 'md', lg: '18px'}}
           fontWeight="semibold"
           w="full"
           bgColor={'#EEEEEC'}
-          pl={3}>
+          px={3}
+          py={2}>
           User Infomation
         </UI.Text>
       </UI.Box>
@@ -110,6 +111,10 @@ function UserTable(props) {
                 {
                   label: 'All Roles',
                   value: '-1',
+                },
+                {
+                  label: 'Owner',
+                  value: 'PARTNERADMIN',
                 },
                 {
                   label: 'Admin',

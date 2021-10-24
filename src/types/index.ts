@@ -49,7 +49,7 @@ export interface IMe {
   firstName?: string;
   lastName?: string;
   email?: string;
-  userType?: 'PARTNERADMIN' | 'ADMIN' | 'USER';
+  userType?: 'SUPERADMIN' | 'ADMIN' | 'USER';
   avatarMediaDestination?: null;
   cityName?: string;
   companyName?: string;
@@ -296,4 +296,22 @@ export interface ICategories extends BaseSchema {
 export interface ICertificates extends BaseSchema {
   name?: string;
   mediaDestination?: string;
+}
+
+export interface ILineProduct extends BaseSchema {
+  mediaDestination?: string;
+  name?: string;
+}
+export interface IProductGroup extends BaseSchema {
+  mediaDestination?: string;
+  name?: string;
+}
+
+export interface IProducts extends BaseSchema {
+  mediaDestination?: string;
+  name?: string;
+}
+export interface IModules extends BaseSchema {
+  mediaDestination?: string;
+  name?: string;
 }

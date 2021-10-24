@@ -22,6 +22,7 @@ export interface IModalController {
   addSale: boolean;
   removeCertificate: boolean;
   deleteContent: boolean;
+  removeSale: boolean;
 }
 
 export const useModalController = create<IModalController>((set) => ({
@@ -42,6 +43,7 @@ export const useModalController = create<IModalController>((set) => ({
   reject: false,
   addNewTier: false,
   removeTier: false,
+  removeSale: false,
   data: null,
   openModal: (name: string, data?: any) => set({[name]: true, data}),
   closeModal: (name: string) => set({[name]: false, data: null}),

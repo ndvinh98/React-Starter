@@ -3,7 +3,7 @@ import {useModalController} from '@modules/modal';
 import * as UI from '@chakra-ui/react';
 import {TiDelete} from 'react-icons/ti';
 
-const Certificate = ({data}) => {
+const Certificate = ({data, getList}) => {
   const {openModal} = useModalController();
 
   return (
@@ -35,9 +35,10 @@ const Certificate = ({data}) => {
             openModal('removeCertificate', {
               id: data?.id,
               certificate: data?.name,
+              getList: getList,
             })
           }>
-          <TiDelete />
+          <TiDelete size="25px" color="#E0E0E0" />
         </UI.Box>
       </UI.HStack>
     </UI.Box>

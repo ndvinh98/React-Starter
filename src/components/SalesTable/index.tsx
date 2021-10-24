@@ -33,20 +33,20 @@ export const ACTIVE_STRING = {
 };
 
 function SalesTable(props: any) {
-  const {data, loading, setPage, handleFilterData} = props;
+  const {data, loading, setPage, handleFilterData, companyName} = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
   const {openModal} = useModalController();
-
   return (
     <UI.VStack py={6} px={5} spacing={4} width="full" bgColor="white">
       <UI.Box w="full" bgColor={'#EEEEEC'}>
         <UI.Text
-          fontSize={{md: 'md', lg: 'xl'}}
+          fontSize={{md: 'md', lg: '18px'}}
           fontWeight="semibold"
           w="full"
-          pl={3}>
+          px={3}
+          py={2}>
           Sales Manager
         </UI.Text>
       </UI.Box>
@@ -179,6 +179,7 @@ function SalesTable(props: any) {
                     //   })
                     // }
                     row={row}
+                    companyName={companyName}
                   />
                 ),
               },
@@ -225,8 +226,8 @@ export const ActionColum = (props: any) => {
   const {openModal} = useModalController();
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
-  // const {openModal} = useModalStore();
-  const {row} = props;
+
+  const {row, companyName} = props;
   return (
     <UI.Center>
       <UI.Menu onClose={onClose} isOpen={isOpen}>
@@ -241,28 +242,17 @@ export const ActionColum = (props: any) => {
         </UI.MenuButton>
         <UI.MenuList>
           <UI.MenuItem
-            hidden={row?.isActive === 1}
-            onClick={() =>
-              openModal('action', {
-                title: 'Activate Access',
-                type: 'Activate',
+            onClick={(e) => {
+              e.stopPropagation();
+              openModal('removeSale', {
                 // cb: () => getUserProfile(),
+                companyName: companyName,
                 id: row?.id,
-              })
-            }>
-            Activate Access
-          </UI.MenuItem>
-          <UI.MenuItem
-            hidden={row?.isActive === 0}
-            onClick={() =>
-              openModal('action', {
-                title: 'Deactivate Access',
-                type: 'Deactivate',
-                // cb: () => getUserProfile(),
-                id: row?.id,
-              })
-            }>
-            Deactivate Access
+                firstName: row?.user?.firstName,
+                lastName: row?.user?.lastName,
+              });
+            }}>
+            Remove
           </UI.MenuItem>
         </UI.MenuList>
       </UI.Menu>

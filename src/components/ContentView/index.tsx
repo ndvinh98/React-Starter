@@ -4,7 +4,7 @@ import {AiOutlineAppstore, AiOutlineUnorderedList} from 'react-icons/ai';
 import {IoIosAddCircleOutline} from 'react-icons/io';
 import {useRouter} from '@utils/hooks';
 import {ChevronDownIcon} from '@chakra-ui/icons';
-import {useContentManagementController} from '@modules/home/modules/content-management';
+import {useContentManagementController} from '@modules/home/admin-modules/content-management';
 import {useRouterController} from '@modules/router';
 
 import Select from '@components/Select';
@@ -37,6 +37,7 @@ export interface IContentView {
   isModulesView?: boolean;
   isVideo?: boolean;
   isBrochures?: boolean;
+  onReloadPage?: () => void;
 }
 
 function ContentView(props: IContentView) {
@@ -49,19 +50,20 @@ function ContentView(props: IContentView) {
     totalCount,
     currentPage,
     linkAddNew,
-    isLoading,
     linkToChild,
     isModulesView,
     isVideo,
     isBrochures,
     linkDeleteContent,
+    onLimitChange,
+    onPageChange,
+    isLoading,
+    onReloadPage,
   } = props;
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
   const itemSelected = useContentManagementController((s) => s.itemSelected);
-  const itemDetailsSelected = useContentManagementController(
-    (s) => s.itemDetailsSelected,
-  );
+
   const clear = useContentManagementController((s) => s.clear);
   const {openModal} = useModalController();
   const pathname = useRouterController((s) => s.pathname);
@@ -71,119 +73,110 @@ function ContentView(props: IContentView) {
   }, [pathname]);
 
   return (
-    <LoadingComponent isLoading={isLoading}>
-      <UI.VStack
-        //h="88vh"
-        alignItems="flex-start"
-        justifyContent="space-between"
-        w="full">
-        <UI.VStack flexGrow={1} w="full" py={5} px={7} alignItems="flex-start">
-          <UI.Text fontSize="24px" fontWeight="bold">
-            {name ? 'Content Management - ' + name : 'Content Management'}
-          </UI.Text>
+    <UI.VStack
+      //h="88vh"
+      alignItems="flex-start"
+      justifyContent="space-between"
+      w="full">
+      <UI.VStack flexGrow={1} w="full" py={5} px={7} alignItems="flex-start">
+        <UI.Text fontSize="24px" fontWeight="bold">
+          {name ? 'Content Management - ' + name : 'Content Management'}
+        </UI.Text>
+        <UI.HStack
+          w={'full'}
+          justifyContent={'space-between'}
+          alignItems="flex-start">
           <UI.HStack
             w={'full'}
             justifyContent={'space-between'}
-            alignItems="flex-start">
-            <UI.HStack
-              w={'full'}
-              justifyContent={'space-between'}
-              alignItems="center"
-              spacingY={'20px'}
-              spacingX={'0px'}
-              flexWrap="wrap"
-              pb={5}>
-              {filterBar && (
-                <UI.Box w={filterBarWidth ? filterBarWidth : '300px'}>
-                  {filterBar}
-                </UI.Box>
-              )}
-              <UI.HStack>
-                <UI.Text>View Item</UI.Text>
-                <UI.Box w="80px">
-                  <Select
-                    defaultValue={{label: '10', value: 10}}
-                    isClearable={false}
-                    options={[
-                      {label: '10', value: 10},
-                      {label: '15', value: 15},
-                      {label: '20', value: 20},
-                    ]}
-                  />
-                </UI.Box>
-                <UI.Center
-                  onClick={() => {
-                    setShowType('GRID');
-                  }}
-                  cursor="pointer"
-                  pl={1}>
-                  <AiOutlineAppstore
-                    color={showType === 'GRID' ? '#D94645' : '#ADADAD'}
-                    fontSize="26px"
-                  />
-                </UI.Center>
-                <UI.Center
-                  onClick={() => {
-                    setShowType('LIST');
-                  }}
-                  cursor="pointer"
-                  px={1}>
-                  <AiOutlineUnorderedList
-                    color={showType === 'LIST' ? '#D94645' : '#ADADAD'}
-                    fontSize="26px"
-                  />
-                </UI.Center>
-              </UI.HStack>
+            alignItems="center"
+            spacingY={'20px'}
+            spacingX={'0px'}
+            flexWrap="wrap"
+            pb={5}>
+            {filterBar && (
+              <UI.Box w={filterBarWidth ? filterBarWidth : '300px'}>
+                {filterBar}
+              </UI.Box>
+            )}
+            <UI.HStack>
+              <UI.Text>View Item</UI.Text>
+              <UI.Box w="80px">
+                <Select
+                  defaultValue={{label: '10', value: 10}}
+                  isClearable={false}
+                  options={[
+                    {label: '10', value: 10},
+                    {label: '15', value: 15},
+                    {label: '20', value: 20},
+                  ]}
+                  onChangeValue={(data) => onLimitChange(data?.value)}
+                />
+              </UI.Box>
+              <UI.Center
+                onClick={() => {
+                  setShowType('GRID');
+                }}
+                cursor="pointer"
+                pl={1}>
+                <AiOutlineAppstore
+                  color={showType === 'GRID' ? '#D94645' : '#ADADAD'}
+                  fontSize="26px"
+                />
+              </UI.Center>
+              <UI.Center
+                onClick={() => {
+                  setShowType('LIST');
+                }}
+                cursor="pointer"
+                px={1}>
+                <AiOutlineUnorderedList
+                  color={showType === 'LIST' ? '#D94645' : '#ADADAD'}
+                  fontSize="26px"
+                />
+              </UI.Center>
             </UI.HStack>
-            <UI.Box position="relative" top="10px">
-              <UI.Menu isOpen={isEmpty(itemSelected) ? false : undefined}>
-                <UI.MenuButton
-                  cursor={isEmpty(itemSelected) ? 'no-drop' : 'pointer'}>
-                  <UI.HStack borderRadius="md" bg="ste.red" px={3} py={2}>
-                    <UI.Checkbox isChecked={!isEmpty(itemSelected)} size="lg" />
-                    <ChevronDownIcon color="white" />
-                  </UI.HStack>
-                </UI.MenuButton>
-                <UI.MenuList zIndex={999}>
-                  <UI.MenuItem
-                    onClick={() => {
-                      if (isVideo){
-                        push(`/home/content-management/resources/videos/edit/${itemSelected?.[0]}`);
-                      }
-                      else if(isBrochures){
-                        push(`/home/content-management/resources/brochures/edit/${itemSelected?.[0]}`);
-                      }
-                      else{
-                        push(`${pathname}/edit/${itemSelected?.[0]}`);
-                      }
-                    }}
-                    isDisabled={itemSelected.length > 1}
-                    color="ste.red">
-                    <UI.Text mr="5px">Edit</UI.Text>
-                    {itemSelected.length > 1 && (
-                      <UI.Text fontSize="12px" color="gray.500">
-                        (Only one item can be edited)
-                      </UI.Text>
-                    )}
-                  </UI.MenuItem>
-                  <UI.MenuItem
-                    onClick={() => {
-                      openModal('deleteContent', {
-                        itemDetailsSelected,
-                        itemSelected,
-                        name,
-                        url: linkDeleteContent,
-                        isResources: isVideo || isBrochures,
-                      });
-                    }}
-                    color="ste.red">
-                    Delete
-                  </UI.MenuItem>
-                </UI.MenuList>
-              </UI.Menu>
-            </UI.Box>
           </UI.HStack>
-
+          <UI.Box position="relative">
+            <UI.Menu isOpen={isEmpty(itemSelected) ? false : undefined}>
+              <UI.MenuButton
+                cursor={isEmpty(itemSelected) ? 'no-drop' : 'pointer'}>
+                <UI.HStack borderRadius="md" bg="ste.red" px={3} py={2}>
+                  <UI.Checkbox isChecked={!isEmpty(itemSelected)} size="lg" />
+                  <ChevronDownIcon color="white" />
+                </UI.HStack>
+              </UI.MenuButton>
+              <UI.MenuList zIndex={999}>
+                <UI.MenuItem
+                  onClick={() => {
+                    push(`${pathname}/detail/${itemSelected?.[0]?.id}`);
+                  }}
+                  isDisabled={itemSelected.length > 1}
+                  color="ste.red">
+                  <UI.Text mr="5px">Edit</UI.Text>
+                  {itemSelected.length > 1 && (
+                    <UI.Text fontSize="12px" color="gray.500">
+                      (Only one item can be edited)
+                    </UI.Text>
+                  )}
+                </UI.MenuItem>
+                <UI.MenuItem
+                  onClick={() => {
+                    openModal('deleteContent', {
+                      name,
+                      url: linkDeleteContent,
+                      isResources: isVideo || isBrochures,
+                      cb: () => onReloadPage?.(),
+                    });
+                  }}
+                  color="ste.red">
+                  Delete
+                </UI.MenuItem>
+              </UI.MenuList>
+            </UI.Menu>
+          </UI.Box>
+        </UI.HStack>
+        <LoadingComponent length={data?.length} isLoading={isLoading}>
           {showType === 'GRID' && (
             <UI.SimpleGrid
               w="full"
@@ -265,15 +258,16 @@ function ContentView(props: IContentView) {
               </UI.HStack>
             </UI.VStack>
           )}
-        </UI.VStack>
-        <Pagination
-          size="sm"
-          currentPage={currentPage}
-          totalCount={totalCount}
-          pageSize={limit}
-        />
+        </LoadingComponent>
       </UI.VStack>
-    </LoadingComponent>
+      <Pagination
+        size="sm"
+        currentPage={currentPage}
+        totalCount={totalCount}
+        pageSize={limit}
+        onChangePage={onPageChange}
+      />
+    </UI.VStack>
   );
 }
 

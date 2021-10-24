@@ -1,7 +1,6 @@
 import React, {memo, forwardRef, useImperativeHandle} from 'react';
 import {HTMLChakraProps} from '@chakra-ui/system';
 import {useForm} from 'react-hook-form';
-import {isEmpty} from 'lodash';
 import FormControl, {IFormControl} from './FormControl';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as UI from '@chakra-ui/react';
@@ -14,6 +13,9 @@ export interface IFormGenerate extends HTMLChakraProps<any> {
   children?: React.ReactNode;
   gap?: number;
   watchFields?: string | string[];
+  display?: 'grid' | 'stack';
+  styled?: any;
+  defaultWatchValue?: any;
   onChangeValue?: (
     dataForm: any,
     filedChange: {name: string; value: any},
@@ -28,8 +30,12 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
     schema,
     gap = 4,
     onChangeValue,
+    display = 'grid',
+    styled,
+    defaultWatchValue,
     ...other
   } = props;
+
   const {
     handleSubmit,
     register,
@@ -41,6 +47,7 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
   } = useForm({
     resolver: yupResolver(yup.object().shape(schema)),
   });
+
   useImperativeHandle(ref, () => ({
     handleSubmit,
     getValues,
@@ -54,16 +61,16 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
   };
 
   React.useEffect(() => {
-    const subscription = watch(onChangeValue);
+    const subscription = watch(onChangeValue, defaultWatchValue);
     return () => subscription?.unsubscribe?.();
   }, [watch]);
 
   return (
     <UI.Box as={'form'} w={'full'} onSubmit={handleSubmit(onSubmit)} {...other}>
-      <UI.Grid templateColumns="repeat(12, 1fr)" gap={gap}>
-        {!isEmpty(fields) &&
-          fields.map((x, i) => (
-            <UI.GridItem colSpan={x?.colSpan || 12} key={i}>
+      {display === 'grid' && (
+        <UI.Grid templateColumns="repeat(12, 1fr)" gap={gap}>
+          {fields?.map?.((x, i) => (
+            <UI.GridItem sx={x?.colSytled} colSpan={x?.colSpan || 12} key={i}>
               <FormControl
                 {...x}
                 defaultValue={x?.defaultValue}
@@ -72,7 +79,22 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
               />
             </UI.GridItem>
           ))}
-      </UI.Grid>
+        </UI.Grid>
+      )}
+      {display === 'stack' && (
+        <UI.Stack spacing={gap} {...styled}>
+          {fields?.map?.((x, i) => (
+            <FormControl
+              key={i}
+              {...x}
+              defaultValue={x?.defaultValue}
+              error={errors?.[x.name]}
+              {...register(x?.name)}
+            />
+          ))}
+        </UI.Stack>
+      )}
+
       {children}
     </UI.Box>
   );

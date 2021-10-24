@@ -15,7 +15,6 @@ function RemoveCertificate() {
 
   React.useEffect(() => {
     if (postData) {
-      data?.cb?.();
       closeModal('removeCertificate');
       toast({
         status: 'success',
@@ -24,6 +23,7 @@ function RemoveCertificate() {
         isClosable: true,
         duration: 2000,
       });
+      data?.getList();
     }
   }, [postData]);
 
@@ -48,8 +48,8 @@ function RemoveCertificate() {
 
         <UI.ModalHeader mt={8}>
           <UI.Box fontSize={'lg'} color={'ste.red'} textAlign="center">
-            <UI.Text> Are you sure you want to</UI.Text>
-            <UI.Text>delete this certificate?</UI.Text>
+            <UI.Text> Are you sure you want to delete</UI.Text>
+            <UI.Text>this certificate? </UI.Text>
           </UI.Box>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
