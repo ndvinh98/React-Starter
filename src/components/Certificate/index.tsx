@@ -14,7 +14,7 @@ const Certificate = ({data, getList}) => {
         w="full"
         shadow="sm"
         p={5}
-        bgColor={'#EEEEEC'}
+        bgColor={'#F7F7F7'}
         justifyContent="space-between"
         border="none"
         alignItems="center">
