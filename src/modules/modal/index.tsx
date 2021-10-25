@@ -15,10 +15,11 @@ import RemoveSale from './modals/RemoveSale.modal';
 import AddSale from './modals/AddSale.modal';
 import DeleteContentModal from './modals/DeleteContent.modal';
 import RemoveCertificate from './modals/RemoveCertificate.modal';
-
+import DeleteFileTransfer from './modals/DeleteFileTransfer.modal';
 function InitModal() {
   return (
     <>
+      <DeleteFileTransfer/>
       <LogoutModal />
       <RejectModal />
       <ConfirmModal />

@@ -36,11 +36,11 @@ function FileTransfer() {
             {subject: textSearch},
           ])
         : undefined,
-        // filter: JSON.stringify([{"userId": me?.id}]),
+        filter: JSON.stringify([{"userId": me?.id}]),
         relations: JSON.stringify(["userFileTransferRecipients", "userFileTransferRecipients.partnerUser"]),
       });
     }
-  }, [limit, page, textSearch, filter]);
+  }, [limit, page, textSearch, filter, me]);
 
 
   const handleFilterData = ({textSearch, status}) => {
@@ -49,7 +49,6 @@ function FileTransfer() {
 
   };
   
-
   return (
     <UI.Box minH="77vh" p={8}>
       <UI.Text fontSize={'20px'} fontWeight={'bold'} mb={4}>File Transfer</UI.Text>
@@ -154,7 +153,7 @@ function FileTransfer() {
           {
             Header: () => <UI.Center>Action</UI.Center>,
             id: 'action',
-            accessor: (row) => <ActionColum refresh={() => {}} row={row} />,
+            accessor: (row) => <ActionColum refresh={() => setPage(1)} row={row} />,
           },
         ]}
       />
@@ -182,11 +181,10 @@ export const ActionColum = (props: any) => {
           <UI.MenuItem
             isDisabled={row?.isActive === 1}
             onClick={(e) => {
+              //console.log(row);
               e.stopPropagation();
-              openModal('action', {
-                title: 'Activate Access',
-                type: 'Activate',
-                id: row?.id,
+              openModal('deleteFileTransfer', {
+                url: `userFileTransfers/${row?.id}`,
                 cb: () => refresh(),
               });
             }}>

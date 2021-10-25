@@ -180,10 +180,8 @@ export const ActionColum = (props: any) => {
             isDisabled={row?.isActive === 1}
             onClick={(e) => {
               e.stopPropagation();
-              openModal('action', {
-                title: 'Activate Access',
-                type: 'Activate',
-                id: row?.id,
+              openModal('deleteFileTransfer', {
+                url: `fileTransferRecipients/${row?.id}`,
                 cb: () => refresh(),
               });
             }}>

@@ -7,31 +7,19 @@ import {useModalController} from '@modules/modal';
 import {useMedia} from '@utils/hooks';
 import {AiOutlineSearch} from 'react-icons/ai';
 
-const IS_APPROVED = {
-  APPROVED: 'Approved',
-  REJECTED: 'Rejected',
-  PENDING: 'Pending',
-};
-const ItemACCESSREQUEST = ({data, getListNoti}) => {
+const NotificationContent = ({data, getListNotification}) => {
   const {openModal} = useModalController();
-  const {getTotalUnread} = useNotifyStore();
-  const {getItem, item} = useGetItem('partnerUserNotifications/read/');
-  const readNoti = () => {
+  const {getItem, data: item} = useGetItem('userNotifications/read/');
+  const setReadNotification = () => {
     getItem({}, {path: data?.id});
   };
-
-  React.useEffect(() => {
-    if (item) getTotalUnread();
-  }, [item]);
-
   const [isRead, setIsRead] = useState(!!+data?.isRead);
-
   return (
     <UI.Flex
       flexDirection={{md: 'column', lg: 'row'}}
       onClick={() => {
         if (isRead) return;
-        readNoti();
+        setReadNotification();
         setIsRead(true);
       }}
       cursor="pointer"
@@ -56,89 +44,24 @@ const ItemACCESSREQUEST = ({data, getListNoti}) => {
         </UI.Center>
         <UI.Text fontSize={{md: 'md', lg: 'lg'}}> {data?.message}</UI.Text>
       </UI.HStack>
-
-      <UI.HStack
-        hidden={data?.partnerUserAccessRequest?.isApproved !== 'PENDING'}
-        pt={{md: 4, lg: 0}}
-        justifyContent={'center'}>
-        <UI.Button
-          onClick={() =>
-            openModal('comfirmRequest', {
-              title: 'Access Request',
-              body: `accept ${data?.partnerUser?.firstName} ${data?.partnerUser?.lastName} ${data?.partnerUser?.email} `,
-              type: 'ACCEPT',
-              cb: () => getListNoti(),
-              id: data?.partnerUserAccessRequestId,
-            })
-          }
-          bgColor={'#EEFCEA'}
-          color={'#28C76F'}
-          size={'sm'}
-          _hover={{bgColor: '#28C76F', color: 'white'}}
-          colorScheme="#EEFCEA">
-          Accept
-        </UI.Button>
-        <UI.Button
-          onClick={() =>
-            openModal('comfirmRequest', {
-              title: 'REJECT ACCOUNT',
-              body: `reject ${data?.partnerUser?.firstName} ${data?.partnerUser?.lastName} ${data?.partnerUser?.email} `,
-              type: 'REJECT',
-              id: data?.partnerUserAccessRequestId,
-              cb: () => getListNoti(),
-            })
-          }
-          size={'sm'}
-          bgColor={'#FCEAEB'}
-          color={'#D03A2B'}
-          _hover={{bgColor: '#D03A2B', color: 'white'}}
-          colorScheme="#FCEAEB">
-          Reject
-        </UI.Button>
-      </UI.HStack>
-
-      <UI.HStack
-        hidden={
-          !['APPROVED', 'REJECTED'].includes(
-            data?.partnerUserAccessRequest?.isApproved,
-          )
-        }
-        pt={{md: 4, lg: 0}}
-        justifyContent={'center'}>
-        <UI.Box
-          px={4}
-          py={2}
-          bg="white"
-          borderWidth="1px"
-          borderColor="#ADADAD">
-          <UI.Text fontWeight={600} fontSize="12px" color="#ADADAD">
-            {IS_APPROVED?.[data?.partnerUserAccessRequest?.isApproved]}
-          </UI.Text>
-        </UI.Box>
-      </UI.HStack>
     </UI.Flex>
   );
 };
 
-const NOTYFI_TYPE = {
-  ACCESSREQUEST: ItemACCESSREQUEST,
-  FILEUPLOADS: ItemACCESSREQUEST,
-  CERTIFICATIONS: ItemACCESSREQUEST,
-};
 
 function Notification() {
-  const {data, loading, getList} = useGetList('partnerUserNotifications');
+  const {data, loading, getList} = useGetList('userNotifications');
   const {page, limit, setLimit, textSearch, setTextSearch, filter, setFilter} =
     useFilter({
       page: 1,
       limit: 10,
     });
 
-  const getListNoti = () =>
+  const getListNotification = () =>
     getList({
       page,
       limit,
-      relations: JSON.stringify(['partnerUserAccessRequest', 'partnerUser']),
+      relations: JSON.stringify(['user']),
       textSearch: textSearch
         ? JSON.stringify([{message: textSearch}])
         : undefined,
@@ -148,7 +71,7 @@ function Notification() {
     });
 
   useEffect(() => {
-    getListNoti();
+    getListNotification();
   }, [limit, page, textSearch, filter]);
 
   const regetListNotify = () =>
@@ -165,11 +88,7 @@ function Notification() {
 
     setFilter((state) => ({
       ...state,
-      notificationType: +notificationType < 0 ? undefined : notificationType,
       isRead: +isRead < 0 ? undefined : isRead,
-      partnerUserAccessRequest: {
-        isApproved: +requestsType < 0 ? undefined : requestsType,
-      },
     }));
   };
 
@@ -240,15 +159,15 @@ function Notification() {
               </UI.Center>
             </UI.VStack>
           )}
-          <UI.Center opacity={0.7} w={'full'} h={'300px'}>
+          {/* <UI.Center opacity={0.7} w={'full'} h={'300px'}>
               <UI.VStack>
                 <UI.Image src={'https://i.imgur.com/nvdeBu8.png'} />
                 <UI.Text pt={2} color={'gray'} fontSize={'lg'}>
                   No results found :((
                 </UI.Text>
               </UI.VStack>
-            </UI.Center>
-          {/* {isEmpty(data?.records) ? (
+            </UI.Center> */}
+          {isEmpty(data?.records) ? (
             <UI.Center opacity={0.7} w={'full'} h={'300px'}>
               <UI.VStack>
                 <UI.Image src={'https://i.imgur.com/nvdeBu8.png'} />
@@ -260,28 +179,24 @@ function Notification() {
           ) : (
             <UI.VStack spacing={4} mt={4}>
               {data?.records?.map((x) => {
-                const Component = NOTYFI_TYPE?.[x?.notificationType] || (
-                  <div>123</div>
-                );
                 return (
-                  <Component
-                    getListNoti={getListNoti}
-                    regetListNotify={regetListNotify}
+                  <NotificationContent
+                    getListNotification={getListNotification}
                     key={x?.id}
                     data={x}
                   />
                 );
               })}
             </UI.VStack>
-          )} */}
+          )}
         </UI.Box>
-        {/* {data?.totalPages > 1 && !isAllMobile && (
+        {data?.totalPages > 1 && !isAllMobile && (
           <UI.VStack mt={5}>
             <UI.Button isLoading={loading} onClick={() => setLimit(limit + 10)}>
               Load more
             </UI.Button>
           </UI.VStack>
-        )} */}
+        )}
       </UI.Box>
     </UI.Box>
   );

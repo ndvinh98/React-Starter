@@ -23,9 +23,11 @@ export interface IModalController {
   removeCertificate: boolean;
   deleteContent: boolean;
   removeSale: boolean;
+  deleteFileTransfer: boolean;
 }
 
 export const useModalController = create<IModalController>((set) => ({
+  deleteFileTransfer: false,
   deleteContent: false,
   removeCertificate: false,
   addSale: false,
