@@ -15,6 +15,7 @@ function CompanyInfo(props: any) {
     if (!names.length) return undefined;
     return names?.[names?.length - 1];
   };
+  const {isBase} = useMedia();
 
   return (
     <UI.VStack w="full">
@@ -37,7 +38,7 @@ function CompanyInfo(props: any) {
               fontWeight={'semibold'}
               color={'ste.black'}
               bgColor={'#EEEEEC'}>
-              Company Infomation
+              Company Information
             </UI.Text>
             <UI.Accordion allowMultiple>
               <UI.AccordionItem>
@@ -71,17 +72,24 @@ function CompanyInfo(props: any) {
                       {
                         type: 'decor',
                         DecorComponent: () => (
-                          <FieldData name={' '} value={data?.address2} />
+                          <FieldData
+                            name={'Address 2'}
+                            value={data?.address2}
+                          />
                         ),
                       },
                       {
                         type: 'decor',
                         DecorComponent: () => (
-                          <FieldData name={' '} value={data?.address3} />
+                          <FieldData
+                            name={'Address 3'}
+                            value={data?.address3}
+                          />
                         ),
                       },
                       {
                         type: 'decor',
+                        colSpan: isBase ? 4 : 12,
                         DecorComponent: () => (
                           <FieldData
                             name={'Country'}
@@ -91,12 +99,14 @@ function CompanyInfo(props: any) {
                       },
                       {
                         type: 'decor',
+                        colSpan: isBase ? 4 : 12,
                         DecorComponent: () => (
                           <FieldData name={'City'} value={data?.cityName} />
                         ),
                       },
                       {
                         type: 'decor',
+                        colSpan: isBase ? 4 : 12,
                         DecorComponent: () => (
                           <FieldData
                             name={'Postal Code'}
@@ -159,7 +169,7 @@ function CompanyInfo(props: any) {
                         type: 'decor',
                         DecorComponent: () => (
                           <FieldData
-                            name={` `}
+                            name={`Sahreholders 2`}
                             value={data?.companyShareholderName2}
                           />
                         ),
@@ -168,7 +178,7 @@ function CompanyInfo(props: any) {
                         type: 'decor',
                         DecorComponent: () => (
                           <FieldData
-                            name={` `}
+                            name={`Shareholder 3`}
                             value={data?.companyShareholderName3}
                           />
                         ),
@@ -186,7 +196,7 @@ function CompanyInfo(props: any) {
                         type: 'decor',
                         DecorComponent: () => (
                           <FieldData
-                            name={` `}
+                            name={`Director 2`}
                             value={data?.companyDirectorName2}
                           />
                         ),
@@ -195,26 +205,8 @@ function CompanyInfo(props: any) {
                         type: 'decor',
                         DecorComponent: () => (
                           <FieldData
-                            name={` `}
+                            name={`Director 3`}
                             value={data?.companyDirectorName3}
-                          />
-                        ),
-                      },
-                      {
-                        type: 'decor',
-                        DecorComponent: () => (
-                          <FieldData
-                            name={` `}
-                            value={data?.companyDirectorName4}
-                          />
-                        ),
-                      },
-                      {
-                        type: 'decor',
-                        DecorComponent: () => (
-                          <FieldData
-                            name={` `}
-                            value={data?.companyDirectorName5}
                           />
                         ),
                       },
@@ -244,17 +236,24 @@ function CompanyInfo(props: any) {
                       {
                         type: 'decor',
                         DecorComponent: () => (
-                          <FieldData name={` `} value={data?.billingAddress2} />
+                          <FieldData
+                            name={`Address 2`}
+                            value={data?.billingAddress2}
+                          />
                         ),
                       },
                       {
                         type: 'decor',
                         DecorComponent: () => (
-                          <FieldData name={` `} value={data?.billingAddress3} />
+                          <FieldData
+                            name={`Address 3`}
+                            value={data?.billingAddress3}
+                          />
                         ),
                       },
                       {
                         type: 'decor',
+                        colSpan: isBase ? 4 : 12,
                         DecorComponent: () => (
                           <FieldData
                             name={`Country`}
@@ -264,6 +263,7 @@ function CompanyInfo(props: any) {
                       },
                       {
                         type: 'decor',
+                        colSpan: isBase ? 4 : 12,
                         DecorComponent: () => (
                           <FieldData
                             name={`City`}
@@ -273,6 +273,7 @@ function CompanyInfo(props: any) {
                       },
                       {
                         type: 'decor',
+                        colSpan: isBase ? 4 : 12,
                         DecorComponent: () => (
                           <FieldData
                             name={`Postal Code`}
@@ -300,6 +301,7 @@ function CompanyInfo(props: any) {
                       },
                       {
                         type: 'decor',
+                        colSpan: isBase ? 6 : 12,
                         DecorComponent: () => (
                           <FieldData
                             name={`Tel No.`}
@@ -309,6 +311,7 @@ function CompanyInfo(props: any) {
                       },
                       {
                         type: 'decor',
+                        colSpan: isBase ? 6 : 12,
                         DecorComponent: () => (
                           <FieldData
                             name={`Fax No.`}
@@ -352,11 +355,11 @@ function CompanyInfo(props: any) {
                           <FieldView
                             name={`Company's business registry`}
                             value={handleNameAttachment(
-                              data?.partnerApplicationAttachments[0]
+                              data?.partnerApplicationAttachments[1]
                                 ?.mediaDestination,
                             )}
                             data={
-                              data?.partnerApplicationAttachments[0]
+                              data?.partnerApplicationAttachments[1]
                                 ?.mediaDestination
                             }
                           />
@@ -387,17 +390,19 @@ export const FieldData = memo(({name, value}: any) => {
   const {isBase} = useMedia();
 
   return (
-    <UI.Stack
+    <UI.VStack
       direction={isBase ? 'column' : 'column'}
       alignItems={isBase ? 'flex' : 'flex-start'}
       w={'full'}>
-      <UI.Text w={'300px'}>{name}</UI.Text>
+      <UI.Text w={'300px'} color="#6C6F84">
+        {name}
+      </UI.Text>
       <UI.Box py={2} px={2} w={'full'} bg={'ste.gray_lighter'}>
-        <UI.Text fontWeight={'semibold'} color={'ste.black'}>
+        <UI.Text fontWeight={'normal'} color={'ste.black'}>
           {value || '---'}
         </UI.Text>
       </UI.Box>
-    </UI.Stack>
+    </UI.VStack>
   );
 });
 
@@ -419,6 +424,7 @@ export const FieldView = memo(({name, value, data}: any) => {
         w={'full'}>
         <UI.Text fontWeight={'bold'}>{value || '---'}</UI.Text>
         <UI.Button
+          hidden={isEmpty(data)}
           onClick={() =>
             openModal('fileViewer2', {
               mediaDestination: data,

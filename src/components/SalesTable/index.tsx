@@ -33,7 +33,15 @@ export const ACTIVE_STRING = {
 };
 
 function SalesTable(props: any) {
-  const {data, loading, setPage, handleFilterData, companyName} = props;
+  const {
+    data,
+    loading,
+    setPage,
+    handleFilterData,
+    totalCount,
+    companyName,
+    getList,
+  } = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
@@ -172,12 +180,12 @@ function SalesTable(props: any) {
                 id: 'action',
                 accessor: (row) => (
                   <ActionColum
-                    // refresh={() =>
-                    //   getList({
-                    //     page: 1,
-                    //     limit: 10,
-                    //   })
-                    // }
+                    refresh={() =>
+                      getList({
+                        page: 1,
+                        limit: 10,
+                      })
+                    }
                     row={row}
                     companyName={companyName}
                   />
@@ -208,6 +216,7 @@ function SalesTable(props: any) {
                   <Pagination
                     currentPage={data?.page}
                     totalpage={data?.totalPages}
+                    totalCount={totalCount}
                     onChangePage={setPage}
                     size={'sm'}
                     justifyContent="flex-end"
@@ -227,7 +236,7 @@ export const ActionColum = (props: any) => {
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
 
-  const {row, companyName} = props;
+  const {row, companyName, refresh} = props;
   return (
     <UI.Center>
       <UI.Menu onClose={onClose} isOpen={isOpen}>
@@ -245,7 +254,7 @@ export const ActionColum = (props: any) => {
             onClick={(e) => {
               e.stopPropagation();
               openModal('removeSale', {
-                // cb: () => getUserProfile(),
+                cb: refresh,
                 companyName: companyName,
                 id: row?.id,
                 firstName: row?.user?.firstName,

@@ -86,7 +86,7 @@ export interface IPartnerUsers extends BaseSchema {
   lastName?: string;
   email?: string;
   password?: string;
-  domain?: string;
+  domain?: string | IPartnerDomain;
   userType?: TUserType;
   otpCode?: string;
   otpCodeExp?: Date;
@@ -259,6 +259,7 @@ export interface IUserProfiles extends BaseSchema {
 export interface IPartnerDomain extends BaseSchema {
   isAllowed?: 1 | 0;
   domain?: string;
+  partners: IPartnerManagement[];
 }
 
 export interface IPartnerManagement extends BaseSchema {
@@ -314,4 +315,10 @@ export interface IProducts extends BaseSchema {
 export interface IModules extends BaseSchema {
   mediaDestination?: string;
   name?: string;
+}
+
+export interface IPartnerSale extends BaseSchema {
+  partnerId: number;
+  userId: number;
+  partner: IPartnerManagement;
 }

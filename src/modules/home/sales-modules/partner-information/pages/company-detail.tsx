@@ -5,10 +5,7 @@ import {useGetItem, useFilter, useGetList} from '@utils/hooks';
 import {useRouter} from '@utils/hooks';
 
 import CompanyInfo from '@components/CompanyInfo';
-import UserTable from '@components/UserTable';
-import TierToParter from '@components/AddTierToParter';
 
-import {IUserManagement} from '@types';
 import {
   IPartnerApplicationForms,
   IPartnerManagement,
@@ -18,7 +15,8 @@ import {
 
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
-import SalesTable from '@components/SalesTable';
+import UserTableSale from '@components/UserTableSale';
+import TierToSale from '@components/TierToSale';
 
 function CompanyDetail() {
   const {push} = useRouter();
@@ -117,56 +115,12 @@ function CompanyDetail() {
     }
   };
 
-  // Import data Sale Manager
-
-  const {
-    page: pageSales,
-    limit: limitSales,
-    setPage: setPageSales,
-    textSearch: textSearchSales,
-    setTextSearch: setTextSearchSales,
-  } = useFilter({
-    page: 1,
-    limit: 10,
-  });
-  const {
-    data: dataSales,
-    getList: getListSales,
-    loading: loadingSales,
-  } = useGetList<IUserManagement>('/partnerUserRelations');
-
-  useEffect(() => {
-    if (params?.id)
-      getListSales({
-        page: pageSales,
-        limit: limitSales,
-        relations: JSON.stringify(['user', 'user.userProfiles']),
-        filter: JSON.stringify([{partnerId: params?.id}]),
-
-        textSearch: textSearchSales
-          ? JSON.stringify([
-              {user: {firstName: textSearchSales}},
-              {user: {email: textSearchSales}},
-              {user: {lastName: textSearchSales}},
-            ])
-          : undefined,
-      });
-  }, [pageSales, limitSales, textSearchSales, params]);
-
-  const handleFilterDataSales = ({textSearch}, fieldChange) => {
-    if (fieldChange.name === 'textSearch') {
-      if (textSearch && textSearch.length < 3) return;
-
-      setTextSearchSales(textSearch);
-    }
-  };
-
   return (
     <UI.VStack alignItems="flex-start" py={6} px={8} spacing={4} w="full">
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/partner-management')}>
+        onClick={() => push('/home/partner-information')}>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
@@ -175,7 +129,7 @@ function CompanyDetail() {
         {''} ({dataDomain?.partnerDomain?.domain})
       </UI.Text>
       <CompanyInfo data={dataCompany?.records[0]} loading={loadingCompany} />
-      <UserTable
+      <UserTableSale
         data={dataUser}
         loading={loadingUser}
         handleFilterDataUser={handleFilterDataUser}
@@ -183,18 +137,8 @@ function CompanyDetail() {
         companyName={dataCompany?.records[0]?.companyName}
         getList={getListUser}
       />
-      <SalesTable
-        data={dataSales}
-        loading={loadingSales}
-        handleFilterData={handleFilterDataSales}
-        setPage={setPageSales}
-        getList={getListSales}
-        companyName={dataCompany?.records[0]?.companyName}
-      />
-      <TierToParter
-        companyName={dataCompany?.records[0]?.companyName}
-        partnerId={params?.id}
-      />
+
+      <TierToSale partnerId={params?.id} />
     </UI.VStack>
   );
 }

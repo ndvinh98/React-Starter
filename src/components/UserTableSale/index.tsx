@@ -10,12 +10,11 @@ import UserInfoCard from '@components/UserInfoCard';
 import {useRouter} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import {useMedia} from '@utils/hooks';
-import {useModalController} from '@modules/modal';
+
 import {isEmpty} from 'lodash';
 
 import * as UI from '@chakra-ui/react';
 import {AiOutlineSearch} from 'react-icons/ai';
-import {HiDotsHorizontal} from 'react-icons/hi';
 
 export const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
@@ -32,16 +31,8 @@ export const ACTIVE_STRING = {
   0: 'Decatived',
 };
 
-function UserTable(props) {
-  const {
-    data,
-    loading,
-    setPage,
-    handleFilterDataUser,
-    totalCount,
-    companyName,
-    getList,
-  } = props;
+function UserTableSale(props) {
+  const {data, loading, setPage, handleFilterDataUser, totalCount} = props;
   const {path} = useRouterController();
   const {push} = useRouter();
   const {isBase} = useMedia();
@@ -216,23 +207,6 @@ function UserTable(props) {
                   </UI.Text>
                 ),
               },
-              {
-                Header: () => <UI.Center>Action</UI.Center>,
-                hiden: true,
-                id: 'action',
-                accessor: (row) => (
-                  <ActionColum
-                    refresh={() =>
-                      getList({
-                        page: 1,
-                        limit: 10,
-                      })
-                    }
-                    row={row}
-                    companyName={companyName}
-                  />
-                ),
-              },
             ]}
           />
         ) : (
@@ -273,50 +247,4 @@ function UserTable(props) {
   );
 }
 
-export const ActionColum = (props: any) => {
-  const {openModal} = useModalController();
-
-  const {isOpen, onOpen, onClose} = UI.useDisclosure();
-
-  const {row, companyName, refresh} = props;
-
-  const isHiden = () => {
-    return row?.isActive === 0 || row?.userType === 'PARTNERADMIN'
-      ? true
-      : false;
-  };
-
-  return (
-    <UI.Center>
-      <UI.Menu onClose={onClose} isOpen={isOpen}>
-        <UI.MenuButton
-          px={4}
-          py={2}
-          hidden={isHiden()}
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpen();
-          }}>
-          <HiDotsHorizontal color={'#9097A9'} size={20} />
-        </UI.MenuButton>
-        <UI.MenuList>
-          <UI.MenuItem
-            onClick={(e) => {
-              e.stopPropagation();
-              openModal('assignPartnerAdmin', {
-                cb: refresh,
-                id: row?.id,
-                firstName: row?.firstName,
-                lastName: row?.lastName,
-                companyName: companyName,
-              });
-            }}>
-            Assign as Partner Admin
-          </UI.MenuItem>
-        </UI.MenuList>
-      </UI.Menu>
-    </UI.Center>
-  );
-};
-
-export default UserTable;
+export default UserTableSale;
