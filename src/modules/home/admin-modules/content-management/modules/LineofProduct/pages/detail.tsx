@@ -109,7 +109,7 @@ function AddNew() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-          ADD NEW LINE OF PRODUCT
+        {mode==="ADD" ? "ADD NEW" : mode}  LINE OF PRODUCT
         </UI.Text>
         <LoadingComponent isError={isNull(data)}>
           <FormGenerate

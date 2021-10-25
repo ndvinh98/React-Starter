@@ -196,7 +196,7 @@ function Edit() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-          EDIT PRODUCT
+        {mode==="ADD" ? "ADD NEW" : mode}  PRODUCT
         </UI.Text>
         <LoadingComponent>
           <FormGenerate

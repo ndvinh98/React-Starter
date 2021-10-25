@@ -258,7 +258,7 @@ function AddNew() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-          ADD NEW MODULE
+        {mode==="ADD" ? "ADD NEW" : mode} MODULE
         </UI.Text>
         <FormGenerate
           onChangeValue={handleOnChange}

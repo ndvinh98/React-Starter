@@ -152,7 +152,7 @@ function Edit() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-          EDIT PRODUCT GROUP
+        {mode==="ADD" ? "ADD NEW" : mode}  PRODUCT GROUP
         </UI.Text>
         <LoadingComponent isError={isNull(data)}>
           <FormGenerate
