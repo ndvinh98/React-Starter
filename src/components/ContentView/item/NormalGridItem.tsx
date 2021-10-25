@@ -35,7 +35,7 @@ function GridItem({item, linkToChild, isVideo, isBrochures}) {
       />
       <UI.Box
         onClick={() => {
-          push(linkToChild);
+          if(!isVideo && !isBrochures) push(linkToChild);
         }}
         bg="white"
         bgImage={`url(${

@@ -34,7 +34,7 @@ function NormalListItem({item, linkToChild, isVideo, isBrochures}) {
       />
       <UI.HStack
         onClick={() => {
-          push(linkToChild);
+          if(!isVideo && !isBrochures) push(linkToChild);
         }}
         key={item?.id}
         cursor="pointer"

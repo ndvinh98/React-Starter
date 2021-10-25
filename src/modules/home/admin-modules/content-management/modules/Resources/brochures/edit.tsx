@@ -31,6 +31,13 @@ function Edit() {
     `productModuleResources/${resourceData?.id}`,
   );
 
+  const getFileName = (name: string) => {
+    if (!name) return undefined;
+    const names = name?.split('/');
+    if (!names.length) return name;
+    return names?.[names?.length - 1];
+  };
+
   useEffect(() => {
     if (data) {
       toast({
@@ -45,28 +52,15 @@ function Edit() {
 
   const handleSubmit = (value) => {
     if (
-      value &&
-      mediaDestination &&
-      thumbnailMediaDestination &&
-      resourceData
+      value
     ) {
       patch({
-        productModuleId: resourceData?.id,
         resourceName: value.name,
         languageId: value.language,
         brochureFormat: value.brochureFormat,
         noOfPages: value.noOfPages,
-        thumbnailMediaDestination,
-        mediaDestination,
-      });
-    }
-    if (!mediaDestination || !thumbnailMediaDestination){
-      toast({
-        title: 'Please upload file!',
-        status: 'error',
-        duration: 2000,
-        position: 'top-right',
-        isClosable: true,
+        thumbnailMediaDestination: value.thumb,
+        mediaDestination: value.brochures
       });
     }
   };
@@ -133,40 +127,28 @@ function Edit() {
                 defaultValue: resourceData?.resourceName,
               },
               {
-                type: 'decor',
+                type: 'upload-file-contnet',
                 layout: 'horizontal',
+                name: 'brochures',
+                productModuleId: resourceData?.productModuleId,
+                // defaultValue: getFileName(resourceData?.mediaDestination),
                 colSpan: 12,
+                labelUpload: 'Upload File',
+                description: ' ',
                 width: '100%',
                 size: 'md',
-                DecorComponent: () => (
-                  <UploadFileContent
-                    name={'brochures'}
-                    productModuleId={resourceData?.id}
-                    urlPath={'productModuleResources/uploadFileUrl'}
-                    label={'Upload File'}
-                    description={' '}
-                    callBack={(value) => {
-                      mediaDestination = value;
-                    }}
-                  />
-                ),
+                urlPath: 'productModuleResources/uploadFileUrl',
               },
               {
-                type: 'decor',
+                type: 'upload-file-contnet',
                 layout: 'horizontal',
+                name: 'thumb',
+                labelUpload: 'Upload Thumbnail',
+                defaultValue: resourceData?.thumbnailMediaDestination,
                 colSpan: 12,
                 width: '100%',
                 size: 'md',
-                DecorComponent: () => (
-                  <UploadFileContent
-                    description={' '}
-                    label={'Upload Thumbnail'}
-                    urlPath={'/products/uploadThumbnailUrl'}
-                    callBack={(value) => {
-                      thumbnailMediaDestination = value;
-                    }}
-                  />
-                ),
+                urlPath: '/products/uploadThumbnailUrl',
               },
               {
                 name: 'brochureFormat',

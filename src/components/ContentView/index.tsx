@@ -149,7 +149,17 @@ function ContentView(props: IContentView) {
               <UI.MenuList zIndex={999}>
                 <UI.MenuItem
                   onClick={() => {
-                    push(`${pathname}/detail/${itemSelected?.[0]?.id}`);
+                    if (isVideo) {
+                      push(
+                        `videos/edit/${itemSelected?.[0]?.id}`,
+                      );
+                    } else if (isBrochures) {
+                      push(
+                        `brochures/edit/${itemSelected?.[0]?.id}`,
+                      );
+                    } else {
+                      push(`${pathname}/detail/${itemSelected?.[0]?.id}`);
+                    }
                   }}
                   isDisabled={itemSelected.length > 1}
                   color="ste.red">
