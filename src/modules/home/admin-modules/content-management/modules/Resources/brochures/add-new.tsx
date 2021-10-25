@@ -41,7 +41,7 @@ function AddNew() {
   }, [postData]);
 
   const handleSubmit = (value) => {
-    if (value && mediaDestination && thumbnailMediaDestination && moduleData) {
+    if (value && moduleData) {
       post({
         productModuleId: moduleData?.id,
         resourceName: value.name,
