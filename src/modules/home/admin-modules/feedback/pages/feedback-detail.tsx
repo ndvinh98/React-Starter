@@ -134,7 +134,7 @@ function FeedbackDetail() {
                           <UI.Button
                             onClick={() =>
                               openModal('fileViewer', {
-                                type: 'feedback',
+                                url:'partnerUserFeedbackAttachments/downloadFileUrl',
                                 title: item?.name,
                                 payload: item,
                               })

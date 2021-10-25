@@ -12,11 +12,11 @@ import InitModals from '@modules/modal';
 import {useTierManagementContoller} from '@modules/home/admin-modules/tier-management/tier-management.contoller';
 
 function HomeLayout() {
-  const getProducts = useTierManagementContoller((s) => s?.getProducts);
+  // const getProducts = useTierManagementContoller((s) => s?.getProducts);
 
-  React.useEffect(() => {
-    getProducts();
-  }, []);
+  // React.useEffect(() => {
+  //   getProducts();
+  // }, []);
 
   return (
     <NotFoundBoundary render={() => <NotFound />}>
