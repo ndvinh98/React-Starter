@@ -41,26 +41,17 @@ function AddNew() {
   }, [postData]);
 
   const handleSubmit = (value) => {
-    if (value && mediaDestination && thumbnailMediaDestination && moduleData) {
+    if (value  && moduleData) {
       post({
         productModuleId: moduleData?.id,
         resourceName: value.name,
         languageId: value.language,
         videoFileType: value.videoFileType,
         videoLength: value.videoLength,
-        thumbnailMediaDestination,
-        mediaDestination,
+        thumbnailMediaDestination: value.thumb,
+        mediaDestination: value.videos,
       });
     };
-    if (!mediaDestination || !thumbnailMediaDestination){
-      toast({
-        title: 'Please upload file!',
-        status: 'error',
-        duration: 2000,
-        position: 'top-right',
-        isClosable: true,
-      });
-    }
   };
 
   return (
@@ -101,6 +92,12 @@ function AddNew() {
                 .string()
                 .required('Please enter video type'),
               videoLength: yup.string().required('Please enter video length'),
+              videos: yup
+                .string()
+                .required('Please upload file'),
+              thumb: yup
+                .string()
+                .required('Please upload thumbnail'),
             }}
             fields={[
               {
@@ -112,39 +109,29 @@ function AddNew() {
                 width: '70%',
               },
               {
-                type: 'decor',
+                type: 'upload-file-contnet',
                 layout: 'horizontal',
+                name: 'videos',
+                productModuleId: moduleData?.id,
+                //defaultValue: data?.mediaDestination,
                 colSpan: 12,
+                labelUpload: 'Upload File',
+                description: ' ',
                 width: '100%',
                 size: 'md',
-                DecorComponent: () => (
-                  <UploadFileContent
-                    name={'videos'}
-                    productModuleId={moduleData?.id}
-                    urlPath={'productModuleResources/uploadFileUrl'}
-                    label={'Upload Video'}
-                    description={' '}
-                    callBack={(value) => {
-                      mediaDestination = value;
-                    }}
-                  />
-                ),
+                urlPath: 'productModuleResources/uploadFileUrl',
               },
               {
-                type: 'decor',
+                type: 'upload-file-contnet',
                 layout: 'horizontal',
+                name: 'thumb',
+                labelUpload: 'Upload Thumbnail',
+
+                //defaultValue: data?.mediaDestination,
                 colSpan: 12,
                 width: '100%',
                 size: 'md',
-                DecorComponent: () => (
-                  <UploadFileContent
-                    label={'Upload Splash Screen'}
-                    urlPath={'/products/uploadThumbnailUrl'}
-                    callBack={(value) => {
-                      thumbnailMediaDestination = value;
-                    }}
-                  />
-                ),
+                urlPath: '/products/uploadThumbnailUrl',
               },
               {
                 name: 'videoFileType',

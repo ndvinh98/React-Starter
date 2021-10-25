@@ -24,7 +24,7 @@ function UploadFileContent(props: IUploadFileContent) {
     isChooseStock,
     isListStockIcon,
     description,
-    label,
+    labelUpload,
     productModuleId,
     onChange,
     name,
@@ -82,7 +82,7 @@ function UploadFileContent(props: IUploadFileContent) {
   return (
     <>
       <UI.HStack alignItems="flex-start" w="full">
-        <UI.Text w="42%">{label ? label : 'Upload Image'}</UI.Text>
+        <UI.Text w="42%">{labelUpload ? labelUpload : 'Upload Image'}</UI.Text>
         <UI.VStack alignItems="flex-start" w="full">
           <UploadThumb
             name={name}
