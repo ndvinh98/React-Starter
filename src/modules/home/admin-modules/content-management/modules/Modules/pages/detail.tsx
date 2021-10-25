@@ -393,6 +393,7 @@ function AddNew() {
               defaultValue: data?.mediaDestination,
               isChooseStock: true,
               isListStockIcon: true,
+              description: "Recommended size: 48px x 48px",
               listStock: STOCK,
               colSpan: 12,
               width: '100%',
