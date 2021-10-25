@@ -69,7 +69,7 @@ function GridItem({item, linkToChild, isVideo, isBrochures}) {
             height="50px"
             bg="#000000a7"
             bottom={0}>
-            <UI.Text color="white">{item?.name || item?.resourceName}</UI.Text>
+            <UI.Text textAlign={'center'} color="white">{item?.name || item?.resourceName}</UI.Text>
           </UI.Center>
         ) : (
           <UI.Box
