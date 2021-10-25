@@ -56,7 +56,7 @@ export const HEADER_ITEMS = {
         </UI.Circle>
         <UI.IconButton
           disabled={isDisabled}
-          onClick={() => push('/notification/notification')}
+          onClick={() => push('/home/notification')}
           variant={'ghost'}
           aria-label="Notify"
           icon={<FiBell size={20} />}

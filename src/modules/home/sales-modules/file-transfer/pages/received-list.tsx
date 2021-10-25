@@ -40,7 +40,7 @@ function FileTransfer() {
         relations: JSON.stringify(['fileTransfer','fileTransfer.partnerUser']),
       });
     }
-  }, [limit, page, textSearch, filter]);
+  }, [limit, page, textSearch, filter, me]);
 
 
   const handleFilterData = ({textSearch, status}) => {

@@ -1,12 +1,11 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {isEmpty} from 'lodash';
+import {isEmpty, keyBy} from 'lodash';
 import * as UI from '@chakra-ui/react';
 import Select from '@components/Select';
 import UploadFilesSender from '@components/UploadMultipleFiles';
 import {useAuthController} from '@modules/auth';
 import {useGetList, useGetItem, usePost} from '@utils/hooks';
-import {useQuery, useMutation} from 'react-query';
-
+import {uploadFile} from '@services';
 
 function SendFiles() {
   const uploadEl = useRef<any>(null);
@@ -20,15 +19,11 @@ function SendFiles() {
   const [uploadStatus, setUploadStatus] = useState<'DONE' | 'FAIL' | 'PENDING'>(
     'PENDING',
   );
-  const {me, getMe} = useAuthController();
-  useEffect(() => {
-    getMe();
-  }, []);
+  const [loadingUpload, setLoadingUpload] = useState(false)
 
-  const {data, loading, getList} = useGetList('/partners');
+  const {data, getList} = useGetList('/partners');
   const {
     data: usersData,
-    loading: loadingUsers,
     getList: getListUsers,
   } = useGetList('/partnerUsers');
 
@@ -48,7 +43,7 @@ function SendFiles() {
       setUsersSender([]);
       getListUsers({
         filter: JSON.stringify([{domain: {id: companySender?.value}}]),
-        relations: JSON.stringify(['domain'])
+        relations: JSON.stringify(['domain']),
       });
     }
   }, [companySender]);
@@ -59,18 +54,23 @@ function SendFiles() {
   const handleRemoveUser = (value: number) =>
     setUsersSender((s) => s.filter((x) => x?.value !== value));
 
+  const {getItem,loading: loadingUploadUrl, data: dataUpload} = useGetItem<any>(
+    `userFileTransferAttachments/uploadFileUrl`,
+  );
 
-    const {getItem, data: dataUpload} = useGetItem<any>(
-        `fileTransferAttachments/uploadFileUrl`,
-      );
-    
-      const {
-        post: createFileTransfer,
-        data: resCreateFileTransfer,
-      } = usePost('/fileTransfers');
+  const {post: createFileTransfer,loading: loadingCreateFileTransfer, data: resCreateFileTransfer} =
+    usePost('/userFileTransfers');
+
+    const {post: postUploadSuccess, loading: loadingPostUploadSuccess} =
+    usePost('/userFileTransferAttachments/uploadSuccess');
 
   const handleSendFiles = () => {
-    if (isEmpty(files) || isEmpty(subject) || isEmpty(usersSender) || isEmpty(companySender)) {
+    if (
+      isEmpty(files) ||
+      isEmpty(subject) ||
+      isEmpty(usersSender) ||
+      isEmpty(companySender)
+    ) {
       toast({
         title: 'Warning!, Company, Name, Subject, Upload Files canot be blank',
         status: 'warning',
@@ -79,62 +79,56 @@ function SendFiles() {
         position: 'top-right',
       });
     } else {
-        createFileTransfer({
-            subject,
-            description,
-            userIds: usersSender.map((x) => x.value),
-        })
+      createFileTransfer({
+        subject,
+        description,
+        partnerUserIds: usersSender.map((x) => x.value),
+      });
     }
   };
 
   useEffect(() => {
     if (!isEmpty(resCreateFileTransfer)) {
-        getItem({
-            fileTransferId: resCreateFileTransfer?.id,
-            name: files.map((x) => x.name),
-            size: files.map((x) => x.size),
-            type: files.map((x) => x.type),
-        })
+      getItem({
+        userFileTransferId: resCreateFileTransfer?.id,
+        name: JSON.stringify(files.map((x) => x.name)),
+        size: JSON.stringify(files.map((x) => x.size)),
+        type: JSON.stringify(files.map((x) => x.type)),
+      });
     }
   }, [resCreateFileTransfer]);
 
-  useEffect(()=>{
-    if (!isEmpty(dataUpload)){
-        console.log(dataUpload)
+  useEffect(() => {
+    if (!isEmpty(dataUpload)) {
+      setLoadingUpload(true)
+      const process = [];
+      for (let i = 0; i < dataUpload.length; i++) {
+        const worker = uploadFile(
+          dataUpload[i]?.url,
+          keyBy(files, 'name')[dataUpload[i].name],
+        );
+        process.push(worker);
+      }
+      Promise.all(process).then(() => {
+        toast({
+          title: 'Files sent!',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top-right',
+        });
+        setFiles([]);
+        setUsersSender([]);
+        setUploadStatus('PENDING');
+        setSubject('');
+        setDescription('');
+        uploadEl.current.clear?.();
+        postUploadSuccess({fileTransferId: resCreateFileTransfer?.id})
+        setLoadingUpload(false)
+
+      });
     }
-  },[dataUpload])
-
-
-//   const getUrlUpload = useMutation(getUploadSenderFilesUrl, {
-//     onSuccess: (data) => {
-//       if (!isEmpty(data)) {
-//         const process = [];
-//         for (let i = 0; i < data.length; i++) {
-//           const worker = s3UploadFile({
-//             url: data[i]?.url,
-//             fileData: keyBy(files, 'name')[data[i].name],
-//           });
-//           process.push(worker);
-//         }
-//         Promise.all(process).then(() => {
-//           toast({
-//             title: 'Files sent!',
-//             status: 'success',
-//             duration: 3000,
-//             isClosable: true,
-//             position: 'top-right',
-//           });
-//           setFiles([]);
-//           setUsersSender([]);
-//           setUploadStatus('PENDING');
-//           setSubject('');
-//           setDescription('');
-//           uploadEl.current.clear?.();
-//         });
-//       }
-//     },
-//     onError: () => setUploadStatus('FAIL'),
-//   });
+  }, [dataUpload]);
 
   return (
     <UI.Box p={8}>
@@ -234,7 +228,9 @@ function SendFiles() {
         <UI.HStack w="full" alignItems="flex-start">
           <UI.Text w="300px"></UI.Text>
           <UI.HStack justifyContent="center" w="full">
-            <UI.Button onClick={handleSendFiles} w="150px">
+            <UI.Button
+              isLoading={loadingUploadUrl|| loadingCreateFileTransfer || loadingPostUploadSuccess || loadingUpload}
+            onClick={handleSendFiles} w="150px">
               Send
             </UI.Button>
           </UI.HStack>
