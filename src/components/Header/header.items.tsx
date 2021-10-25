@@ -1,26 +1,13 @@
-import React, {memo, useEffect, useState} from 'react';
-import {debounce} from 'lodash';
-import Highlighter from 'react-highlight-words';
-
+import React, {memo} from 'react';
+import {startsWith} from 'lodash';
 import * as UI from '@chakra-ui/react';
-import {FiBell, FiLogOut, FiSearch} from 'react-icons/fi';
-import {
-  // RiBuildingFill,
-  RiUserFill,
-  // RiBarChartFill,
-  // RiFileUserFill,
-  RiFeedbackFill,
-  RiFileTransferFill,
-} from 'react-icons/ri';
-// import {GiDiploma} from 'react-icons/gi';
-// import {FaUsers} from 'react-icons/fa';
-import {HiUserGroup} from 'react-icons/hi';
-import {SettingIcon} from '@components/icons';
-import AsyncSelect from '@components/AsyncSelect';
-
+import {FiBell, FiLogOut} from 'react-icons/fi';
+import {TiArrowBack} from 'react-icons/ti';
+import {RiUserFill} from 'react-icons/ri';
 import {useModalController} from '@modules/modal';
-import {useAuthController} from '@modules/auth';
+import {useHomeController} from '@modules/home';
 import {useRouter} from '@utils/hooks';
+import {useRouterController} from '@modules/router';
 
 const USER_TYPE_DISPLAY = {
   USER: 'User',
@@ -33,31 +20,19 @@ const HEADER_MENU = [
     label: 'Your Profile',
     path: '/home/your-profile',
   },
-  // {
-  //   icon: <RiBuildingFill size={20} />,
-  //   label: 'Company Information',
-  //   path: '/partner/company-information',
-  // },
-  // {
-  //   icon: <RiBarChartFill size={20} />,
-  //   label: 'Tier Information',
-  //   path: '/partner/tier-information',
-  // },
-  // {
-  //   icon: <FaUsers size={20} />,
-  //   label: 'User Management',
-  //   path: '/partner/user-management',
-  // },
-  // {
-  //   icon: <GiDiploma size={20} />,
-  //   label: 'Certificates',
-  //   path: '/partner/file-certificate',
-  // },
-  // {
-  //   icon: <RiFileUserFill size={20} />,
-  //   label: 'STE Profile',
-  //   path: '/partner/ste-profile',
-  // },
+];
+
+const HEADER_MENU_PARTNER = [
+  {
+    icon: <TiArrowBack size={25} />,
+    label: 'Back to Admin Portal',
+    path: '/home/partner-content',
+  },
+  {
+    icon: <RiUserFill size={20} />,
+    label: 'Your Profile',
+    path: '/home/your-profile',
+  },
 ];
 
 export const HEADER_ITEMS = {
@@ -90,14 +65,14 @@ export const HEADER_ITEMS = {
     );
   }),
   ['user-info']: memo(({isHiddenMenu}: any) => {
-    //const {me} = useHomeController();
-    const {me, getMe} = useAuthController();
-
-    useEffect(() => {
-      getMe();
-    }, []);
-
+    const me = useHomeController((s) => s.me);
+    const guard = useHomeController((s) => s.guard);
+    const path = useRouterController((s) => s.path);
     const {push} = useRouter();
+
+    React.useEffect(() => {
+      guard();
+    }, []);
 
     const Avatar = memo(() => (
       <UI.HStack pr={4}>
@@ -124,15 +99,25 @@ export const HEADER_ITEMS = {
           <Avatar />
         </UI.MenuButton>
         <UI.MenuList>
-          {HEADER_MENU.map((x, i) => (
-            <UI.MenuItem
-              onClick={() => push(x?.path)}
-              key={i}
-              fontWeight={'medium'}
-              icon={x.icon}>
-              {x.label}
-            </UI.MenuItem>
-          ))}
+          {startsWith(path, '/home')
+            ? HEADER_MENU.map((x, i) => (
+                <UI.MenuItem
+                  onClick={() => push(x?.path)}
+                  key={i}
+                  fontWeight={'medium'}
+                  icon={x.icon}>
+                  {x.label}
+                </UI.MenuItem>
+              ))
+            : HEADER_MENU_PARTNER.map((x, i) => (
+                <UI.MenuItem
+                  onClick={() => push(x?.path)}
+                  key={i}
+                  fontWeight={'medium'}
+                  icon={x.icon}>
+                  {x.label}
+                </UI.MenuItem>
+              ))}
         </UI.MenuList>
       </UI.Menu>
     );
@@ -158,134 +143,6 @@ export const HEADER_ITEMS = {
           </UI.MenuItem>
         </UI.MenuList>
       </UI.Menu>
-    );
-  }),
-  setting: memo(() => {
-    // const {push} = useRouter();
-    const SETTING_MENU = [
-      {
-        icon: <HiUserGroup size={20} />,
-        label: 'About ST Engineering',
-        path: '/ste/about',
-      },
-      {
-        icon: <RiFeedbackFill size={20} />,
-        label: 'Feedback Form',
-        path: '/ste/feedback-form',
-      },
-      {
-        icon: <RiFileTransferFill size={20} />,
-        label: 'File transfer',
-        path: '/ste/file-transfer',
-      },
-    ];
-    return (
-      <>
-        <UI.Box px={2}>
-          <UI.Menu placement={'bottom'}>
-            <UI.MenuButton>
-              <UI.IconButton
-                variant={'ghost'}
-                aria-label="setting"
-                icon={<SettingIcon width={'24px'} height={'24px'} />}
-              />
-            </UI.MenuButton>
-            <UI.MenuList>
-              {SETTING_MENU.map((x, i) => (
-                <UI.MenuItem
-                  // onClick={() => push(x?.path)}
-                  key={i}
-                  fontWeight={'medium'}
-                  icon={x.icon}>
-                  {x.label}
-                </UI.MenuItem>
-              ))}
-            </UI.MenuList>
-          </UI.Menu>
-        </UI.Box>
-        <UI.Divider w={4} h={'70%'} orientation="vertical" />
-      </>
-    );
-  }),
-  search: memo(() => {
-    const {isOpen, onClose, onOpen} = UI.useDisclosure();
-    const {openModal} = useModalController();
-    const [textsearch, setTextsearch] = useState('');
-
-    const searchName = async (text, cb) => {
-      const res = {records: []};
-      const options = res?.records?.map((x) => ({
-        label: x?.resourceName,
-        value: x?.id,
-      }));
-      cb(options);
-    };
-
-    const loadOptions = (text, cb) => {
-      searchName(text, cb);
-    };
-    const loadOptionsDb = debounce((text, cb) => loadOptions(text, cb), 500);
-    return (
-      <UI.HStack
-        borderRightColor="#AA1514"
-        borderRightWidth="1px"
-        marginRight="10px"
-        paddingRight="20px">
-        {isOpen && (
-          <UI.Box w={'500px'}>
-            <AsyncSelect
-              components={{
-                IndicatorsContainer: () => (
-                  <UI.Center cursor="pointer" px={1}>
-                    <FiSearch size={20} color={'#D94645'} />
-                  </UI.Center>
-                ),
-                Option: ({children, data, isFocused, selectOption}) => {
-                  return (
-                    <UI.Box
-                      cursor="pointer"
-                      onClick={() => selectOption(data)}
-                      p={2}
-                      bg={isFocused ? 'rgba(196, 196, 196, 0.4)' : 'white'}>
-                      <Highlighter
-                        highlightStyle={{
-                          fontWeight: 'bold',
-                          backgroundColor: 'transparent',
-                        }}
-                        searchWords={[textsearch]}
-                        autoEscape
-                        textToHighlight={String(children)}
-                      />
-                    </UI.Box>
-                  );
-                },
-              }}
-              loadOptions={loadOptionsDb}
-              isDefaultOptions={false}
-              name={'search'}
-              onInputChange={setTextsearch}
-              onChangeValue={(data) => {
-                if (data.value) {
-                  // useApplicationsStore.setState({
-                  //   productResourcesSearchId: data.value,
-                  // });
-                  openModal('search');
-                }
-              }}
-              onBlur={() => onClose()}
-              isAutoFocus
-            />
-          </UI.Box>
-        )}
-        {!isOpen && (
-          <UI.IconButton
-            onClick={() => onOpen()}
-            variant={'ghost'}
-            aria-label="setting"
-            icon={<FiSearch size={20} />}
-          />
-        )}
-      </UI.HStack>
     );
   }),
 };

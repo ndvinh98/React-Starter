@@ -4,6 +4,7 @@ import {useRouterController} from '@modules/router';
 export const routes = mount({
   '/home': lazy(() => import('@modules/home/home.router')),
   '/auth': lazy(() => import('@modules/auth/auth.router')),
+  '/partner': lazy(() => import('@modules/partner/partner.router')),
   '/': redirect('/home'),
 });
 

@@ -1,12 +1,12 @@
 import FormGenerate from '@components/FormGenerate';
 import {IFormControl} from '@components/FormGenerate/FormControl';
-import {IPartnerSale} from '@types';
+// import {IPartnerSale} from '@types';
 import {useFilter, useGetList} from '@utils/hooks';
 import React, {useEffect} from 'react';
 import {AiOutlineSearch} from 'react-icons/ai';
 import * as UI from '@chakra-ui/react';
 import {isEmpty} from 'lodash';
-import CardPartnerInformation from '@components/CardPartnerInformation';
+import CardPartnerContent from '@components/CardPartnerContent';
 import {useHomeController} from '@modules/home';
 
 const FIELDS: IFormControl[] = [
@@ -26,9 +26,7 @@ function PartnerList() {
     page: 1,
     limit: 1000,
   });
-  const {data, getList, loading} = useGetList<IPartnerSale>(
-    '/partnerUserRelations',
-  );
+  const {data, getList, loading} = useGetList<any>('/partnerUserRelations');
 
   useEffect(() => {
     if (profileData)
@@ -72,7 +70,7 @@ function PartnerList() {
             {data?.records.map((item) => {
               return (
                 <UI.HStack key={item?.id} spacing={8} width="full" pb="5">
-                  <CardPartnerInformation data={item} />
+                  <CardPartnerContent data={item} />
                 </UI.HStack>
               );
             })}
