@@ -27,7 +27,7 @@ function List() {
     data: categoriesData,
   } = useGetList<ICategorie>('categories');
 
-  const {page, limit} = useFilter({limit: 10, page: 1});
+  const {page, limit, setPage, setLimit} = useFilter({limit: 10, page: 1});
   useEffect(() => {
     getListCategories({
       page,
@@ -55,6 +55,8 @@ function List() {
         limit={limit}
         totalCount={categoriesData?.total}
         currentPage={page}
+        onPageChange={setPage}
+        onLimitChange={setLimit}
         filterBar={
           <FormGenerate
             onChangeValue={handleOnChange}
