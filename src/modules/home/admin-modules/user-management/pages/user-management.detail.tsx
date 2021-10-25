@@ -244,7 +244,7 @@ function UserDetail() {
                     .default(userProfiles?.mobileNumber),
                   preferredLanguage: yup
                     .number()
-                    .required('Preferred Language is required')
+                    .required('Preferred Please select language')
                     .default(userProfiles?.language?.id),
                 }}
                 fields={[

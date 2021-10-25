@@ -99,11 +99,11 @@ function AddNew() {
               name: yup
                 .string()
                 .default(data?.name)
-                .required('Line of Business Name is required'),
+                .required('Please select Line of Business'),
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)
-                .required('Thumb is required'),
+                .required('Please upload or select an icon'),
             }}
             fields={[
               {

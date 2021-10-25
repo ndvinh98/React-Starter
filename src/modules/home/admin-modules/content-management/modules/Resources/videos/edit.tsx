@@ -105,19 +105,19 @@ function Edit() {
             schema={{
               name: yup
                 .string()
-                .required('Resource Name is required')
+                .required('Please enter Resource Name')
                 .default(resourceData?.resourceName),
               videoFileType: yup
                 .string()
-                .required('Video Type is required')
+                .required('Please enter Video Type')
                 .default(resourceData?.videoFileType),
               videoLength: yup
                 .string()
-                .required('Video Length is required')
+                .required('Please enter Video Length')
                 .default(resourceData?.videoLength),
               language: yup
                 .number()
-                .required('Language is required')
+                .required('Please select language')
                 .default(resourceData?.languageId),
             }}
             fields={[

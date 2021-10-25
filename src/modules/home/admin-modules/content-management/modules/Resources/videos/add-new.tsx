@@ -95,12 +95,12 @@ function AddNew() {
               handleSubmit(value);
             }}
             schema={{
-              name: yup.string().required('Video Name is required'),
-              language: yup.number().required('Language is required'),
+              name: yup.string().required('Please enter Video Name'),
+              language: yup.number().required('Please select language'),
               videoFileType: yup
                 .string()
-                .required('Video Type is required'),
-              videoLength: yup.string().required('Video Length is required'),
+                .required('Please enter video type'),
+              videoLength: yup.string().required('Please enter video length'),
             }}
             fields={[
               {

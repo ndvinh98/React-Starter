@@ -107,19 +107,19 @@ function Edit() {
             schema={{
               name: yup
                 .string()
-                .required('Resource Name is required')
+                .required('Please enter Resource Name')
                 .default(resourceData?.resourceName),
               brochureFormat: yup
                 .string()
-                .required('Brochure Format is required')
+                .required('Please enter Brochure Format')
                 .default(resourceData?.brochureFormat),
               noOfPages: yup
                 .number()
-                .required('Number of Pages is required')
+                .required('Please enter number of pages')
                 .default(resourceData?.noOfPages),
               language: yup
                 .number()
-                .required('Language is required')
+                .required('Please select language')
                 .default(resourceData?.languageId),
             }}
             fields={[

@@ -103,7 +103,7 @@ function Addnew() {
             postalCode: yup.string().required('Postal Code is required'),
             workNumber: yup.string().required('Work Number is required'),
             mobileNumber: yup.string().required('Mobile Number is required'),
-            languageId: yup.string().required('Preferred Language is required'),
+            languageId: yup.string().required('Preferred Please select language'),
           }}
           fields={[
             {

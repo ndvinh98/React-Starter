@@ -116,7 +116,7 @@ function ProfileDetail() {
                   preferredLanguage: yup
                     .number()
                     .optional()
-                    // .required('Preferred Language is required')
+                    // .required('Preferred Please select language')
                     .default(profileData?.language),
                 }}
                 fields={[

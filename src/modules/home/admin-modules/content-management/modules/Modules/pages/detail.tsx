@@ -280,17 +280,17 @@ function AddNew() {
               .required('Please select Line of Business'),
             category: yup
               .number()
-              .typeError('Please select Line of Business')
+              .typeError('Please select Line of Product')
               .default(data?.product?.grouping?.category?.id)
               .required('Please select Line of Product'),
             grouping: yup
               .number()
-              .typeError('Please select Line of Business')
+              .typeError('Please select Product Group')
               .default(data?.product?.grouping?.id)
               .required('Please select Product Group'),
             product: yup
               .number()
-              .typeError('Please select Line of Business')
+              .typeError('Please select Product')
               .default(data?.product?.id)
               .required('Please select Product'),
             thumb: yup

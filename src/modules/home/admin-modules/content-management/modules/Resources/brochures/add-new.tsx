@@ -95,12 +95,12 @@ function AddNew() {
               handleSubmit(value);
             }}
             schema={{
-              name: yup.string().required('Brochure Name is required'),
-              language: yup.number().required('Language is required'),
+              name: yup.string().required('Please enter Brochure Name'),
+              language: yup.number().required('Please select language'),
               brochureFormat: yup
                 .string()
-                .required('Brochure Format is required'),
-              noOfPages: yup.number().required('Number of Page is required'),
+                .required('Please enter Brochure Format'),
+              noOfPages: yup.number().required('Please enter number of pages'),
             }}
             fields={[
               {
