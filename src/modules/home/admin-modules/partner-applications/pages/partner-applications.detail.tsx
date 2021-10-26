@@ -31,6 +31,7 @@ function Detail() {
           'partnerApplicationSubmission',
           'partnerApplicationAttachments',
           'partnerApplicationSubmission.submittedByPartnerUser',
+          'language',
         ]),
       });
   }, [params]);
@@ -194,7 +195,7 @@ function Detail() {
                   DecorComponent: () => (
                     <FieldData
                       name={'Preferred Language'}
-                      value={data?.applicantPreferredLanguage}
+                      value={data?.language?.name}
                     />
                   ),
                 },
