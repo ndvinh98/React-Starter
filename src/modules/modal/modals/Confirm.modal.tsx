@@ -2,7 +2,7 @@ import React, {memo, useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import {useModalController} from '../modals.controller';
-import {usePatch} from '@utils/hooks';
+import {usePatch, useRouter} from '@utils/hooks';
 
 import DatePicker from '@components/DatePicker';
 
@@ -16,10 +16,13 @@ function ConfirmModal() {
   const toast = UI.useToast();
   const [selectedDay, setSelectedDay] = useState(null);
 
+  const {push} = useRouter();
+
   useEffect(() => {
     if (patchData) {
       closeModal('confirmRequest');
       toast({status: 'success', description: 'Successfully!', duration: 2000});
+      push('/home/partner-applications');
     }
   }, [patchData]);
 
@@ -56,7 +59,7 @@ function ConfirmModal() {
               value={selectedDay}
               onChange={setSelectedDay}
             />
-            <UI.Center mt={8} w={'full'}>
+            <UI.Center mt={8} w={'full'} pt={3}>
               <UI.Button
                 colorScheme="blue"
                 onClick={() => {
