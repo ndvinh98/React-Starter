@@ -9,7 +9,9 @@ import {BsArrowLeft} from 'react-icons/bs';
 
 function List() {
   const {push} = useRouter();
-  const {page, limit, filter, setFilter} = useFilter({limit: 10, page: 1});
+  const {page, limit, filter, textSearch, setTextSearch, setFilter} = useFilter(
+    {limit: 10, page: 1},
+  );
   const {params} = useRouterController();
   const {getList: getListResources, data: resourcesData} = useGetList(
     'productModuleResources',
@@ -35,16 +37,22 @@ function List() {
         filter: filter
           ? JSON.stringify([{productModuleId: filter}])
           : undefined,
+        textSearch: textSearch
+          ? JSON.stringify([{resourceName: textSearch}])
+          : undefined,
       });
       getListModules({
         filter: JSON.stringify([{id: params?.id}]),
       });
     }
-  }, [page, limit, filter]);
+  }, [page, limit, filter, textSearch]);
+
+  const handleOnChange = ({textSearch}) => {
+    if (textSearch !== undefined) setTextSearch(textSearch as string);
+  };
 
   return (
     <UI.Box minH="89vh">
-      <LoadingComponent isLoading={loading}>
         <UI.HStack
           mt={4}
           ml={8}
@@ -56,6 +64,7 @@ function List() {
         </UI.HStack>
         <ContentView
           data={resourcesData?.records}
+          isLoading={loading}
           limit={limit}
           isVideo={
             modulesData?.records?.[0]?.mediaType == 'VIDEOS' ? true : false
@@ -67,13 +76,13 @@ function List() {
           currentPage={page}
           filterBar={
             <FormGenerate
-              //onChangeValue={handleOnChange}
+              onChangeValue={handleOnChange}
               gap="10px"
               w="60vw"
               mb={4}
               fields={[
                 {
-                  name: 'search',
+                  name: 'textSearch',
                   type: 'input',
                   size: 'md',
                   colSpan: 3,
@@ -92,7 +101,6 @@ function List() {
                 modulesData?.records?.[0]?.id
           }
         />
-      </LoadingComponent>
     </UI.Box>
   );
 }
