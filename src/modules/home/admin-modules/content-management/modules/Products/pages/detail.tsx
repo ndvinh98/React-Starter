@@ -213,8 +213,8 @@ function Edit() {
               application: yup
                 .number()
                 .required('Please select Line of Business'),
-              category: yup.number().required('Please select Line of Product'),
-              grouping: yup.number().required('Please select Product Group'),
+              category: yup.number().typeError('Please select Line of Product').required('Please select Line of Product'),
+              grouping: yup.number().typeError('Please select Product Group').required('Please select Product Group'),
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)
