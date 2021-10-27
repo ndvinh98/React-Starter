@@ -190,6 +190,7 @@ function CompanyDetail() {
         setPage={setPageSales}
         getList={getListSales}
         companyName={dataCompany?.records[0]?.companyName}
+        partnerId={params?.id}
       />
       <TierToParter
         companyName={dataCompany?.records[0]?.companyName}

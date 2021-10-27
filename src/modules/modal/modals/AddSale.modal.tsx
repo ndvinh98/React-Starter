@@ -1,76 +1,64 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
-import {AiOutlineSearch} from 'react-icons/ai';
 import {isEmpty} from 'lodash';
 import {IUserManagement} from '@types';
-import FormGenerate from '@components/FormGenerate';
-import CardSale from '@components/CardSale';
 
 import {useModalController} from '../modals.controller';
-import {usePost, useFilter, useGetList} from '@utils/hooks';
+import {usePost, useGetList} from '@utils/hooks';
+import Select from '@components/Select';
 
 function AddSale() {
   const {addSale, closeModal, data} = useModalController();
 
-  const {data: patchData, loading: loadingData} = usePost(
-    `/partnerUserRelations`,
-  );
   const toast = UI.useToast();
+  const [newSale, setNewSale] = useState([]);
+
+  const handleRemoveUser = (value: number) =>
+    setNewSale((s) => s.filter((x) => x?.value !== value));
+
+  const {getList, data: dataUser} = useGetList<IUserManagement>('/users');
 
   useEffect(() => {
-    if (patchData) {
+    if (data?.partnerId)
+      getList({
+        relations: JSON.stringify(['userProfiles']),
+        filter: JSON.stringify([{userType: 'USER'}]),
+        notInPartnerId: data?.partnerId,
+      });
+  }, [data]);
+
+  const handleAddSale = () => {
+    if (isEmpty(newSale)) {
+      toast({
+        title: 'Warning!, No new Sale',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-right',
+      });
+    } else {
+      createNewSale({
+        userIds: newSale.map((x) => x?.value),
+        partnerId: data?.partnerId,
+      });
+
+      data.cb();
       closeModal('addSale');
       toast({status: 'success', description: 'Successfully!', duration: 2000});
     }
-  }, [patchData]);
-
-  const {page, limit, textSearch, setTextSearch, filter} = useFilter({
-    page: 1,
-    limit: 10,
-  });
-  const {
-    loading,
-    getList,
-    data: dataUser,
-  } = useGetList<IUserManagement>('/users');
-
-  useEffect(() => {
-    getList({
-      page,
-      limit,
-      relations: JSON.stringify(['userProfiles']),
-      filter: JSON.stringify([{userType: 'USER'}]),
-      textSearch: textSearch
-        ? JSON.stringify([
-            {firstName: textSearch},
-            {email: textSearch},
-            {lastName: textSearch},
-          ])
-        : undefined,
-    });
-  }, [page, limit, textSearch, filter]);
-
-  const handleFilterData = ({textSearch = undefined}, fieldChange) => {
-    if (fieldChange.name === 'textSearch') {
-      if (textSearch.length < 3) return;
-
-      setTextSearch(textSearch);
-    }
   };
 
-  const addItem = (dataNewUser) => {
-    console.log(dataNewUser);
-    console.log('hâhha');
-  };
+  const {post: createNewSale, loading} = usePost(
+    '/partnerUserRelations/createMany',
+  );
 
   return (
     <UI.Modal
       isCentered
       autoFocus={false}
       isOpen={addSale}
-      scrollBehavior="inside"
       onClose={() => closeModal('addSale')}>
       <UI.ModalOverlay />
       <UI.ModalContent position={'relative'} w="360px" maxH="360px">
@@ -92,44 +80,42 @@ function AddSale() {
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody>
-          <UI.Stack>
-            <UI.HStack>
-              <FormGenerate
-                onChangeValue={handleFilterData}
-                fields={[
-                  {
-                    name: 'textSearch',
-                    type: 'input-group',
-
-                    size: 'md',
-                    placeholder: 'Search...',
-                    leftIcon: <AiOutlineSearch size={20} />,
-                  },
-                ]}
+          <UI.Stack w="full">
+            <UI.Box w="full">
+              <Select
+                w="full"
+                placeholder="Select user"
+                isMulti
+                options={dataUser?.records?.map((x) => ({
+                  value: x?.id,
+                  label: `${x?.firstName} ${x?.lastName} `,
+                  view: `${x?.firstName} ${x?.lastName} `,
+                }))}
+                onChangeValue={setNewSale}
               />
+            </UI.Box>
 
-              <UI.Button>Add</UI.Button>
-            </UI.HStack>
-
-            {loading ? (
-              <UI.Center minH="300px">
-                <UI.Spinner size="lg" color="ste.red" />
-              </UI.Center>
-            ) : isEmpty(dataUser?.records) ? (
-              <UI.Center>
-                <UI.Image src="" />
-                <UI.Text>No data</UI.Text>
-              </UI.Center>
-            ) : (
-              <UI.Box w={'full'}>
-                {dataUser?.records.map((item) => {
-                  return (
-                    <UI.HStack key={item?.id} spacing={8} width="full" pb="5">
-                      <CardSale data={item} addItem={addItem} />
-                    </UI.HStack>
-                  );
-                })}
-              </UI.Box>
+            {!isEmpty(newSale) && (
+              <UI.VStack w="full">
+                <UI.VStack w="full" justifyContent="space-between" px={3}>
+                  {newSale?.map?.((x) => (
+                    <UI.Tag
+                      w="full"
+                      size="md"
+                      borderRadius="full"
+                      variant="solid"
+                      bg="#E0E0E0"
+                      color="#777777"
+                      key={x?.value}>
+                      {x?.view}
+                      <UI.Spacer />
+                      <UI.TagCloseButton
+                        onClick={() => handleRemoveUser(x?.value)}
+                      />
+                    </UI.Tag>
+                  ))}
+                </UI.VStack>
+              </UI.VStack>
             )}
 
             <UI.Center mt={8} w={'full'}>
@@ -138,7 +124,8 @@ function AddSale() {
                 mr={3}
                 w={'120px'}
                 type="submit"
-                isLoading={loading}>
+                isLoading={loading}
+                onClick={handleAddSale}>
                 Confirm
               </UI.Button>
               <UI.Button
@@ -146,6 +133,7 @@ function AddSale() {
                 type="button"
                 onClick={() => {
                   closeModal('addSale');
+                  setNewSale([]);
                 }}
                 variant="outline">
                 Cancel
