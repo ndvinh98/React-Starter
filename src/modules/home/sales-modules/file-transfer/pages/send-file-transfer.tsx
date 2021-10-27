@@ -19,13 +19,10 @@ function SendFiles() {
   const [uploadStatus, setUploadStatus] = useState<'DONE' | 'FAIL' | 'PENDING'>(
     'PENDING',
   );
-  const [loadingUpload, setLoadingUpload] = useState(false)
+  const [loadingUpload, setLoadingUpload] = useState(false);
 
   const {data, getList} = useGetList('/partners');
-  const {
-    data: usersData,
-    getList: getListUsers,
-  } = useGetList('/partnerUsers');
+  const {data: usersData, getList: getListUsers} = useGetList('/partnerUsers');
 
   useEffect(() => {
     getList({
@@ -54,15 +51,21 @@ function SendFiles() {
   const handleRemoveUser = (value: number) =>
     setUsersSender((s) => s.filter((x) => x?.value !== value));
 
-  const {getItem,loading: loadingUploadUrl, data: dataUpload} = useGetItem<any>(
-    `userFileTransferAttachments/uploadFileUrl`,
+  const {
+    getItem,
+    loading: loadingUploadUrl,
+    data: dataUpload,
+  } = useGetItem<any>(`userFileTransferAttachments/uploadFileUrl`);
+
+  const {
+    post: createFileTransfer,
+    loading: loadingCreateFileTransfer,
+    data: resCreateFileTransfer,
+  } = usePost('/userFileTransfers');
+
+  const {post: postUploadSuccess, loading: loadingPostUploadSuccess} = usePost(
+    '/userFileTransferAttachments/uploadSuccess',
   );
-
-  const {post: createFileTransfer,loading: loadingCreateFileTransfer, data: resCreateFileTransfer} =
-    usePost('/userFileTransfers');
-
-    const {post: postUploadSuccess, loading: loadingPostUploadSuccess} =
-    usePost('/userFileTransferAttachments/uploadSuccess');
 
   const handleSendFiles = () => {
     if (
@@ -100,7 +103,7 @@ function SendFiles() {
 
   useEffect(() => {
     if (!isEmpty(dataUpload)) {
-      setLoadingUpload(true)
+      setLoadingUpload(true);
       const process = [];
       for (let i = 0; i < dataUpload.length; i++) {
         const worker = uploadFile(
@@ -123,9 +126,8 @@ function SendFiles() {
         setSubject('');
         setDescription('');
         uploadEl.current.clear?.();
-        postUploadSuccess({fileTransferId: resCreateFileTransfer?.id})
-        setLoadingUpload(false)
-
+        postUploadSuccess({fileTransferId: resCreateFileTransfer?.id});
+        setLoadingUpload(false);
       });
     }
   }, [dataUpload]);
@@ -229,8 +231,14 @@ function SendFiles() {
           <UI.Text w="300px"></UI.Text>
           <UI.HStack justifyContent="center" w="full">
             <UI.Button
-              isLoading={loadingUploadUrl|| loadingCreateFileTransfer || loadingPostUploadSuccess || loadingUpload}
-            onClick={handleSendFiles} w="150px">
+              isLoading={
+                loadingUploadUrl ||
+                loadingCreateFileTransfer ||
+                loadingPostUploadSuccess ||
+                loadingUpload
+              }
+              onClick={handleSendFiles}
+              w="150px">
               Send
             </UI.Button>
           </UI.HStack>
