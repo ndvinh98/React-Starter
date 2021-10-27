@@ -99,7 +99,7 @@ function AddNew() {
               name: yup
                 .string()
                 .default(data?.name)
-                .required('Please select Line of Business'),
+                .required('Please enter Line of Business Name'),
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)

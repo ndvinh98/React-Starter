@@ -93,7 +93,7 @@ function AddNew() {
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/content-management/line-of-business')}>
+        onClick={() => push('/home/content-management/line-of-product')}>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
@@ -121,7 +121,7 @@ function AddNew() {
               name: yup
                 .string()
                 .default(data?.name)
-                .required('Line of Product Name is required'),
+                .required('Please enter Line of Product Name'),
               application: yup
                 .number()
                 .default(data?.application?.id)

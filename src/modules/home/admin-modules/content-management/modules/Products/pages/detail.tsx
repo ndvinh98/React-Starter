@@ -208,7 +208,7 @@ function Edit() {
             schema={{
               name: yup
                 .string()
-                .required('Line of Product Name is required')
+                .required('Please enter Product Name')
                 .default(data?.name),
               application: yup
                 .number()
@@ -224,7 +224,7 @@ function Edit() {
               {
                 name: 'name',
                 type: 'input',
-                label: 'Line of Product Name',
+                label: 'Product Name',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
