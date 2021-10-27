@@ -108,6 +108,12 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <ContentView
+        onReloadPage={() =>
+          getListProduct({
+            page,
+            limit,
+          })
+        }
         isLoading={loadingProducts}
         data={productsData?.records}
         limit={limit}

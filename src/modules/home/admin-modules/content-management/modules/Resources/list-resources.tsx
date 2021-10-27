@@ -63,6 +63,9 @@ function List() {
           <UI.Text fontSize={'14px'}>Back</UI.Text>
         </UI.HStack>
         <ContentView
+          onReloadPage={() =>
+            location.reload()
+          }
           data={resourcesData?.records}
           isLoading={loading}
           limit={limit}

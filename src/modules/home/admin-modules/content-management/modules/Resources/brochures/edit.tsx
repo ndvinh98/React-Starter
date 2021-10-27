@@ -15,8 +15,6 @@ function Edit() {
   const toast = UI.useToast();
   const {params} = useRouterController();
   const {languages} = useConfigStore();
-  let mediaDestination = '';
-  let thumbnailMediaDestination = '';
   const {
     data: resourceData,
     loading: loadResourceData,

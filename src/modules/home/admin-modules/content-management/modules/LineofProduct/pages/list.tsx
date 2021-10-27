@@ -50,6 +50,12 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <ContentView
+        onReloadPage={() =>
+          getListCategories({
+            page,
+            limit,
+          })
+        }
         isLoading={loadingCategory}
         data={categoriesData?.records}
         limit={limit}

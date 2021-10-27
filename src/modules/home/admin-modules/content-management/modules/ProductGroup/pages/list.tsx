@@ -110,6 +110,12 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <ContentView
+        onReloadPage={() =>
+          getListGroupings({
+            page,
+            limit,
+          })
+        }
         isLoading={loading}
         data={groupingsData?.records}
         limit={limit}
