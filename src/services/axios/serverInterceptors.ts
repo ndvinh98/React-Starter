@@ -17,6 +17,7 @@ export const serverInterceptors = () => {
             description: JSON.stringify(err.response?.data?.error),
             status: 'error',
             position: 'top-right',
+            isClosable: true
           });
         }
         throw err;
