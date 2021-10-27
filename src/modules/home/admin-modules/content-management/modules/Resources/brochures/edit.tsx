@@ -91,7 +91,7 @@ function Edit() {
           bg="white"
           shadow="md">
           <UI.Text fontSize="16px" fontWeight="bold">
-            ADD NEW BROCHURE
+            EDIT BROCHURE
           </UI.Text>
           <FormGenerate
             spacing={6}
@@ -115,6 +115,12 @@ function Edit() {
                 .number()
                 .required('Please select language')
                 .default(resourceData?.languageId),
+              videos: yup
+                .string()
+                .required('Please upload file'),
+              thumb: yup
+                .string()
+                .required('Please upload thumbnail'),
             }}
             fields={[
               {
@@ -131,7 +137,7 @@ function Edit() {
                 layout: 'horizontal',
                 name: 'brochures',
                 productModuleId: resourceData?.productModuleId,
-                // defaultValue: getFileName(resourceData?.mediaDestination),
+                defaultValue: resourceData?.mediaDestination,
                 colSpan: 12,
                 labelUpload: 'Upload File',
                 description: ' ',

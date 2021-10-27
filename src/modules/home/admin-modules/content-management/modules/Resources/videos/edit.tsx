@@ -108,6 +108,12 @@ function Edit() {
                 .number()
                 .required('Please select language')
                 .default(resourceData?.languageId),
+              videos: yup
+                .string()
+                .required('Please upload file'),
+              thumb: yup
+                .string()
+                .required('Please upload thumbnail'),
             }}
             fields={[
               {
@@ -124,7 +130,7 @@ function Edit() {
                 layout: 'horizontal',
                 name: 'videos',
                 productModuleId: resourceData?.productModuleId,
-                // defaultValue: getFileName(resourceData?.mediaDestination),
+                defaultValue: resourceData?.mediaDestination,
                 colSpan: 12,
                 labelUpload: 'Upload File',
                 description: ' ',

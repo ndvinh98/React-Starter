@@ -16,6 +16,7 @@ export interface IUploadFileContent {
   description?: string;
   label?: string;
   productModuleId?: number;
+  labelUpload?:string;
 }
 
 function UploadFileContent(props: IUploadFileContent) {
@@ -111,7 +112,7 @@ function UploadFileContent(props: IUploadFileContent) {
                   p={2}
                   borderRadius={'15px'}
                   border={'1px solid #E0E0E0'}>
-                  <UI.Text>{getFileName(data?.value)}</UI.Text>
+                  <UI.Text>{getFileName(data?.value) || getFileName(defaultValue)}</UI.Text>
                 </UI.Box>
               ) : (
                 <UI.Image
