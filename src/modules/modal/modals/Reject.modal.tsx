@@ -5,7 +5,7 @@ import {RiErrorWarningFill} from 'react-icons/ri';
 import {useModalController} from '../modals.controller';
 import FormGenerate from '@components/FormGenerate';
 import * as yup from 'yup';
-import {usePatch} from '@utils/hooks';
+import {usePatch, useRouter} from '@utils/hooks';
 
 function RejectModal() {
   const {reject, closeModal, data} = useModalController();
@@ -15,11 +15,12 @@ function RejectModal() {
     patch,
   } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
   const toast = UI.useToast();
-
+  const {push} = useRouter();
   useEffect(() => {
     if (patchData) {
       closeModal('reject');
       toast({status: 'success', description: 'Successfully!', duration: 2000});
+      push('/home/partner-applications');
     }
   }, [patchData]);
 
