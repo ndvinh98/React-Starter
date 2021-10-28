@@ -61,9 +61,7 @@ function DeleteContentModal() {
             {!data?.isResources ? (
               <UI.VStack>
                 <UI.Text>
-                  Are you sure you want to delete the following content? Please
-                  note that all content in this {data?.name} will be deleted.
-                  This action cannot be undone.
+                  Are you sure you want to delete the following content?
                 </UI.Text>
                 <UI.Box pl={4} w={'full'}>
                   {itemSelected?.map((x, index) => {

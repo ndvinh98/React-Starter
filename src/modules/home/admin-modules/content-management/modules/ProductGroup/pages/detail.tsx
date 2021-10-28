@@ -164,7 +164,7 @@ function Edit() {
             schema={{
               name: yup
                 .string()
-                .required('Product Group Name is required')
+                .required('Please enter Product Group Name')
                 .default(data?.name),
               application: yup
                 .number()

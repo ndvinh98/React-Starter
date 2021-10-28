@@ -15,8 +15,6 @@ function AddNew() {
   const toast = UI.useToast();
   const {params} = useRouterController();
   const {languages} = useConfigStore();
-  let mediaDestination = '';
-  let thumbnailMediaDestination = '';
   const {post, loading, data: postData} = usePost('/productModuleResources');
   const {
     data: moduleData,

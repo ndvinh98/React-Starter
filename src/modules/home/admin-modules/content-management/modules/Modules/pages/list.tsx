@@ -171,6 +171,12 @@ function List() {
   return (
     <UI.Box minH="89vh">
       <ContentView
+        onReloadPage={() =>
+          getListModules({
+            page,
+            limit,
+          })
+        }
         isLoading={loadingModule}
         data={modulesData?.records}
         limit={limit}

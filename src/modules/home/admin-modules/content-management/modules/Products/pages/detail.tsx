@@ -208,13 +208,13 @@ function Edit() {
             schema={{
               name: yup
                 .string()
-                .required('Line of Product Name is required')
+                .required('Please enter Product Name')
                 .default(data?.name),
               application: yup
                 .number()
                 .required('Please select Line of Business'),
-              category: yup.number().required('Please select Line of Product'),
-              grouping: yup.number().required('Please select Product Group'),
+              category: yup.number().typeError('Please select Line of Product').required('Please select Line of Product'),
+              grouping: yup.number().typeError('Please select Product Group').required('Please select Product Group'),
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)
@@ -224,7 +224,7 @@ function Edit() {
               {
                 name: 'name',
                 type: 'input',
-                label: 'Line of Product Name',
+                label: 'Product Name',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',

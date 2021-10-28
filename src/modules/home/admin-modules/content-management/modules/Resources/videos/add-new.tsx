@@ -2,7 +2,6 @@ import React, {useEffect, useRef} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, usePost} from '@utils/hooks';
-import UploadFileContent from '@components/UploadFileContent';
 import FormGenerate from '@components/FormGenerate';
 import {useGetItem} from '@utils/hooks';
 import * as yup from 'yup';
@@ -15,8 +14,6 @@ function AddNew() {
   const toast = UI.useToast();
   const {params} = useRouterController();
   const {languages} = useConfigStore();
-  let mediaDestination = '';
-  let thumbnailMediaDestination = '';
   const {post, loading, data: postData} = usePost('/productModuleResources');
   const {
     data: moduleData,
@@ -67,7 +64,7 @@ function AddNew() {
           <UI.Text fontSize={'14px'}>Back</UI.Text>
         </UI.HStack>
         <UI.Text fontSize="24px" fontWeight="bold">
-          Content Management - Videos
+          Content Management - {moduleData?.name}
         </UI.Text>
         <UI.VStack
           spacing="20px"

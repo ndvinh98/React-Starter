@@ -41,6 +41,7 @@ function SalesTable(props: any) {
     totalCount,
     companyName,
     getList,
+    partnerId,
   } = props;
   const {path} = useRouterController();
   const {push} = useRouter();
@@ -87,8 +88,9 @@ function SalesTable(props: any) {
                         minW={110}
                         onClick={() =>
                           openModal('addSale', {
+                            cb: getList,
                             companyName: data?.companyName,
-                            id: data?.partnerApplicationSubmission?.id,
+                            partnerId: partnerId,
                           })
                         }
                         size={'md'}>

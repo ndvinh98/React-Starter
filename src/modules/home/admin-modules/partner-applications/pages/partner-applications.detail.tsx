@@ -31,6 +31,7 @@ function Detail() {
           'partnerApplicationSubmission',
           'partnerApplicationAttachments',
           'partnerApplicationSubmission.submittedByPartnerUser',
+          'language',
         ]),
       });
   }, [params]);
@@ -194,7 +195,7 @@ function Detail() {
                   DecorComponent: () => (
                     <FieldData
                       name={'Preferred Language'}
-                      value={data?.applicantPreferredLanguage}
+                      value={data?.language?.name}
                     />
                   ),
                 },
@@ -443,7 +444,7 @@ function Detail() {
                   type: 'decor',
                   DecorComponent: () => (
                     <FieldView
-                      name={`Attachments`}
+                      name={`Company's last signed audited financial statement`}
                       value={handleNameAttachment(
                         data?.partnerApplicationAttachments[0]
                           ?.mediaDestination,
@@ -458,7 +459,7 @@ function Detail() {
                   type: 'decor',
                   DecorComponent: () => (
                     <FieldView
-                      name={``}
+                      name={`Company's business registry`}
                       value={handleNameAttachment(
                         data?.partnerApplicationAttachments[1]
                           ?.mediaDestination,
@@ -546,6 +547,7 @@ export const FieldView = memo(({name, value, data}: any) => {
         w={'full'}>
         <UI.Text fontWeight={'bold'}>{value || '---'}</UI.Text>
         <UI.Button
+          hidden={isEmpty(data)}
           onClick={() =>
             openModal('fileViewer2', {
               mediaDestination: data,
