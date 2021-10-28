@@ -3,7 +3,6 @@ import {isEmpty, keyBy} from 'lodash';
 import * as UI from '@chakra-ui/react';
 import Select from '@components/Select';
 import UploadFilesSender from '@components/UploadMultipleFiles';
-import {useAuthController} from '@modules/auth';
 import {useGetList, useGetItem, usePost} from '@utils/hooks';
 import {uploadFile} from '@services';
 
@@ -12,20 +11,17 @@ function SendFiles() {
 
   const toast = UI.useToast();
   const [usersSender, setUsersSender] = useState([]);
-  const [companySender, setCompanySender] = useState();
+  const [companySender, setCompanySender] = useState(null);
   const [subject, setSubject] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [description, setDescription] = useState('');
   const [uploadStatus, setUploadStatus] = useState<'DONE' | 'FAIL' | 'PENDING'>(
     'PENDING',
   );
-  const [loadingUpload, setLoadingUpload] = useState(false)
+  const [loadingUpload, setLoadingUpload] = useState(false);
 
   const {data, getList} = useGetList('/partners');
-  const {
-    data: usersData,
-    getList: getListUsers,
-  } = useGetList('/partnerUsers');
+  const {data: usersData, getList: getListUsers} = useGetList('/partnerUsers');
 
   useEffect(() => {
     getList({
@@ -33,10 +29,6 @@ function SendFiles() {
       relations: JSON.stringify(['partnerDomain']),
     });
   }, []);
-
-  useEffect(() => {
-    console.log(usersData);
-  }, [usersData]);
 
   useEffect(() => {
     if (companySender) {
@@ -54,15 +46,21 @@ function SendFiles() {
   const handleRemoveUser = (value: number) =>
     setUsersSender((s) => s.filter((x) => x?.value !== value));
 
-  const {getItem,loading: loadingUploadUrl, data: dataUpload} = useGetItem<any>(
-    `userFileTransferAttachments/uploadFileUrl`,
+  const {
+    getItem,
+    loading: loadingUploadUrl,
+    data: dataUpload,
+  } = useGetItem<any>(`userFileTransferAttachments/uploadFileUrl`);
+
+  const {
+    post: createFileTransfer,
+    loading: loadingCreateFileTransfer,
+    data: resCreateFileTransfer,
+  } = usePost('/userFileTransfers');
+
+  const {post: postUploadSuccess, loading: loadingPostUploadSuccess} = usePost(
+    '/userFileTransferAttachments/uploadSuccess',
   );
-
-  const {post: createFileTransfer,loading: loadingCreateFileTransfer, data: resCreateFileTransfer} =
-    usePost('/userFileTransfers');
-
-    const {post: postUploadSuccess, loading: loadingPostUploadSuccess} =
-    usePost('/userFileTransferAttachments/uploadSuccess');
 
   const handleSendFiles = () => {
     if (
@@ -100,7 +98,7 @@ function SendFiles() {
 
   useEffect(() => {
     if (!isEmpty(dataUpload)) {
-      setLoadingUpload(true)
+      setLoadingUpload(true);
       const process = [];
       for (let i = 0; i < dataUpload.length; i++) {
         const worker = uploadFile(
@@ -123,9 +121,8 @@ function SendFiles() {
         setSubject('');
         setDescription('');
         uploadEl.current.clear?.();
-        postUploadSuccess({fileTransferId: resCreateFileTransfer?.id})
-        setLoadingUpload(false)
-
+        postUploadSuccess({fileTransferId: resCreateFileTransfer?.id});
+        setLoadingUpload(false);
       });
     }
   }, [dataUpload]);
@@ -229,8 +226,14 @@ function SendFiles() {
           <UI.Text w="300px"></UI.Text>
           <UI.HStack justifyContent="center" w="full">
             <UI.Button
-              isLoading={loadingUploadUrl|| loadingCreateFileTransfer || loadingPostUploadSuccess || loadingUpload}
-            onClick={handleSendFiles} w="150px">
+              isLoading={
+                loadingUploadUrl ||
+                loadingCreateFileTransfer ||
+                loadingPostUploadSuccess ||
+                loadingUpload
+              }
+              onClick={handleSendFiles}
+              w="150px">
               Send
             </UI.Button>
           </UI.HStack>

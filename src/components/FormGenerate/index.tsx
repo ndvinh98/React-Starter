@@ -44,6 +44,7 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
     setValue,
     reset,
     watch,
+    control,
   } = useForm({
     resolver: yupResolver(yup.object().shape(schema)),
   });
@@ -54,6 +55,7 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
     setValue,
     reset: handleReset,
     watch,
+    control,
   }));
 
   const handleReset = (props) => {

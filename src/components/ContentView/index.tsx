@@ -38,6 +38,7 @@ export interface IContentView {
   isVideo?: boolean;
   isBrochures?: boolean;
   onReloadPage?: () => void;
+  onClickItem?: (item: any) => void;
 }
 
 function ContentView(props: IContentView) {
@@ -50,7 +51,6 @@ function ContentView(props: IContentView) {
     totalCount,
     currentPage,
     linkAddNew,
-    linkToChild,
     isModulesView,
     isVideo,
     isBrochures,
@@ -59,7 +59,9 @@ function ContentView(props: IContentView) {
     onPageChange,
     isLoading,
     onReloadPage,
+    onClickItem,
   } = props;
+
   const {push} = useRouter();
   const [showType, setShowType] = useState<'GRID' | 'LIST'>('GRID');
   const itemSelected = useContentManagementController((s) => s.itemSelected);
@@ -150,13 +152,9 @@ function ContentView(props: IContentView) {
                 <UI.MenuItem
                   onClick={() => {
                     if (isVideo) {
-                      push(
-                        `videos/edit/${itemSelected?.[0]?.id}`,
-                      );
+                      push(`videos/edit/${itemSelected?.[0]?.id}`);
                     } else if (isBrochures) {
-                      push(
-                        `brochures/edit/${itemSelected?.[0]?.id}`,
-                      );
+                      push(`brochures/edit/${itemSelected?.[0]?.id}`);
                     } else {
                       push(`${pathname}/detail/${itemSelected?.[0]?.id}`);
                     }
@@ -200,7 +198,7 @@ function ContentView(props: IContentView) {
                     isBrochures={isBrochures}
                     isVideo={isVideo}
                     item={item}
-                    linkToChild={linkToChild + '?parentId=' + item?.id}
+                    onClickItem={onClickItem}
                   />
                 ))}
 
@@ -209,7 +207,7 @@ function ContentView(props: IContentView) {
                   <ModuleGridItem
                     item={x}
                     key={x?.id}
-                    linkToChild={linkToChild}
+                    onClickItem={onClickItem}
                   />
                 ))}
 
@@ -241,17 +239,13 @@ function ContentView(props: IContentView) {
                     key={x?.id}
                     isBrochures={isBrochures}
                     isVideo={isVideo}
-                    linkToChild={linkToChild + '?parentId=' + x?.id}
+                    linkToChild={''}
                   />
                 ))}
 
               {isModulesView &&
                 data?.map((x) => (
-                  <ModuleListItem
-                    item={x}
-                    linkToChild={linkToChild}
-                    key={x?.id}
-                  />
+                  <ModuleListItem item={x} linkToChild={''} key={x?.id} />
                 ))}
               <UI.HStack
                 onClick={() => push(linkAddNew)}

@@ -1,10 +1,9 @@
 import React from 'react';
 import * as UI from '@chakra-ui/react';
 import {useContentManagementController} from '@modules/home/admin-modules/content-management';
-import {useRouter, useHover} from '@utils/hooks';
+import {useHover} from '@utils/hooks';
 
-function ModuleGridItem({item, linkToChild}) {
-  const {push} = useRouter();
+function ModuleGridItem({item, onClickItem}) {
   const [hoverRef, isHovered] = useHover<any>();
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
@@ -35,7 +34,7 @@ function ModuleGridItem({item, linkToChild}) {
       />
       <UI.Box
         onClick={() => {
-          push(linkToChild + '/module/' + item?.id);
+          onClickItem?.(item);
         }}
         cursor="pointer"
         shadow="sm"

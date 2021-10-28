@@ -19,6 +19,7 @@ export interface ISelect {
   isInvalid?: boolean;
   size?: 'sm' | 'md' | 'lg';
   ref?: any;
+  onChangeValue?: (data) => void;
   [key: string]: any;
 }
 
@@ -42,6 +43,7 @@ const Select: React.FC<ISelect> = (props) => {
     defaultValue,
     options,
     refEl,
+    onChangeValue,
     ...other
   } = props;
 
@@ -53,12 +55,17 @@ const Select: React.FC<ISelect> = (props) => {
       onChange={(data: any) => {
         if (!data) {
           onChange({target: {value: '', name}});
+          onChangeValue?.(data);
         }
-        if (isArray(data))
+        if (isArray(data)) {
           onChange({
             target: {value: data.map((x) => x.value) || undefined, name},
           });
-        else onChange({target: {value: data?.value || undefined, name}});
+          onChangeValue?.(data);
+        } else {
+          onChange({target: {value: data?.value || undefined, name}});
+          onChangeValue?.(data);
+        }
       }}
       options={options}
       {...other}

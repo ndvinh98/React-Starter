@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 
-import {useGetList, useFilter} from '@utils/hooks';
+import {useGetList, useFilter, useRouter} from '@utils/hooks';
 import {IApplication} from '@types';
 
 function List() {
@@ -14,6 +14,7 @@ function List() {
       limit,
     });
   }, [page, limit]);
+  const {push} = useRouter();
 
   return (
     <UI.Box minH="89vh">
@@ -32,7 +33,11 @@ function List() {
         totalCount={data?.total}
         currentPage={page}
         linkAddNew="/home/content-management/line-of-business/detail/add"
-        linkToChild="/home/content-management/line-of-product"
+        onClickItem={(item) => {
+          push(
+            `/home/content-management/line-of-product?lineOfBusiness=${item?.id}`,
+          );
+        }}
         name="Line of Business"
         linkDeleteContent="/applications"
       />

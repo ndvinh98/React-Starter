@@ -1,37 +1,29 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
 import {useGetList, useFilter} from '@utils/hooks';
 import {IProduct, ICategorie, IGrouping, IModules} from '@types';
 import {useContentManagementController} from '@modules/home';
+import {useCurrentRoute} from 'react-navi';
+import {keyBy} from 'lodash';
 
 function List() {
+  const {url} = useCurrentRoute();
   const allLineBusiness = useContentManagementController(
     (s) => s.allLineBusiness,
-  );
-  const [applicationId, setApplicationId] = useState(-1);
-  const [categoryId, setCategoryId] = useState(-1);
-  const [groupingId, setGroupingId] = useState(-1);
-  const [productId, setProductId] = useState(-1);
+  )?.map?.((x) => ({
+    value: x?.id,
+    label: x?.name,
+  }));
 
-  const handleOnChange = ({application, category, grouping, product}) => {
-    setApplicationId(application || -1);
-    setCategoryId(category || -1);
-    setGroupingId(grouping || -1);
-    setProductId(product || -1);
-  };
+  const allLineBusinessKeys = keyBy(allLineBusiness, 'value');
 
-  const categoryRef = useRef<any>(null);
-  const applicationRef = useRef<any>(null);
-  const groupingRef = useRef<any>(null);
-  const productRef = useRef<any>(null);
-
-  const {getList: getListCategories, data: categoriesData} =
+  const {getList: getListCategories, data: categoriesRawData} =
     useGetList<ICategorie>('categories');
-  const {getList: getListGroupings, data: groupingsData} =
+  const {getList: getListGroupings, data: groupingsRawData} =
     useGetList<IGrouping>('groupings');
-  const {getList: getListProduct, data: productsData} =
+  const {getList: getListProduct, data: productsRawData} =
     useGetList<IProduct>('products');
   const {
     getList: getListModules,
@@ -39,9 +31,19 @@ function List() {
     data: modulesData,
   } = useGetList<IModules>('productModules');
 
-  const {page, limit, setPage, setLimit} = useFilter({limit: 10, page: 1});
+  const {page, limit, setPage, setLimit, filter, setFilter} = useFilter({
+    limit: 10,
+    page: 1,
+    filter: {
+      applicationId: +url.query?.lineOfBusiness || -1,
+      categoryId: +url.query?.lineOfProduct || -1,
+      groupingId: +url.query?.productGroup || -1,
+      productId: +url.query?.productId || -1,
+    },
+  });
 
   const createFilter = React.useMemo(() => {
+    const {applicationId, categoryId, groupingId, productId} = filter;
     if (applicationId < 0) return {};
     if (applicationId > 0 && categoryId < 0) {
       return {
@@ -87,7 +89,7 @@ function List() {
         filter: JSON.stringify([{productId: productId}]),
       };
     }
-  }, [applicationId, categoryId, groupingId, productId]);
+  }, [filter]);
 
   useEffect(() => {
     getListModules({
@@ -95,61 +97,76 @@ function List() {
       page,
       limit,
     });
-  }, [applicationId, categoryId, groupingId, productId, page, limit]);
+  }, [filter, page, limit]);
 
   useEffect(() => {
-    if (applicationId < 0) {
-      categoryRef?.current?.select?.setValue({value: -1, label: 'All Line of Product'});
-      groupingRef?.current?.select?.setValue({
-        value: -1,
-        label: 'All Product Group',
-      });
-      productRef?.current?.select?.setValue({
-        value: -1,
-        label: 'All Products',
-      });
-    }
-    if (applicationId > 0) {
+    if (filter?.applicationId > 0) {
       getListCategories({
         limit: 9999,
-        filter: JSON.stringify([{application: applicationId}]),
+        filter: JSON.stringify([{application: filter?.applicationId}]),
       });
     }
-  }, [applicationId]);
+  }, [filter?.applicationId]);
+
+  const categoriesData =
+    categoriesRawData?.records?.map?.((x) => ({
+      value: x?.id,
+      label: x?.name,
+    })) || [];
+
+  const categoriesDataKeys = keyBy(
+    [{value: -1, label: 'All Line of Product'}, ...categoriesData],
+    'value',
+  );
 
   useEffect(() => {
-    if (categoryId < 0) {
-      groupingRef?.current?.select?.setValue({
-        value: -1,
-        label: 'All Product Group',
-      });
-      productRef?.current?.select?.setValue({
-        value: -1,
-        label: 'All Products',
-      });
-    }
-    if (categoryId > 0) {
+    if (filter?.categoryId > 0) {
       getListGroupings({
         limit: 9999,
-        filter: JSON.stringify([{category: categoryId}]),
+        filter: JSON.stringify([{category: filter?.categoryId}]),
       });
     }
-  }, [categoryId]);
+  }, [filter?.categoryId]);
+
+  const groupingsData =
+    groupingsRawData?.records?.map?.((x) => ({
+      value: x?.id,
+      label: x?.name,
+    })) || [];
+
+  const groupingsDataKeys = keyBy(
+    [{value: -1, label: 'All Product Group'}, ...groupingsData],
+    'value',
+  );
 
   useEffect(() => {
-    if (groupingId < 0) {
-      productRef?.current?.select?.setValue({
-        value: -1,
-        label: 'All Products',
+    if (filter?.categoryId > 0) {
+      getListGroupings({
+        limit: 9999,
+        filter: JSON.stringify([{category: filter?.categoryId}]),
       });
     }
-    if (groupingId > 0) {
+  }, [filter?.categoryId]);
+
+  const productsData =
+    productsRawData?.records?.map?.((x) => ({
+      value: x?.id,
+      label: x?.name,
+    })) || [];
+
+  const productsDataKeys = keyBy(
+    [{value: -1, label: 'All Products'}, ...productsData],
+    'value',
+  );
+
+  useEffect(() => {
+    if (filter?.groupingId > 0) {
       getListProduct({
         limit: 9999,
-        filter: JSON.stringify([{grouping: groupingId}]),
+        filter: JSON.stringify([{grouping: filter?.groupingId}]),
       });
     }
-  }, [groupingId]);
+  }, [filter?.groupingId]);
 
   return (
     <UI.Box minH="89vh">
@@ -165,20 +182,12 @@ function List() {
         onLimitChange={setLimit}
         filterBar={
           <FormGenerate
-            onChangeValue={handleOnChange}
-            defaultWatchValue={{
-              application: -1,
-              category: -1,
-              grouping: -1,
-              product: -1,
-            }}
             gap="10px"
             w="60vw"
             mb={4}
             fields={[
               {
                 name: 'application',
-                refEl: applicationRef,
                 isClearable: false,
                 type: 'select',
                 size: 'md',
@@ -188,39 +197,47 @@ function List() {
                   value: -1,
                   label: 'All Line of Business',
                 },
+                onChangeValue: (data) => {
+                  setFilter({
+                    applicationId: data?.value,
+                    categoryId: -1,
+                    groupingId: -1,
+                    productId: -1,
+                  });
+                },
+                value: allLineBusinessKeys?.[filter?.applicationId],
                 options: [
-                  {value: -1, label: 'All Line of Business'},
-                  ...allLineBusiness?.map?.((x) => ({
-                    value: x?.id,
-                    label: x?.name,
-                  })),
+                  {value: -1, label: 'All Business'},
+                  ...allLineBusiness,
                 ],
               },
               {
                 name: 'category',
                 isClearable: false,
-                refEl: categoryRef,
-                isDisabled: applicationId < 0,
+                onChangeValue: (data) => {
+                  setFilter((s) => ({
+                    ...s,
+                    categoryId: data?.value,
+                    groupingId: -1,
+                    productId: -1,
+                  }));
+                },
+                isDisabled: filter?.applicationId < 0,
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Line of Product',
+                value: categoriesDataKeys?.[filter?.categoryId],
                 defaultValue: {value: -1, label: 'All Line of Product'},
-                options: categoriesData?.records
-                  ? [
-                      {value: -1, label: 'All Line of Product'},
-                      ...categoriesData?.records.map((x) => ({
-                        value: x?.id,
-                        label: x?.name,
-                      })),
-                    ]
-                  : [{value: -1, label: 'All Line of Product'}],
+                options: [
+                  {value: -1, label: 'All Line of Product'},
+                  ...categoriesData,
+                ],
               },
               {
                 name: 'grouping',
                 isClearable: false,
-                refEl: groupingRef,
-                isDisabled: categoryId < 0,
+                isDisabled: filter?.categoryId < 0,
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
@@ -229,54 +246,42 @@ function List() {
                   value: -1,
                   label: 'All Product Group',
                 },
-                options: groupingsData?.records
-                  ? [
-                      {
-                        value: -1,
-                        label: 'All Product Group',
-                      },
-                      ...groupingsData?.records.map((x) => ({
-                        value: x?.id,
-                        label: x?.name,
-                      })),
-                    ]
-                  : [
-                      {
-                        value: -1,
-                        label: 'All Product Group',
-                      },
-                    ],
+                onChangeValue: (data) => {
+                  setFilter((s) => ({
+                    ...s,
+                    groupingId: data?.value,
+                    productId: -1,
+                  }));
+                },
+                value: groupingsDataKeys?.[filter?.groupingId],
+                options: [
+                  {value: -1, label: 'All Line of Product Group'},
+                  ...groupingsData,
+                ],
               },
               {
                 name: 'product',
                 isClearable: false,
-                refEl: productRef,
-                isDisabled: groupingId < 0,
+                isDisabled: filter?.groupingId < 0,
                 type: 'select',
                 size: 'md',
                 colSpan: 3,
+                onChangeValue: (data) => {
+                  setFilter((s) => ({
+                    ...s,
+                    productId: data?.value,
+                  }));
+                },
                 placeholder: 'Products',
                 defaultValue: {
                   value: -1,
                   label: 'All Products',
                 },
-                options: productsData?.records
-                  ? [
-                      {
-                        value: -1,
-                        label: 'All Products',
-                      },
-                      ...productsData?.records.map((x) => ({
-                        value: x?.id,
-                        label: x?.name,
-                      })),
-                    ]
-                  : [
-                      {
-                        value: -1,
-                        label: 'All Products',
-                      },
-                    ],
+                value: productsDataKeys?.[filter?.productId],
+                options: [
+                  {value: -1, label: 'All Line of Product Group'},
+                  ...productsData,
+                ],
               },
             ]}
           />

@@ -16,6 +16,7 @@ export interface IUploadFileContent {
   description?: string;
   label?: string;
   productModuleId?: number;
+  labelUpload?: string;
 }
 
 function UploadFileContent(props: IUploadFileContent) {

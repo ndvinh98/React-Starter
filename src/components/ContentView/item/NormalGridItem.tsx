@@ -1,10 +1,9 @@
 import React from 'react';
 import * as UI from '@chakra-ui/react';
 import {useContentManagementController} from '@modules/home/admin-modules/content-management';
-import {useRouter, useHover} from '@utils/hooks';
+import {useHover} from '@utils/hooks';
 
-function GridItem({item, linkToChild, isVideo, isBrochures}) {
-  const {push} = useRouter();
+function GridItem({item, onClickItem, isVideo, isBrochures}) {
   const [hoverRef, isHovered] = useHover<any>();
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
@@ -35,7 +34,7 @@ function GridItem({item, linkToChild, isVideo, isBrochures}) {
       />
       <UI.Box
         onClick={() => {
-          if(!isVideo && !isBrochures) push(linkToChild);
+          if (!isVideo && !isBrochures) onClickItem?.(item);
         }}
         bg="white"
         bgImage={`url(${
@@ -69,7 +68,9 @@ function GridItem({item, linkToChild, isVideo, isBrochures}) {
             height="50px"
             bg="#000000a7"
             bottom={0}>
-            <UI.Text textAlign={'center'} color="white">{item?.name || item?.resourceName}</UI.Text>
+            <UI.Text textAlign={'center'} color="white">
+              {item?.name || item?.resourceName}
+            </UI.Text>
           </UI.Center>
         ) : (
           <UI.Box

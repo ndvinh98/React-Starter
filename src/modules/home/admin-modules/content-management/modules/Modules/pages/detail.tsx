@@ -258,7 +258,7 @@ function AddNew() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-        {mode==="ADD" ? "ADD NEW" : mode} MODULE
+          {mode === 'ADD' ? 'ADD NEW' : mode} MODULE
         </UI.Text>
         <FormGenerate
           onChangeValue={handleOnChange}
@@ -393,7 +393,7 @@ function AddNew() {
               defaultValue: data?.mediaDestination,
               isChooseStock: true,
               isListStockIcon: true,
-              description: "Recommended size: 48px x 48px",
+              description: 'Recommended size: 48px x 48px',
               listStock: STOCK,
               colSpan: 12,
               width: '100%',
