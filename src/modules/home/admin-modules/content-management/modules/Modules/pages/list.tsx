@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
-import {useGetList, useFilter} from '@utils/hooks';
+import {useGetList, useFilter, useRouter} from '@utils/hooks';
 import {IProduct, ICategorie, IGrouping, IModules} from '@types';
 import {useContentManagementController} from '@modules/home';
 import {useCurrentRoute} from 'react-navi';
@@ -167,6 +167,7 @@ function List() {
       });
     }
   }, [filter?.groupingId]);
+  const {push} = useRouter();
 
   return (
     <UI.Box minH="89vh">
@@ -296,6 +297,9 @@ function List() {
         linkDeleteContent="/productModules"
         linkAddNew="/home/content-management/modules/detail/add"
         linkToChild="/home/content-management/resources"
+        onClickItem={(item) => {
+          push(`/home/content-management/resources/module/${item?.id}`);
+        }}
       />
     </UI.Box>
   );

@@ -1,28 +1,24 @@
-import {mount, route, lazy} from 'navi';
+import {mount, route} from 'navi';
 
 export default mount({
   '/module/:id': route({
     title: 'line-of-business-list',
-    getView: () => import('./list-resources'),
+    getView: () => import('./pages/list-resources'),
   }),
-  // '/add-video': route({
-  //   title: 'line-of-business-list',
-  //   getView: () => import('./videos/add-new'),
-  // }),
   '/add-brochures/module/:id': route({
     title: 'line-of-business-list',
-    getView: () => import('./brochures/add-new'),
+    getView: () => import('./pages/brochures/add-new'),
   }),
   'module/brochures/edit/:id': route({
     title: 'line-of-business-list',
-    getView: () => import('./brochures/edit'),
+    getView: () => import('./pages/brochures/edit'),
   }),
   '/add-videos/module/:id': route({
     title: 'line-of-business-list',
-    getView: () => import('./videos/add-new'),
+    getView: () => import('./pages/videos/add-new'),
   }),
   'module/videos/edit/:id': route({
     title: 'line-of-business-list',
-    getView: () => import('./videos/edit'),
+    getView: () => import('./pages/videos/edit'),
   }),
 });

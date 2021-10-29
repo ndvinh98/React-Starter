@@ -1,8 +1,7 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
-import {useRouter, usePost} from '@utils/hooks';
-import UploadFileContent from '@components/UploadFileContent';
+import {useRouter} from '@utils/hooks';
 import FormGenerate from '@components/FormGenerate';
 import {useGetItem, usePatch} from '@utils/hooks';
 import * as yup from 'yup';
@@ -29,12 +28,12 @@ function Edit() {
     `productModuleResources/${resourceData?.id}`,
   );
 
-  const getFileName = (name: string) => {
-    if (!name) return undefined;
-    const names = name?.split('/');
-    if (!names.length) return name;
-    return names?.[names?.length - 1];
-  };
+  // const getFileName = (name: string) => {
+  //   if (!name) return undefined;
+  //   const names = name?.split('/');
+  //   if (!names.length) return name;
+  //   return names?.[names?.length - 1];
+  // };
 
   useEffect(() => {
     if (data) {
@@ -49,16 +48,14 @@ function Edit() {
   }, [data]);
 
   const handleSubmit = (value) => {
-    if (
-      value
-    ) {
+    if (value) {
       patch({
         resourceName: value.name,
         languageId: value.language,
         brochureFormat: value.brochureFormat,
         noOfPages: value.noOfPages,
         thumbnailMediaDestination: value.thumb,
-        mediaDestination: value.brochures
+        mediaDestination: value.brochures,
       });
     }
   };
@@ -113,12 +110,8 @@ function Edit() {
                 .number()
                 .required('Please select language')
                 .default(resourceData?.languageId),
-              videos: yup
-                .string()
-                .required('Please upload file'),
-              thumb: yup
-                .string()
-                .required('Please upload thumbnail'),
+              videos: yup.string().required('Please upload file'),
+              thumb: yup.string().required('Please upload thumbnail'),
             }}
             fields={[
               {
@@ -186,7 +179,9 @@ function Edit() {
                 })),
                 defaultValue: {
                   value: resourceData?.languageId,
-                  label: languages.map((x) => { if(x?.id === resourceData?.languageId) return x?.name ;})
+                  label: languages.map((x) => {
+                    if (x?.id === resourceData?.languageId) return x?.name;
+                  }),
                 },
               },
             ]}>

@@ -50,7 +50,6 @@ function ContentView(props: IContentView) {
     limit,
     totalCount,
     currentPage,
-    linkAddNew,
     isModulesView,
     isVideo,
     isBrochures,
@@ -60,6 +59,7 @@ function ContentView(props: IContentView) {
     isLoading,
     onReloadPage,
     onClickItem,
+    linkAddNew,
   } = props;
 
   const {push} = useRouter();
