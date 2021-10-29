@@ -168,7 +168,6 @@ function List() {
       });
     }
   }, [filter?.groupingId]);
-  const {push} = useRouter();
 
   return (
     <UI.Box minH="89vh">
