@@ -94,130 +94,107 @@ function userManagement() {
         User Management
       </UI.Text>
       <UI.Box width="full">
-        <FormGenerate
-          gap={isBase ? 4 : 6}
-          onChangeValue={handleFilterData}
-          fields={[
-            {
-              name: 'textSearch',
-              type: 'input-group',
-              colSpan: isBase ? 3 : 12,
-              size: 'md',
-              placeholder: 'Search...',
-              leftIcon: <AiOutlineSearch size={20} />,
-            },
-            {
-              name: 'status',
-              type: 'select',
-              colSpan: isBase ? 3 : 6,
-              size: 'md',
-              defaultValue: {
-                label: 'All Status',
-                value: '-1',
+        <UI.HStack>
+          <FormGenerate
+            gap={isBase ? 4 : 6}
+            onChangeValue={handleFilterData}
+            fields={[
+              {
+                name: 'textSearch',
+                type: 'input-group',
+                colSpan: isBase ? 3 : 12,
+                size: 'md',
+                placeholder: 'Search...',
+                leftIcon: <AiOutlineSearch size={20} />,
               },
-              isClearable: false,
-              options: [
-                {
+              {
+                name: 'status',
+                type: 'select',
+                colSpan: isBase ? 3 : 6,
+                size: 'md',
+                defaultValue: {
                   label: 'All Status',
                   value: '-1',
                 },
-                {
-                  label: 'Active',
-                  value: '1',
-                },
-                {
-                  label: 'Inactive',
-                  value: '0',
-                },
-              ],
-            },
-            {
-              name: 'userType',
-              type: 'select',
-              colSpan: isBase ? 3 : 6,
-              size: 'md',
-              placeholder: 'All Roles',
-              defaultValue: {
-                label: 'All Roles',
-                value: '-1',
+                isClearable: false,
+                options: [
+                  {
+                    label: 'All Status',
+                    value: '-1',
+                  },
+                  {
+                    label: 'Active',
+                    value: '1',
+                  },
+                  {
+                    label: 'Inactive',
+                    value: '0',
+                  },
+                ],
               },
-              isClearable: false,
-              options: [
-                {
+              {
+                name: 'userType',
+                type: 'select',
+                colSpan: isBase ? 3 : 6,
+                size: 'md',
+                placeholder: 'All Roles',
+                defaultValue: {
                   label: 'All Roles',
                   value: '-1',
                 },
-                {
-                  label: 'Admin',
-                  value: 'ADMIN',
-                },
-                {
-                  label: 'Sales Manager',
-                  value: 'USER',
-                },
-              ],
-            },
-            {
-              type: 'decor',
-              name: 'demo',
-              colSpan: isBase ? 3 : 12,
-              DecorComponent: () => {
-                return (
-                  <UI.VStack>
-                    <UI.HStack
-                      position={{md: 'absolute', lg: 'static'}}
-                      top={'-166px'}
-                      w={'full'}
-                      justifyContent={'space-between'}>
-                      <UI.Button
-                        minW={110}
-                        onClick={() => push(path + '/create-user')}
-                        size={'md'}>
-                        Add new user
-                      </UI.Button>
-                      <UI.HStack
-                        position={{md: 'absolute', lg: 'static'}}
-                        top={'-166px'}
-                        w={'full'}
-                        justifyContent={'flex-end'}>
-                        <UI.Text> View Item</UI.Text>
-                        <UI.Box>
-                          <Select
-                            isClearable={false}
-                            size="sm"
-                            name="limit"
-                            onChangeValue={(data) => {
-                              setLimit(data.value);
-                              setPage(1);
-                            }}
-                            defaultValue={{
-                              label: '10',
-                              value: 10,
-                            }}
-                            options={[
-                              {
-                                label: '10',
-                                value: 10,
-                              },
-                              {
-                                label: '20',
-                                value: 20,
-                              },
-                              {
-                                label: 'All',
-                                value: 1000,
-                              },
-                            ]}
-                          />
-                        </UI.Box>
-                      </UI.HStack>
-                    </UI.HStack>
-                  </UI.VStack>
-                );
+                isClearable: false,
+                options: [
+                  {
+                    label: 'All Roles',
+                    value: '-1',
+                  },
+                  {
+                    label: 'Admin',
+                    value: 'ADMIN',
+                  },
+                  {
+                    label: 'Sales Manager',
+                    value: 'USER',
+                  },
+                ],
               },
-            },
-          ]}
-        />
+            ]}
+          />
+          <UI.HStack>
+            <UI.Button onClick={() => push(path + '/create-user')} size={'md'}>
+              Add new user
+            </UI.Button>
+            <UI.Box w="80px">
+              <Select
+                isClearable={false}
+                size="sm"
+                name="limit"
+                onChangeValue={(data) => {
+                  setLimit(data.value);
+                  setPage(1);
+                }}
+                defaultValue={{
+                  label: '10',
+                  value: 10,
+                }}
+                options={[
+                  {
+                    label: '10',
+                    value: 10,
+                  },
+                  {
+                    label: '20',
+                    value: 20,
+                  },
+                  {
+                    label: 'All',
+                    value: 1000,
+                  },
+                ]}
+              />
+            </UI.Box>
+          </UI.HStack>
+        </UI.HStack>
         {isBase ? (
           <UI.Box px={4} bgColor="white">
             <TableGenerate
