@@ -13,3 +13,6 @@ export {getAllLineProduct} from './lineProduct/getAllLineProduct';
 export {getAllProductGroup} from './productGroup/getAllProductGroup';
 export {getAllProducts} from './products/getAllProducts';
 export {getAllModules} from './modules/getAllModules';
+
+export {countUnread} from './userNotifications/countUnread';
+export {getListNotifications} from './userNotifications/getListNotifications';

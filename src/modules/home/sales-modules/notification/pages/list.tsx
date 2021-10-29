@@ -2,15 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {isEmpty} from 'lodash';
 import * as UI from '@chakra-ui/react';
 import FormGenerate from '@components/FormGenerate';
-import {useGetList, useGetItem, useFilter, useRouter} from '@utils/hooks';
-import {useModalController} from '@modules/modal';
+import {useGetItem, useFilter, useRouter} from '@utils/hooks';
 import {useMedia} from '@utils/hooks';
 import {AiOutlineSearch} from 'react-icons/ai';
+import {useSalesContoller} from '@modules/home';
 
-const NotificationContent = ({data, getListNotification}) => {
+const NotificationContent = ({data}) => {
   const {push} = useRouter();
-  const {openModal} = useModalController();
-  const {getItem, data: item} = useGetItem('userNotifications/read/');
+  const {getItem} = useGetItem('userNotifications/read/');
   const setReadNotification = () => {
     getItem({}, {path: data?.id});
   };
@@ -30,7 +29,10 @@ const NotificationContent = ({data, getListNotification}) => {
       bg={isRead ? 'transparent' : 'white'}
       justifyContent="space-between"
       border={isRead ? ' 1px solid #E0E0E0' : 'none'}>
-      <UI.HStack onClick={() => push(`/home/file-transfer/received/${data?.fileTransferRecipientId}`)}>
+      <UI.HStack
+        onClick={() =>
+          push(`/home/file-transfer/received/${data?.fileTransferRecipientId}`)
+        }>
         <UI.Center
           w={{md: '40px', lg: '70px'}}
           p={{md: 1, lg: 2}}
@@ -49,9 +51,11 @@ const NotificationContent = ({data, getListNotification}) => {
   );
 };
 
-
 function Notification() {
-  const {data, loading, getList} = useGetList('userNotifications');
+  const getNotifications = useSalesContoller((s) => s.getNotifications);
+  const notifications = useSalesContoller((s) => s.notifications);
+  const loading = useSalesContoller((s) => s.loading);
+
   const {page, limit, setLimit, textSearch, setTextSearch, filter, setFilter} =
     useFilter({
       page: 1,
@@ -59,15 +63,14 @@ function Notification() {
     });
 
   const getListNotification = () =>
-    getList({
+    getNotifications({
       page,
       limit,
-      relations: JSON.stringify(['user']),
       textSearch: textSearch
         ? JSON.stringify([{message: textSearch}])
         : undefined,
       filter: isEmpty(filter)
-        ? JSON.stringify([{isRead: '0'},{notificationType: 'FILETRANSFERS'}])
+        ? JSON.stringify([{isRead: '0'}])
         : JSON.stringify([filter]),
     });
 
@@ -75,13 +78,7 @@ function Notification() {
     getListNotification();
   }, [limit, page, textSearch, filter]);
 
-  const regetListNotify = () =>
-    getList({page: 1, limit: 10, textSearch: undefined});
-
-  const handleOnChange = ({
-    textSearch,
-    isRead
-  }) => {
+  const handleOnChange = ({textSearch, isRead}) => {
     if (!!textSearch) setTextSearch(textSearch);
     else setTextSearch(undefined);
 
@@ -95,7 +92,7 @@ function Notification() {
 
   return (
     <UI.Box p={8}>
-       <UI.Text fontWeight={'bold'} fontSize={'20px'} mb={4}>
+      <UI.Text fontWeight={'bold'} fontSize={'20px'} mb={4}>
         Notification
       </UI.Text>
       <UI.Box minH="79vh">
@@ -158,15 +155,8 @@ function Notification() {
               </UI.Center>
             </UI.VStack>
           )}
-          {/* <UI.Center opacity={0.7} w={'full'} h={'300px'}>
-              <UI.VStack>
-                <UI.Image src={'https://i.imgur.com/nvdeBu8.png'} />
-                <UI.Text pt={2} color={'gray'} fontSize={'lg'}>
-                  No results found :((
-                </UI.Text>
-              </UI.VStack>
-            </UI.Center> */}
-          {isEmpty(data?.records) ? (
+
+          {isEmpty(notifications?.records) ? (
             <UI.Center opacity={0.7} w={'full'} h={'300px'}>
               <UI.VStack>
                 <UI.Image src={'https://i.imgur.com/nvdeBu8.png'} />
@@ -177,19 +167,13 @@ function Notification() {
             </UI.Center>
           ) : (
             <UI.VStack spacing={4} mt={4}>
-              {data?.records?.map((x) => {
-                return (
-                  <NotificationContent
-                    getListNotification={getListNotification}
-                    key={x?.id}
-                    data={x}
-                  />
-                );
+              {notifications?.records?.map((x) => {
+                return <NotificationContent key={x?.id} data={x} />;
               })}
             </UI.VStack>
           )}
         </UI.Box>
-        {data?.totalPages > 1 && !isAllMobile && (
+        {notifications?.totalPages > 1 && !isAllMobile && (
           <UI.VStack mt={5}>
             <UI.Button isLoading={loading} onClick={() => setLimit(limit + 10)}>
               Load more
