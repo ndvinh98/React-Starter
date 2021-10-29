@@ -2,7 +2,6 @@ import React, {useEffect, useRef} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, usePost} from '@utils/hooks';
-import UploadFileContent from '@components/UploadFileContent';
 import FormGenerate from '@components/FormGenerate';
 import {useGetItem, usePatch} from '@utils/hooks';
 import * as yup from 'yup';
@@ -21,20 +20,22 @@ function Edit() {
     getItem,
   } = useGetItem('/productModuleResources/');
 
-  useEffect(() => {
-    if (params?.id) getItem({}, {path: params?.id});
-  }, [params]);
-
   const {patch, loading, data} = usePatch(
     `productModuleResources/${resourceData?.id}`,
   );
 
-  const getFileName = (name: string) => {
-    if (!name) return undefined;
-    const names = name?.split('/');
-    if (!names.length) return name;
-    return names?.[names?.length - 1];
-  };
+  useEffect(() => {
+    if (params?.id) getItem({}, {path: params?.id});
+  }, [params]);
+
+  const {
+    data: moduleData,
+    getItem: getModuleData,
+  } = useGetItem('/productModules/');
+
+  useEffect(() => {
+    if (resourceData?.productModuleId) getModuleData({}, {path: resourceData?.productModuleId});
+  }, [resourceData]);
 
   useEffect(() => {
     if (data) {
@@ -78,7 +79,7 @@ function Edit() {
           <UI.Text fontSize={'14px'}>Back</UI.Text>
         </UI.HStack>
         <UI.Text fontSize="24px" fontWeight="bold">
-          Content Management - Brochures
+          Content Management - {moduleData?.name}
         </UI.Text>
         <UI.VStack
           spacing="20px"
@@ -89,7 +90,7 @@ function Edit() {
           bg="white"
           shadow="md">
           <UI.Text fontSize="16px" fontWeight="bold">
-            EDIT BROCHURE
+            EDIT FILE
           </UI.Text>
           <FormGenerate
             spacing={6}
@@ -103,7 +104,7 @@ function Edit() {
                 .default(resourceData?.resourceName),
               brochureFormat: yup
                 .string()
-                .required('Please enter Brochure Format')
+                .required('Please enter File Format')
                 .default(resourceData?.brochureFormat),
               noOfPages: yup
                 .number()
@@ -124,7 +125,7 @@ function Edit() {
               {
                 name: 'name',
                 type: 'input',
-                label: 'Brochure Name',
+                label: 'File Name',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
@@ -157,7 +158,7 @@ function Edit() {
               {
                 name: 'brochureFormat',
                 type: 'input',
-                label: 'Brochure Format',
+                label: 'File Format',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',

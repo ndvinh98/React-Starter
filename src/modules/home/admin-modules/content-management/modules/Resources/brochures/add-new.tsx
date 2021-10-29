@@ -2,7 +2,6 @@ import React, {useEffect, useRef} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, usePost} from '@utils/hooks';
-import UploadFileContent from '@components/UploadFileContent';
 import FormGenerate from '@components/FormGenerate';
 import {useGetItem} from '@utils/hooks';
 import * as yup from 'yup';
@@ -65,7 +64,7 @@ function AddNew() {
           <UI.Text fontSize={'14px'}>Back</UI.Text>
         </UI.HStack>
         <UI.Text fontSize="24px" fontWeight="bold">
-          Content Management - Brochures
+          Content Management - {moduleData?.name}
         </UI.Text>
         <UI.VStack
           spacing="20px"
@@ -76,7 +75,7 @@ function AddNew() {
           bg="white"
           shadow="md">
           <UI.Text fontSize="16px" fontWeight="bold">
-            ADD NEW BROCHURE
+            ADD NEW FILE
           </UI.Text>
           <FormGenerate
             spacing={6}
@@ -84,11 +83,11 @@ function AddNew() {
               handleSubmit(value);
             }}
             schema={{
-              name: yup.string().required('Please enter Brochure Name'),
+              name: yup.string().required('Please enter File Name'),
               language: yup.number().required('Please select language'),
               brochureFormat: yup
                 .string()
-                .required('Please enter Brochure Format'),
+                .required('Please enter File Format'),
               noOfPages: yup.number().required('Please enter number of pages'),
               brochures: yup
                 .string()
@@ -101,7 +100,7 @@ function AddNew() {
               {
                 name: 'name',
                 type: 'input',
-                label: 'Brochure Name',
+                label: 'File Name',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
@@ -134,7 +133,7 @@ function AddNew() {
               {
                 name: 'brochureFormat',
                 type: 'input',
-                label: 'Brochure Format',
+                label: 'File Format',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
