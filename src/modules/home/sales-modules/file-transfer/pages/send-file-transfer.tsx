@@ -5,10 +5,11 @@ import Select from '@components/Select';
 import UploadFilesSender from '@components/UploadMultipleFiles';
 import {useGetList, useGetItem, usePost} from '@utils/hooks';
 import {uploadFile} from '@services';
+import {useHomeController} from '@modules/home';
 
 function SendFiles() {
   const uploadEl = useRef<any>(null);
-
+  const me = useHomeController((s) => s.me);
   const toast = UI.useToast();
   const [usersSender, setUsersSender] = useState([]);
   const [companySender, setCompanySender] = useState(null);
@@ -20,13 +21,13 @@ function SendFiles() {
   );
   const [loadingUpload, setLoadingUpload] = useState(false);
 
-  const {data, getList} = useGetList('/partners');
+  const {data, getList} = useGetList('/partnerUserRelations');
   const {data: usersData, getList: getListUsers} = useGetList('/partnerUsers');
 
   useEffect(() => {
     getList({
-      filter: JSON.stringify([{isActive: 1}]),
-      relations: JSON.stringify(['partnerDomain']),
+      filter: JSON.stringify([{userId: me?.id, partner: {isActive: 1}}]),
+      relations: JSON.stringify(['partner', 'partner.partnerDomain']),
     });
   }, []);
 
@@ -141,8 +142,8 @@ function SendFiles() {
               placeholder="Select company"
               value={companySender}
               options={data?.records?.map((x) => ({
-                value: x?.partnerDomain?.id,
-                label: x?.companyName,
+                value: x?.partner?.partnerDomain?.id,
+                label: x?.partner?.companyName,
                 //email: x?.user?.email,
               }))}
               onChangeValue={setCompanySender}
