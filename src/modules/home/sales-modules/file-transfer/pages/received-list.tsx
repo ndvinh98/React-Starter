@@ -108,7 +108,7 @@ function FileTransfer() {
         ]}
       />
       <TableGenerate
-        onClickRow={(row) => push(`/home/file-transfer/received/${row?.fileTransferId}`)}
+        onClickRow={(row) => push(`/home/file-transfer/received/${row?.id}`)}
         isLoading={loading}
         currentPage={data?.page}
         totalCount={data?.total}
@@ -151,7 +151,7 @@ function FileTransfer() {
           {
             Header: () => <UI.Center>Action</UI.Center>,
             id: 'action',
-            accessor: (row) => <ActionColum refresh={() => {}} row={row} />,
+            accessor: (row) => <ActionColum refresh={() => getMe()} row={row} />,
           },
         ]}
       />

@@ -19,6 +19,7 @@ function FileTransfer() {
     getMe();
   }, []);
   const {data, loading, getList} = useGetList('/userFileTransfers');
+  //const [refresh, setRefresh] = useState()
   const {page, limit, setPage, textSearch, setTextSearch, filter} =
     useFilter({
       page: 1,
@@ -153,7 +154,7 @@ function FileTransfer() {
           {
             Header: () => <UI.Center>Action</UI.Center>,
             id: 'action',
-            accessor: (row) => <ActionColum refresh={() => setPage(1)} row={row} />,
+            accessor: (row) => <ActionColum refresh={() => getMe()} row={row} />,
           },
         ]}
       />

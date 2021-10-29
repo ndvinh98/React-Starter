@@ -29,7 +29,7 @@ function Detail() {
   }, [params]);
 
   return (
-    <LoadingComponent length={data ? 1: 0} isLoading={loading}>
+    <LoadingComponent length={data ? 1 : 0} isLoading={loading}>
       <UI.Box minH="77vh" p={8}>
         <UI.HStack>
           <UI.Text fontWeight="bold" fontSize="20px" textTransform="uppercase">
@@ -42,9 +42,11 @@ function Detail() {
               <UI.Text w="300px">Sent by:</UI.Text>
               <UI.Box>
                 <UI.Text key={data?.id}>
-                  {data?.fileTransfer?.partnerUser?.firstName}
-                  {data?.fileTransfer?.partnerUser?.lastName}
-                  {data?.fileTransfer?.partnerUser?.email}
+                  {data?.fileTransfer?.partnerUser?.firstName +
+                    ' ' +
+                    data?.fileTransfer?.partnerUser?.lastName +
+                    ' '}
+                  ({data?.fileTransfer?.partnerUser?.email})
                 </UI.Text>
               </UI.Box>
             </UI.HStack>

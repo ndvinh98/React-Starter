@@ -9,6 +9,7 @@ import {useCurrentRoute} from 'react-navi';
 import {keyBy} from 'lodash';
 
 function List() {
+  const {push} = useRouter();
   const {url} = useCurrentRoute();
   const allLineBusiness = useContentManagementController(
     (s) => s.allLineBusiness,

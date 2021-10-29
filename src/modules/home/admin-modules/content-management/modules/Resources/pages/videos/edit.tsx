@@ -24,6 +24,15 @@ function Edit() {
     if (params?.id) getItem({}, {path: params?.id});
   }, [params]);
 
+  const {
+    data: moduleData,
+    getItem: getModuleData,
+  } = useGetItem('/productModules/');
+
+  useEffect(() => {
+    if (resourceData?.productModuleId) getModuleData({}, {path: resourceData?.productModuleId});
+  }, [resourceData]);
+
   const {patch, loading, data} = usePatch(
     `productModuleResources/${resourceData?.id}`,
   );
@@ -68,7 +77,7 @@ function Edit() {
           <UI.Text fontSize={'14px'}>Back</UI.Text>
         </UI.HStack>
         <UI.Text fontSize="24px" fontWeight="bold">
-          Content Management - Videos
+          Content Management - {moduleData?.name}
         </UI.Text>
         <UI.VStack
           spacing="20px"
