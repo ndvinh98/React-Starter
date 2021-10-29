@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import {startsWith} from 'lodash';
 import * as UI from '@chakra-ui/react';
 import {FiBell, FiLogOut} from 'react-icons/fi';
@@ -8,6 +8,8 @@ import {useModalController} from '@modules/modal';
 import {useHomeController} from '@modules/home';
 import {useRouter} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
+import {useGetItem} from '@utils/hooks';
+import {isEmpty} from 'lodash';
 
 const USER_TYPE_DISPLAY = {
   USER: 'User',
@@ -39,21 +41,28 @@ export const HEADER_ITEMS = {
   notify: memo((porps: any) => {
     const {isDisabled} = porps;
     const {push} = useRouter();
+    const {getItem, data} = useGetItem<any>(`userNotifications/countUnread`);
+    useEffect(() => {
+      getItem();
+    }, []);
+
     return (
       <UI.Box position="relative" pr={2}>
-        <UI.Circle
-          shadow="sm"
-          bg="ste.red"
-          zIndex="2"
-          position="absolute"
-          top={0}
-          w="20px"
-          h="20px"
-          fontSize="14px"
-          color="white"
-          right={'10px'}>
-          1
-        </UI.Circle>
+        {!isEmpty(data) && data?.count > 0 && (
+          <UI.Circle
+            shadow="sm"
+            bg="ste.red"
+            zIndex="2"
+            position="absolute"
+            top={0}
+            w="20px"
+            h="20px"
+            fontSize="14px"
+            color="white"
+            right={'10px'}>
+            {data?.count}
+          </UI.Circle>
+        )}
         <UI.IconButton
           disabled={isDisabled}
           onClick={() => push('/home/notification')}

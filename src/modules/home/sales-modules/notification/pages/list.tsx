@@ -2,12 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {isEmpty} from 'lodash';
 import * as UI from '@chakra-ui/react';
 import FormGenerate from '@components/FormGenerate';
-import {useGetList, useGetItem, useFilter} from '@utils/hooks';
+import {useGetList, useGetItem, useFilter, useRouter} from '@utils/hooks';
 import {useModalController} from '@modules/modal';
 import {useMedia} from '@utils/hooks';
 import {AiOutlineSearch} from 'react-icons/ai';
 
 const NotificationContent = ({data, getListNotification}) => {
+  const {push} = useRouter();
   const {openModal} = useModalController();
   const {getItem, data: item} = useGetItem('userNotifications/read/');
   const setReadNotification = () => {
@@ -29,7 +30,7 @@ const NotificationContent = ({data, getListNotification}) => {
       bg={isRead ? 'transparent' : 'white'}
       justifyContent="space-between"
       border={isRead ? ' 1px solid #E0E0E0' : 'none'}>
-      <UI.HStack>
+      <UI.HStack onClick={() => push(`/home/file-transfer/received/${data?.fileTransferRecipientId}`)}>
         <UI.Center
           w={{md: '40px', lg: '70px'}}
           p={{md: 1, lg: 2}}
@@ -66,7 +67,7 @@ function Notification() {
         ? JSON.stringify([{message: textSearch}])
         : undefined,
       filter: isEmpty(filter)
-        ? JSON.stringify([{isRead: '0'}])
+        ? JSON.stringify([{isRead: '0'},{notificationType: 'FILETRANSFERS'}])
         : JSON.stringify([filter]),
     });
 
@@ -79,17 +80,15 @@ function Notification() {
 
   const handleOnChange = ({
     textSearch,
-    isRead,
-    notificationType,
-    requestsType,
+    isRead
   }) => {
     if (!!textSearch) setTextSearch(textSearch);
     else setTextSearch(undefined);
 
-    setFilter((state) => ({
-      ...state,
+    setFilter({
+      notificationType: 'FILETRANSFERS',
       isRead: +isRead < 0 ? undefined : isRead,
-    }));
+    });
   };
 
   const {isBase, isAllMobile} = useMedia();
