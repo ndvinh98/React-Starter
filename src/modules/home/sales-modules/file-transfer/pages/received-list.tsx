@@ -8,50 +8,42 @@ import TableGenerate from '@components/TableGenerate';
 import {format} from 'date-fns';
 import {HiDotsHorizontal} from 'react-icons/hi';
 import {useModalController} from '@modules/modal';
-import {useAuthController} from '@modules/auth';
-
+import {useHomeController} from '@modules/home';
 
 function FileTransfer() {
   const {push} = useRouter();
   const {isBase} = useMedia();
-  const {me, getMe} = useAuthController();
-  useEffect(() => {
-    getMe();
-  }, []);
+  const me = useHomeController((s) => s.me);
+
   const {data, loading, getList} = useGetList('/fileTransferRecipients');
-  const {page, limit, setPage, textSearch, setTextSearch, filter} =
-    useFilter({
-      page: 1,
-      limit: 10,
-    });
+  const {page, limit, setPage, textSearch, setTextSearch, filter} = useFilter({
+    page: 1,
+    limit: 10,
+  });
 
   useEffect(() => {
-    if (me?.id){
-      getList({
-        page,
-        limit,
-        sort: JSON.stringify({createdAt: -1}),
-        textSearch: textSearch
-        ? JSON.stringify([
-            {fileTransfer: {subject: textSearch}},
-          ])
+    getList({
+      page,
+      limit,
+      sort: JSON.stringify({createdAt: -1}),
+      textSearch: textSearch
+        ? JSON.stringify([{fileTransfer: {subject: textSearch}}])
         : undefined,
-        filter: JSON.stringify([{"userId": me?.id}]),
-        relations: JSON.stringify(['fileTransfer','fileTransfer.partnerUser']),
-      });
-    }
-  }, [limit, page, textSearch, filter, me]);
-
+      filter: JSON.stringify([{userId: me?.id}]),
+      relations: JSON.stringify(['fileTransfer', 'fileTransfer.partnerUser']),
+    });
+  }, [limit, page, textSearch, filter]);
 
   const handleFilterData = ({textSearch, status}) => {
     if (textSearch !== undefined) setTextSearch(textSearch as string);
-    if (status === "sent") push('/home/file-transfer/sent');
+    if (status === 'sent') push('/home/file-transfer/sent');
   };
-  
 
   return (
     <UI.Box minH="77vh" p={8}>
-      <UI.Text fontSize={'20px'} fontWeight={'bold'} mb={4}>File Transfer</UI.Text>
+      <UI.Text fontSize={'20px'} fontWeight={'bold'} mb={4}>
+        File Transfer
+      </UI.Text>
       <FormGenerate
         gap={isBase ? 6 : 2}
         onChangeValue={handleFilterData}
@@ -128,9 +120,10 @@ function FileTransfer() {
             },
             accessor: (row) => (
               <UI.VStack w="300px" alignItems="flex-start">
-                  <UI.Text key={row?.id}>
-                    {row?.fileTransfer?.partnerUser?.firstName} ({row?.fileTransfer?.partnerUser?.email})
-                  </UI.Text>
+                <UI.Text key={row?.id}>
+                  {row?.fileTransfer?.partnerUser?.firstName} (
+                  {row?.fileTransfer?.partnerUser?.email})
+                </UI.Text>
               </UI.VStack>
             ),
           },
@@ -151,7 +144,26 @@ function FileTransfer() {
           {
             Header: () => <UI.Center>Action</UI.Center>,
             id: 'action',
-            accessor: (row) => <ActionColum refresh={() => getMe()} row={row} />,
+            accessor: (row) => (
+              <ActionColum
+                refresh={() =>
+                  getList({
+                    page,
+                    limit,
+                    sort: JSON.stringify({createdAt: -1}),
+                    textSearch: textSearch
+                      ? JSON.stringify([{fileTransfer: {subject: textSearch}}])
+                      : undefined,
+                    filter: JSON.stringify([{userId: me?.id}]),
+                    relations: JSON.stringify([
+                      'fileTransfer',
+                      'fileTransfer.partnerUser',
+                    ]),
+                  })
+                }
+                row={row}
+              />
+            ),
           },
         ]}
       />

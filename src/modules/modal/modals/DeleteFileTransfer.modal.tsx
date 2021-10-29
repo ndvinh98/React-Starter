@@ -3,7 +3,6 @@ import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import {useModalController} from '../modals.controller';
 import {useRemove} from '@utils/hooks';
-import {useContentManagementController} from '@modules/home';
 
 function DeleteFileTransfer() {
   const {deleteFileTransfer, closeModal, data} = useModalController();
@@ -56,11 +55,11 @@ function DeleteFileTransfer() {
             fontSize={'md'}
             w={'full'}
             textAlign="justify">
-              <UI.VStack>
-                <UI.Text>
-                  Are you sure you want to delete the following content?
-                </UI.Text>
-              </UI.VStack>
+            <UI.VStack>
+              <UI.Text>
+                Are you sure you want to delete the following content?
+              </UI.Text>
+            </UI.VStack>
           </UI.Box>
           <UI.Center mt={8} w={'full'}>
             <UI.Button
