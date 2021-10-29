@@ -7,6 +7,10 @@ import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
 import LoadingComponent from '@components/LoadingComponent';
 import {isNull} from 'lodash';
+import {
+  useContentManagementController,
+  useTierManagementContoller,
+} from '@modules/home';
 
 const STOCK = [
   'https://i.imgur.com/Q04dMOc.png',
@@ -22,6 +26,10 @@ function AddNew() {
   const {params} = useRouterController();
   const {getItem, data} = useGetItem(`/applications/${params?.id}`);
   const [mode, setMode] = useState<'ADD' | 'EDIT'>('ADD');
+  const getAllLineBusiness = useContentManagementController(
+    (s) => s.getAllLineBusiness,
+  );
+  const getProducts = useTierManagementContoller((s) => s.getProducts);
 
   useEffect(() => {
     if (params?.id && params?.id !== 'add') {
@@ -48,6 +56,8 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
+      getAllLineBusiness();
+      getProducts();
       push('/home/content-management/line-of-business');
     }
   }, [postData, pathData]);
@@ -89,7 +99,7 @@ function AddNew() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-          {mode==="ADD" ? "ADD NEW" : mode} LINE OF BUSINESS
+          {mode === 'ADD' ? 'ADD NEW' : mode} LINE OF BUSINESS
         </UI.Text>
         <LoadingComponent isError={isNull(data)}>
           <FormGenerate
