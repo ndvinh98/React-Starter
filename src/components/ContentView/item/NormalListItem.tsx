@@ -1,10 +1,9 @@
 import React from 'react';
 import * as UI from '@chakra-ui/react';
 import {useContentManagementController} from '@modules/home/admin-modules/content-management';
-import {useRouter, useHover} from '@utils/hooks';
+import {useHover} from '@utils/hooks';
 
-function NormalListItem({item, linkToChild, isVideo, isBrochures}) {
-  const {push} = useRouter();
+function NormalListItem({item, onClickItem, isVideo, isBrochures}) {
   const [hoverRef, isHovered] = useHover<any>();
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
@@ -34,7 +33,7 @@ function NormalListItem({item, linkToChild, isVideo, isBrochures}) {
       />
       <UI.HStack
         onClick={() => {
-          if(!isVideo && !isBrochures) push(linkToChild);
+          if (!isVideo && !isBrochures) onClickItem?.(item);
         }}
         key={item?.id}
         cursor="pointer"

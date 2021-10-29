@@ -239,13 +239,17 @@ function ContentView(props: IContentView) {
                     key={x?.id}
                     isBrochures={isBrochures}
                     isVideo={isVideo}
-                    linkToChild={''}
+                    onClickItem={onClickItem}
                   />
                 ))}
 
               {isModulesView &&
                 data?.map((x) => (
-                  <ModuleListItem item={x} linkToChild={''} key={x?.id} />
+                  <ModuleListItem
+                    item={x}
+                    onClickItem={onClickItem}
+                    key={x?.id}
+                  />
                 ))}
               <UI.HStack
                 onClick={() => push(linkAddNew)}
