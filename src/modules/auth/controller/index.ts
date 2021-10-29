@@ -37,12 +37,16 @@ export const useAuthController = create<IAuthController>((set, get) => ({
         localStorage.setItem(ELocalStorage.ACCESS_TOKEN, String(auth.token));
         set({accessToken: auth.token});
         navigation.navigate('/');
+        setTimeout(() => {
+          location.reload();
+        }, 100);
       }
     });
   },
   logout: () => {
-    set({me: {}, accessToken: ''});
     localStorage.removeItem(ACCESS_TOKEN);
+    set({me: {}, accessToken: null});
+    navigation.navigate(`/auth/login`);
     location.reload();
   },
   getToken: () => {
@@ -52,6 +56,7 @@ export const useAuthController = create<IAuthController>((set, get) => ({
     return (isRemember && localStorageToken) || accessToken;
   },
   getMe: async () => {
+    console.log('🚀 ~ getMe');
     const me = await fetchMe();
     set({me});
     return me;

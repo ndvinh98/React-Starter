@@ -19,7 +19,7 @@ import DeleteFileTransfer from './modals/DeleteFileTransfer.modal';
 function InitModal() {
   return (
     <>
-      <DeleteFileTransfer/>
+      <DeleteFileTransfer />
       <LogoutModal />
       <RejectModal />
       <ConfirmModal />
