@@ -1,8 +1,9 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {useModalController} from '../modals.controller';
 import {useGetItem} from '@utils/hooks';
 import ReactFileViewer from 'react-file-viewer';
+import '@assets/css/reactFileViewer.css';
 
 const getFileType = (name: string) => {
   if (!name) return undefined;
@@ -14,39 +15,48 @@ const getFileType = (name: string) => {
 function FileViewer2() {
   const {fileViewer2, closeModal, data} = useModalController();
 
-  const [typeUrl, setTypeUrl] = useState(
+  const typeUrl =
     data?.title === 'Certificate'
       ? 'partnerUserCertificates/downloadFileUrl'
-      : 'partnerApplicationAttachments/downloadFileUrl',
-  );
+      : 'partnerApplicationAttachments/downloadFileUrl';
 
-  const {getItem, data: item} = useGetItem(typeUrl);
+  const {getItem, data: item, setData} = useGetItem(typeUrl);
 
   useEffect(() => {
-    if (data != null) {
+    if (fileViewer2) {
       getItem({name: JSON.stringify([data?.mediaDestination])});
     }
-  }, [data]);
+    return () => {
+      setData(null);
+    };
+  }, [fileViewer2]);
 
   return (
     <UI.Modal
       isCentered
+      size="5xl"
       isOpen={fileViewer2}
+      scrollBehavior={'inside'}
       onClose={() => closeModal('fileViewer2')}>
       <UI.ModalOverlay />
       <UI.ModalContent>
         <UI.ModalHeader>{data?.title}</UI.ModalHeader>
         <UI.ModalCloseButton />
         <UI.ModalBody p={5}>
-          <UI.Text fontSize={{md: 'md', lg: 'xl'}} fontWeight="600">
+          {item?.[0]?.url && (
+            <div style={{height: '100%'}}>
+              <ReactFileViewer
+                fileType={getFileType(item?.[0]?.name)}
+                filePath={item?.[0]?.url}
+              />
+            </div>
+          )}
+          <UI.Text
+            textAlign="center"
+            fontSize={{md: 'md', lg: 'md'}}
+            fontWeight="500">
             {item?.[0]?.name}
           </UI.Text>
-          {item?.[0]?.url && (
-            <ReactFileViewer
-              fileType={getFileType(item?.[0]?.name)}
-              filePath={item?.[0]?.url}
-            />
-          )}
         </UI.ModalBody>
       </UI.ModalContent>
     </UI.Modal>

@@ -1,29 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
-import {useGetItem} from '@utils/hooks';
+import {useGetItem, usePost} from '@utils/hooks';
 
 import UploadSingerFile from '@components/UploadSingerFile';
 import {uploadFile} from '@services';
 
-function UpLoadCertificates({partnerUserId}) {
+function UpLoadCertificates({partnerUserId, onUploadDone}) {
   const [file, setFile] = useState();
   const {loading, getItem, data} = useGetItem<{url: string}>(
     '/partnerUserCertificates/uploadFileUrl',
   );
 
+  const {post} = usePost('/partnerUserCertificates/uploadSuccess');
+
   const toast = UI.useToast();
 
   useEffect(() => {
     if (data) {
-      uploadFile(data?.url, file).then(() =>
+      uploadFile(data?.url, file).then(() => {
         toast({
           title: 'Successfully!',
           status: 'success',
           duration: 2000,
           position: 'top-right',
           isClosable: true,
-        }),
-      );
+        });
+        post({partnerUserId});
+        onUploadDone?.();
+      });
     }
   }, [data]);
 

@@ -8,14 +8,14 @@ import {HiDotsHorizontal} from 'react-icons/hi';
 import {useRouter, useGetItem} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import {IPartnerUsers} from '@types';
-import UpLoadCertificates from '@components/UpLoadCertificates';
-import CertificateAwarded from '@components/CertificatesAwarded';
 
 import {format} from 'date-fns';
 import {keyBy} from 'lodash';
 import {useModalController} from '@modules/modal';
 
 import {useMedia} from '@utils/hooks';
+
+import CertificatesAwarded from '@components/CertificatesAwarded';
 
 const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
@@ -301,11 +301,10 @@ function UserPartnerDetail() {
           </UI.Box>
         </UI.Box>
       )}
-
-      <UI.Box bgColor={'white'} borderRadius="md" mt={4} w="full" pt={5}>
-        <UpLoadCertificates partnerUserId={profileData?.id} />
-        <CertificateAwarded partnerUserId={profileData?.id} />
-      </UI.Box>
+      <CertificatesAwarded
+        partnerUserId={profileData?.id}
+        profileData={profileData}
+      />
     </UI.Box>
   );
 }

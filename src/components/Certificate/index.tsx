@@ -5,7 +5,6 @@ import {TiDelete} from 'react-icons/ti';
 
 const Certificate = ({data, getList}) => {
   const {openModal} = useModalController();
-
   return (
     <UI.Box>
       <UI.HStack
