@@ -47,13 +47,24 @@ function RemoveCertificate() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
-          <UI.Box fontSize={'lg'} color={'ste.red'} textAlign="center">
+          <UI.Box fontSize={20} color={'ste.red'} textAlign="center">
+            <UI.Text> Delete Certificate</UI.Text>
+          </UI.Box>
+          <UI.Box
+            pt={2}
+            mv={2}
+            pr={2}
+            pl={2}
+            fontWeight={400}
+            fontSize={'lg'}
+            w={'full'}
+            textAlign="center">
             <UI.Text> Are you sure you want to delete</UI.Text>
             <UI.Text>this certificate? </UI.Text>
           </UI.Box>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          <UI.Center mt={8} w={'full'}>
+          <UI.Center mt={4} w={'full'}>
             <UI.Button
               colorScheme="blue"
               onClick={() => remove()}

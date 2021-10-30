@@ -42,18 +42,23 @@ function AssignPartnerAdminModal() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
-          <UI.Center fontSize={'lg'} textAlign="center" fontWeight="400">
-            Are you sure you want to assign
-          </UI.Center>
-          <UI.Center fontSize={'lg'} textAlign="center" fontWeight="400">
-            {data?.firstName} {` `} {data?.lastName} as Partner
-          </UI.Center>
-          <UI.Center fontSize={'lg'} textAlign="center" fontWeight="400">
-            Admin for {data?.companyName}
-          </UI.Center>
+          <UI.Box fontSize={20} color={'ste.red'} textAlign="center">
+            <UI.Text> Assign as Partner Admin</UI.Text>
+          </UI.Box>
+          <UI.Box pt={3}>
+            <UI.Center fontSize={'lg'} textAlign="center" fontWeight="400">
+              Are you sure you want to assign
+            </UI.Center>
+            <UI.Center fontSize={'lg'} textAlign="center" fontWeight="400">
+              {data?.firstName} {` `} {data?.lastName} as Partner
+            </UI.Center>
+            <UI.Center fontSize={'lg'} textAlign="center" fontWeight="400">
+              Admin for {data?.companyName}
+            </UI.Center>
+          </UI.Box>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          <UI.Center mt={8} w={'full'}>
+          <UI.Center mt={2} w={'full'}>
             <UI.Button
               colorScheme="blue"
               onClick={() => {
