@@ -17,39 +17,23 @@ function Addnew() {
   const formRef = useRef(null);
 
   useEffect(() => {
-    console.log(data);
     if (!isEmpty(data)) {
       formRef?.current?.reset?.({
-        // salutation: '',
-        // firstName: '',
-        // lastName: '',
-        // salesId: '',
-        // email: '',
-        // userType: '',
-        // jobTitle: '',
-        // countryName: '',
-        // cityName: '',
-        // postalCode: '',
-        // workNumber: '',
-        // mobileNumber: '',
-        // languageId: 1,
-        // showMobileNumber: 0,
-        // showWorkNumber: 0,
-        cityName: 'HCM',
-        countryName: 'Albania',
-        email: 'nguyennguyen1@gmail.com',
-        firstName: 'Nguyen',
-        jobTitle: '1212',
-        languageId: '2',
-        lastName: 'Nguyen',
-        mobileNumber: '123 3123 3123',
-        postalCode: '21333',
-        salesId: '1',
-        salutation: 'MRS',
-        showMobileNumber: 1,
-        showWorkNumber: 1,
-        userType: 'USER',
-        workNumber: '12312 213 312',
+        salutation: '',
+        firstName: '',
+        lastName: '',
+        salesId: '',
+        email: '',
+        userType: '',
+        jobTitle: '',
+        countryName: '',
+        cityName: '',
+        postalCode: '',
+        workNumber: '',
+        mobileNumber: '',
+        languageId: 1,
+        showMobileNumber: 0,
+        showWorkNumber: 0,
       });
       toast({
         title: 'Success',
@@ -58,6 +42,7 @@ function Addnew() {
         status: 'success',
         duration: 2000,
       });
+      push('/home/user-management');
     }
   }, [data]);
 
@@ -89,21 +74,23 @@ function Addnew() {
           ref={formRef}
           onSubmit={(value) => onFormSubmit(value)}
           schema={{
-            salutation: yup.string().required('Salutation is required'),
-            firstName: yup.string().required('First Name is required'),
-            lastName: yup.string().required('Last Name is required'),
+            salutation: yup.string().required('Please select Salutation'),
+            firstName: yup.string().required('Please enter First Name'),
+            lastName: yup.string().required('Please enter Last Name'),
             email: yup
               .string()
               .email('Email is invalid')
-              .required('Email is required'),
-            userType: yup.string().required('role is required'),
-            jobTitle: yup.string().required('Job Title is required'),
-            countryName: yup.string().required('Country is required'),
-            cityName: yup.string().required('City is required'),
-            postalCode: yup.string().required('Postal Code is required'),
-            workNumber: yup.string().required('Work Number is required'),
-            mobileNumber: yup.string().required('Mobile Number is required'),
-            languageId: yup.string().required('Preferred Please select language'),
+              .required('Please enter Work Email Address'),
+            userType: yup.string().required('Please Select Role'),
+            jobTitle: yup.string().required('Please enter Job Title'),
+            countryName: yup.string().required('Please select Country'),
+            cityName: yup.string().required('Please enter City'),
+            postalCode: yup.string().required('Please enter Postal Code'),
+            workNumber: yup.string().required('Please enter Work Number'),
+            mobileNumber: yup.string().required('Please enter Mobile Number'),
+            languageId: yup
+              .string()
+              .required('Please select Preferred Lanuage'),
           }}
           fields={[
             {
@@ -173,17 +160,13 @@ function Addnew() {
             {
               isClearable: false,
               name: 'salesId',
-              type: 'select',
+              type: 'input',
               colSpan: 12,
               size: 'md',
               width: isBase ? '70%' : '100%',
               layout: isBase ? 'horizontal' : 'vertical',
               label: 'Sales ID (Only for Sales Mgr)',
               placeholder: 'Enter Sales ID',
-              options: [
-                {value: '1', label: '1'},
-                {value: '2', label: '2'},
-              ],
             },
             {
               name: 'jobTitle',

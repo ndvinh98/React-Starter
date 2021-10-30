@@ -19,7 +19,7 @@ import {HiDotsHorizontal} from 'react-icons/hi';
 export const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
   ADMIN: 'Admin',
-  USER: 'Sales Management',
+  USER: 'Sales Manager',
 };
 
 export const STATUS_STRING = {
@@ -42,7 +42,7 @@ function SalesTable(props: any) {
     getList,
     partnerId,
   } = props;
-  console.log('🚀 ~ data', data);
+
   const {push} = useRouter();
   const {isBase} = useMedia();
   const {openModal} = useModalController();
@@ -77,7 +77,7 @@ function SalesTable(props: any) {
               colSpan: isBase ? 4 : 12,
               DecorComponent: () => {
                 return (
-                  <UI.VStack>
+                  <UI.VStack pl={4}>
                     <UI.HStack
                       position={{md: 'absolute', lg: 'static'}}
                       top={'-166px'}
@@ -142,7 +142,7 @@ function SalesTable(props: any) {
                       size={'sm'}
                     />
                     <UI.Text>
-                      {row?.firstName} {row?.lastName}
+                      {row?.user?.firstName} {row?.user?.lastName}
                     </UI.Text>
                   </UI.HStack>
                 ),
