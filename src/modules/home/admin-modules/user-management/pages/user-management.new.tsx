@@ -81,7 +81,7 @@ function Addnew() {
               .string()
               .email('Email is invalid')
               .required('Please enter Work Email Address'),
-            userType: yup.string().required('Please Select Role'),
+            userType: yup.string().required('Please select Role'),
             jobTitle: yup.string().required('Please enter Job Title'),
             countryName: yup.string().required('Please select Country'),
             cityName: yup.string().required('Please enter City'),
@@ -90,7 +90,7 @@ function Addnew() {
             mobileNumber: yup.string().required('Please enter Mobile Number'),
             languageId: yup
               .string()
-              .required('Please select Preferred Lanuage'),
+              .required('Please select Preferred Language'),
           }}
           fields={[
             {

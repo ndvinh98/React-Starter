@@ -23,21 +23,25 @@ function TierToSale({partnerId}: {partnerId: number}) {
     <UI.Box shadow="sm" p={5} w="70%" bg="white">
       <LoadingComponent isLoading={partnerTierRelationsLoading}>
         <UI.Text fontSize="18px" fontWeight="bold" bg="#EEEEEC" px={3} py={2}>
-          Tier Management
+          Tier Information
         </UI.Text>
 
         <UI.HStack spacing={0} my={4} flexWrap="wrap">
           {partnerTierRelationsData?.records?.map((x) => (
-            <UI.Box pt={2} key={x?.id} w="full" h="20px">
+            <UI.Box pt={2} key={x?.id} w="full">
               <UI.Tag
-                height="30px"
+                height="45px"
                 w="full"
                 size="xl"
                 bg="white"
                 color="#555555"
                 borderWidth="1px"
                 variant="solid">
-                <UI.Text fontSize="18px" fontWeight="400">
+                <UI.Text
+                  fontSize="18px"
+                  fontWeight="400"
+                  pl={3}
+                  color="#1A1E32">
                   {x?.tier?.name}
                 </UI.Text>
               </UI.Tag>
