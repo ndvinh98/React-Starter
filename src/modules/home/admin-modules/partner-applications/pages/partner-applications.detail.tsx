@@ -68,7 +68,7 @@ function Detail() {
             fontWeight={'semibold'}
             color={'ste.black'}>
             {`
-            Partner Applications - ${data?.companyName} < ${data?.partnerApplicationSubmission?.submittedByPartnerUser?.email} > `}
+            Partner Applications - ${data?.companyName} - ${data?.partnerApplicationSubmission?.submittedByPartnerUser?.email}`}
           </UI.Text>
           <UI.Box width="full" bg="white" pt={4} py={6} px={8}>
             <UI.Text
