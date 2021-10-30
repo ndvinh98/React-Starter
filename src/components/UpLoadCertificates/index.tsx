@@ -7,9 +7,10 @@ import {uploadFile} from '@services';
 
 function UpLoadCertificates({partnerUserId, onUploadDone}) {
   const [file, setFile] = useState();
-  const {loading, getItem, data} = useGetItem<{url: string}>(
-    '/partnerUserCertificates/uploadFileUrl',
-  );
+  const {loading, getItem, data} = useGetItem<{
+    url: string;
+    partnerUserCertificate: any;
+  }>('/partnerUserCertificates/uploadFileUrl');
 
   const {post} = usePost('/partnerUserCertificates/uploadSuccess');
 
@@ -25,7 +26,7 @@ function UpLoadCertificates({partnerUserId, onUploadDone}) {
           position: 'top-right',
           isClosable: true,
         });
-        post({partnerUserId});
+        post({partnerUserCertificateId: data?.partnerUserCertificate?.id});
         onUploadDone?.();
       });
     }
