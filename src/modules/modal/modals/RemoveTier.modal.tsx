@@ -47,12 +47,15 @@ function RemoveTier() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
-          <UI.Center fontSize={'lg'} color={'ste.red'} textAlign="center">
+          <UI.Box fontSize={20} color={'ste.red'} textAlign="center">
+            <UI.Text> Delete Tier</UI.Text>
+          </UI.Box>
+          <UI.Center fontSize={'lg'} fontWeight={400} pt={3} textAlign="center">
             Are you sure you want to delete this tier for {data?.companyName}?
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          <UI.Center mt={8} w={'full'}>
+          <UI.Center mt={3} w={'full'}>
             <UI.Button
               colorScheme="blue"
               onClick={() => remove()}
