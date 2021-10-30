@@ -7,7 +7,6 @@ import Pagination from '@components/Pagination';
 import UserInfoCard from '@components/UserInfoCard';
 
 import {useRouter} from '@utils/hooks';
-import {useRouterController} from '@modules/router';
 import {useMedia} from '@utils/hooks';
 import {useModalController} from '@modules/modal';
 
@@ -43,7 +42,7 @@ function SalesTable(props: any) {
     getList,
     partnerId,
   } = props;
-  const {path} = useRouterController();
+  console.log('🚀 ~ data', data);
   const {push} = useRouter();
   const {isBase} = useMedia();
   const {openModal} = useModalController();
@@ -106,7 +105,7 @@ function SalesTable(props: any) {
 
         {isBase ? (
           <TableGenerate
-            onClickRow={(row) => push(path + `/${row?.id}`)}
+            onClickRow={(row) => push(`/home/user-management/${row?.user?.id}`)}
             isLoading={loading}
             currentPage={data?.page}
             totalpage={data?.totalPages}

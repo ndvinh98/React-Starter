@@ -129,6 +129,7 @@ function UserPartnerDetail() {
                           firstName: profileData?.firstName,
                           lastName: profileData?.lastName,
                           companyName:
+                            //@ts-ignore
                             profileData?.domain?.partners?.[0]?.companyName,
                         })
                       }>
