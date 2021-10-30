@@ -36,7 +36,7 @@ function PartnerList() {
         relations: JSON.stringify(['partner']),
         filter: JSON.stringify([{userId: profileData?.id}]),
         textSearch: textSearch
-          ? JSON.stringify([{companyName: textSearch}])
+          ? JSON.stringify([{partner: {companyName: textSearch}}])
           : undefined,
       });
   }, [page, limit, textSearch]);
@@ -52,7 +52,7 @@ function PartnerList() {
   return (
     <UI.VStack py={6} px={8} spacing={4} width="full">
       <UI.Text fontSize={{md: 'md', lg: '2xl'}} fontWeight="semibold" w="full">
-        Partner Applications
+        Partner Content
       </UI.Text>
       <FormGenerate onChangeValue={handleFilterDataSales} fields={FIELDS} />
       {loading ? (

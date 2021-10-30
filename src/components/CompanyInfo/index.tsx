@@ -169,7 +169,7 @@ function CompanyInfo(props: any) {
                         type: 'decor',
                         DecorComponent: () => (
                           <FieldData
-                            name={`Sahreholders 2`}
+                            name={`Shareholders 2`}
                             value={data?.companyShareholderName2}
                           />
                         ),
