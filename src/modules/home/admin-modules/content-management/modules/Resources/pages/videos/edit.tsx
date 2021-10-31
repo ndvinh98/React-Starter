@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
 import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
+import {isEmpty} from 'lodash';
 
 function Edit() {
   const {push} = useRouter();
@@ -21,7 +22,7 @@ function Edit() {
   } = useGetItem('/productModuleResources/');
 
   useEffect(() => {
-    if (params?.id) getItem({}, {path: params?.id});
+    if (params?.resourceId) getItem({}, {path: params?.resourceId});
   }, [params]);
 
   const {
@@ -70,7 +71,7 @@ function Edit() {
           _hover={{cursor: 'pointer'}}
           onClick={() =>
             push(
-              '/home/content-management/resources/module/' + resourceData?.id,
+              '/home/content-management/resources/module/' + resourceData?.productModuleId,
             )
           }>
           <BsArrowLeft size={20} />
@@ -181,8 +182,11 @@ function Edit() {
                 })),
                 defaultValue: {
                   value: resourceData?.languageId,
-                  label: languages.map((x) => {
-                    if (x?.id === resourceData?.languageId) return x?.name;
+                  label: languages?.map((x) => {
+                    if (x?.id === resourceData?.languageId)
+                     {
+                       return x?.name;
+                    }
                   }),
                 },
               },

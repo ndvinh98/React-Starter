@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
 import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
+import {isEmpty} from 'lodash';
 
 function Edit() {
   const {push} = useRouter();
@@ -25,7 +26,7 @@ function Edit() {
   );
 
   useEffect(() => {
-    if (params?.id) getItem({}, {path: params?.id});
+    if (params?.resourceId) getItem({}, {path: params?.resourceId});
   }, [params]);
 
   const {data: moduleData, getItem: getModuleData} =
@@ -63,13 +64,13 @@ function Edit() {
 
   return (
     <UI.Box py={5} px={7}>
-      <LoadingComponent isLoading={loadResourceData}>
+      <LoadingComponent isLoading={loadResourceData || isEmpty(languages) || isEmpty(resourceData)} >
         <UI.HStack
           w="full"
           _hover={{cursor: 'pointer'}}
           onClick={() =>
             push(
-              '/home/content-management/resources/module/' + resourceData?.id,
+              '/home/content-management/resources/module/' + resourceData?.productModuleId,
             )
           }>
           <BsArrowLeft size={20} />
@@ -99,7 +100,7 @@ function Edit() {
                 .string()
                 .required('Please enter Resource Name')
                 .default(resourceData?.resourceName),
-                fileType: yup
+              fileType: yup
                 .string()
                 .required('Please enter File Format')
                 .default(resourceData?.fileType),
@@ -111,7 +112,7 @@ function Edit() {
                 .number()
                 .required('Please select language')
                 .default(resourceData?.languageId),
-              videos: yup.string().required('Please upload file'),
+              brochures: yup.string().required('Please upload file'),
               thumb: yup.string().required('Please upload thumbnail'),
             }}
             fields={[

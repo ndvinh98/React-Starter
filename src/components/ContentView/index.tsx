@@ -92,8 +92,8 @@ function ContentView(props: IContentView) {
             w={'full'}
             justifyContent={'space-between'}
             alignItems="center"
-            spacingY={'20px'}
-            spacingX={'0px'}
+            //spacingY={'20px'}
+            //spacingX={'0px'}
             flexWrap="wrap"
             pb={5}>
             {filterBar && (
