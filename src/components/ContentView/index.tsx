@@ -15,7 +15,7 @@ import NormalGridItem from './item/NormalGridItem';
 import ModuleGridItem from './item/ModuleGridItem';
 import NormalListItem from './item/NormalListItem';
 import ModuleListItem from './item/ModuleListItem';
-import {isEmpty} from 'lodash';
+import {isEmpty, name} from 'lodash';
 import {useModalController} from '@modules/modal';
 
 export interface IContentView {
@@ -170,8 +170,9 @@ function ContentView(props: IContentView) {
                 </UI.MenuItem>
                 <UI.MenuItem
                   onClick={() => {
+                    const modalName = isModulesView ? "Module" : name;
                     openModal('deleteContent', {
-                      name,
+                      name: modalName,
                       url: linkDeleteContent,
                       isResources: isVideo || isBrochures,
                       cb: () => onReloadPage?.(),
