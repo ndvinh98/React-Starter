@@ -53,7 +53,7 @@ function Edit() {
       patch({
         resourceName: value.name,
         languageId: value.language,
-        brochureFormat: value.brochureFormat,
+        fileType: value.fileType,
         noOfPages: value.noOfPages,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.brochures,
@@ -99,10 +99,10 @@ function Edit() {
                 .string()
                 .required('Please enter Resource Name')
                 .default(resourceData?.resourceName),
-              brochureFormat: yup
+                fileType: yup
                 .string()
                 .required('Please enter File Format')
-                .default(resourceData?.brochureFormat),
+                .default(resourceData?.fileType),
               noOfPages: yup
                 .number()
                 .required('Please enter number of pages')
@@ -149,13 +149,13 @@ function Edit() {
                 urlPath: '/products/uploadThumbnailUrl',
               },
               {
-                name: 'brochureFormat',
+                name: 'fileType',
                 type: 'input',
                 label: 'File Format',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
-                defaultValue: resourceData?.brochureFormat,
+                defaultValue: resourceData?.fileType,
               },
               {
                 name: 'noOfPages',

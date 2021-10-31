@@ -218,7 +218,7 @@ function Edit() {
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)
-                .required('Please upload or select an icon'),
+                .required('Please upload or select an image'),
             }}
             fields={[
               {

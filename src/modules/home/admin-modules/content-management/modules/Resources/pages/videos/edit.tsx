@@ -54,7 +54,7 @@ function Edit() {
       patch({
         resourceName: value.name,
         languageId: value.language,
-        videoFileType: value.videoFileType,
+        fileType: value.fileType,
         videoLength: value.videoLength,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.videos,
@@ -100,10 +100,10 @@ function Edit() {
                 .string()
                 .required('Please enter Resource Name')
                 .default(resourceData?.resourceName),
-              videoFileType: yup
+              fileType: yup
                 .string()
                 .required('Please enter Video Type')
-                .default(resourceData?.videoFileType),
+                .default(resourceData?.fileType),
               videoLength: yup
                 .string()
                 .required('Please enter Video Length')
@@ -150,13 +150,13 @@ function Edit() {
                 urlPath: '/products/uploadThumbnailUrl',
               },
               {
-                name: 'videoFileType',
+                name: 'fileType',
                 type: 'input',
                 label: 'Video Type',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
-                defaultValue: resourceData?.videoFileType,
+                defaultValue: resourceData?.fileType,
               },
               {
                 name: 'videoLength',

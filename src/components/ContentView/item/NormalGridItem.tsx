@@ -84,8 +84,8 @@ function GridItem({item, onClickItem, isVideo, isBrochures}) {
             <UI.HStack>
               <UI.Text color={'white'} fontSize={'12px'}>
                 {isVideo
-                  ? item?.videoLength + ' | ' + item?.videoFileType
-                  : item?.noOfPages + ' pages | ' + item?.brochureFormat}
+                  ? item?.videoLength + ' | ' + item?.fileType
+                  : item?.noOfPages + ' pages | ' + item?.fileType}
               </UI.Text>
             </UI.HStack>
           </UI.Box>

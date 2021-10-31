@@ -78,8 +78,8 @@ function NormalListItem({item, onClickItem, isVideo, isBrochures}) {
           {(isVideo || isBrochures) && (
             <UI.Text color={'#828282'} fontSize={'12px'}>
               {isVideo
-                ? item?.videoLength + ' | ' + item?.videoFileType
-                : item?.noOfPages + ' pages | ' + item?.brochureFormat}
+                ? item?.videoLength + ' | ' + item?.fileType
+                : item?.noOfPages + ' pages | ' + item?.fileType}
             </UI.Text>
           )}
         </UI.VStack>

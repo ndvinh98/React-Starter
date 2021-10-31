@@ -43,7 +43,7 @@ function AddNew() {
         productModuleId: moduleData?.id,
         resourceName: value.name,
         languageId: value.language,
-        videoFileType: value.videoFileType,
+        fileType: value.fileType,
         videoLength: value.videoLength,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.videos,
@@ -85,7 +85,7 @@ function AddNew() {
             schema={{
               name: yup.string().required('Please enter Video Name'),
               language: yup.number().required('Please select language'),
-              videoFileType: yup
+              fileType: yup
                 .string()
                 .required('Please enter video type'),
               videoLength: yup.string().required('Please enter video length'),
@@ -131,7 +131,7 @@ function AddNew() {
                 urlPath: '/products/uploadThumbnailUrl',
               },
               {
-                name: 'videoFileType',
+                name: 'fileType',
                 type: 'input',
                 label: 'Video Type',
                 size: 'md',
