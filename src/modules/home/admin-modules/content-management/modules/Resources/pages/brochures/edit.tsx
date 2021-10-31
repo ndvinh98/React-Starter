@@ -111,7 +111,7 @@ function Edit() {
                 .default(resourceData?.noOfPages),
               language: yup
                 .number()
-                .typeError('Please select language')
+                .typeError('Please select Language')
                 .required('Please select Language')
                 .default(resourceData?.languageId),
               brochures: yup.string().required('Please upload file'),
