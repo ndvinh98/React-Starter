@@ -63,7 +63,7 @@ function DeleteContentModal() {
                 <UI.Text>
                   Are you sure you want to delete the following content?
                 </UI.Text>
-                <UI.Box pl={4} w={'full'}>
+                <UI.Box textAlign="left" pl={4} w={'full'}>
                   {itemSelected?.map((x, index) => {
                     return (
                       <UI.Text fontSize={'16px'} key={x}>
