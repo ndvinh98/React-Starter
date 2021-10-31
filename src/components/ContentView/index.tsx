@@ -170,7 +170,12 @@ function ContentView(props: IContentView) {
                 </UI.MenuItem>
                 <UI.MenuItem
                   onClick={() => {
-                    const modalName = isModulesView ? "Module" : name;
+                    const modalName =
+                      name === 'Modules'
+                        ? 'Module'
+                        : name === 'Products'
+                        ? 'Product'
+                        : name;
                     openModal('deleteContent', {
                       name: modalName,
                       url: linkDeleteContent,
