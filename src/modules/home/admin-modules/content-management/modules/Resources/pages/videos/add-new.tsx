@@ -48,6 +48,8 @@ function AddNew() {
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.videos,
       });
+      getItem({}, {path: params?.id})
+
     };
   };
 

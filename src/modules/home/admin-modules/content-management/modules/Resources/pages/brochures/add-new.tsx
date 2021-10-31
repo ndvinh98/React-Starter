@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, usePost} from '@utils/hooks';
@@ -34,6 +34,7 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
+      getItem({}, {path: params?.id})
     }
   }, [postData]);
 

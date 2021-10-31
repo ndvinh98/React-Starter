@@ -99,7 +99,7 @@ function Edit() {
             schema={{
               name: yup
                 .string()
-                .required('Please enter Resource Name')
+                .required('Please enter Video Name')
                 .default(resourceData?.resourceName),
               fileType: yup
                 .string()
@@ -111,7 +111,8 @@ function Edit() {
                 .default(resourceData?.videoLength),
               language: yup
                 .number()
-                .required('Please select language')
+                .typeError('Please select Language')
+                .required('Please select Language')
                 .default(resourceData?.languageId),
               videos: yup.string().required('Please upload file'),
               thumb: yup.string().required('Please upload thumbnail'),

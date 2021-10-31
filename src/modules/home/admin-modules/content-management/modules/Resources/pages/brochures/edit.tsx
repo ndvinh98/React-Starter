@@ -98,7 +98,7 @@ function Edit() {
             schema={{
               name: yup
                 .string()
-                .required('Please enter Resource Name')
+                .required('Please enter File Name')
                 .default(resourceData?.resourceName),
               fileType: yup
                 .string()
@@ -106,11 +106,13 @@ function Edit() {
                 .default(resourceData?.fileType),
               noOfPages: yup
                 .number()
-                .required('Please enter number of pages')
+                .typeError('Please select Number of Pages')
+                .required('Please enter Number of Pages')
                 .default(resourceData?.noOfPages),
               language: yup
                 .number()
-                .required('Please select language')
+                .typeError('Please select language')
+                .required('Please select Language')
                 .default(resourceData?.languageId),
               brochures: yup.string().required('Please upload file'),
               thumb: yup.string().required('Please upload thumbnail'),
