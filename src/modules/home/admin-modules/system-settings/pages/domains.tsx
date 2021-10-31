@@ -11,7 +11,7 @@ import {useModalController} from '@modules/modal';
 import {IPartnerManagement} from '@types';
 
 function Appearance() {
-  const {page, limit, setPage, textSearch, setTextSearch, filter, setFilter} =
+  const {page, limit, setPage,setLimit, textSearch, setTextSearch, filter, setFilter} =
     useFilter({page: 1, limit: 10});
   const {data, getList, loading} =
     useGetList<IPartnerManagement>('/partnerDomains');
@@ -38,6 +38,8 @@ function Appearance() {
       ...filter,
       status: parseInt(status),
     }));
+    setPage(1);
+    setLimit(10);
   };
 
   const {isBase} = useMedia();
