@@ -61,6 +61,8 @@ export interface IMe {
   updatedAt?: string;
   workNumber?: string;
   language?: number;
+  showWorkNumber?: 0 | 1;
+  showMobileNumber?: 0 | 1;
 }
 
 export interface IPartnerUserProfiles extends BaseSchema {
