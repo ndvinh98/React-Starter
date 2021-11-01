@@ -113,12 +113,6 @@ function FileTransfer() {
             {
               Header: 'Sender',
               id: 'sender',
-              bodyCellProps: {
-                width: '400px',
-              },
-              headerCellProps: {
-                width: '400px',
-              },
               accessor: (row) => (
                 <UI.VStack w="300px" alignItems="flex-start">
                   <UI.Text key={row?.id}>
@@ -132,14 +126,18 @@ function FileTransfer() {
               Header: 'Subject',
               id: 'subject',
               accessor: (row) => (
-                <UI.Text>{row?.fileTransfer?.subject}</UI.Text>
+                <UI.Text w={'400px'}>
+                  {row?.fileTransfer?.subject?.length > 100
+                    ? row?.fileTransfer?.subject?.substring(0, 100) + '...'
+                    : row?.fileTransfer?.subject}
+                </UI.Text>
               ),
             },
             {
-              Header: 'Sent',
-              id: 'sent',
+              Header: 'Received',
+              id: 'received',
               accessor: (row) => (
-                <UI.Text>
+                <UI.Text w="250px">
                   {format(new Date(row?.createdAt), 'dd MMM yyyy')}
                 </UI.Text>
               ),

@@ -4,11 +4,11 @@ export const countUnread = (): Promise<{count: number}> => {
   return request({
     method: 'GET',
     path: 'userNotifications/countUnread',
-    // option: {
-    //   qs: {
-    //     filter: JSON.stringify([{notificationType: 'FILETRANSFERS'}])
-    //   },
-    // },
+    option: {
+      qs: {
+        filter: JSON.stringify([{notificationType: 'FILETRANSFERS'}])
+      },
+    },
   }).then(([res, err]) => {
     if (err) {
       return null;
