@@ -172,7 +172,7 @@ function SendFiles() {
               value={usersSender}
               options={usersData?.records?.map((x) => ({
                 value: x?.id,
-                label: `${x?.firstName} ${x?.lastName}`,
+                label: `${x?.firstName} ${x?.lastName} (${x?.email})`,
                 email: x?.email,
                 tag: `${x?.firstName} ${x?.lastName} (${x?.email})`,
               }))}
@@ -183,10 +183,11 @@ function SendFiles() {
         {!isEmpty(usersSender) && (
           <UI.HStack w="full">
             <UI.Text w="300px"></UI.Text>
-            <UI.HStack w="full" flexWrap="wrap" alignItems={"center"} >
+            <UI.HStack w="full" flexWrap="wrap" spacing={0} alignItems={"center"} >
               {usersSender?.map?.((x) => (
                 <UI.VStack>
                   <UI.Tag
+                    mr={2}
                     size="md"
                     borderRadius="full"
                     variant="solid"
