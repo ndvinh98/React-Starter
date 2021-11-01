@@ -23,7 +23,7 @@ function Appearance() {
       page,
       limit,
       filter: isEmpty(filter)
-        ? JSON.stringify([{isAllowed: 1}])
+        ? undefined
         : JSON.stringify([{isAllowed: filter.status}]),
       textSearch: textSearch
         ? JSON.stringify([{domain: textSearch}])
@@ -32,12 +32,18 @@ function Appearance() {
   }, [page, limit, textSearch, filter]);
 
   const handleFilterData = ({textSearch, status}) => {
-    statusDomain.current = parseInt(status);
+    statusDomain.current = undefined;
     setTextSearch(textSearch === undefined ? '' : textSearch);
-    setFilter((filter) => ({
-      ...filter,
-      status: parseInt(status),
-    }));
+    if (parseInt(status) > -1){
+      statusDomain.current = parseInt(status);
+      setFilter((filter) => ({
+        ...filter,
+        status: parseInt(status),
+      }));
+    }
+    else{
+      setFilter(undefined)
+    }
     setPage(1);
     setLimit(10);
   };
@@ -68,10 +74,14 @@ function Appearance() {
               name: 'status',
               isClearable: false,
               defaultValue: {
-                label: 'Whitelist',
-                value: '1',
+                label: 'All Status',
+                value: "-1",
               },
               options: [
+                {
+                  label: 'All Status',
+                  value: "-1",
+                },
                 {
                   label: 'Blacklist',
                   value: '0',
