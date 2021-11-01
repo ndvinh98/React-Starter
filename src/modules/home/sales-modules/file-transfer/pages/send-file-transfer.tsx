@@ -6,6 +6,7 @@ import UploadFilesSender from '@components/UploadMultipleFiles';
 import {useGetList, useGetItem, usePost, useRouter} from '@utils/hooks';
 import {uploadFile} from '@services';
 import {useHomeController} from '@modules/home';
+import {BsArrowLeft} from 'react-icons/bs';
 
 function SendFiles() {
   const uploadEl = useRef<any>(null);
@@ -132,6 +133,14 @@ function SendFiles() {
 
   return (
     <UI.Box p={8}>
+      <UI.HStack
+        mb={4}
+        w="full"
+        _hover={{cursor: 'pointer'}}
+        onClick={() => push('/home/file-transfer/received')}>
+        <BsArrowLeft size={20} />
+        <UI.Text fontSize={'14px'}>Back</UI.Text>
+      </UI.HStack>
       <UI.Text fontWeight={'bold'} fontSize={'20px'} mb={4}>
         File Transfer
       </UI.Text>
