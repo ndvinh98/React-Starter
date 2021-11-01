@@ -5,9 +5,9 @@ import FormGenerate from '@components/FormGenerate';
 import {BsArrowLeft} from 'react-icons/bs';
 import {HiDotsHorizontal} from 'react-icons/hi';
 
-import {useRouter, useGetItem} from '@utils/hooks';
+import {useRouter, useGetItem, useGetList} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
-import {IPartnerUsers} from '@types';
+import {IPartnerManagement, IPartnerUsers} from '@types';
 
 import {format} from 'date-fns';
 import {isEmpty, keyBy} from 'lodash';
@@ -40,37 +40,71 @@ const SALUATION_OPITONS_VALUE = keyBy(SALUATION_OPITONS, 'value');
 function UserPartnerDetail() {
   const {push} = useRouter();
   const {params} = useRouterController();
-  const {
-    data: profileData,
-    loading,
-    getItem,
-  } = useGetItem<IPartnerUsers>(`/partnerUsers/${params?.userId}`);
+  // const {
+  //   data: profileData,
+  //   loading,
+  //   getItem,
+  // } = useGetItem<IPartnerUsers>(`/partnerUsers/${params?.userId}`);
   const {openModal} = useModalController();
   const {isBase} = useMedia();
 
+  // useEffect(() => {
+  //   if (params?.userId) getUserProfile();
+  // }, [params]);
+
+  const {getItem: getItemDomain, data: dataDomain} =
+    useGetItem<IPartnerManagement>(`/partners/${params?.id}`);
+
+  const {
+    data: profileData,
+    getList: getListUser,
+    loading: loadingUser,
+  } = useGetList<IPartnerUsers>('/partnerUsers');
+
   useEffect(() => {
-    if (params?.userId) getUserProfile();
+    if (params?.id)
+      getItemDomain({
+        relations: JSON.stringify(['partnerDomain']),
+      });
   }, [params]);
 
-  const getUserProfile = () => {
-    getItem({
-      filter: JSON.stringify([
-        {
-          partners: {id: params?.id},
-        },
-      ]),
-      relations: JSON.stringify([
-        'partnerUserProfiles',
-        'partnerUserProfiles.language',
-        'domain',
-        'domain.partners',
-      ]),
-    });
-  };
+  useEffect(() => {
+    if (dataDomain || params?.userId)
+      getListUser({
+        relations: JSON.stringify([
+          'domain',
+          'partnerUserProfiles',
+          'domain.partners',
+          'partnerUserProfiles.language',
+        ]),
+        filter: JSON.stringify([
+          {
+            domain: {id: dataDomain?.partnerDomain?.id},
+            id: params?.userId,
+          },
+        ]),
+      });
+  }, [params, dataDomain]);
+
+  // const getUserProfile = () => {
+  //   getItem({
+  //     filter: JSON.stringify([
+  //       {
+  //         partners: {id: params?.id},
+  //       },
+  //     ]),
+  //     relations: JSON.stringify([
+  //       'partnerUserProfiles',
+  //       'partnerUserProfiles.language',
+  //       'domain',
+  //       'domain.partners',
+  //     ]),
+  //   });
+  // };
 
   const isHiden = () => {
-    return profileData?.isActive === 0 ||
-      profileData?.userType === 'PARTNERADMIN'
+    return profileData[0]?.isActive === 0 ||
+      profileData?.[0]?.userType === 'PARTNERADMIN'
       ? true
       : false;
   };
@@ -84,7 +118,7 @@ function UserPartnerDetail() {
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>{' '}
-      {loading ? (
+      {loadingUser ? (
         <UI.Center minH="200px">
           <UI.Spinner size="lg" color="ste.red" />
         </UI.Center>
@@ -93,7 +127,7 @@ function UserPartnerDetail() {
       ) : (
         <UI.Box>
           <UI.Text fontWeight={'bold'} fontSize={'20px'} pt="5">
-            {profileData?.firstName + ' ' + profileData?.lastName}
+            {profileData?.[0]?.firstName + ' ' + profileData?.[0]?.lastName}
           </UI.Text>
 
           <UI.Box
@@ -116,15 +150,21 @@ function UserPartnerDetail() {
               <UI.Tbody>
                 <UI.Tr>
                   <UI.Td>
-                    {profileData?.otpCodeExp
-                      ? format(new Date(profileData?.otpCodeExp), 'dd MMM yyyy')
+                    {profileData?.[0]?.otpCodeExp
+                      ? format(
+                          new Date(profileData?.[0]?.otpCodeExp),
+                          'dd MMM yyyy',
+                        )
                       : false}
                   </UI.Td>
-                  <UI.Td>{STATUS_STRING[profileData?.isActive]}</UI.Td>
-                  <UI.Td>{USRTYPE_STRING[profileData?.userType]}</UI.Td>
+                  <UI.Td>{STATUS_STRING[profileData?.[0]?.isActive]}</UI.Td>
+                  <UI.Td>{USRTYPE_STRING[profileData?.[0]?.userType]}</UI.Td>
                   <UI.Td>
-                    {profileData?.createdAt
-                      ? format(new Date(profileData?.createdAt), 'dd MMM yyyy')
+                    {profileData?.[0]?.createdAt
+                      ? format(
+                          new Date(profileData?.[0]?.createdAt),
+                          'dd MMM yyyy',
+                        )
                       : false}
                   </UI.Td>
                   <UI.Td>
@@ -143,13 +183,14 @@ function UserPartnerDetail() {
                         <UI.MenuItem
                           onClick={() =>
                             openModal('assignPartnerAdmin', {
-                              cb: () => getUserProfile(),
-                              id: profileData?.id,
-                              firstName: profileData?.firstName,
-                              lastName: profileData?.lastName,
+                              //cb: () => getUserProfile(),
+                              id: profileData?.[0]?.id,
+                              firstName: profileData?.[0]?.firstName,
+                              lastName: profileData?.[0]?.lastName,
                               companyName:
                                 //@ts-ignore
-                                profileData?.domain?.partners?.[0]?.companyName,
+                                profileData?.[0]?.domain?.partners?.[0]
+                                  ?.companyName,
                             })
                           }>
                           Assign as Partner Admin
@@ -166,16 +207,19 @@ function UserPartnerDetail() {
             <UI.Center pt="4">
               <UI.Avatar
                 sx={{img: {objectFit: 'contain'}}}
-                name={profileData?.firstName + ' ' + profileData?.lastName}
+                name={
+                  profileData?.[0]?.firstName + ' ' + profileData?.[0]?.lastName
+                }
                 bg={
-                  profileData?.partnerUserProfiles[0]?.avatarMediaDestination
+                  profileData[0]?.partnerUserProfiles[0]?.avatarMediaDestination
                     ? 'white'
                     : undefined
                 }
                 boxSize="100px"
-                userId={profileData?.id}
+                userId={profileData?.[0]?.id}
                 src={
-                  profileData?.partnerUserProfiles[0]?.avatarMediaDestination
+                  profileData?.[0]?.partnerUserProfiles[0]
+                    ?.avatarMediaDestination
                 }
               />
             </UI.Center>
@@ -191,7 +235,7 @@ function UserPartnerDetail() {
                       colSpan: isBase ? 6 : 12,
                       size: 'md',
                       isDisabled: true,
-                      defaultValue: profileData?.firstName,
+                      defaultValue: profileData?.[0]?.firstName,
                     },
                     {
                       type: 'input',
@@ -201,7 +245,7 @@ function UserPartnerDetail() {
                       colSpan: isBase ? 6 : 12,
                       size: 'md',
                       isDisabled: true,
-                      defaultValue: profileData?.lastName,
+                      defaultValue: profileData?.[0]?.lastName,
                     },
                     {
                       name: 'salutation',
@@ -211,7 +255,7 @@ function UserPartnerDetail() {
                       label: 'Salutation',
                       placeholder: 'Salutation',
                       defaultValue:
-                        SALUATION_OPITONS_VALUE?.[profileData?.salutation],
+                        SALUATION_OPITONS_VALUE?.[profileData?.[0]?.salutation],
                       options: SALUATION_OPITONS,
                       isDisabled: true,
                     },
@@ -223,7 +267,7 @@ function UserPartnerDetail() {
                       colSpan: isBase ? 6 : 12,
                       size: 'md',
                       isDisabled: true,
-                      defaultValue: profileData?.email,
+                      defaultValue: profileData?.[0]?.email,
                     },
                     {
                       name: 'jobFunction',
@@ -234,7 +278,7 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.partnerUserProfiles[0]?.jobFunction,
+                        profileData?.[0]?.partnerUserProfiles[0]?.jobFunction,
                     },
                     {
                       name: 'jobTitle',
@@ -245,7 +289,7 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.partnerUserProfiles[0]?.jobFunction,
+                        profileData?.[0]?.partnerUserProfiles[0]?.jobFunction,
                     },
                     {
                       name: 'countryName',
@@ -256,7 +300,7 @@ function UserPartnerDetail() {
                       placeholder: 'Country',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.partnerUserProfiles[0]?.countryName,
+                        profileData?.[0]?.partnerUserProfiles[0]?.countryName,
                     },
                     {
                       name: 'cityName',
@@ -267,7 +311,7 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.partnerUserProfiles[0]?.cityName,
+                        profileData?.[0]?.partnerUserProfiles[0]?.cityName,
                     },
                     {
                       name: 'postalCode',
@@ -278,7 +322,7 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.partnerUserProfiles[0]?.postalCode,
+                        profileData?.[0]?.partnerUserProfiles[0]?.postalCode,
                     },
                     {
                       name: 'workNumber',
@@ -289,7 +333,7 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.partnerUserProfiles[0]?.workNumber,
+                        profileData?.[0]?.partnerUserProfiles[0]?.workNumber,
                     },
                     {
                       name: 'mobileNumber',
@@ -300,7 +344,7 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.partnerUserProfiles[0]?.mobileNumber,
+                        profileData?.[0]?.partnerUserProfiles[0]?.mobileNumber,
                     },
                     {
                       name: 'preferredLanguage',
@@ -310,7 +354,8 @@ function UserPartnerDetail() {
                       placeholder: 'Preferred Language',
                       colSpan: isBase ? 6 : 12,
                       defaultValue:
-                        profileData?.partnerUserProfiles[0]?.language?.name,
+                        profileData?.[0]?.partnerUserProfiles[0]?.language
+                          ?.name,
 
                       isDisabled: true,
                     },
@@ -320,7 +365,7 @@ function UserPartnerDetail() {
           </UI.Box>
 
           <CertificatesAwarded
-            partnerUserId={profileData?.id}
+            partnerUserId={profileData?.[0]?.id}
             profileData={profileData}
           />
         </UI.Box>
