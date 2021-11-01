@@ -10,7 +10,6 @@ import {HiDotsHorizontal} from 'react-icons/hi';
 import {useModalController} from '@modules/modal';
 import {useAuthController} from '@modules/auth';
 
-
 function FileTransfer() {
   const {push} = useRouter();
   const {isBase} = useMedia();
@@ -20,39 +19,39 @@ function FileTransfer() {
   }, []);
   const {data, loading, getList} = useGetList('/userFileTransfers');
   //const [refresh, setRefresh] = useState()
-  const {page, limit, setPage, textSearch, setTextSearch, filter} =
-    useFilter({
-      page: 1,
-      limit: 10,
-    });
+  const {page, limit, setPage, textSearch, setTextSearch, filter} = useFilter({
+    page: 1,
+    limit: 10,
+  });
 
   useEffect(() => {
-    if (me?.id){
+    if (me?.id) {
       getList({
         page,
         limit,
         sort: JSON.stringify({createdAt: -1}),
         textSearch: textSearch
-        ? JSON.stringify([
-            {subject: textSearch},
-          ])
-        : undefined,
-        filter: JSON.stringify([{"userId": me?.id}]),
-        relations: JSON.stringify(["userFileTransferRecipients", "userFileTransferRecipients.partnerUser"]),
+          ? JSON.stringify([{subject: textSearch}])
+          : undefined,
+        filter: JSON.stringify([{userId: me?.id}]),
+        relations: JSON.stringify([
+          'userFileTransferRecipients',
+          'userFileTransferRecipients.partnerUser',
+        ]),
       });
     }
   }, [limit, page, textSearch, filter, me]);
 
-
   const handleFilterData = ({textSearch, status}) => {
     if (textSearch !== undefined) setTextSearch(textSearch as string);
-    if (status === "received") push('/home/file-transfer/received');
-
+    if (status === 'received') push('/home/file-transfer/received');
   };
-  
+
   return (
     <UI.Box minH="77vh" p={8}>
-      <UI.Text fontSize={'20px'} fontWeight={'bold'} mb={4}>File Transfer</UI.Text>
+      <UI.Text fontSize={'20px'} fontWeight={'bold'} mb={4}>
+        File Transfer
+      </UI.Text>
       <FormGenerate
         gap={isBase ? 6 : 2}
         onChangeValue={handleFilterData}
@@ -108,56 +107,66 @@ function FileTransfer() {
           },
         ]}
       />
-      <TableGenerate
-        onClickRow={(row) => push(`/home/file-transfer/sent/${row?.id}`)}
-        isLoading={loading}
-        currentPage={data?.page}
-        totalCount={data?.total}
-        pageSize={data?.limit}
-        totalpage={data?.totalPages}
-        data={data?.records || []}
-        onChangePage={setPage}
-        columns={[
-          {
-            Header: 'Recipient',
-            id: 'sender',
-            bodyCellProps: {
-              width: '400px',
-            },
-            headerCellProps: {
-              width: '400px',
-            },
-            accessor: (row) => (
-              <UI.VStack w="300px" alignItems="flex-start">
+      <UI.Box w={'full'} bgColor={'white'} borderRadius={'10px'} pl={4} pr={4}>
+        <TableGenerate
+          onClickRow={(row) => push(`/home/file-transfer/sent/${row?.id}`)}
+          isLoading={loading}
+          currentPage={data?.page}
+          totalCount={data?.total}
+          pageSize={data?.limit}
+          totalpage={data?.totalPages}
+          data={data?.records || []}
+          onChangePage={setPage}
+          columns={[
+            {
+              Header: 'Recipient',
+              id: 'sender',
+              // bodyCellProps: {
+              //   width: '400px',
+              // },
+              // headerCellProps: {
+              //   width: '400px',
+              // },
+              accessor: (row) => (
+                <UI.VStack w="300px" alignItems="flex-start">
                   {row?.userFileTransferRecipients.map((x) => (
                     <UI.Text key={x?.id}>
                       {x?.partnerUser?.firstName} ({x?.partnerUser?.email})
                     </UI.Text>
-                ))}
-              </UI.VStack>
-            ),
-          },
-          {
-            Header: 'Subject',
-            id: 'subject',
-            accessor: (row) => <UI.Text>{row?.subject}</UI.Text>,
-          },
-          {
-            Header: 'Sent',
-            id: 'sent',
-            accessor: (row) => (
-              <UI.Text>
-                {format(new Date(row?.createdAt), 'dd MMM yyyy')}
-              </UI.Text>
-            ),
-          },
-          {
-            Header: () => <UI.Center>Action</UI.Center>,
-            id: 'action',
-            accessor: (row) => <ActionColum refresh={() => getMe()} row={row} />,
-          },
-        ]}
-      />
+                  ))}
+                </UI.VStack>
+              ),
+            },
+            {
+              Header: 'Subject',
+              id: 'subject',
+              // bodyCellProps: {
+              //   width: '400px',
+              // },
+              // headerCellProps: {
+              //   width: '400px',
+              // },
+              accessor: (row) => <UI.Text>{row?.subject}</UI.Text>,
+            },
+            {
+              Header: 'Sent',
+              id: 'sent',
+              accessor: (row) => (
+                <UI.Text>
+                  {format(new Date(row?.createdAt), 'dd MMM yyyy')}
+                </UI.Text>
+              ),
+            },
+            {
+              Header: () => <UI.Center>Action</UI.Center>,
+              id: 'action',
+              accessor: (row) => (
+                <ActionColum refresh={() => getMe()} row={row} />
+              ),
+            },
+          ]}
+        />
+      </UI.Box>
     </UI.Box>
   );
 }
