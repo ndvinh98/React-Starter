@@ -21,7 +21,12 @@ function ConfirmModal() {
   useEffect(() => {
     if (patchData) {
       closeModal('confirmRequest');
-      toast({status: 'success', description: 'Successfully!', duration: 2000});
+      toast({
+        status: 'success',
+        description: 'Successfully!',
+        duration: 2000,
+        position: 'bottom-right',
+      });
       push('/home/partner-applications');
     }
   }, [patchData]);
