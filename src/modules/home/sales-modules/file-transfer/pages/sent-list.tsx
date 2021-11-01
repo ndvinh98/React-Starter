@@ -129,11 +129,36 @@ function FileTransfer() {
               },
               accessor: (row) => (
                 <UI.VStack w="300px" alignItems="flex-start">
-                  {row?.userFileTransferRecipients.map((x) => (
+                  {/* {row?.userFileTransferRecipients.map((x) => (
                     <UI.Text key={x?.id}>
                       {x?.partnerUser?.firstName} ({x?.partnerUser?.email})
                     </UI.Text>
-                  ))}
+                  ))} */}
+                  {row?.userFileTransferRecipients?.[0] && (
+                    <UI.Text>
+                      {
+                        row?.userFileTransferRecipients?.[0]?.partnerUser
+                          ?.firstName
+                      }{' '}
+                      (
+                      {row?.userFileTransferRecipients?.[0]?.partnerUser?.email}
+                      )
+                    </UI.Text>
+                  )}
+                  {row?.userFileTransferRecipients?.[1] && (
+                    <UI.Text>
+                      {
+                        row?.userFileTransferRecipients?.[1]?.partnerUser
+                          ?.firstName
+                      }{' '}
+                      (
+                      {row?.userFileTransferRecipients?.[1]?.partnerUser?.email}
+                      )
+                      {row?.userFileTransferRecipients?.length > 2
+                        ? ' ...'
+                        : undefined}
+                    </UI.Text>
+                  )}
                 </UI.VStack>
               ),
             },
