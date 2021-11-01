@@ -31,6 +31,18 @@ function Detail() {
     }
   }, [params]);
 
+  const getListSentToDetails = (listSentTo) =>{
+    if (!listSentTo){
+      return undefined;
+    }
+    let listName = []
+    listSentTo.map((x) => (
+        listName.push(x?.partnerUser?.firstName +" "+ x?.partnerUser?.lastName + " (" +x?.partnerUser?.email+")")
+    ))
+    return listName.join(", ");
+  }
+  
+
   return (
     <LoadingComponent length={data ? 1 : 0} isLoading={loading}>
       <UI.Box minH="77vh" p={8}>
@@ -51,13 +63,12 @@ function Detail() {
           <UI.VStack spacing="20px">  
             <UI.HStack alignItems="flex-start" w="full">
               <UI.Text w="300px">Sent to:</UI.Text>
-              <UI.Box>
-                {data?.userFileTransferRecipients?.map((x) => (
-                  <UI.Text key={x?.id}>
-                    {x?.partnerUser?.firstName +" "+ x?.partnerUser?.lastName + " (" +x?.partnerUser?.email+")"}
-                  </UI.Text>
-                ))}
-              </UI.Box>
+              <UI.Text w="calc(100% - 300px)">
+                {/* {data?.userFileTransferRecipients?.map((x, index) => (
+                    x?.partnerUser?.firstName +" "+ x?.partnerUser?.lastName + " (" +x?.partnerUser?.email+"), "
+                ))} */}
+                {getListSentToDetails(data?.userFileTransferRecipients)}
+              </UI.Text>
             </UI.HStack>
             <UI.HStack alignItems="flex-start" w="full">
               <UI.Text w="300px">Date sent:</UI.Text>
