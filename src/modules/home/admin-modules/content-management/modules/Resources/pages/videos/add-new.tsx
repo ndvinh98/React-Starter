@@ -34,6 +34,7 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
+      push('/home/content-management/resources/module/' + moduleData?.id)
     }
   }, [postData]);
 
@@ -48,8 +49,6 @@ function AddNew() {
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.videos,
       });
-      getItem({}, {path: params?.id})
-
     };
   };
 

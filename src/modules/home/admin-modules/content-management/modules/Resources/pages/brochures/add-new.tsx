@@ -34,7 +34,7 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
-      getItem({}, {path: params?.id})
+      push('/home/content-management/resources/module/' + moduleData?.id)
     }
   }, [postData]);
 

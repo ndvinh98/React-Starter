@@ -46,6 +46,7 @@ function Edit() {
         position: 'top-right',
         isClosable: true,
       });
+      push('/home/content-management/resources/module/' + resourceData?.productModuleId)
     }
   }, [data]);
 
