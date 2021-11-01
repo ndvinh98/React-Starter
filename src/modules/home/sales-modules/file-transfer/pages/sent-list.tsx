@@ -49,6 +49,7 @@ function FileTransfer() {
 
   return (
     <UI.Box minH="77vh" p={8}>
+      
       <UI.Text fontSize={'20px'} fontWeight={'bold'} mb={4}>
         File Transfer
       </UI.Text>

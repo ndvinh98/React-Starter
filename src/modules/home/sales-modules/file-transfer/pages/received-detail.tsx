@@ -4,12 +4,15 @@ import {format} from 'date-fns';
 
 import {useRouterController} from '@modules/router';
 import {useModalController} from '@modules/modal';
-import {useGetItem} from '@utils/hooks';
+import {useGetItem, useRouter} from '@utils/hooks';
 //import {getFileTransfersDetail, getDownloadFileUrl} from '@services';
 import LoadingComponent from '@components/LoadingComponent';
 import {isEmpty} from 'lodash';
+import {BsArrowLeft} from 'react-icons/bs';
 
 function Detail() {
+  const {push} = useRouter();
+
   const {params} = useRouterController();
   const {getItem, data, loading} = useGetItem(`/fileTransferRecipients/`);
   useEffect(() => {
@@ -31,6 +34,14 @@ function Detail() {
   return (
     <LoadingComponent length={data ? 1 : 0} isLoading={loading}>
       <UI.Box minH="77vh" p={8}>
+      <UI.HStack
+        mb={4}
+        w="full"
+        _hover={{cursor: 'pointer'}}
+        onClick={() => push('/home/file-transfer/received')}>
+        <BsArrowLeft size={20} />
+        <UI.Text fontSize={'14px'}>Back</UI.Text>
+      </UI.HStack>
         <UI.HStack>
           <UI.Text fontWeight="bold" fontSize="20px" textTransform="uppercase">
             File Transfer
@@ -60,7 +71,7 @@ function Detail() {
             </UI.HStack>
             <UI.HStack alignItems="flex-start" w="full">
               <UI.Text w="300px">Subject:</UI.Text>
-              <UI.Text>{data?.fileTransfer?.subject}</UI.Text>
+              <UI.Text w="calc(100% - 300px)">{data?.fileTransfer?.subject}</UI.Text>
             </UI.HStack>
             <UI.HStack alignItems="flex-start" w="full">
               <UI.Text w="300px">Attached Files:</UI.Text>
@@ -74,7 +85,7 @@ function Detail() {
             </UI.HStack>
             <UI.HStack alignItems="flex-start" w="full">
               <UI.Text w="300px">Description:</UI.Text>
-              <UI.Text>{data?.fileTransfer?.description}</UI.Text>
+              <UI.Text w="calc(100% - 300px)">{data?.fileTransfer?.description}</UI.Text>
             </UI.HStack>
           </UI.VStack>
         </UI.Box>
