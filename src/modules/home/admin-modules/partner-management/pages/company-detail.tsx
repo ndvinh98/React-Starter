@@ -19,6 +19,7 @@ import {
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import SalesTable from '@components/SalesTable';
+import {isEmpty} from '@chakra-ui/utils';
 
 function CompanyDetail() {
   const {push} = useRouter();
@@ -46,8 +47,11 @@ function CompanyDetail() {
       });
   }, [params]);
 
-  const {getItem: getItemDomain, data: dataDomain} =
-    useGetItem<IPartnerManagement>(`/partners/${params?.id}`);
+  const {
+    getItem: getItemDomain,
+    data: dataDomain,
+    loading: loadingDomain,
+  } = useGetItem<IPartnerManagement>(`/partners/${params?.id}`);
 
   useEffect(() => {
     if (params?.id)
@@ -170,32 +174,45 @@ function CompanyDetail() {
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
-      <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
-        {dataCompany?.records[0]?.companyName}
-        {''} ({dataDomain?.partnerDomain?.domain})
-      </UI.Text>
-      <CompanyInfo data={dataCompany?.records[0]} loading={loadingCompany} />
-      <UserTable
-        data={dataUser}
-        loading={loadingUser}
-        handleFilterDataUser={handleFilterDataUser}
-        setPage={setPageUser}
-        companyName={dataCompany?.records[0]?.companyName}
-        getList={getListUser}
-      />
-      <SalesTable
-        data={dataSales}
-        loading={loadingSales}
-        handleFilterData={handleFilterDataSales}
-        setPage={setPageSales}
-        getList={getListSales}
-        companyName={dataCompany?.records[0]?.companyName}
-        partnerId={params?.id}
-      />
-      <TierToParter
-        companyName={dataCompany?.records[0]?.companyName}
-        partnerId={params?.id}
-      />
+      {loadingDomain ? (
+        <UI.Center minH="200px">
+          <UI.Spinner size="lg" color="ste.red" />
+        </UI.Center>
+      ) : isEmpty(dataDomain) ? (
+        <UI.Text fontWeight={600}> 404 - Not Found</UI.Text>
+      ) : (
+        <UI.Box>
+          <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
+            {dataCompany?.records[0]?.companyName}
+            {''} ({dataDomain?.partnerDomain?.domain})
+          </UI.Text>
+          <CompanyInfo
+            data={dataCompany?.records[0]}
+            loading={loadingCompany}
+          />
+          <UserTable
+            data={dataUser}
+            loading={loadingUser}
+            handleFilterDataUser={handleFilterDataUser}
+            setPage={setPageUser}
+            companyName={dataCompany?.records[0]?.companyName}
+            getList={getListUser}
+          />
+          <SalesTable
+            data={dataSales}
+            loading={loadingSales}
+            handleFilterData={handleFilterDataSales}
+            setPage={setPageSales}
+            getList={getListSales}
+            companyName={dataCompany?.records[0]?.companyName}
+            partnerId={params?.id}
+          />
+          <TierToParter
+            companyName={dataCompany?.records[0]?.companyName}
+            partnerId={params?.id}
+          />
+        </UI.Box>
+      )}
     </UI.VStack>
   );
 }
