@@ -114,7 +114,7 @@ function FileTransfer() {
               Header: 'Sender',
               id: 'sender',
               accessor: (row) => (
-                <UI.VStack w="300px" alignItems="flex-start">
+                <UI.VStack alignItems="flex-start">
                   <UI.Text key={row?.id}>
                     {row?.fileTransfer?.partnerUser?.firstName} (
                     {row?.fileTransfer?.partnerUser?.email})
@@ -137,7 +137,7 @@ function FileTransfer() {
               Header: 'Received',
               id: 'received',
               accessor: (row) => (
-                <UI.Text w="150px">
+                <UI.Text>
                   {format(new Date(row?.createdAt), 'dd MMM yyyy')}
                 </UI.Text>
               ),
