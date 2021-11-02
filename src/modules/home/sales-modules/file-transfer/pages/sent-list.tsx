@@ -108,7 +108,7 @@ function FileTransfer() {
           },
         ]}
       />
-      <UI.Box w={'full'} bgColor={'white'} borderRadius={'10px'} pl={4} pr={4}>
+      <UI.Box w={'full'} bgColor={'white'} borderRadius={'10px'} px={4}>
         <TableGenerate
           onClickRow={(row) => push(`/home/file-transfer/sent/${row?.id}`)}
           isLoading={loading}
@@ -122,12 +122,6 @@ function FileTransfer() {
             {
               Header: 'Recipient',
               id: 'sender',
-              bodyCellProps: {
-                width: '400px',
-              },
-              headerCellProps: {
-                width: '400px',
-              },
               accessor: (row) => (
                 <UI.VStack w="300px" alignItems="flex-start">
                   {/* {row?.userFileTransferRecipients.map((x) => (
@@ -178,7 +172,7 @@ function FileTransfer() {
               Header: 'Sent',
               id: 'sent',
               accessor: (row) => (
-                <UI.Text w="250px">
+                <UI.Text w="150px">
                   {format(new Date(row?.createdAt), 'dd MMM yyyy')}
                 </UI.Text>
               ),

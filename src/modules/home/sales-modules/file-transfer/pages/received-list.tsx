@@ -99,7 +99,7 @@ function FileTransfer() {
           },
         ]}
       />
-      <UI.Box w={'full'} bgColor={'white'} borderRadius={'10px'} pl={4} pr={4}>
+      <UI.Box w={'full'} bgColor={'white'} borderRadius={'10px'} px={4}>
         <TableGenerate
           onClickRow={(row) => push(`/home/file-transfer/received/${row?.id}`)}
           isLoading={loading}
@@ -137,7 +137,7 @@ function FileTransfer() {
               Header: 'Received',
               id: 'received',
               accessor: (row) => (
-                <UI.Text w="250px">
+                <UI.Text w="150px">
                   {format(new Date(row?.createdAt), 'dd MMM yyyy')}
                 </UI.Text>
               ),
