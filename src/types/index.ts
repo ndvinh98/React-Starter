@@ -63,6 +63,7 @@ export interface IMe {
   language?: number;
   showWorkNumber?: 0 | 1;
   showMobileNumber?: 0 | 1;
+  salesId?: string;
 }
 
 export interface IPartnerUserProfiles extends BaseSchema {
