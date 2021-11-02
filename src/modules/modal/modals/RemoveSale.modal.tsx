@@ -47,16 +47,22 @@ function RemoveSale() {
         </UI.Circle>
 
         <UI.ModalHeader mt={8}>
-          <UI.Box fontSize={'lg'} color={'ste.red'} textAlign="center">
-            <UI.Text>Are you sure you want to </UI.Text>
-            <UI.Text>
-              remove {` ${data?.firstName} ${data?.lastName} as a `}
-            </UI.Text>
-            <UI.Text>Sales Manager for {data?.companyName}</UI.Text>
+          <UI.Box fontSize={20} color={'ste.red'} textAlign="center">
+            <UI.Text> Remove Sales Manager</UI.Text>
           </UI.Box>
+          <UI.Center
+            fontSize={'lg'}
+            fontWeight="400"
+            textAlign="center"
+            pt={3}
+            justifyContent="centers">
+            Are you sure you want to remove
+            {` ${data?.firstName} ${data?.lastName} as a Sales`} Manager for{' '}
+            {data?.companyName}
+          </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
-          <UI.Center mt={8} w={'full'}>
+          <UI.Center mt={4} w={'full'}>
             <UI.Button
               colorScheme="blue"
               onClick={() => remove()}

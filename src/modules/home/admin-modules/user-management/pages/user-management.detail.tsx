@@ -22,7 +22,7 @@ import * as yup from 'yup';
 const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
   ADMIN: 'Admin',
-  USER: 'User',
+  USER: 'Sales Manager',
 };
 
 const STATUS_STRING = {
