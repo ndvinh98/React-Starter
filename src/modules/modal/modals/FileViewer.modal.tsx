@@ -2,9 +2,11 @@ import React, {memo, useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import {useModalController} from '../modals.controller';
 import '@assets/css/reactFileViewer.css';
-
+import {AiOutlineDownload} from 'react-icons/ai';
 import ReactFileViewer from 'react-file-viewer';
 import {useGetItem} from '@utils/hooks';
+import fileDownload from 'js-file-download'
+import axios from 'axios'
 
 const getFileType = (name: string) => {
   if (!name) return undefined;
@@ -37,6 +39,15 @@ function FileViewer() {
     }
   }, [item]);
 
+  const handleDownload = (url, filename) => {
+    axios.get(url, {
+      responseType: 'blob',
+    })
+    .then((res) => {
+      fileDownload(res.data, filename)
+    })
+  }
+
   return (
     <UI.Modal
       isCentered
@@ -46,8 +57,21 @@ function FileViewer() {
       onClose={() => closeModal('fileViewer')}>
       <UI.ModalOverlay />
       <UI.ModalContent>
-        <UI.ModalHeader>{data?.title}</UI.ModalHeader>
-        <UI.ModalCloseButton />
+        <UI.HStack w="full" justifyContent={'space-between'} px={4}>
+          <UI.ModalHeader w={'90%'}>{data?.title}</UI.ModalHeader>
+          {data?.isDownload ? (
+            <UI.IconButton
+              //disabled={isDisabled}
+              onClick={() => handleDownload(fileUrl, fileName)}
+              variant={'ghost'}
+              aria-label="Notify"
+              color="black"
+              icon={<AiOutlineDownload size={20} />}
+            />
+          ) : (
+            <UI.ModalCloseButton />
+          )}
+        </UI.HStack>
         <UI.ModalBody p={5} textAlign={'center'}>
           <UI.Text> </UI.Text>
           {fileUrl && fileName && (

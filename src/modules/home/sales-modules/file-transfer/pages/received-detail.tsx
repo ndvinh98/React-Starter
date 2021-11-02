@@ -112,6 +112,7 @@ const FileItem = ({file}) => {
             url: 'productModuleResources/downloadFileUrl',
             title: file?.fileName,
             payload: file,
+            isDownload: true,
           })
         }
         //isDisabled={loading}
