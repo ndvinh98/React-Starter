@@ -7,6 +7,7 @@ import {isEmpty} from 'lodash';
 import {useModalController} from '@modules/modal';
 import FormGenerate from '@components/FormGenerate';
 import {BsArrowLeft} from 'react-icons/bs';
+import _ from 'lodash';
 
 function Detail() {
   const {params} = useRouterController();
