@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
 import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
+import {isEmpty} from 'lodash';
 
 function Edit() {
   const {push} = useRouter();
@@ -21,7 +22,7 @@ function Edit() {
   } = useGetItem('/productModuleResources/');
 
   useEffect(() => {
-    if (params?.id) getItem({}, {path: params?.id});
+    if (params?.resourceId) getItem({}, {path: params?.resourceId});
   }, [params]);
 
   const {
@@ -46,6 +47,8 @@ function Edit() {
         position: 'top-right',
         isClosable: true,
       });
+      push('/home/content-management/resources/module/' + resourceData?.productModuleId)
+
     }
   }, [data]);
 
@@ -54,7 +57,7 @@ function Edit() {
       patch({
         resourceName: value.name,
         languageId: value.language,
-        videoFileType: value.videoFileType,
+        fileType: value.fileType,
         videoLength: value.videoLength,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.videos,
@@ -70,7 +73,7 @@ function Edit() {
           _hover={{cursor: 'pointer'}}
           onClick={() =>
             push(
-              '/home/content-management/resources/module/' + resourceData?.id,
+              '/home/content-management/resources/module/' + resourceData?.productModuleId,
             )
           }>
           <BsArrowLeft size={20} />
@@ -98,19 +101,20 @@ function Edit() {
             schema={{
               name: yup
                 .string()
-                .required('Please enter Resource Name')
+                .required('Please enter Video Name')
                 .default(resourceData?.resourceName),
-              videoFileType: yup
+              fileType: yup
                 .string()
                 .required('Please enter Video Type')
-                .default(resourceData?.videoFileType),
+                .default(resourceData?.fileType),
               videoLength: yup
                 .string()
                 .required('Please enter Video Length')
                 .default(resourceData?.videoLength),
               language: yup
                 .number()
-                .required('Please select language')
+                .typeError('Please select Language')
+                .required('Please select Language')
                 .default(resourceData?.languageId),
               videos: yup.string().required('Please upload file'),
               thumb: yup.string().required('Please upload thumbnail'),
@@ -150,13 +154,13 @@ function Edit() {
                 urlPath: '/products/uploadThumbnailUrl',
               },
               {
-                name: 'videoFileType',
+                name: 'fileType',
                 type: 'input',
                 label: 'Video Type',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
-                defaultValue: resourceData?.videoFileType,
+                defaultValue: resourceData?.fileType,
               },
               {
                 name: 'videoLength',
@@ -181,8 +185,11 @@ function Edit() {
                 })),
                 defaultValue: {
                   value: resourceData?.languageId,
-                  label: languages.map((x) => {
-                    if (x?.id === resourceData?.languageId) return x?.name;
+                  label: languages?.map((x) => {
+                    if (x?.id === resourceData?.languageId)
+                     {
+                       return x?.name;
+                    }
                   }),
                 },
               },

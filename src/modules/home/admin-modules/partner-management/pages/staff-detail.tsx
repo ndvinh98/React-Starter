@@ -104,7 +104,7 @@ function UserPartnerDetail() {
 
   const isHiden = () => {
     return profileData[0]?.isActive === 0 ||
-      profileData?.[0]?.userType === 'PARTNERADMIN'
+      profileData?.records?.[0]?.userType === 'PARTNERADMIN'
       ? true
       : false;
   };
@@ -122,12 +122,14 @@ function UserPartnerDetail() {
         <UI.Center minH="200px">
           <UI.Spinner size="lg" color="ste.red" />
         </UI.Center>
-      ) : isEmpty(profileData) ? (
-        <UI.Text fontWeight={600}> 404 - Not Found</UI.Text>
+      ) : isEmpty(profileData?.records?.[0]) ? (
+        <UI.Center fontWeight={600}> 404 - Not Found</UI.Center>
       ) : (
         <UI.Box>
           <UI.Text fontWeight={'bold'} fontSize={'20px'} pt="5">
-            {profileData?.[0]?.firstName + ' ' + profileData?.[0]?.lastName}
+            {profileData?.records?.[0]?.firstName +
+              ' ' +
+              profileData?.records?.[0]?.lastName}
           </UI.Text>
 
           <UI.Box
@@ -150,19 +152,23 @@ function UserPartnerDetail() {
               <UI.Tbody>
                 <UI.Tr>
                   <UI.Td>
-                    {profileData?.[0]?.otpCodeExp
+                    {profileData?.records?.[0]?.otpCodeExp
                       ? format(
-                          new Date(profileData?.[0]?.otpCodeExp),
+                          new Date(profileData?.records?.[0]?.otpCodeExp),
                           'dd MMM yyyy',
                         )
                       : false}
                   </UI.Td>
-                  <UI.Td>{STATUS_STRING[profileData?.[0]?.isActive]}</UI.Td>
-                  <UI.Td>{USRTYPE_STRING[profileData?.[0]?.userType]}</UI.Td>
                   <UI.Td>
-                    {profileData?.[0]?.createdAt
+                    {STATUS_STRING[profileData?.records?.[0]?.isActive]}
+                  </UI.Td>
+                  <UI.Td>
+                    {USRTYPE_STRING[profileData?.records?.[0]?.userType]}
+                  </UI.Td>
+                  <UI.Td>
+                    {profileData?.records?.[0]?.createdAt
                       ? format(
-                          new Date(profileData?.[0]?.createdAt),
+                          new Date(profileData?.records?.[0]?.createdAt),
                           'dd MMM yyyy',
                         )
                       : false}
@@ -184,12 +190,12 @@ function UserPartnerDetail() {
                           onClick={() =>
                             openModal('assignPartnerAdmin', {
                               //cb: () => getUserProfile(),
-                              id: profileData?.[0]?.id,
-                              firstName: profileData?.[0]?.firstName,
-                              lastName: profileData?.[0]?.lastName,
+                              id: profileData?.records?.[0]?.id,
+                              firstName: profileData?.records?.[0]?.firstName,
+                              lastName: profileData?.records?.[0]?.lastName,
                               companyName:
                                 //@ts-ignore
-                                profileData?.[0]?.domain?.partners?.[0]
+                                profileData?.records?.[0]?.domain?.partners?.[0]
                                   ?.companyName,
                             })
                           }>
@@ -208,7 +214,9 @@ function UserPartnerDetail() {
               <UI.Avatar
                 sx={{img: {objectFit: 'contain'}}}
                 name={
-                  profileData?.[0]?.firstName + ' ' + profileData?.[0]?.lastName
+                  profileData?.records?.[0]?.firstName +
+                  ' ' +
+                  profileData?.records?.[0]?.lastName
                 }
                 bg={
                   profileData[0]?.partnerUserProfiles[0]?.avatarMediaDestination
@@ -216,9 +224,9 @@ function UserPartnerDetail() {
                     : undefined
                 }
                 boxSize="100px"
-                userId={profileData?.[0]?.id}
+                userId={profileData?.records?.[0]?.id}
                 src={
-                  profileData?.[0]?.partnerUserProfiles[0]
+                  profileData?.records?.[0]?.partnerUserProfiles[0]
                     ?.avatarMediaDestination
                 }
               />
@@ -235,7 +243,7 @@ function UserPartnerDetail() {
                       colSpan: isBase ? 6 : 12,
                       size: 'md',
                       isDisabled: true,
-                      defaultValue: profileData?.[0]?.firstName,
+                      defaultValue: profileData?.records?.[0]?.firstName,
                     },
                     {
                       type: 'input',
@@ -245,7 +253,7 @@ function UserPartnerDetail() {
                       colSpan: isBase ? 6 : 12,
                       size: 'md',
                       isDisabled: true,
-                      defaultValue: profileData?.[0]?.lastName,
+                      defaultValue: profileData?.records?.[0]?.lastName,
                     },
                     {
                       name: 'salutation',
@@ -255,7 +263,9 @@ function UserPartnerDetail() {
                       label: 'Salutation',
                       placeholder: 'Salutation',
                       defaultValue:
-                        SALUATION_OPITONS_VALUE?.[profileData?.[0]?.salutation],
+                        SALUATION_OPITONS_VALUE?.[
+                          profileData?.records?.[0]?.salutation
+                        ],
                       options: SALUATION_OPITONS,
                       isDisabled: true,
                     },
@@ -267,7 +277,7 @@ function UserPartnerDetail() {
                       colSpan: isBase ? 6 : 12,
                       size: 'md',
                       isDisabled: true,
-                      defaultValue: profileData?.[0]?.email,
+                      defaultValue: profileData?.records?.[0]?.email,
                     },
                     {
                       name: 'jobFunction',
@@ -278,7 +288,8 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.[0]?.partnerUserProfiles[0]?.jobFunction,
+                        profileData?.records?.[0]?.partnerUserProfiles[0]
+                          ?.jobFunction,
                     },
                     {
                       name: 'jobTitle',
@@ -289,7 +300,8 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.[0]?.partnerUserProfiles[0]?.jobFunction,
+                        profileData?.records?.[0]?.partnerUserProfiles[0]
+                          ?.jobFunction,
                     },
                     {
                       name: 'countryName',
@@ -300,7 +312,8 @@ function UserPartnerDetail() {
                       placeholder: 'Country',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.[0]?.partnerUserProfiles[0]?.countryName,
+                        profileData?.records?.[0]?.partnerUserProfiles[0]
+                          ?.countryName,
                     },
                     {
                       name: 'cityName',
@@ -311,7 +324,8 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.[0]?.partnerUserProfiles[0]?.cityName,
+                        profileData?.records?.[0]?.partnerUserProfiles[0]
+                          ?.cityName,
                     },
                     {
                       name: 'postalCode',
@@ -322,7 +336,8 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.[0]?.partnerUserProfiles[0]?.postalCode,
+                        profileData?.records?.[0]?.partnerUserProfiles[0]
+                          ?.postalCode,
                     },
                     {
                       name: 'workNumber',
@@ -333,7 +348,8 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.[0]?.partnerUserProfiles[0]?.workNumber,
+                        profileData?.records?.[0]?.partnerUserProfiles[0]
+                          ?.workNumber,
                     },
                     {
                       name: 'mobileNumber',
@@ -344,7 +360,8 @@ function UserPartnerDetail() {
                       size: 'md',
                       isDisabled: true,
                       defaultValue:
-                        profileData?.[0]?.partnerUserProfiles[0]?.mobileNumber,
+                        profileData?.records?.[0]?.partnerUserProfiles[0]
+                          ?.mobileNumber,
                     },
                     {
                       name: 'preferredLanguage',
@@ -354,8 +371,8 @@ function UserPartnerDetail() {
                       placeholder: 'Preferred Language',
                       colSpan: isBase ? 6 : 12,
                       defaultValue:
-                        profileData?.[0]?.partnerUserProfiles[0]?.language
-                          ?.name,
+                        profileData?.records?.[0]?.partnerUserProfiles[0]
+                          ?.language?.name,
 
                       isDisabled: true,
                     },
@@ -365,8 +382,8 @@ function UserPartnerDetail() {
           </UI.Box>
 
           <CertificatesAwarded
-            partnerUserId={profileData?.[0]?.id}
-            profileData={profileData}
+            partnerUserId={profileData?.records?.[0]?.id}
+            profileData={profileData?.records?.[0]}
           />
         </UI.Box>
       )}

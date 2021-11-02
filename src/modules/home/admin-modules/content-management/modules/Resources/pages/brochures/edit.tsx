@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
 import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
+import {isEmpty} from 'lodash';
 
 function Edit() {
   const {push} = useRouter();
@@ -25,7 +26,7 @@ function Edit() {
   );
 
   useEffect(() => {
-    if (params?.id) getItem({}, {path: params?.id});
+    if (params?.resourceId) getItem({}, {path: params?.resourceId});
   }, [params]);
 
   const {data: moduleData, getItem: getModuleData} =
@@ -45,6 +46,7 @@ function Edit() {
         position: 'top-right',
         isClosable: true,
       });
+      push('/home/content-management/resources/module/' + resourceData?.productModuleId)
     }
   }, [data]);
 
@@ -53,7 +55,7 @@ function Edit() {
       patch({
         resourceName: value.name,
         languageId: value.language,
-        brochureFormat: value.brochureFormat,
+        fileType: value.fileType,
         noOfPages: value.noOfPages,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.brochures,
@@ -63,13 +65,13 @@ function Edit() {
 
   return (
     <UI.Box py={5} px={7}>
-      <LoadingComponent isLoading={loadResourceData}>
+      <LoadingComponent isLoading={loadResourceData || isEmpty(languages) || isEmpty(resourceData)} >
         <UI.HStack
           w="full"
           _hover={{cursor: 'pointer'}}
           onClick={() =>
             push(
-              '/home/content-management/resources/module/' + resourceData?.id,
+              '/home/content-management/resources/module/' + resourceData?.productModuleId,
             )
           }>
           <BsArrowLeft size={20} />
@@ -97,21 +99,23 @@ function Edit() {
             schema={{
               name: yup
                 .string()
-                .required('Please enter Resource Name')
+                .required('Please enter File Name')
                 .default(resourceData?.resourceName),
-              brochureFormat: yup
+              fileType: yup
                 .string()
                 .required('Please enter File Format')
-                .default(resourceData?.brochureFormat),
+                .default(resourceData?.fileType),
               noOfPages: yup
                 .number()
-                .required('Please enter number of pages')
+                .typeError('Please select Number of Pages')
+                .required('Please enter Number of Pages')
                 .default(resourceData?.noOfPages),
               language: yup
                 .number()
-                .required('Please select language')
+                .typeError('Please select Language')
+                .required('Please select Language')
                 .default(resourceData?.languageId),
-              videos: yup.string().required('Please upload file'),
+              brochures: yup.string().required('Please upload file'),
               thumb: yup.string().required('Please upload thumbnail'),
             }}
             fields={[
@@ -149,13 +153,13 @@ function Edit() {
                 urlPath: '/products/uploadThumbnailUrl',
               },
               {
-                name: 'brochureFormat',
+                name: 'fileType',
                 type: 'input',
                 label: 'File Format',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
-                defaultValue: resourceData?.brochureFormat,
+                defaultValue: resourceData?.fileType,
               },
               {
                 name: 'noOfPages',

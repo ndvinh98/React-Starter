@@ -15,7 +15,7 @@ import NormalGridItem from './item/NormalGridItem';
 import ModuleGridItem from './item/ModuleGridItem';
 import NormalListItem from './item/NormalListItem';
 import ModuleListItem from './item/ModuleListItem';
-import {isEmpty} from 'lodash';
+import {isEmpty, name} from 'lodash';
 import {useModalController} from '@modules/modal';
 
 export interface IContentView {
@@ -92,8 +92,8 @@ function ContentView(props: IContentView) {
             w={'full'}
             justifyContent={'space-between'}
             alignItems="center"
-            spacingY={'20px'}
-            spacingX={'0px'}
+            //spacingY={'20px'}
+            //spacingX={'0px'}
             flexWrap="wrap"
             pb={5}>
             {filterBar && (
@@ -170,8 +170,14 @@ function ContentView(props: IContentView) {
                 </UI.MenuItem>
                 <UI.MenuItem
                   onClick={() => {
+                    const modalName =
+                      name === 'Modules'
+                        ? 'Module'
+                        : name === 'Products'
+                        ? 'Product'
+                        : name;
                     openModal('deleteContent', {
-                      name,
+                      name: modalName,
                       url: linkDeleteContent,
                       isResources: isVideo || isBrochures,
                       cb: () => onReloadPage?.(),

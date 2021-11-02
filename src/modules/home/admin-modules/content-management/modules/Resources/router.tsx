@@ -9,7 +9,7 @@ export default mount({
     title: 'line-of-business-list',
     getView: () => import('./pages/brochures/add-new'),
   }),
-  'module/brochures/edit/:id': route({
+  'module/brochures/edit/:resourceId': route({
     title: 'line-of-business-list',
     getView: () => import('./pages/brochures/edit'),
   }),
@@ -17,7 +17,7 @@ export default mount({
     title: 'line-of-business-list',
     getView: () => import('./pages/videos/add-new'),
   }),
-  'module/videos/edit/:id': route({
+  'module/videos/edit/:resourceId': route({
     title: 'line-of-business-list',
     getView: () => import('./pages/videos/edit'),
   }),

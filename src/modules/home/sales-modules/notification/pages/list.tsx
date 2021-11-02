@@ -70,7 +70,7 @@ function Notification() {
         ? JSON.stringify([{message: textSearch}])
         : undefined,
       filter: isEmpty(filter)
-        ? JSON.stringify([{isRead: '0'}])
+        ? JSON.stringify([{isRead: '0', notificationType: 'FILETRANSFERS'}])
         : JSON.stringify([filter]),
     });
 

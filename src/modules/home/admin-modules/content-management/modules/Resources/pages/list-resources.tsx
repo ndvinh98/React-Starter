@@ -8,7 +8,7 @@ import {BsArrowLeft} from 'react-icons/bs';
 
 function List() {
   const {push} = useRouter();
-  const {page, limit, filter, textSearch, setTextSearch, setFilter} = useFilter(
+  const {page, limit,setPage, setLimit, textSearch, setTextSearch} = useFilter(
     {limit: 10, page: 1},
   );
   const {params} = useRouterController();
@@ -21,11 +21,6 @@ function List() {
     loading,
   } = useGetList('productModules');
 
-  useEffect(() => {
-    if (params?.id) {
-      setFilter(params?.id);
-    }
-  }, [params]);
 
   useEffect(() => {
     if (params?.id) {
@@ -33,9 +28,7 @@ function List() {
         page,
         limit,
         relations: JSON.stringify(['productModule']),
-        filter: filter
-          ? JSON.stringify([{productModuleId: filter}])
-          : undefined,
+        filter: JSON.stringify([{productModuleId: params?.id}]),
         textSearch: textSearch
           ? JSON.stringify([{resourceName: textSearch}])
           : undefined,
@@ -44,7 +37,7 @@ function List() {
         filter: JSON.stringify([{id: params?.id}]),
       });
     }
-  }, [page, limit, filter, textSearch]);
+  }, [page, limit, textSearch, params]);
 
   const handleOnChange = ({textSearch}) => {
     if (textSearch !== undefined) setTextSearch(textSearch as string);
@@ -74,6 +67,8 @@ function List() {
         }
         totalCount={resourcesData?.total}
         currentPage={page}
+        onPageChange={setPage}
+        onLimitChange={setLimit}
         filterBar={
           <FormGenerate
             onChangeValue={handleOnChange}

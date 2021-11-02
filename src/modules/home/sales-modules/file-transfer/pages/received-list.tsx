@@ -99,74 +99,78 @@ function FileTransfer() {
           },
         ]}
       />
-      <TableGenerate
-        onClickRow={(row) => push(`/home/file-transfer/received/${row?.id}`)}
-        isLoading={loading}
-        currentPage={data?.page}
-        totalCount={data?.total}
-        pageSize={data?.limit}
-        totalpage={data?.totalPages}
-        data={data?.records || []}
-        onChangePage={setPage}
-        columns={[
-          {
-            Header: 'Sender',
-            id: 'sender',
-            bodyCellProps: {
-              width: '400px',
+      <UI.Box w={'full'} bgColor={'white'} borderRadius={'10px'} px={4}>
+        <TableGenerate
+          onClickRow={(row) => push(`/home/file-transfer/received/${row?.id}`)}
+          isLoading={loading}
+          currentPage={data?.page}
+          totalCount={data?.total}
+          pageSize={data?.limit}
+          totalpage={data?.totalPages}
+          data={data?.records || []}
+          onChangePage={setPage}
+          columns={[
+            {
+              Header: 'Sender',
+              id: 'sender',
+              accessor: (row) => (
+                <UI.VStack alignItems="flex-start">
+                  <UI.Text key={row?.id}>
+                    {row?.fileTransfer?.partnerUser?.firstName} (
+                    {row?.fileTransfer?.partnerUser?.email})
+                  </UI.Text>
+                </UI.VStack>
+              ),
             },
-            headerCellProps: {
-              width: '400px',
-            },
-            accessor: (row) => (
-              <UI.VStack w="300px" alignItems="flex-start">
-                <UI.Text key={row?.id}>
-                  {row?.fileTransfer?.partnerUser?.firstName} (
-                  {row?.fileTransfer?.partnerUser?.email})
+            {
+              Header: 'Subject',
+              id: 'subject',
+              accessor: (row) => (
+                <UI.Text w={'400px'}>
+                  {row?.fileTransfer?.subject?.length > 100
+                    ? row?.fileTransfer?.subject?.substring(0, 100) + '...'
+                    : row?.fileTransfer?.subject}
                 </UI.Text>
-              </UI.VStack>
-            ),
-          },
-          {
-            Header: 'Subject',
-            id: 'subject',
-            accessor: (row) => <UI.Text>{row?.fileTransfer?.subject}</UI.Text>,
-          },
-          {
-            Header: 'Sent',
-            id: 'sent',
-            accessor: (row) => (
-              <UI.Text>
-                {format(new Date(row?.createdAt), 'dd MMM yyyy')}
-              </UI.Text>
-            ),
-          },
-          {
-            Header: () => <UI.Center>Action</UI.Center>,
-            id: 'action',
-            accessor: (row) => (
-              <ActionColum
-                refresh={() =>
-                  getList({
-                    page,
-                    limit,
-                    sort: JSON.stringify({createdAt: -1}),
-                    textSearch: textSearch
-                      ? JSON.stringify([{fileTransfer: {subject: textSearch}}])
-                      : undefined,
-                    filter: JSON.stringify([{userId: me?.id}]),
-                    relations: JSON.stringify([
-                      'fileTransfer',
-                      'fileTransfer.partnerUser',
-                    ]),
-                  })
-                }
-                row={row}
-              />
-            ),
-          },
-        ]}
-      />
+              ),
+            },
+            {
+              Header: 'Received',
+              id: 'received',
+              accessor: (row) => (
+                <UI.Text w="100px">
+                  {format(new Date(row?.createdAt), 'dd MMM yyyy')}
+                </UI.Text>
+              ),
+            },
+            {
+              Header: () => <UI.Center>Action</UI.Center>,
+              id: 'action',
+              accessor: (row) => (
+                <ActionColum
+                  refresh={() =>
+                    getList({
+                      page,
+                      limit,
+                      sort: JSON.stringify({createdAt: -1}),
+                      textSearch: textSearch
+                        ? JSON.stringify([
+                            {fileTransfer: {subject: textSearch}},
+                          ])
+                        : undefined,
+                      filter: JSON.stringify([{userId: me?.id}]),
+                      relations: JSON.stringify([
+                        'fileTransfer',
+                        'fileTransfer.partnerUser',
+                      ]),
+                    })
+                  }
+                  row={row}
+                />
+              ),
+            },
+          ]}
+        />
+      </UI.Box>
     </UI.Box>
   );
 }

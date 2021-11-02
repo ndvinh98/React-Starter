@@ -44,7 +44,7 @@ function DeleteFileTransfer() {
 
         <UI.ModalHeader mt={8}>
           <UI.Center fontSize={'lg'} color={'ste.red'} textAlign="center">
-            Delete File Transfer
+            Delete File
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'md'} textAlign={'center'}>
@@ -54,10 +54,10 @@ function DeleteFileTransfer() {
             pl={2}
             fontSize={'md'}
             w={'full'}
-            textAlign="justify">
+            textAlign="center">
             <UI.VStack>
               <UI.Text>
-                Are you sure you want to delete the following content?
+                Are you sure you want to delete the file? 
               </UI.Text>
             </UI.VStack>
           </UI.Box>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, usePost} from '@utils/hooks';
@@ -34,6 +34,7 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
+      push('/home/content-management/resources/module/' + moduleData?.id)
     }
   }, [postData]);
 
@@ -43,7 +44,7 @@ function AddNew() {
         productModuleId: moduleData?.id,
         resourceName: value.name,
         languageId: value.language,
-        brochureFormat: value.brochureFormat,
+        fileType: value.fileType,
         noOfPages: value.noOfPages,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.brochures,
@@ -85,7 +86,7 @@ function AddNew() {
             schema={{
               name: yup.string().required('Please enter File Name'),
               language: yup.number().required('Please select language'),
-              brochureFormat: yup.string().required('Please enter File Format'),
+              fileType: yup.string().required('Please enter File Format'),
               noOfPages: yup.number().required('Please enter number of pages'),
               brochures: yup.string().required('Please upload file'),
               thumb: yup.string().required('Please upload thumbnail'),
@@ -125,7 +126,7 @@ function AddNew() {
                 urlPath: '/products/uploadThumbnailUrl',
               },
               {
-                name: 'brochureFormat',
+                name: 'fileType',
                 type: 'input',
                 label: 'File Format',
                 size: 'md',
