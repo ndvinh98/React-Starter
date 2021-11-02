@@ -104,7 +104,7 @@ const FileItem = ({file}) => {
       justifyContent="space-between"
       bg="#F7F7F7"
       minW="200px"
-      w="40%">
+      w="80%">
       <UI.Text>{file?.fileName}</UI.Text>
       <UI.Button
         onClick={() =>
