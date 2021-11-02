@@ -5,8 +5,8 @@ import '@assets/css/reactFileViewer.css';
 import {AiOutlineDownload} from 'react-icons/ai';
 import ReactFileViewer from 'react-file-viewer';
 import {useGetItem} from '@utils/hooks';
-import fileDownload from 'js-file-download'
-import axios from 'axios'
+import fileDownload from 'js-file-download';
+import axios from 'axios';
 
 const getFileType = (name: string) => {
   if (!name) return undefined;
@@ -17,7 +17,7 @@ const getFileType = (name: string) => {
 
 function FileViewer() {
   const {fileViewer, closeModal, data} = useModalController();
-  const {getItem, data: item, setData} = useGetItem(data?.url);
+  const {getItem, data: item} = useGetItem(data?.url);
   const [fileUrl, setFileUrl] = useState();
   const [fileName, setFileName] = useState();
 
@@ -28,7 +28,7 @@ function FileViewer() {
       }
     }
     return () => {
-      setData(null);
+      setFileUrl(null);
     };
   }, [fileViewer]);
 
@@ -40,13 +40,14 @@ function FileViewer() {
   }, [item]);
 
   const handleDownload = (url, filename) => {
-    axios.get(url, {
-      responseType: 'blob',
-    })
-    .then((res) => {
-      fileDownload(res.data, filename)
-    })
-  }
+    axios
+      .get(url, {
+        responseType: 'blob',
+      })
+      .then((res) => {
+        fileDownload(res.data, filename);
+      });
+  };
 
   return (
     <UI.Modal
@@ -57,21 +58,23 @@ function FileViewer() {
       onClose={() => closeModal('fileViewer')}>
       <UI.ModalOverlay />
       <UI.ModalContent>
-        <UI.HStack w="full" justifyContent={'space-between'} px={4}>
-          <UI.ModalHeader w={'90%'}>{data?.title}</UI.ModalHeader>
-          {data?.isDownload ? (
-            <UI.IconButton
-              //disabled={isDisabled}
-              onClick={() => handleDownload(fileUrl, fileName)}
-              variant={'ghost'}
-              aria-label="Notify"
-              color="black"
-              icon={<AiOutlineDownload size={20} />}
-            />
-          ) : (
-            <UI.ModalCloseButton />
-          )}
-        </UI.HStack>
+        <UI.ModalHeader>
+          <UI.HStack w="full" justifyContent={'space-between'} px={4}>
+            <UI.Box>{data?.title}</UI.Box>
+            {data?.isDownload ? (
+              <UI.IconButton
+                //disabled={isDisabled}
+                onClick={() => handleDownload(fileUrl, fileName)}
+                variant={'ghost'}
+                aria-label="Notify"
+                color="black"
+                icon={<AiOutlineDownload size={20} />}
+              />
+            ) : (
+              <UI.ModalCloseButton />
+            )}
+          </UI.HStack>
+        </UI.ModalHeader>
         <UI.ModalBody p={5} textAlign={'center'}>
           <UI.Text> </UI.Text>
           {fileUrl && fileName && (
