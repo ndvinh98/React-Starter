@@ -114,7 +114,7 @@ const FileItem = ({file}) => {
       bg="#F7F7F7"
       minW="200px"
       w="80%">
-      <UI.Text>{file?.fileName}</UI.Text>
+      <UI.Text w="90%">{file?.fileName}</UI.Text>
       <UI.Button
         onClick={() =>
           openModal('fileViewer', {
