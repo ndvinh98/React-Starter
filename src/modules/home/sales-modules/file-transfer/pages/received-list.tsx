@@ -137,7 +137,7 @@ function FileTransfer() {
               Header: 'Received',
               id: 'received',
               accessor: (row) => (
-                <UI.Text>
+                <UI.Text w="100px">
                   {format(new Date(row?.createdAt), 'dd MMM yyyy')}
                 </UI.Text>
               ),
