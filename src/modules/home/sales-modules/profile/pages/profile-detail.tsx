@@ -172,16 +172,7 @@ function ProfileDetail() {
                     isDisabled: true,
                     defaultValue: profileData?.email,
                   },
-                  {
-                    type: 'input',
-                    name: 'salesId',
-                    label: 'Sales ID',
-                    placeholder: 'Sales ID',
-                    colSpan: isBase ? 6 : 12,
-                    size: 'md',
-                    isDisabled: isDisabled,
-                    defaultValue: profileData?.salesId,
-                  },
+
                   {
                     name: 'jobTitle',
                     type: 'input',
