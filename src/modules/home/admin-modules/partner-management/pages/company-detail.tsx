@@ -181,7 +181,7 @@ function CompanyDetail() {
       ) : isEmpty(dataDomain) ? (
         <UI.Text fontWeight={600}> 404 - Not Found</UI.Text>
       ) : (
-        <UI.Box>
+        <UI.VStack spacing={5} align="stretch">
           <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
             {dataCompany?.records[0]?.companyName}
             {''} ({dataDomain?.partnerDomain?.domain})
@@ -211,7 +211,7 @@ function CompanyDetail() {
             companyName={dataCompany?.records[0]?.companyName}
             partnerId={params?.id}
           />
-        </UI.Box>
+        </UI.VStack>
       )}
     </UI.VStack>
   );
