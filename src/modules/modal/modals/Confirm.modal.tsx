@@ -25,7 +25,8 @@ function ConfirmModal() {
         status: 'success',
         description: 'Successfully!',
         duration: 2000,
-        position: 'bottom-right',
+        position: 'top-right',
+        isClosable: true,
       });
       push('/home/partner-applications');
     }

@@ -87,166 +87,168 @@ function CompanyManagement() {
         Partner Management
       </UI.Text>
       <UI.Box width="full">
-        <UI.HStack>
-          <FormGenerate
-            gap={isBase ? 4 : 6}
-            onChangeValue={handleFilterData}
-            fields={[
-              {
-                name: 'textSearch',
-                type: 'input-group',
-                colSpan: isBase ? 3 : 12,
-                size: 'md',
-                placeholder: 'Search...',
-                leftIcon: <AiOutlineSearch size={20} />,
-              },
-              {
-                name: 'status',
-                type: 'select',
-                colSpan: isBase ? 3 : 6,
-                size: 'md',
-                defaultValue: {
-                  label: 'All Status',
-                  value: '-1',
-                },
-                isClearable: false,
-                options: [
+        {loading ? (
+          <UI.Center minH="300px">
+            <UI.Spinner size="lg" color="ste.red" />
+          </UI.Center>
+        ) : isEmpty(data?.records) ? (
+          <UI.Center>No data</UI.Center>
+        ) : (
+          <UI.Box width="full">
+            <UI.HStack>
+              <FormGenerate
+                gap={isBase ? 4 : 6}
+                onChangeValue={handleFilterData}
+                fields={[
                   {
-                    label: 'All Status',
-                    value: '-1',
+                    name: 'textSearch',
+                    type: 'input-group',
+                    colSpan: isBase ? 3 : 12,
+                    size: 'md',
+                    placeholder: 'Search...',
+                    leftIcon: <AiOutlineSearch size={20} />,
                   },
                   {
-                    label: 'Active',
-                    value: '1',
-                  },
-                  {
-                    label: 'Inactive',
-                    value: '0',
-                  },
-                ],
-              },
-            ]}
-          />
-          <UI.HStack>
-            <UI.Text w="70px">View Item</UI.Text>
-            <UI.Box w="80px">
-              <Select
-                isClearable={false}
-                size="sm"
-                name="limit"
-                onChangeValue={(data) => {
-                  setLimit(data.value);
-                  setPage(1);
-                }}
-                defaultValue={{
-                  label: '10',
-                  value: 10,
-                }}
-                options={[
-                  {
-                    label: '10',
-                    value: 10,
-                  },
-                  {
-                    label: '20',
-                    value: 20,
-                  },
-                  {
-                    label: '30',
-                    value: 30,
-                  },
-                  {
-                    label: '50',
-                    value: 50,
+                    name: 'status',
+                    type: 'select',
+                    colSpan: isBase ? 3 : 6,
+                    size: 'md',
+                    defaultValue: {
+                      label: 'All Status',
+                      value: '-1',
+                    },
+                    isClearable: false,
+                    options: [
+                      {
+                        label: 'All Status',
+                        value: '-1',
+                      },
+                      {
+                        label: 'Active',
+                        value: '1',
+                      },
+                      {
+                        label: 'Inactive',
+                        value: '0',
+                      },
+                    ],
                   },
                 ]}
               />
-            </UI.Box>
-          </UI.HStack>
-        </UI.HStack>
+              <UI.HStack>
+                <UI.Text w="70px">View Item</UI.Text>
+                <UI.Box w="80px">
+                  <Select
+                    isClearable={false}
+                    size="sm"
+                    name="limit"
+                    onChangeValue={(data) => {
+                      setLimit(data.value);
+                      setPage(1);
+                    }}
+                    defaultValue={{
+                      label: '10',
+                      value: 10,
+                    }}
+                    options={[
+                      {
+                        label: '10',
+                        value: 10,
+                      },
+                      {
+                        label: '20',
+                        value: 20,
+                      },
+                      {
+                        label: '30',
+                        value: 30,
+                      },
+                      {
+                        label: '50',
+                        value: 50,
+                      },
+                    ]}
+                  />
+                </UI.Box>
+              </UI.HStack>
+            </UI.HStack>
 
-        {isBase ? (
-          <UI.Box px={4} bgColor="white">
-            <TableGenerate
-              onClickRow={(row) => push(path + `/company/${row?.id}`)}
-              isLoading={loading}
-              currentPage={data?.page}
-              totalpage={data?.totalPages}
-              totalCount={data?.total}
-              pageSize={data?.limit}
-              data={data?.records || []}
-              onChangePage={setPage}
-              Footer={
-                <UI.Tr>
-                  <UI.Td fontWeight="bold" colSpan={1000}>
-                    {data?.total} Companies
-                  </UI.Td>
-                </UI.Tr>
-              }
-              columns={[
-                {
-                  Header: 'Company',
-                  id: 'company',
-                  accessor: (row) => <UI.Text>{row?.companyName}</UI.Text>,
-                },
-                {
-                  Header: 'Status',
-                  id: 'status',
-                  accessor: (row) => {
-                    return (
-                      <UI.Text>{STATUS_STRING?.[row?.isActive] || ''}</UI.Text>
-                    );
-                  },
-                },
-                {
-                  Header: 'Registered Date',
-                  id: 'registDate',
-                  accessor: (row) => (
-                    <UI.Text>
-                      {moment(row?.createdAt).format('DD MMM YYYY')}
-                    </UI.Text>
-                  ),
-                },
+            {isBase ? (
+              <UI.Box px={4} bgColor="white">
+                <TableGenerate
+                  onClickRow={(row) => push(path + `/company/${row?.id}`)}
+                  isLoading={loading}
+                  currentPage={data?.page}
+                  totalpage={data?.totalPages}
+                  totalCount={data?.total}
+                  pageSize={data?.limit}
+                  data={data?.records || []}
+                  onChangePage={setPage}
+                  Footer={
+                    <UI.Tr>
+                      <UI.Td fontWeight="bold" colSpan={1000}>
+                        {data?.total} Companies
+                      </UI.Td>
+                    </UI.Tr>
+                  }
+                  columns={[
+                    {
+                      Header: 'Company',
+                      id: 'company',
+                      accessor: (row) => <UI.Text>{row?.companyName}</UI.Text>,
+                    },
+                    {
+                      Header: 'Status',
+                      id: 'status',
+                      accessor: (row) => {
+                        return (
+                          <UI.Text>
+                            {STATUS_STRING?.[row?.isActive] || ''}
+                          </UI.Text>
+                        );
+                      },
+                    },
+                    {
+                      Header: 'Registered Date',
+                      id: 'registDate',
+                      accessor: (row) => (
+                        <UI.Text>
+                          {moment(row?.createdAt).format('DD MMM YYYY')}
+                        </UI.Text>
+                      ),
+                    },
 
-                {
-                  Header: 'Validity Date',
-                  id: 'validDate',
-                  accessor: (row) => {
-                    return (
-                      <UI.Text>
-                        {' '}
-                        {moment(row?.expiryDate).format('DD MMM YYYY')}
-                      </UI.Text>
-                    );
-                  },
-                },
+                    {
+                      Header: 'Validity Date',
+                      id: 'validDate',
+                      accessor: (row) => {
+                        return (
+                          <UI.Text>
+                            {' '}
+                            {moment(row?.expiryDate).format('DD MMM YYYY')}
+                          </UI.Text>
+                        );
+                      },
+                    },
 
-                {
-                  Header: () => <UI.Center>Action</UI.Center>,
-                  id: 'action',
-                  accessor: (row) => (
-                    <ActionColum
-                      refresh={() =>
-                        getList({
-                          page: 1,
-                          limit: 10,
-                        })
-                      }
-                      row={row}
-                    />
-                  ),
-                },
-              ]}
-            />
-          </UI.Box>
-        ) : (
-          <UI.Box>
-            {loading ? (
-              <UI.Center minH="300px">
-                <UI.Spinner size="lg" color="ste.red" />
-              </UI.Center>
-            ) : isEmpty(data?.records) ? (
-              <UI.Center>No data</UI.Center>
+                    {
+                      Header: () => <UI.Center>Action</UI.Center>,
+                      id: 'action',
+                      accessor: (row) => (
+                        <ActionColum
+                          refresh={() =>
+                            getList({
+                              page: 1,
+                              limit: 10,
+                            })
+                          }
+                          row={row}
+                        />
+                      ),
+                    },
+                  ]}
+                />
+              </UI.Box>
             ) : (
               <UI.VStack bg="white" spacing={3} p={3}>
                 {data?.records.map((x) => (

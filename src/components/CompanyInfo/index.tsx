@@ -1,13 +1,16 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {useMedia} from '@utils/hooks';
 import {useModalController} from '@modules/modal';
 
 import * as UI from '@chakra-ui/react';
 import {isEmpty} from 'lodash';
 import FormGenerate from '@components/FormGenerate';
+import _ from 'lodash';
 
 function CompanyInfo(props: any) {
   const {data, loading} = props;
+
+  const [dataSort, setDataSort] = useState([]);
 
   const handleNameAttachment = (name: string) => {
     if (!name) return undefined;
@@ -16,6 +19,24 @@ function CompanyInfo(props: any) {
     return names?.[names?.length - 1];
   };
   const {isBase} = useMedia();
+
+  useEffect(() => {
+    if (!isEmpty(data))
+      _.startsWith(
+        handleNameAttachment(
+          data?.partnerApplicationAttachments[0]?.mediaDestination,
+        ),
+        '1',
+      )
+        ? setDataSort([
+            data?.partnerApplicationAttachments[0],
+            data?.partnerApplicationAttachments[1],
+          ])
+        : setDataSort([
+            data?.partnerApplicationAttachments[1],
+            data?.partnerApplicationAttachments[0],
+          ]);
+  }, [data]);
 
   return (
     <UI.VStack w="full">
@@ -339,13 +360,9 @@ function CompanyInfo(props: any) {
                           <FieldView
                             name={`Company's last signed audited financial statement`}
                             value={handleNameAttachment(
-                              data?.partnerApplicationAttachments[0]
-                                ?.mediaDestination,
+                              dataSort[0]?.mediaDestination,
                             )}
-                            data={
-                              data?.partnerApplicationAttachments[0]
-                                ?.mediaDestination
-                            }
+                            data={dataSort[0]?.mediaDestination}
                           />
                         ),
                       },
@@ -355,13 +372,9 @@ function CompanyInfo(props: any) {
                           <FieldView
                             name={`Company's business registry`}
                             value={handleNameAttachment(
-                              data?.partnerApplicationAttachments[1]
-                                ?.mediaDestination,
+                              dataSort[1]?.mediaDestination,
                             )}
-                            data={
-                              data?.partnerApplicationAttachments[1]
-                                ?.mediaDestination
-                            }
+                            data={dataSort[1]?.mediaDestination}
                           />
                         ),
                       },
