@@ -1,24 +1,19 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useEffect} from 'react';
 
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
-import {isEmpty} from 'lodash';
-import {IUserManagement} from '@types';
+import {AiOutlineSearch} from 'react-icons/ai';
 
 import {useModalController} from '../modals.controller';
 import {usePost, useGetList} from '@utils/hooks';
-import Select from '@components/Select';
+import FormGenerate from '@components/FormGenerate';
+import * as yup from 'yup';
 
 function AddSale() {
   const {addSale, closeModal, data} = useModalController();
 
   const toast = UI.useToast();
-  const [newSale, setNewSale] = useState([]);
-
-  const handleRemoveUser = (value: number) =>
-    setNewSale((s) => s.filter((x) => x?.value !== value));
-
-  const {getList, data: dataUser} = useGetList<IUserManagement>('/users');
+  const {getList, data: dataUser} = useGetList<any>('/users');
 
   useEffect(() => {
     if (data?.partnerId)
@@ -29,25 +24,19 @@ function AddSale() {
       });
   }, [data]);
 
-  const handleAddSale = () => {
-    if (isEmpty(newSale)) {
-      toast({
-        title: 'Warning!, No new Sale',
-        status: 'warning',
-        duration: 3000,
-        isClosable: true,
-        position: 'top-right',
-      });
-    } else {
-      createNewSale({
-        userIds: newSale.map((x) => x?.value),
-        partnerId: data?.partnerId,
-      });
-
-      data.cb();
-      closeModal('addSale');
-      toast({status: 'success', description: 'Successfully!', duration: 2000});
-    }
+  const handleAddSale = ({userIds}) => {
+    createNewSale({
+      userIds,
+      partnerId: data?.partnerId,
+    });
+    data.cb();
+    closeModal('addSale');
+    toast({
+      status: 'success',
+      description: 'Successfully!',
+      position: 'top-right',
+      duration: 2000,
+    });
   };
 
   const {post: createNewSale, loading} = usePost(
@@ -61,7 +50,7 @@ function AddSale() {
       isOpen={addSale}
       onClose={() => closeModal('addSale')}>
       <UI.ModalOverlay />
-      <UI.ModalContent position={'relative'} w="360px" maxH="360px">
+      <UI.ModalContent position={'relative'} w="360px">
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -81,64 +70,50 @@ function AddSale() {
         </UI.ModalHeader>
         <UI.ModalBody>
           <UI.Stack w="full">
-            <UI.Box w="full">
-              <Select
-                w="full"
-                placeholder="Select user"
-                isMulti
-                options={dataUser?.records?.map((x) => ({
-                  value: x?.id,
-                  label: `${x?.firstName} ${x?.lastName} `,
-                  view: `${x?.firstName} ${x?.lastName} `,
-                }))}
-                onChangeValue={setNewSale}
-              />
-            </UI.Box>
-
-            {!isEmpty(newSale) && (
-              <UI.VStack w="full">
-                <UI.VStack w="full" justifyContent="space-between" px={3}>
-                  {newSale?.map?.((x) => (
-                    <UI.Tag
-                      w="full"
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      bg="#E0E0E0"
-                      color="#777777"
-                      key={x?.value}>
-                      {x?.view}
-                      <UI.Spacer />
-                      <UI.TagCloseButton
-                        onClick={() => handleRemoveUser(x?.value)}
-                      />
-                    </UI.Tag>
-                  ))}
-                </UI.VStack>
-              </UI.VStack>
-            )}
-
-            <UI.Center mt={8} w={'full'}>
-              <UI.Button
-                colorScheme="blue"
-                mr={3}
-                w={'120px'}
-                type="submit"
-                isLoading={loading}
-                onClick={handleAddSale}>
-                Confirm
-              </UI.Button>
-              <UI.Button
-                w={'120px'}
-                type="button"
-                onClick={() => {
-                  closeModal('addSale');
-                  setNewSale([]);
-                }}
-                variant="outline">
-                Cancel
-              </UI.Button>
-            </UI.Center>
+            <FormGenerate
+              onSubmit={handleAddSale}
+              schema={{
+                userIds: yup
+                  .array()
+                  .min(1, 'Users is required')
+                  .required('Users is required'),
+              }}
+              fields={[
+                {
+                  type: 'select-picker',
+                  name: 'userIds',
+                  placeholder: (
+                    <UI.HStack>
+                      <AiOutlineSearch size={20} /> <UI.Text> Search </UI.Text>
+                    </UI.HStack>
+                  ),
+                  width: '100%',
+                  fieldStyled: {
+                    alignItems: 'flex-start',
+                  },
+                  leftIcon: <AiOutlineSearch size={20} />,
+                  options: dataUser?.records?.map((x) => ({
+                    value: x.id,
+                    label: `${x?.firstName} ${x?.lastName} (${x?.email})`,
+                    email: x?.user?.email,
+                  })),
+                },
+              ]}>
+              <UI.HStack mt={5} justifyContent="center">
+                <UI.Button isLoading={loading} w={'120px'} type={'submit'}>
+                  Send
+                </UI.Button>
+                <UI.Button
+                  onClick={() => closeModal('addSale')}
+                  variant="outline"
+                  isLoading={loading}
+                  mt={5}
+                  w={'120px'}
+                  type={'button'}>
+                  Cancel
+                </UI.Button>
+              </UI.HStack>
+            </FormGenerate>
           </UI.Stack>
         </UI.ModalBody>
 

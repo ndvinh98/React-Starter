@@ -139,22 +139,25 @@ function CompanyDetail() {
     loading: loadingSales,
   } = useGetList<IUserManagement>('/partnerUserRelations');
 
-  useEffect(() => {
-    if (params?.id)
-      getListSales({
-        page: pageSales,
-        limit: limitSales,
-        relations: JSON.stringify(['user', 'user.userProfiles']),
-        filter: JSON.stringify([{partnerId: params?.id}]),
+  const handleGetListSales = () => {
+    getListSales({
+      page: pageSales,
+      limit: limitSales,
+      relations: JSON.stringify(['user', 'user.userProfiles']),
+      filter: JSON.stringify([{partnerId: params?.id}]),
 
-        textSearch: textSearchSales
-          ? JSON.stringify([
-              {user: {firstName: textSearchSales}},
-              {user: {email: textSearchSales}},
-              {user: {lastName: textSearchSales}},
-            ])
-          : undefined,
-      });
+      textSearch: textSearchSales
+        ? JSON.stringify([
+            {user: {firstName: textSearchSales}},
+            {user: {email: textSearchSales}},
+            {user: {lastName: textSearchSales}},
+          ])
+        : undefined,
+    });
+  };
+
+  useEffect(() => {
+    if (params?.id) handleGetListSales();
   }, [pageSales, limitSales, textSearchSales, params]);
 
   const handleFilterDataSales = ({textSearch}, fieldChange) => {
@@ -203,7 +206,7 @@ function CompanyDetail() {
             loading={loadingSales}
             handleFilterData={handleFilterDataSales}
             setPage={setPageSales}
-            getList={getListSales}
+            getList={handleGetListSales}
             companyName={dataCompany?.records[0]?.companyName}
             partnerId={params?.id}
           />

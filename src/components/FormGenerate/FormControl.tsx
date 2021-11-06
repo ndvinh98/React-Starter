@@ -3,7 +3,7 @@ import * as UI from '@chakra-ui/react';
 import {HTMLChakraProps} from '@chakra-ui/system';
 
 import PasswordInput from './fields/PasswordInput';
-import Select, {IOptions} from './fields/Select';
+import {IOptions, Select, SelectPicker} from './fields/Select';
 import CheckboxConfirm from './fields/CheckboxConfirm';
 import CustomFields from './fields/CustomFields';
 import TelInput from './fields/TelInput';
@@ -30,6 +30,7 @@ const FieldComponent = {
   'upload-file': UploadFile,
   'upload-file-content': UploadFileContent,
   'input-checkbox': InputCheckbox,
+  'select-picker': SelectPicker,
 };
 
 export interface IFormControl extends HTMLChakraProps<'div'> {
