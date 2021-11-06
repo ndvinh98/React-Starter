@@ -2,12 +2,15 @@ import React from 'react';
 import * as UI from '@chakra-ui/react';
 import {useContentManagementController} from '@modules/home/admin-modules/content-management';
 import {useHover} from '@utils/hooks';
+import {useModalController} from '@modules/modal';
 
 function GridItem({item, onClickItem, isVideo, isBrochures}) {
   const [hoverRef, isHovered] = useHover<any>();
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
   const removeItem = useContentManagementController((s) => s.removeItem);
+
+  const {openModal} = useModalController();
 
   return (
     <UI.Box width="full" ref={hoverRef} position="relative">
@@ -51,7 +54,11 @@ function GridItem({item, onClickItem, isVideo, isBrochures}) {
         position="relative">
         {isVideo && (
           <UI.Image
-            //left= {0}
+            onClick={() =>
+              openModal('contentViewer', {
+                mediaDestination: item?.mediaDestination,
+              })
+            }
             position="absolute"
             zIndex={1}
             top={'50%'}
@@ -73,13 +80,7 @@ function GridItem({item, onClickItem, isVideo, isBrochures}) {
             </UI.Text>
           </UI.Center>
         ) : (
-          <UI.Box
-            position="absolute"
-            w="full"
-            //height="50px"
-            bg="#000000a7"
-            bottom={0}
-            p={2}>
+          <UI.Box position="absolute" w="full" bg="#000000a7" bottom={0} p={2}>
             <UI.Text color="white">{item?.name || item?.resourceName}</UI.Text>
             <UI.HStack>
               <UI.Text color={'white'} fontSize={'12px'}>

@@ -16,6 +16,8 @@ import AddSale from './modals/AddSale.modal';
 import DeleteContentModal from './modals/DeleteContent.modal';
 import RemoveCertificate from './modals/RemoveCertificate.modal';
 import DeleteFileTransfer from './modals/DeleteFileTransfer.modal';
+import ContentViewer from './modals/ContentViewer.modal';
+
 function InitModal() {
   return (
     <>
@@ -36,6 +38,7 @@ function InitModal() {
       <DeleteContentModal />
       <RemoveCertificate />
       <RemoveSale />
+      <ContentViewer />
     </>
   );
 }

@@ -55,7 +55,6 @@ function NormalListItem({item, onClickItem, isVideo, isBrochures}) {
           h="60px">
           {isVideo && (
             <UI.Image
-              //left= {0}
               position="absolute"
               zIndex={1}
               top={'50%'}
