@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, useGetList} from '@utils/hooks';
@@ -21,13 +21,13 @@ function FeedbackDetail() {
     return names?.[names?.length - 1];
   };
 
-  const attachments = useMemo(()=>{
-    return data?.records?.[0]?.partnerUserFeedbackAttachments
-  },[data])
+  const attachments = useMemo(() => {
+    return data?.records?.[0]?.partnerUserFeedbackAttachments;
+  }, [data]);
 
-  const partnerUser = useMemo(()=>{
-    return data?.records?.[0]?.partnerUser
-  },[data])
+  const partnerUser = useMemo(() => {
+    return data?.records?.[0]?.partnerUser;
+  }, [data]);
 
   useEffect(() => {
     if (params?.id) {
@@ -134,7 +134,7 @@ function FeedbackDetail() {
                           <UI.Button
                             onClick={() =>
                               openModal('fileViewer', {
-                                url:'partnerUserFeedbackAttachments/downloadFileUrl',
+                                url: 'partnerUserFeedbackAttachments/downloadFileUrl',
                                 title: item?.name,
                                 payload: item,
                               })

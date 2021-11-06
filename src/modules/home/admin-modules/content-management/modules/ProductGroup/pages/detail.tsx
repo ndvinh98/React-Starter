@@ -221,7 +221,7 @@ function Edit() {
                 })),
               },
               {
-                type: 'upload-file-contnet',
+                type: 'upload-file-content',
                 layout: 'horizontal',
                 name: 'thumb',
                 defaultValue: data?.mediaDestination,

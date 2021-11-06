@@ -28,7 +28,7 @@ const FieldComponent = {
   'radio-group': RadioGroup,
   'checkbox-group': CheckboxGroup,
   'upload-file': UploadFile,
-  'upload-file-contnet': UploadFileContent,
+  'upload-file-content': UploadFileContent,
   'input-checkbox': InputCheckbox,
 };
 
@@ -50,7 +50,7 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
     | 'recaptcha'
     | 'checkbox-group'
     | 'upload-file'
-    | 'upload-file-contnet'
+    | 'upload-file-content'
     | 'radio-group';
 
   label?: string | React.ReactNode;
