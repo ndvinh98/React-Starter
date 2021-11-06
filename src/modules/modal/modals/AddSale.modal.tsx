@@ -84,7 +84,7 @@ function AddSale() {
                   name: 'userIds',
                   placeholder: (
                     <UI.HStack>
-                      <AiOutlineSearch size={20} /> <UI.Text> Search </UI.Text>
+                      <AiOutlineSearch size={20} /> <UI.Text>Search</UI.Text>
                     </UI.HStack>
                   ),
                   width: '100%',
