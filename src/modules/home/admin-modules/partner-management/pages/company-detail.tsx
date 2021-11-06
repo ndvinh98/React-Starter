@@ -178,7 +178,7 @@ function CompanyDetail() {
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
       {loadingDomain ? (
-        <UI.Center minH="200px">
+        <UI.Center minH="200px" w="full">
           <UI.Spinner size="lg" color="ste.red" />
         </UI.Center>
       ) : isEmpty(dataDomain) ? (
