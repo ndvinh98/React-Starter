@@ -20,8 +20,11 @@ import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import SalesTable from '@components/SalesTable';
 import {isEmpty} from '@chakra-ui/utils';
+import {useCurrentRoute} from 'react-navi';
 
 function CompanyDetail() {
+  const {lastChunk} = useCurrentRoute();
+  console.log(lastChunk);
   const {push} = useRouter();
   const {params} = useRouterController();
 
@@ -33,11 +36,11 @@ function CompanyDetail() {
   } = useGetList<IPartnerApplicationForms>(`/partnerApplicationForms`);
 
   useEffect(() => {
-    if (params?.id)
+    if (params?.companyId)
       getItemPartner({
         filter: JSON.stringify([
           {
-            partnerApplicationSubmission: {partnerId: params?.id},
+            partnerApplicationSubmission: {partnerId: params?.companyId},
           },
         ]),
         relations: JSON.stringify([
@@ -51,10 +54,10 @@ function CompanyDetail() {
     getItem: getItemDomain,
     data: dataDomain,
     loading: loadingDomain,
-  } = useGetItem<IPartnerManagement>(`/partners/${params?.id}`);
+  } = useGetItem<IPartnerManagement>(`/partners/${params?.companyId}`);
 
   useEffect(() => {
-    if (params?.id)
+    if (params?.companyId)
       getItemDomain({
         relations: JSON.stringify(['partnerDomain']),
       });
@@ -139,25 +142,22 @@ function CompanyDetail() {
     loading: loadingSales,
   } = useGetList<IUserManagement>('/partnerUserRelations');
 
-  const handleGetListSales = () => {
-    getListSales({
-      page: pageSales,
-      limit: limitSales,
-      relations: JSON.stringify(['user', 'user.userProfiles']),
-      filter: JSON.stringify([{partnerId: params?.id}]),
-
-      textSearch: textSearchSales
-        ? JSON.stringify([
-            {user: {firstName: textSearchSales}},
-            {user: {email: textSearchSales}},
-            {user: {lastName: textSearchSales}},
-          ])
-        : undefined,
-    });
-  };
-
   useEffect(() => {
-    if (params?.id) handleGetListSales();
+    if (params?.companyId)
+      getListSales({
+        page: pageSales,
+        limit: limitSales,
+        relations: JSON.stringify(['user', 'user.userProfiles']),
+        filter: JSON.stringify([{partnerId: params?.id}]),
+
+        textSearch: textSearchSales
+          ? JSON.stringify([
+              {user: {firstName: textSearchSales}},
+              {user: {email: textSearchSales}},
+              {user: {lastName: textSearchSales}},
+            ])
+          : undefined,
+      });
   }, [pageSales, limitSales, textSearchSales, params]);
 
   const handleFilterDataSales = ({textSearch}, fieldChange) => {
@@ -206,7 +206,7 @@ function CompanyDetail() {
             loading={loadingSales}
             handleFilterData={handleFilterDataSales}
             setPage={setPageSales}
-            getList={handleGetListSales}
+            getList={getListSales}
             companyName={dataCompany?.records[0]?.companyName}
             partnerId={params?.id}
           />
