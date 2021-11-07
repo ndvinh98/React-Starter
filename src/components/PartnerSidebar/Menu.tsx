@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
-import {isEmpty, keyBy, startsWith} from 'lodash';
+import {isEmpty, startsWith} from 'lodash';
 import classNames from 'classnames';
 import * as SB from 'react-pro-sidebar';
 import * as UI from '@chakra-ui/react';
@@ -26,6 +26,7 @@ const DashboardMenu = (props: any) => {
   const path = useRouterController((s) => s.path);
 
   const [menus, setMenus] = useState<any[]>([]);
+  const [lineOfBusinessId, setLineOfBusinessId] = useState<number>();
   const {push} = useRouter();
 
   const {getItem: getApplications, data: applications} =
@@ -89,8 +90,8 @@ const DashboardMenu = (props: any) => {
           .compact()
           .valueOf(),
       }));
-      const menuIds = keyBy(menu, 'id');
-      setMenus(menuIds[1]?.subMenu);
+      setMenus(menu[0]?.subMenu);
+      setLineOfBusinessId(menu[0]?.id);
     }
   }, [applications, myPermission]);
 
@@ -116,10 +117,14 @@ const DashboardMenu = (props: any) => {
       <SB.Menu>
         <SB.MenuItem
           onClick={() => {
-            push(`/partner/${params?.partnerId}/1`);
+            push(`/partner/${params?.partnerId}/${lineOfBusinessId}`);
             onCloseMobileSidebar?.();
           }}
-          className={path === `/partner/${params?.partnerId}/1` ? 'active' : ''}
+          className={
+            path === `/partner/${params?.partnerId}/${lineOfBusinessId}`
+              ? 'active'
+              : ''
+          }
           icon={<AiOutlineDashboard size={30} />}>
           <UI.Text fontWeight={'semibold'} position={'relative'} color={'#000'}>
             Dashboard
@@ -138,7 +143,7 @@ const DashboardMenu = (props: any) => {
             overflow: 'auto',
           }}>
           <SB.SubMenu className="as-menu" open>
-            {menus.map((x) => (
+            {menus?.map?.((x) => (
               <MenuLevel1
                 onCloseMobileSidebar={onCloseMobileSidebar}
                 x={x}

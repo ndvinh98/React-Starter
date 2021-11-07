@@ -40,7 +40,7 @@ function SideBar() {
             </UI.HStack>
           </SB.SidebarHeader>
           <SB.SidebarContent>
-            <Menu />
+            <Menu isCollapsed={!isOpen} />
           </SB.SidebarContent>
         </SB.ProSidebar>
       </SidebarWarp>
