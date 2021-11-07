@@ -1,6 +1,10 @@
 import {mount, route} from 'navi';
 
 export default mount({
+  '/': route({
+    title: 'splashScreen',
+    getView: () => import('./pages/SplashScreen'),
+  }),
   '/:lineOfBusinessId': route({
     title: 'list',
     getView: () => import('./pages/Main'),

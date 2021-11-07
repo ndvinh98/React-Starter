@@ -10,6 +10,7 @@ import {GoPrimitiveDot} from 'react-icons/go';
 import {useRouterController} from '@modules/router';
 import Select from '@components/Select';
 import {useGetItem, useRouter} from '@utils/hooks';
+import {usePartnerContoller} from '@modules/partner/partner.contoller';
 
 export interface IMenu {
   id?: number;
@@ -26,7 +27,8 @@ const DashboardMenu = (props: any) => {
   const path = useRouterController((s) => s.path);
 
   const [menus, setMenus] = useState<any[]>([]);
-  const [lineOfBusinessId, setLineOfBusinessId] = useState<number>();
+  const lineOfBusinessId = usePartnerContoller((s) => s.lineOfBusinessId);
+  const setLineOfBusinessId = usePartnerContoller((s) => s.setLineOfBusinessId);
   const {push} = useRouter();
 
   const {getItem: getApplications, data: applications} =
