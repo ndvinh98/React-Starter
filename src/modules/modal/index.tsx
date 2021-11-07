@@ -17,6 +17,7 @@ import DeleteContentModal from './modals/DeleteContent.modal';
 import RemoveCertificate from './modals/RemoveCertificate.modal';
 import DeleteFileTransfer from './modals/DeleteFileTransfer.modal';
 import ContentViewer from './modals/ContentViewer.modal';
+import PdfViewer from './modals/PdfViewer.modal';
 
 function InitModal() {
   return (
@@ -39,6 +40,7 @@ function InitModal() {
       <RemoveCertificate />
       <RemoveSale />
       <ContentViewer />
+      <PdfViewer />
     </>
   );
 }

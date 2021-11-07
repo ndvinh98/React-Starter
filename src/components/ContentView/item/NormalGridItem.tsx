@@ -38,6 +38,15 @@ function GridItem({item, onClickItem, isVideo, isBrochures}) {
       <UI.Box
         onClick={() => {
           if (!isVideo && !isBrochures) onClickItem?.(item);
+          if (isVideo)
+            openModal('contentViewer', {
+              mediaDestination: item?.mediaDestination,
+            });
+          if (isBrochures) {
+            openModal('pdfViewer', {
+              mediaDestination: item?.mediaDestination,
+            });
+          }
         }}
         bg="white"
         bgImage={`url(${
@@ -54,11 +63,6 @@ function GridItem({item, onClickItem, isVideo, isBrochures}) {
         position="relative">
         {isVideo && (
           <UI.Image
-            onClick={() =>
-              openModal('contentViewer', {
-                mediaDestination: item?.mediaDestination,
-              })
-            }
             position="absolute"
             zIndex={1}
             top={'50%'}
