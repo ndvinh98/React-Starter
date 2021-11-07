@@ -53,7 +53,7 @@ function UserPartnerDetail() {
   // }, [params]);
 
   const {getItem: getItemDomain, data: dataDomain} =
-    useGetItem<IPartnerManagement>(`/partners/${params?.id}`);
+    useGetItem<IPartnerManagement>(`/partners/${params?.companyId}`);
 
   const {
     data: profileData,
