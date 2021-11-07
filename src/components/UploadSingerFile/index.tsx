@@ -5,6 +5,7 @@ import * as UI from '@chakra-ui/react';
 import {FOLDER} from '@assets/base64/folder';
 import {FileDrop} from 'react-file-drop';
 import './style.css';
+
 interface IUploadFilesPorps {
   label?: string;
   className?: string;
