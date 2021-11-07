@@ -8,7 +8,7 @@ import {BsArrowLeft} from 'react-icons/bs';
 
 function List() {
   const {push} = useRouter();
-  const {page, limit,setPage, setLimit, textSearch, setTextSearch} = useFilter(
+  const {page, limit, setPage, setLimit, textSearch, setTextSearch} = useFilter(
     {limit: 10, page: 1},
   );
   const {params} = useRouterController();
@@ -20,7 +20,6 @@ function List() {
     data: modulesData,
     loading,
   } = useGetList('productModules');
-
 
   useEffect(() => {
     if (params?.id) {

@@ -5,7 +5,7 @@ import {COUNTRY_NAME} from '@constants';
 import {BsArrowLeft} from 'react-icons/bs';
 import {HiDotsHorizontal} from 'react-icons/hi';
 
-import {useRouter, useGetItem, usePatch} from '@utils/hooks';
+import {useGetItem, usePatch} from '@utils/hooks';
 import {useConfigStore} from '@services/config';
 import {useRouterController} from '@modules/router';
 import {IUsers, IUserProfiles} from '@types';
@@ -18,6 +18,7 @@ import {useModalController} from '@modules/modal';
 import {useMedia} from '@utils/hooks';
 
 import * as yup from 'yup';
+import {useHistory} from 'react-navi';
 
 const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
@@ -43,7 +44,7 @@ function UserDetail() {
   const {languages} = useConfigStore();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isProfileActive, setIsProfileActive] = useState<boolean>(true);
-  const {push} = useRouter();
+  const {goBack} = useHistory();
   const {params} = useRouterController();
   const {data: profileData, loading, getItem} = useGetItem<IUsers>('');
   const {openModal} = useModalController();
@@ -94,14 +95,11 @@ function UserDetail() {
 
   return (
     <UI.Box py={6} px={8}>
-      <UI.HStack
-        w="full"
-        _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/user-management')}>
+      <UI.HStack w="full" _hover={{cursor: 'pointer'}} onClick={() => goBack()}>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
-      <UI.Text fontWeight={'bold'} fontSize={'24px'} pt="5">
+      <UI.Text fontWeight={'bold'} fontSize={'24px'} pt="1">
         {profileData?.firstName + ' ' + profileData?.lastName}
       </UI.Text>
 

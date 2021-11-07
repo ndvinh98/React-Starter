@@ -1,13 +1,17 @@
 .pg-viewer-wrapper {
-    overflow-y: unset !important;
+  overflow-y: unset !important;
 }
 
 .photo-viewer-container {
-    width: unset !important;
-    height: unset !important;
+  width: unset !important;
+  height: unset !important;
 }
 
 .photo-viewer-container > img {
-    width: unset !important;
-    height: unset !important;
+  width: unset !important;
+  height: unset !important;
+}
+
+.video-container > video {
+  max-height: 500px !important;
 }

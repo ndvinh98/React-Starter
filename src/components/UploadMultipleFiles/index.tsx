@@ -11,7 +11,7 @@ import {BiCloudUpload} from 'react-icons/bi';
 import {RiCloseCircleFill} from 'react-icons/ri';
 
 import {FOLDER} from '@assets/base64/folder';
-import {LabelStyled, UploadFilesStyled} from './styled';
+import {UploadFilesStyled} from './styled';
 import * as UI from '@chakra-ui/react';
 
 interface IUploadFilesPorps {
@@ -28,13 +28,10 @@ interface IUploadFilesPorps {
 
 function UploadMultipleFiles(props: IUploadFilesPorps, ref: any) {
   const {
-    label,
-    className,
     name = 'upload-file',
     onChangeValue,
     defaultValue,
     isDisabled,
-    isHiddenLabel,
     uploadStatus = 'PENDING',
   } = props;
 
@@ -73,9 +70,7 @@ function UploadMultipleFiles(props: IUploadFilesPorps, ref: any) {
           <UI.Center>
             <UI.Image width="40px" src={FOLDER} alt="folder-icon" />
           </UI.Center>
-          <UI.Center>
-            Drag & Drop your files here
-          </UI.Center>
+          <UI.Center>Drag & Drop your files here</UI.Center>
           <UI.Text>Or</UI.Text>
           <UI.Center>
             <UI.Box

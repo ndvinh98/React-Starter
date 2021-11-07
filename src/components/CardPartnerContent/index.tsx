@@ -38,7 +38,7 @@ const CardPartner = (props) => {
         <UI.Button
           w="62px"
           h="30px"
-          onClick={() => push(`/partner/${data?.partnerId}/1`)}
+          onClick={() => push(`/partner/${data?.partnerId}`)}
           color="#54565A"
           bg="#E9E9E9"
           borderRadius="0"

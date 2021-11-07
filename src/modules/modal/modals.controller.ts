@@ -24,6 +24,8 @@ export interface IModalController {
   deleteContent: boolean;
   removeSale: boolean;
   deleteFileTransfer: boolean;
+  contentViewer: boolean;
+  pdfViewer: boolean;
 }
 
 export const useModalController = create<IModalController>((set) => ({
@@ -47,6 +49,8 @@ export const useModalController = create<IModalController>((set) => ({
   removeTier: false,
   removeSale: false,
   data: null,
+  contentViewer: false,
+  pdfViewer: false,
   openModal: (name: string, data?: any) => set({[name]: true, data}),
   closeModal: (name: string) => set({[name]: false, data: null}),
 }));

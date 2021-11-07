@@ -35,5 +35,6 @@
       "@types": ["types/index"]
     }
   },
-  "include": ["./src", "src/modules/admin/.tsx"]
+  "include": ["./src", "src/modules/admin/.tsx"],
+  "exclude": ["./.eslintrc.js"]
 }

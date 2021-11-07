@@ -3,8 +3,9 @@ import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 
 import BtnLayoutGroup from '@components/BtnLayoutGroup';
-import {useGetList, useGetItem, useRouter} from '@utils/hooks';
+import {useGetList, useGetItem} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
+import {useHistory} from 'react-navi';
 
 import ListViewLayout from '@components/ListViewLayout';
 import BtnDownloadGroup from '@components/BtnDownloadGroup';
@@ -18,7 +19,7 @@ export interface IRouterParams {
 }
 
 function Applications() {
-  const {goBack} = useRouter();
+  const {goBack} = useHistory();
   const params = useRouterController((s) => s.params);
 
   const {

@@ -16,7 +16,6 @@ function HomeLayout() {
         <UI.Box w={'min-content'}>
           <Sidebar />
         </UI.Box>
-
         <UI.Box w={'full'} bg={'ste.gray_lighter'}>
           <Header.base type="sales" />
           <UI.Box

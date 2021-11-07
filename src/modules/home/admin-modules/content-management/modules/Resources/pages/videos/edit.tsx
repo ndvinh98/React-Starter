@@ -130,7 +130,7 @@ function Edit() {
                 defaultValue: resourceData?.resourceName,
               },
               {
-                type: 'upload-file-contnet',
+                type: 'upload-file-content',
                 layout: 'horizontal',
                 name: 'videos',
                 productModuleId: resourceData?.productModuleId,
@@ -143,7 +143,7 @@ function Edit() {
                 urlPath: 'productModuleResources/uploadFileUrl',
               },
               {
-                type: 'upload-file-contnet',
+                type: 'upload-file-content',
                 layout: 'horizontal',
                 name: 'thumb',
                 labelUpload: 'Upload Thumbnail',

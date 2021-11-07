@@ -3,7 +3,7 @@ import * as UI from '@chakra-ui/react';
 import {HTMLChakraProps} from '@chakra-ui/system';
 
 import PasswordInput from './fields/PasswordInput';
-import Select, {IOptions} from './fields/Select';
+import {IOptions, Select, SelectPicker} from './fields/Select';
 import CheckboxConfirm from './fields/CheckboxConfirm';
 import CustomFields from './fields/CustomFields';
 import TelInput from './fields/TelInput';
@@ -28,8 +28,9 @@ const FieldComponent = {
   'radio-group': RadioGroup,
   'checkbox-group': CheckboxGroup,
   'upload-file': UploadFile,
-  'upload-file-contnet': UploadFileContent,
+  'upload-file-content': UploadFileContent,
   'input-checkbox': InputCheckbox,
+  'select-picker': SelectPicker,
 };
 
 export interface IFormControl extends HTMLChakraProps<'div'> {
@@ -50,7 +51,7 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
     | 'recaptcha'
     | 'checkbox-group'
     | 'upload-file'
-    | 'upload-file-contnet'
+    | 'upload-file-content'
     | 'radio-group';
 
   label?: string | React.ReactNode;

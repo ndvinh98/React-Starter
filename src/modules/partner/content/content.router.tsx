@@ -1,24 +1,29 @@
 import {mount, route} from 'navi';
 
 export default mount({
-  '/1': route({
+  '/': route({
+    title: 'splashScreen',
+    getView: () => import('./pages/SplashScreen'),
+  }),
+  '/:lineOfBusinessId': route({
     title: 'list',
     getView: () => import('./pages/Main'),
   }),
-  '/1/:lineOfProductId': route({
+  '/:lineOfBusinessId/:lineOfProductId': route({
     title: 'list',
     getView: () => import('./pages/LineOfProduct'),
   }),
-  '/1/:lineOfProductId/:productGroupId': route({
+  '/:lineOfBusinessId/:lineOfProductId/:productGroupId': route({
     title: 'list',
     getView: () => import('./pages/ProductGroup'),
   }),
-  '/1/:lineOfProductId/:productGroupId/:productId': route({
+  '/:lineOfBusinessId/:lineOfProductId/:productGroupId/:productId': route({
     title: 'list',
     getView: () => import('./pages/Product'),
   }),
-  '/1/:lineOfProductId/:productGroupId/:productId/:moduleId': route({
-    title: 'list',
-    getView: () => import('./pages/Module'),
-  }),
+  '/:lineOfBusinessId/:lineOfProductId/:productGroupId/:productId/:moduleId':
+    route({
+      title: 'list',
+      getView: () => import('./pages/Module'),
+    }),
 });
