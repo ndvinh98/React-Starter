@@ -208,11 +208,11 @@ function CompanyDetail() {
             setPage={setPageSales}
             getList={getListSales}
             companyName={dataCompany?.records[0]?.companyName}
-            partnerId={params?.id}
+            partnerId={params?.companyId}
           />
           <TierToParter
             companyName={dataCompany?.records[0]?.companyName}
-            partnerId={params?.id}
+            partnerId={params?.companyId}
           />
         </UI.VStack>
       )}
