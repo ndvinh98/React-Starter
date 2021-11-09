@@ -24,7 +24,7 @@ import {useCurrentRoute} from 'react-navi';
 
 function CompanyDetail() {
   const {lastChunk} = useCurrentRoute();
-  console.log(lastChunk);
+  console.log(lastChunk?.request?.params?.companyId);
   const {push} = useRouter();
 
   /// get Info Company
@@ -85,26 +85,28 @@ function CompanyDetail() {
   } = useGetList<IPartnerUser>('/partnerUsers');
 
   useEffect(() => {
-    if (dataDomain)
-      getListUser({
-        page: pageUser,
-        limit: limitUser,
-        relations: JSON.stringify(['domain', 'partnerUserProfiles']),
-        filter: JSON.stringify([
-          {
-            ...filterUser,
-            domain: {id: dataDomain?.partnerDomain?.id},
-          },
-        ]),
-        textSearch: textSearchUser
-          ? JSON.stringify([
-              {firstName: textSearchUser},
-              {email: textSearchUser},
-              {lastName: textSearchUser},
-            ])
-          : undefined,
-      });
+    if (dataDomain) hanldeGetListUser();
   }, [pageUser, limitUser, textSearchUser, filterUser, dataDomain]);
+
+  const hanldeGetListUser = () =>
+    getListUser({
+      page: pageUser,
+      limit: limitUser,
+      relations: JSON.stringify(['domain', 'partnerUserProfiles']),
+      filter: JSON.stringify([
+        {
+          ...filterUser,
+          domain: {id: dataDomain?.partnerDomain?.id},
+        },
+      ]),
+      textSearch: textSearchUser
+        ? JSON.stringify([
+            {firstName: textSearchUser},
+            {email: textSearchUser},
+            {lastName: textSearchUser},
+          ])
+        : undefined,
+    });
 
   const handleFilterDataUser = (
     {textSearch, status, userType},
@@ -144,6 +146,10 @@ function CompanyDetail() {
   } = useGetList<IUserManagement>('/partnerUserRelations');
 
   useEffect(() => {
+    handleGetListSale();
+  }, [pageSales, limitSales, textSearchSales]);
+
+  const handleGetListSale = () => {
     getListSales({
       page: pageSales,
       limit: limitSales,
@@ -160,7 +166,7 @@ function CompanyDetail() {
           ])
         : undefined,
     });
-  }, [pageSales, limitSales, textSearchSales]);
+  };
 
   const handleFilterDataSales = ({textSearch}, fieldChange) => {
     if (fieldChange.name === 'textSearch') {
@@ -201,14 +207,14 @@ function CompanyDetail() {
             handleFilterDataUser={handleFilterDataUser}
             setPage={setPageUser}
             companyName={dataCompany?.records[0]?.companyName}
-            getList={getListUser}
+            getList={hanldeGetListUser}
           />
           <SalesTable
             data={dataSales}
             loading={loadingSales}
             handleFilterData={handleFilterDataSales}
             setPage={setPageSales}
-            getList={getListSales}
+            getList={handleGetListSale}
             companyName={dataCompany?.records[0]?.companyName}
             partnerId={lastChunk?.request?.params?.companyId}
           />

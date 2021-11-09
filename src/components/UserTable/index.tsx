@@ -222,12 +222,7 @@ function UserTable(props) {
                 id: 'action',
                 accessor: (row) => (
                   <ActionColum
-                    refresh={() =>
-                      getList({
-                        page: 1,
-                        limit: 10,
-                      })
-                    }
+                    refresh={() => getList()}
                     row={row}
                     companyName={companyName}
                   />
