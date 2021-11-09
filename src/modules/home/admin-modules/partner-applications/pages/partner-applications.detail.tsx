@@ -443,7 +443,7 @@ function Detail() {
                     DecorComponent: () => (
                       <FieldData
                         name={`Person to contact and attention payment`}
-                        value={data?.billingContactDesignation}
+                        value={data?.billingContactName}
                       />
                     ),
                   },
