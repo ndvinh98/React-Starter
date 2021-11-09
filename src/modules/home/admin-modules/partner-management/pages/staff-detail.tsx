@@ -16,6 +16,7 @@ import {useModalController} from '@modules/modal';
 import {useMedia} from '@utils/hooks';
 
 import CertificatesAwarded from '@components/CertificatesAwarded';
+import {useCurrentRoute} from 'react-navi';
 
 const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
@@ -40,6 +41,8 @@ const SALUATION_OPITONS_VALUE = keyBy(SALUATION_OPITONS, 'value');
 function UserPartnerDetail() {
   const {push} = useRouter();
   const {params} = useRouterController();
+  const {lastChunk} = useCurrentRoute();
+  console.log(lastChunk);
   // const {
   //   data: profileData,
   //   loading,
@@ -53,7 +56,7 @@ function UserPartnerDetail() {
   // }, [params]);
 
   const {getItem: getItemDomain, data: dataDomain} =
-    useGetItem<IPartnerManagement>(`/partners/${params?.id}`);
+    useGetItem<IPartnerManagement>(`/partners/${params?.companyId}`);
 
   const {
     data: profileData,
@@ -114,7 +117,9 @@ function UserPartnerDetail() {
       <UI.HStack
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push(`/home/partner-management/company/${params?.id}`)}>
+        onClick={() =>
+          push(`/home/partner-management/company/${params?.companyId}`)
+        }>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>{' '}

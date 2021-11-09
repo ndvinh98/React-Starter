@@ -86,7 +86,86 @@ function CompanyManagement() {
       <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
         Partner Management
       </UI.Text>
+
       <UI.Box width="full">
+        <UI.HStack>
+          <FormGenerate
+            gap={isBase ? 4 : 6}
+            onChangeValue={handleFilterData}
+            fields={[
+              {
+                name: 'textSearch',
+                type: 'input-group',
+                colSpan: isBase ? 3 : 12,
+                size: 'md',
+                placeholder: 'Search...',
+                leftIcon: <AiOutlineSearch size={20} />,
+              },
+              {
+                name: 'status',
+                type: 'select',
+                colSpan: isBase ? 3 : 6,
+                size: 'md',
+                defaultValue: {
+                  label: 'All Status',
+                  value: '-1',
+                },
+                isClearable: false,
+                options: [
+                  {
+                    label: 'All Status',
+                    value: '-1',
+                  },
+                  {
+                    label: 'Active',
+                    value: '1',
+                  },
+                  {
+                    label: 'Inactive',
+                    value: '0',
+                  },
+                ],
+              },
+            ]}
+          />
+          <UI.HStack>
+            <UI.Text w="70px">View Item</UI.Text>
+            <UI.Box w="80px">
+              <Select
+                isClearable={false}
+                size="sm"
+                name="limit"
+                onChangeValue={(data) => {
+                  setLimit(data.value);
+                  setPage(1);
+                }}
+                defaultValue={{
+                  label: '10',
+                  value: 10,
+                }}
+                options={[
+                  {
+                    label: '10',
+                    value: 10,
+                  },
+                  {
+                    label: '20',
+                    value: 20,
+                  },
+                  {
+                    label: '30',
+                    value: 30,
+                  },
+                  {
+                    label: '50',
+                    value: 50,
+                  },
+                ]}
+              />
+            </UI.Box>
+          </UI.HStack>
+        </UI.HStack>
+
         {loading ? (
           <UI.Center minH="300px">
             <UI.Spinner size="lg" color="ste.red" />
@@ -95,84 +174,6 @@ function CompanyManagement() {
           <UI.Center>No data</UI.Center>
         ) : (
           <UI.Box width="full">
-            <UI.HStack>
-              <FormGenerate
-                gap={isBase ? 4 : 6}
-                onChangeValue={handleFilterData}
-                fields={[
-                  {
-                    name: 'textSearch',
-                    type: 'input-group',
-                    colSpan: isBase ? 3 : 12,
-                    size: 'md',
-                    placeholder: 'Search...',
-                    leftIcon: <AiOutlineSearch size={20} />,
-                  },
-                  {
-                    name: 'status',
-                    type: 'select',
-                    colSpan: isBase ? 3 : 6,
-                    size: 'md',
-                    defaultValue: {
-                      label: 'All Status',
-                      value: '-1',
-                    },
-                    isClearable: false,
-                    options: [
-                      {
-                        label: 'All Status',
-                        value: '-1',
-                      },
-                      {
-                        label: 'Active',
-                        value: '1',
-                      },
-                      {
-                        label: 'Inactive',
-                        value: '0',
-                      },
-                    ],
-                  },
-                ]}
-              />
-              <UI.HStack>
-                <UI.Text w="70px">View Item</UI.Text>
-                <UI.Box w="80px">
-                  <Select
-                    isClearable={false}
-                    size="sm"
-                    name="limit"
-                    onChangeValue={(data) => {
-                      setLimit(data.value);
-                      setPage(1);
-                    }}
-                    defaultValue={{
-                      label: '10',
-                      value: 10,
-                    }}
-                    options={[
-                      {
-                        label: '10',
-                        value: 10,
-                      },
-                      {
-                        label: '20',
-                        value: 20,
-                      },
-                      {
-                        label: '30',
-                        value: 30,
-                      },
-                      {
-                        label: '50',
-                        value: 50,
-                      },
-                    ]}
-                  />
-                </UI.Box>
-              </UI.HStack>
-            </UI.HStack>
-
             {isBase ? (
               <UI.Box px={4} bgColor="white">
                 <TableGenerate

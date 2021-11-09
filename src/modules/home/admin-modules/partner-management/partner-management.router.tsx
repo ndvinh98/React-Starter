@@ -5,12 +5,12 @@ export default mount({
     title: 'list',
     getView: () => import('./pages/company-list'),
   }),
-  '/company/:id': route({
+  '/company/:companyId': route({
     title: 'company-detail',
     getView: () => import('./pages/company-detail'),
   }),
 
-  '/company/:id/user/:userId': route({
+  '/company/:companyId/user/:userId': route({
     title: 'user-detail',
     getView: () => import('./pages/staff-detail'),
   }),
