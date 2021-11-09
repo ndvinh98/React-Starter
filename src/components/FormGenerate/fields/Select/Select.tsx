@@ -12,6 +12,7 @@ export const Select = memo((props: ISelect) => {
     isInvalid,
     isClearable = true,
     defaultValue,
+    onChangeValue,
     ...other
   } = props;
 
@@ -23,12 +24,17 @@ export const Select = memo((props: ISelect) => {
       onChange={(data: any) => {
         if (!data) {
           onChange({target: {value: '', name}});
+          onChangeValue?.(data);
         }
-        if (isArray(data))
+        if (isArray(data)) {
           onChange({
             target: {value: data.map((x) => x.value) || undefined, name},
           });
-        else onChange({target: {value: data?.value || undefined, name}});
+          onChangeValue?.(data);
+        } else {
+          onChange({target: {value: data?.value || undefined, name}});
+          onChangeValue?.(data);
+        }
       }}
       styles={style({size, isInvalid})}
     />
