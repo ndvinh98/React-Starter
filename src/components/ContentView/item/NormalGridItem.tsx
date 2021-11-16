@@ -68,7 +68,7 @@ function GridItem({item, onClickItem, isVideo, isBrochures}) {
             top={'50%'}
             left={'50%'}
             transform={'translate(-50%, -50%);'}
-            w="100px"
+            w="50px"
             src={'/images/playback.png'}
           />
         )}
