@@ -157,7 +157,7 @@ function AddNew() {
             ]}>
             <UI.Center mt={4} w="full">
               <UI.Button type={'submit'} isLoading={loading} w="150px">
-                Create
+                Publish
               </UI.Button>
             </UI.Center>
           </FormGenerate>
