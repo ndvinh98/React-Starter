@@ -54,7 +54,7 @@ function ModuleGridItem({item, onClickItem}) {
                 item?.mediaDestination
               }></UI.Image>
           </UI.Box>
-          <UI.Text fontWeight={'bold'} color={'#828282'}>
+          <UI.Text fontWeight={'bold'} textAlign={'center'} color={'#828282'}>
             {item?.name?.toUpperCase()}
           </UI.Text>
         </UI.VStack>

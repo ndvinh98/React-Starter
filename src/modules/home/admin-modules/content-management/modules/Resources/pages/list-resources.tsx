@@ -26,7 +26,12 @@ function List() {
       getListResources({
         page,
         limit,
-        relations: JSON.stringify(['productModule']),
+        relations: JSON.stringify([
+          'productModule',
+          // 'productModule.grouping',
+          // 'productModule.grouping.category',
+          // 'productModule.grouping.category.application',
+        ]),
         filter: JSON.stringify([{productModuleId: params?.id}]),
         textSearch: textSearch
           ? JSON.stringify([{resourceName: textSearch}])
@@ -34,6 +39,12 @@ function List() {
       });
       getListModules({
         filter: JSON.stringify([{id: params?.id}]),
+        relations: JSON.stringify([
+          'product',
+          'product.grouping',
+          'product.grouping.category',
+          'product.grouping.category.application',
+        ]),
       });
     }
   }, [page, limit, textSearch, params]);
@@ -49,7 +60,11 @@ function List() {
         ml={8}
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/content-management/modules')}>
+        onClick={() =>
+          push(
+            `/home/content-management/modules?productId=${modulesData?.records?.[0]?.product?.id}&productGroup=${modulesData?.records?.[0]?.product?.grouping?.id}&lineOfProduct=${modulesData?.records?.[0]?.product?.grouping?.category?.id}&lineOfBusiness=${modulesData?.records?.[0]?.product?.grouping?.category?.application?.id}`,
+          )
+        }>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
