@@ -13,6 +13,8 @@ import {Menu} from './components/menu';
 import {Textarea} from './components/textarea';
 
 export const theme = extendTheme({
+  initialColorMode: "light",
+  useSystemColorMode: false,
   breakpoints,
   colors,
   fonts,
