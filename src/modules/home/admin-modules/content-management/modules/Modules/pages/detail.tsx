@@ -88,7 +88,9 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
-      push('/home/content-management/modules');
+      push(
+        `/home/content-management/modules?productId=${productId}&productGroup=${groupingId}&lineOfProduct=${categoryId}&lineOfBusiness=${applicationId}`,
+      );
     }
   }, [postData, pathData]);
 
