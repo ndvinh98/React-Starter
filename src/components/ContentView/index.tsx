@@ -15,7 +15,7 @@ import NormalGridItem from './item/NormalGridItem';
 import ModuleGridItem from './item/ModuleGridItem';
 import NormalListItem from './item/NormalListItem';
 import ModuleListItem from './item/ModuleListItem';
-import {isEmpty, name} from 'lodash';
+import {isEmpty} from 'lodash';
 import {useModalController} from '@modules/modal';
 
 export interface IContentView {
@@ -73,6 +73,11 @@ function ContentView(props: IContentView) {
   React.useEffect(() => {
     if (pathname) clear();
   }, [pathname]);
+
+  React.useEffect(() => {
+    clear();
+  }, [data]);
+
 
   return (
     <UI.VStack
