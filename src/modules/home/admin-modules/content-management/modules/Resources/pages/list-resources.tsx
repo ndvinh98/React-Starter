@@ -28,9 +28,7 @@ function List() {
         limit,
         relations: JSON.stringify([
           'productModule',
-          // 'productModule.grouping',
-          // 'productModule.grouping.category',
-          // 'productModule.grouping.category.application',
+          'uploadedByUser'
         ]),
         filter: JSON.stringify([{productModuleId: params?.id}]),
         textSearch: textSearch
@@ -73,12 +71,7 @@ function List() {
         data={resourcesData?.records}
         isLoading={loading}
         limit={limit}
-        isVideo={
-          modulesData?.records?.[0]?.mediaType == 'VIDEOS' ? true : false
-        }
-        isBrochures={
-          modulesData?.records?.[0]?.mediaType == 'VIDEOS' ? false : true
-        }
+        mediaType = {modulesData?.records?.[0]?.mediaType}
         totalCount={resourcesData?.total}
         currentPage={page}
         onPageChange={setPage}
@@ -104,6 +97,9 @@ function List() {
         linkAddNew={
           modulesData?.records?.[0]?.mediaType == 'VIDEOS'
             ? '/home/content-management/resources/add-videos/module/' +
+              modulesData?.records?.[0]?.id
+            : modulesData?.records?.[0]?.mediaType == 'IMAGES' ?
+            '/home/content-management/resources/add-images/module/' +
               modulesData?.records?.[0]?.id
             : '/home/content-management/resources/add-brochures/module/' +
               modulesData?.records?.[0]?.id

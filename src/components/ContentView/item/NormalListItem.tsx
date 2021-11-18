@@ -3,8 +3,15 @@ import * as UI from '@chakra-ui/react';
 import {useContentManagementController} from '@modules/home/admin-modules/content-management';
 import {useHover} from '@utils/hooks';
 import {useModalController} from '@modules/modal';
+import {format} from 'date-fns';
 
-function NormalListItem({item, onClickItem, isVideo, isBrochures}) {
+const MEDIA_TYPE = {
+  image: "IMAGES",
+  video: "VIDEOS",
+  document: "DOCUMENTS",
+};
+
+function NormalListItem({item, onClickItem, mediaType}) {
   const [hoverRef, isHovered] = useHover<any>();
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
@@ -35,7 +42,7 @@ function NormalListItem({item, onClickItem, isVideo, isBrochures}) {
       />
       <UI.HStack
         onClick={() => {
-          if (!isVideo && !isBrochures) onClickItem?.(item);
+          if (!mediaType) onClickItem?.(item);
           else
             openModal('contentViewer', {
               mediaDestination: item?.mediaDestination,
@@ -59,7 +66,7 @@ function NormalListItem({item, onClickItem, isVideo, isBrochures}) {
           position="relative"
           w="90px"
           h="60px">
-          {isVideo && (
+          {mediaType === MEDIA_TYPE.video && (
             <UI.Image
               onClick={() =>
                 openModal('contentViewer', {
@@ -85,11 +92,21 @@ function NormalListItem({item, onClickItem, isVideo, isBrochures}) {
             fontSize="18px">
             {item?.name || item?.resourceName}
           </UI.Text>
-          {(isVideo || isBrochures) && (
+          {(mediaType) && (
             <UI.Text color={'#828282'} fontSize={'12px'}>
-              {isVideo
+              {mediaType === MEDIA_TYPE.video
                 ? item?.videoLength + ' | ' + item?.fileType
+                : mediaType === MEDIA_TYPE.image 
+                ? item?.fileType
                 : item?.noOfPages + ' pages | ' + item?.fileType}
+                {' | Uploaded: ' +
+                  (item?.createdAt
+                    ? format(new Date(item?.createdAt), 'dd MMM yyyy')
+                    : undefined) +
+                  ' | Uploaded by: ' +
+                  item?.uploadedByUser?.firstName +
+                  ' ' +
+                  item?.uploadedByUser?.lastName}
             </UI.Text>
           )}
         </UI.VStack>

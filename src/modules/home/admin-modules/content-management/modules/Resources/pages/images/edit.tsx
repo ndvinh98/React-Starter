@@ -1,34 +1,45 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
-import {useRouter, usePost} from '@utils/hooks';
+import {useRouter} from '@utils/hooks';
 import FormGenerate from '@components/FormGenerate';
-import {useGetItem} from '@utils/hooks';
+import {useGetItem, usePatch} from '@utils/hooks';
 import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
 import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
-import {useAuthController} from '@modules/auth';
+import {isEmpty} from 'lodash';
 
-function AddNew() {
+function Edit() {
   const {push} = useRouter();
   const toast = UI.useToast();
   const {params} = useRouterController();
   const {languages} = useConfigStore();
-  const {post, loading, data: postData} = usePost('/productModuleResources');
+  const {
+    data: resourceData,
+    loading: loadResourceData,
+    getItem,
+  } = useGetItem('/productModuleResources/');
+
+  useEffect(() => {
+    if (params?.resourceId) getItem({}, {path: params?.resourceId});
+  }, [params]);
+
   const {
     data: moduleData,
-    loading: loadModuleData,
-    getItem,
+    getItem: getModuleData,
   } = useGetItem('/productModules/');
 
   useEffect(() => {
-    if (params?.id) getItem({}, {path: params?.id});
-    getMe();
-  }, [params]);
+    if (resourceData?.productModuleId) getModuleData({}, {path: resourceData?.productModuleId});
+  }, [resourceData]);
+
+  const {patch, loading, data} = usePatch(
+    `productModuleResources/${resourceData?.id}`,
+  );
 
   useEffect(() => {
-    if (postData) {
+    if (data) {
       toast({
         title: 'Successfully!',
         status: 'success',
@@ -36,34 +47,33 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
-      push('/home/content-management/resources/module/' + moduleData?.id)
-    }
-  }, [postData]);
+      push('/home/content-management/resources/module/' + resourceData?.productModuleId)
 
-  const {me, getMe} = useAuthController();
+    }
+  }, [data]);
+
   const handleSubmit = (value) => {
-    if (value  && moduleData) {
-      post({
-        productModuleId: moduleData?.id,
+    if (value) {
+      patch({
         resourceName: value.name,
         languageId: value.language,
         fileType: value.fileType,
-        videoLength: value.videoLength,
         thumbnailMediaDestination: value.thumb,
-        mediaDestination: value.videos,
-        uploadedByUserId: me?.id,
+        mediaDestination: value.images,
       });
-    };
+    }
   };
 
   return (
     <UI.Box py={5} px={7}>
-      <LoadingComponent isLoading={loadModuleData}>
+      <LoadingComponent isLoading={loadResourceData}>
         <UI.HStack
           w="full"
           _hover={{cursor: 'pointer'}}
           onClick={() =>
-            push('/home/content-management/resources/module/' + moduleData?.id)
+            push(
+              '/home/content-management/resources/module/' + resourceData?.productModuleId,
+            )
           }>
           <BsArrowLeft size={20} />
           <UI.Text fontSize={'14px'}>Back</UI.Text>
@@ -80,7 +90,7 @@ function AddNew() {
           bg="white"
           shadow="md">
           <UI.Text fontSize="16px" fontWeight="bold">
-            ADD NEW VIDEO
+            EDIT IMAGE
           </UI.Text>
           <FormGenerate
             spacing={6}
@@ -88,36 +98,40 @@ function AddNew() {
               handleSubmit(value);
             }}
             schema={{
-              name: yup.string().required('Please enter Video Name'),
-              language: yup.number().required('Please select language'),
+              name: yup
+                .string()
+                .required('Please enter Image Name')
+                .default(resourceData?.resourceName),
               fileType: yup
                 .string()
-                .required('Please enter video type'),
-              videoLength: yup.string().required('Please enter video length'),
-              videos: yup
-                .string()
-                .required('Please upload file'),
-              thumb: yup
-                .string()
-                .required('Please upload thumbnail'),
+                .required('Please enter Image Type')
+                .default(resourceData?.fileType),
+              language: yup
+                .number()
+                .typeError('Please select Language')
+                .required('Please select Language')
+                .default(resourceData?.languageId),
+              images: yup.string().required('Please upload file'),
+              //thumb: yup.string().required('Please upload thumbnail'),
             }}
             fields={[
               {
                 name: 'name',
                 type: 'input',
-                label: 'Video Name',
+                label: 'Image Name',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                defaultValue: resourceData?.resourceName,
               },
               {
                 type: 'upload-file-content',
                 layout: 'horizontal',
-                name: 'videos',
-                productModuleId: moduleData?.id,
-                //defaultValue: data?.mediaDestination,
+                name: 'images',
+                productModuleId: resourceData?.productModuleId,
+                defaultValue: resourceData?.mediaDestination,
                 colSpan: 12,
-                labelUpload: 'Upload File',
+                labelUpload: 'Upload Image',
                 description: ' ',
                 width: '100%',
                 size: 'md',
@@ -128,8 +142,7 @@ function AddNew() {
                 layout: 'horizontal',
                 name: 'thumb',
                 labelUpload: 'Upload Thumbnail',
-
-                //defaultValue: data?.mediaDestination,
+                defaultValue: resourceData?.thumbnailMediaDestination,
                 colSpan: 12,
                 width: '100%',
                 size: 'md',
@@ -138,18 +151,11 @@ function AddNew() {
               {
                 name: 'fileType',
                 type: 'input',
-                label: 'Video Type',
+                label: 'Image Type',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
-              },
-              {
-                name: 'videoLength',
-                type: 'input',
-                label: 'Video Length',
-                size: 'md',
-                layout: 'horizontal',
-                width: '70%',
+                defaultValue: resourceData?.fileType,
               },
               {
                 name: 'language',
@@ -163,11 +169,20 @@ function AddNew() {
                   value: x?.id,
                   label: x?.name,
                 })),
+                defaultValue: {
+                  value: resourceData?.languageId,
+                  label: languages?.map((x) => {
+                    if (x?.id === resourceData?.languageId)
+                     {
+                       return x?.name;
+                    }
+                  }),
+                },
               },
             ]}>
             <UI.Center mt={4} w="full">
               <UI.Button type={'submit'} isLoading={loading} w="150px">
-                Publish
+                Save
               </UI.Button>
             </UI.Center>
           </FormGenerate>
@@ -177,4 +192,4 @@ function AddNew() {
   );
 }
 
-export default AddNew;
+export default Edit;
