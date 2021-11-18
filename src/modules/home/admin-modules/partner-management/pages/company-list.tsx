@@ -86,6 +86,7 @@ function CompanyManagement() {
       <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
         Partner Management
       </UI.Text>
+
       <UI.Box width="full">
         <UI.HStack>
           <FormGenerate
@@ -165,88 +166,90 @@ function CompanyManagement() {
           </UI.HStack>
         </UI.HStack>
 
-        {isBase ? (
-          <UI.Box px={4} bgColor="white">
-            <TableGenerate
-              onClickRow={(row) => push(path + `/company/${row?.id}`)}
-              isLoading={loading}
-              currentPage={data?.page}
-              totalpage={data?.totalPages}
-              totalCount={data?.total}
-              pageSize={data?.limit}
-              data={data?.records || []}
-              onChangePage={setPage}
-              Footer={
-                <UI.Tr>
-                  <UI.Td fontWeight="bold" colSpan={1000}>
-                    {data?.total} Companies
-                  </UI.Td>
-                </UI.Tr>
-              }
-              columns={[
-                {
-                  Header: 'Company',
-                  id: 'company',
-                  accessor: (row) => <UI.Text>{row?.companyName}</UI.Text>,
-                },
-                {
-                  Header: 'Status',
-                  id: 'status',
-                  accessor: (row) => {
-                    return (
-                      <UI.Text>{STATUS_STRING?.[row?.isActive] || ''}</UI.Text>
-                    );
-                  },
-                },
-                {
-                  Header: 'Registered Date',
-                  id: 'registDate',
-                  accessor: (row) => (
-                    <UI.Text>
-                      {moment(row?.createdAt).format('DD MMM YYYY')}
-                    </UI.Text>
-                  ),
-                },
-
-                {
-                  Header: 'Validity Date',
-                  id: 'validDate',
-                  accessor: (row) => {
-                    return (
-                      <UI.Text>
-                        {' '}
-                        {moment(row?.expiryDate).format('DD MMM YYYY')}
-                      </UI.Text>
-                    );
-                  },
-                },
-
-                {
-                  Header: () => <UI.Center>Action</UI.Center>,
-                  id: 'action',
-                  accessor: (row) => (
-                    <ActionColum
-                      refresh={() =>
-                        getList({
-                          page: 1,
-                          limit: 10,
-                        })
-                      }
-                      row={row}
-                    />
-                  ),
-                },
-              ]}
-            />
-          </UI.Box>
+        {loading ? (
+          <UI.Center minH="300px">
+            <UI.Spinner size="lg" color="ste.red" />
+          </UI.Center>
+        ) : isEmpty(data?.records) ? (
+          <UI.Center>No data</UI.Center>
         ) : (
-          <UI.Box>
-            {loading ? (
-              <UI.Center minH="300px">
-                <UI.Spinner size="lg" color="ste.red" />
-              </UI.Center>
-            ) : isEmpty(data?.records) ? (
-              <UI.Center>No data</UI.Center>
+          <UI.Box width="full">
+            {isBase ? (
+              <UI.Box px={4} bgColor="white">
+                <TableGenerate
+                  onClickRow={(row) => push(path + `/company/${row?.id}`)}
+                  isLoading={loading}
+                  currentPage={data?.page}
+                  totalpage={data?.totalPages}
+                  totalCount={data?.total}
+                  pageSize={data?.limit}
+                  data={data?.records || []}
+                  onChangePage={setPage}
+                  Footer={
+                    <UI.Tr>
+                      <UI.Td fontWeight="bold" colSpan={1000}>
+                        {data?.total} Companies
+                      </UI.Td>
+                    </UI.Tr>
+                  }
+                  columns={[
+                    {
+                      Header: 'Company',
+                      id: 'company',
+                      accessor: (row) => <UI.Text>{row?.companyName}</UI.Text>,
+                    },
+                    {
+                      Header: 'Status',
+                      id: 'status',
+                      accessor: (row) => {
+                        return (
+                          <UI.Text>
+                            {STATUS_STRING?.[row?.isActive] || ''}
+                          </UI.Text>
+                        );
+                      },
+                    },
+                    {
+                      Header: 'Registered Date',
+                      id: 'registDate',
+                      accessor: (row) => (
+                        <UI.Text>
+                          {moment(row?.createdAt).format('DD MMM YYYY')}
+                        </UI.Text>
+                      ),
+                    },
+
+                    {
+                      Header: 'Validity Date',
+                      id: 'validDate',
+                      accessor: (row) => {
+                        return (
+                          <UI.Text>
+                            {' '}
+                            {moment(row?.expiryDate).format('DD MMM YYYY')}
+                          </UI.Text>
+                        );
+                      },
+                    },
+
+                    {
+                      Header: () => <UI.Center>Action</UI.Center>,
+                      id: 'action',
+                      accessor: (row) => (
+                        <ActionColum
+                          refresh={() =>
+                            getList({
+                              page: 1,
+                              limit: 10,
+                            })
+                          }
+                          row={row}
+                        />
+                      ),
+                    },
+                  ]}
+                />
+              </UI.Box>
             ) : (
               <UI.VStack bg="white" spacing={3} p={3}>
                 {data?.records.map((x) => (

@@ -1,8 +1,10 @@
-import React, {useEffect, useState, useRef, memo} from 'react';
+import React, {useEffect, useState, memo} from 'react';
 import {isEmpty} from 'lodash';
 import {BiCloudUpload} from 'react-icons/bi';
 import * as UI from '@chakra-ui/react';
 import {FOLDER} from '@assets/base64/folder';
+import {FileDrop} from 'react-file-drop';
+import './style.css';
 
 interface IUploadFilesPorps {
   label?: string;
@@ -25,19 +27,25 @@ function UploadFiles(props: IUploadFilesPorps) {
   } = props;
 
   const [files, setFiles] = useState<any[]>(defaultValue);
-  const isChanged = useRef(false);
 
   useEffect(() => {
-    if (onChangeValue && isChanged.current) onChangeValue({[name]: files});
+    if (onChangeValue) onChangeValue({[name]: files});
   }, [files]);
 
   const onFileChange = (event: any) => {
-    isChanged.current = true;
     if (!isEmpty(event.target.files)) setFiles([...event.target.files]);
   };
 
   return (
-    <>
+    <FileDrop
+      onDrop={
+        isDisabled
+          ? undefined
+          : (files) => {
+              if (!isEmpty(files)) setFiles([...files]);
+            }
+      }
+      className={`drop-files`}>
       <UI.Center
         bg="#F8FBFF"
         px={7}
@@ -46,15 +54,7 @@ function UploadFiles(props: IUploadFilesPorps) {
         borderRadius="md"
         borderStyle="dashed"
         w="full">
-        <UI.Box
-          onDrop={
-            isDisabled
-              ? undefined
-              : (files) => {
-                  isChanged.current = true;
-                  if (!isEmpty(files)) setFiles(files as any);
-                }
-          }>
+        <UI.Box>
           <UI.VStack>
             <UI.Box>
               <img width="40px" src={FOLDER} alt="folder-icon" />
@@ -87,7 +87,7 @@ function UploadFiles(props: IUploadFilesPorps) {
           </UI.VisuallyHidden>
         </UI.Box>
       </UI.Center>
-    </>
+    </FileDrop>
   );
 }
 

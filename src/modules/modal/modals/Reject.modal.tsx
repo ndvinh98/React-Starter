@@ -19,7 +19,13 @@ function RejectModal() {
   useEffect(() => {
     if (patchData) {
       closeModal('reject');
-      toast({status: 'success', description: 'Successfully!', duration: 2000});
+      toast({
+        status: 'success',
+        description: 'Successfully!',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
       push('/home/partner-applications');
     }
   }, [patchData]);

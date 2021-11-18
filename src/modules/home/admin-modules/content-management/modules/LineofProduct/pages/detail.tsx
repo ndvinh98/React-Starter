@@ -25,7 +25,7 @@ function AddNew() {
   const {push} = useRouter();
   const toast = UI.useToast();
   const {params} = useRouterController();
-
+  const [applicationIdParam, setApplicationIdParam] = useState(-1);
   const applicationRef = useRef<any>(null);
 
   const {post, loading: postLoading, data: postData} = usePost('/categories');
@@ -47,7 +47,9 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
-      push('/home/content-management/line-of-product');
+      push(
+        `/home/content-management/line-of-product?lineOfBusiness=${applicationIdParam}`,
+      );
     }
   }, [postData, pathData]);
 
@@ -76,6 +78,7 @@ function AddNew() {
         mediaDestination: thumb,
       });
     }
+    setApplicationIdParam(application)
   };
 
   useEffect(() => {
@@ -161,7 +164,7 @@ function AddNew() {
                 })),
               },
               {
-                type: 'upload-file-contnet',
+                type: 'upload-file-content',
                 layout: 'horizontal',
                 name: 'thumb',
                 defaultValue: data?.mediaDestination,

@@ -2,12 +2,14 @@ import React from 'react';
 import * as UI from '@chakra-ui/react';
 import {useContentManagementController} from '@modules/home/admin-modules/content-management';
 import {useHover} from '@utils/hooks';
+import {useModalController} from '@modules/modal';
 
 function NormalListItem({item, onClickItem, isVideo, isBrochures}) {
   const [hoverRef, isHovered] = useHover<any>();
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
   const removeItem = useContentManagementController((s) => s.removeItem);
+  const {openModal} = useModalController();
 
   return (
     <UI.Box ref={hoverRef} w="full" position="relative">
@@ -34,6 +36,10 @@ function NormalListItem({item, onClickItem, isVideo, isBrochures}) {
       <UI.HStack
         onClick={() => {
           if (!isVideo && !isBrochures) onClickItem?.(item);
+          else
+            openModal('contentViewer', {
+              mediaDestination: item?.mediaDestination,
+            });
         }}
         key={item?.id}
         cursor="pointer"
@@ -55,7 +61,11 @@ function NormalListItem({item, onClickItem, isVideo, isBrochures}) {
           h="60px">
           {isVideo && (
             <UI.Image
-              //left= {0}
+              onClick={() =>
+                openModal('contentViewer', {
+                  mediaDestination: item?.mediaDestination,
+                })
+              }
               position="absolute"
               zIndex={1}
               top={'50%'}

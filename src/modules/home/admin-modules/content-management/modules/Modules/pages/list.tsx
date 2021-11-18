@@ -214,7 +214,7 @@ function List() {
                 },
                 value: allLineBusinessKeys?.[filter?.applicationId],
                 options: [
-                  {value: -1, label: 'All Business'},
+                  {value: -1, label: 'All Line of Business'},
                   ...allLineBusiness,
                 ],
               },

@@ -101,7 +101,7 @@ function AddNew() {
                 width: '70%',
               },
               {
-                type: 'upload-file-contnet',
+                type: 'upload-file-content',
                 layout: 'horizontal',
                 name: 'brochures',
                 productModuleId: moduleData?.id,
@@ -114,7 +114,7 @@ function AddNew() {
                 urlPath: 'productModuleResources/uploadFileUrl',
               },
               {
-                type: 'upload-file-contnet',
+                type: 'upload-file-content',
                 layout: 'horizontal',
                 name: 'thumb',
                 labelUpload: 'Upload Thumbnail',
@@ -157,7 +157,7 @@ function AddNew() {
             ]}>
             <UI.Center mt={4} w="full">
               <UI.Button type={'submit'} isLoading={loading} w="150px">
-                Create
+                Publish
               </UI.Button>
             </UI.Center>
           </FormGenerate>

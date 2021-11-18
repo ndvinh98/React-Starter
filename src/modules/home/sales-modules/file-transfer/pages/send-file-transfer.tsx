@@ -183,9 +183,13 @@ function SendFiles() {
         {!isEmpty(usersSender) && (
           <UI.HStack w="full">
             <UI.Text w="300px"></UI.Text>
-            <UI.HStack w="full" flexWrap="wrap" spacing={0} alignItems={"center"} >
+            <UI.HStack
+              w="full"
+              flexWrap="wrap"
+              spacing={0}
+              alignItems={'center'}>
               {usersSender?.map?.((x) => (
-                <UI.VStack>
+                <UI.VStack key={x?.id}>
                   <UI.Tag
                     mr={2}
                     size="md"

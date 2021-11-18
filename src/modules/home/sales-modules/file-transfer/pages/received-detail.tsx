@@ -34,14 +34,14 @@ function Detail() {
   return (
     <LoadingComponent length={data ? 1 : 0} isLoading={loading}>
       <UI.Box minH="77vh" p={8}>
-      <UI.HStack
-        mb={4}
-        w="full"
-        _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/file-transfer/received')}>
-        <BsArrowLeft size={20} />
-        <UI.Text fontSize={'14px'}>Back</UI.Text>
-      </UI.HStack>
+        <UI.HStack
+          mb={4}
+          w="full"
+          _hover={{cursor: 'pointer'}}
+          onClick={() => push('/home/file-transfer/received')}>
+          <BsArrowLeft size={20} />
+          <UI.Text fontSize={'14px'}>Back</UI.Text>
+        </UI.HStack>
         <UI.HStack>
           <UI.Text fontWeight="bold" fontSize="20px" textTransform="uppercase">
             File Transfer
@@ -71,7 +71,9 @@ function Detail() {
             </UI.HStack>
             <UI.HStack alignItems="flex-start" w="full">
               <UI.Text w="300px">Subject:</UI.Text>
-              <UI.Text w="calc(100% - 300px)">{data?.fileTransfer?.subject}</UI.Text>
+              <UI.Text w="calc(100% - 300px)">
+                {data?.fileTransfer?.subject}
+              </UI.Text>
             </UI.HStack>
             <UI.HStack alignItems="flex-start" w="full">
               <UI.Text w="300px">Attached Files:</UI.Text>
@@ -85,7 +87,9 @@ function Detail() {
             </UI.HStack>
             <UI.HStack alignItems="flex-start" w="full">
               <UI.Text w="300px">Description:</UI.Text>
-              <UI.Text w="calc(100% - 300px)">{data?.fileTransfer?.description}</UI.Text>
+              <UI.Text w="calc(100% - 300px)">
+                {data?.fileTransfer?.description}
+              </UI.Text>
             </UI.HStack>
           </UI.VStack>
         </UI.Box>
@@ -112,6 +116,7 @@ const FileItem = ({file}) => {
             url: 'productModuleResources/downloadFileUrl',
             title: file?.fileName,
             payload: file,
+            isDownload: true,
           })
         }
         //isDisabled={loading}

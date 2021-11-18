@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useRouterController} from '@modules/router';
+
 import {useGetItem, useFilter, useGetList} from '@utils/hooks';
 
 import {useRouter} from '@utils/hooks';
@@ -19,10 +19,13 @@ import {
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import SalesTable from '@components/SalesTable';
+import {isEmpty} from '@chakra-ui/utils';
+import {useCurrentRoute} from 'react-navi';
 
 function CompanyDetail() {
+  const {lastChunk} = useCurrentRoute();
+  console.log(lastChunk?.request?.params?.companyId);
   const {push} = useRouter();
-  const {params} = useRouterController();
 
   /// get Info Company
   const {
@@ -32,29 +35,34 @@ function CompanyDetail() {
   } = useGetList<IPartnerApplicationForms>(`/partnerApplicationForms`);
 
   useEffect(() => {
-    if (params?.id)
-      getItemPartner({
-        filter: JSON.stringify([
-          {
-            partnerApplicationSubmission: {partnerId: params?.id},
+    getItemPartner({
+      filter: JSON.stringify([
+        {
+          partnerApplicationSubmission: {
+            partnerId: lastChunk?.request?.params?.companyId,
           },
-        ]),
-        relations: JSON.stringify([
-          'partnerApplicationSubmission',
-          'partnerApplicationAttachments',
-        ]),
-      });
-  }, [params]);
+        },
+      ]),
+      relations: JSON.stringify([
+        'partnerApplicationSubmission',
+        'partnerApplicationAttachments',
+      ]),
+    });
+  }, []);
 
-  const {getItem: getItemDomain, data: dataDomain} =
-    useGetItem<IPartnerManagement>(`/partners/${params?.id}`);
+  const {
+    getItem: getItemDomain,
+    data: dataDomain,
+    loading: loadingDomain,
+  } = useGetItem<IPartnerManagement>(
+    `/partners/${lastChunk?.request?.params?.companyId}`,
+  );
 
   useEffect(() => {
-    if (params?.id)
-      getItemDomain({
-        relations: JSON.stringify(['partnerDomain']),
-      });
-  }, [params]);
+    getItemDomain({
+      relations: JSON.stringify(['partnerDomain']),
+    });
+  }, []);
 
   //import data User
 
@@ -77,26 +85,28 @@ function CompanyDetail() {
   } = useGetList<IPartnerUser>('/partnerUsers');
 
   useEffect(() => {
-    if (dataDomain)
-      getListUser({
-        page: pageUser,
-        limit: limitUser,
-        relations: JSON.stringify(['domain', 'partnerUserProfiles']),
-        filter: JSON.stringify([
-          {
-            ...filterUser,
-            domain: {id: dataDomain?.partnerDomain?.id},
-          },
-        ]),
-        textSearch: textSearchUser
-          ? JSON.stringify([
-              {firstName: textSearchUser},
-              {email: textSearchUser},
-              {lastName: textSearchUser},
-            ])
-          : undefined,
-      });
+    if (dataDomain) hanldeGetListUser();
   }, [pageUser, limitUser, textSearchUser, filterUser, dataDomain]);
+
+  const hanldeGetListUser = () =>
+    getListUser({
+      page: pageUser,
+      limit: limitUser,
+      relations: JSON.stringify(['domain', 'partnerUserProfiles']),
+      filter: JSON.stringify([
+        {
+          ...filterUser,
+          domain: {id: dataDomain?.partnerDomain?.id},
+        },
+      ]),
+      textSearch: textSearchUser
+        ? JSON.stringify([
+            {firstName: textSearchUser},
+            {email: textSearchUser},
+            {lastName: textSearchUser},
+          ])
+        : undefined,
+    });
 
   const handleFilterDataUser = (
     {textSearch, status, userType},
@@ -136,22 +146,27 @@ function CompanyDetail() {
   } = useGetList<IUserManagement>('/partnerUserRelations');
 
   useEffect(() => {
-    if (params?.id)
-      getListSales({
-        page: pageSales,
-        limit: limitSales,
-        relations: JSON.stringify(['user', 'user.userProfiles']),
-        filter: JSON.stringify([{partnerId: params?.id}]),
+    handleGetListSale();
+  }, [pageSales, limitSales, textSearchSales]);
 
-        textSearch: textSearchSales
-          ? JSON.stringify([
-              {user: {firstName: textSearchSales}},
-              {user: {email: textSearchSales}},
-              {user: {lastName: textSearchSales}},
-            ])
-          : undefined,
-      });
-  }, [pageSales, limitSales, textSearchSales, params]);
+  const handleGetListSale = () => {
+    getListSales({
+      page: pageSales,
+      limit: limitSales,
+      relations: JSON.stringify(['user', 'user.userProfiles']),
+      filter: JSON.stringify([
+        {partnerId: lastChunk?.request?.params?.companyId},
+      ]),
+
+      textSearch: textSearchSales
+        ? JSON.stringify([
+            {user: {firstName: textSearchSales}},
+            {user: {email: textSearchSales}},
+            {user: {lastName: textSearchSales}},
+          ])
+        : undefined,
+    });
+  };
 
   const handleFilterDataSales = ({textSearch}, fieldChange) => {
     if (fieldChange.name === 'textSearch') {
@@ -170,32 +185,45 @@ function CompanyDetail() {
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
-      <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
-        {dataCompany?.records[0]?.companyName}
-        {''} ({dataDomain?.partnerDomain?.domain})
-      </UI.Text>
-      <CompanyInfo data={dataCompany?.records[0]} loading={loadingCompany} />
-      <UserTable
-        data={dataUser}
-        loading={loadingUser}
-        handleFilterDataUser={handleFilterDataUser}
-        setPage={setPageUser}
-        companyName={dataCompany?.records[0]?.companyName}
-        getList={getListUser}
-      />
-      <SalesTable
-        data={dataSales}
-        loading={loadingSales}
-        handleFilterData={handleFilterDataSales}
-        setPage={setPageSales}
-        getList={getListSales}
-        companyName={dataCompany?.records[0]?.companyName}
-        partnerId={params?.id}
-      />
-      <TierToParter
-        companyName={dataCompany?.records[0]?.companyName}
-        partnerId={params?.id}
-      />
+      {loadingDomain ? (
+        <UI.Center minH="200px" w="full">
+          <UI.Spinner size="lg" color="ste.red" />
+        </UI.Center>
+      ) : isEmpty(dataDomain) ? (
+        <UI.Text fontWeight={600}> 404 - Not Found</UI.Text>
+      ) : (
+        <UI.VStack spacing={5} align="stretch">
+          <UI.Text fontSize="2xl" fontWeight="semibold" w="full">
+            {dataCompany?.records[0]?.companyName}
+            {''} ({dataDomain?.partnerDomain?.domain})
+          </UI.Text>
+          <CompanyInfo
+            data={dataCompany?.records[0]}
+            loading={loadingCompany}
+          />
+          <UserTable
+            data={dataUser}
+            loading={loadingUser}
+            handleFilterDataUser={handleFilterDataUser}
+            setPage={setPageUser}
+            companyName={dataCompany?.records[0]?.companyName}
+            getList={hanldeGetListUser}
+          />
+          <SalesTable
+            data={dataSales}
+            loading={loadingSales}
+            handleFilterData={handleFilterDataSales}
+            setPage={setPageSales}
+            getList={handleGetListSale}
+            companyName={dataCompany?.records[0]?.companyName}
+            partnerId={lastChunk?.request?.params?.companyId}
+          />
+          <TierToParter
+            companyName={dataCompany?.records[0]?.companyName}
+            partnerId={+lastChunk?.request?.params?.companyId}
+          />
+        </UI.VStack>
+      )}
     </UI.VStack>
   );
 }

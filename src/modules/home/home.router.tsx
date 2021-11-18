@@ -21,6 +21,8 @@ export default mount({
         {exact: false},
       ),
     };
-    return guard().then((res) => ROUTER?.[res]);
+    return guard().then((res) => {
+      return ROUTER?.[res];
+    });
   }),
 });

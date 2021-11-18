@@ -1,4 +1,4 @@
-import {mount, route} from 'navi';
+import {mount, route, Params } from 'navi';
 
 export default mount({
   '/': route({

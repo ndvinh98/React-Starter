@@ -18,15 +18,15 @@ const CardPartner = (props) => {
       border="none"
       alignItems="center">
       <UI.Center
-        w={{md: '40px', lg: '70px'}}
-        p={{md: 1, lg: 2}}
+        w={{md: '40px', lg: '64px'}}
+        h={{md: '40px', lg: '64px'}}
         bg="white"
         shadow="md">
         <UI.Image
-          w={{md: '30px', lg: '50px'}}
-          h={{md: '30px', lg: '50px'}}
+          w={{md: '30px', lg: '46px'}}
+          h={{md: '25px', lg: '34.5px'}}
           src="/images/partner-logo.png"
-          alt="people.png"
+          alt="partner-logo.png"
         />
       </UI.Center>
 
@@ -38,7 +38,7 @@ const CardPartner = (props) => {
         <UI.Button
           w="62px"
           h="30px"
-          onClick={() => push(`/partner/${data?.partnerId}/1`)}
+          onClick={() => push(`/partner/${data?.partnerId}`)}
           color="#54565A"
           bg="#E9E9E9"
           borderRadius="0"

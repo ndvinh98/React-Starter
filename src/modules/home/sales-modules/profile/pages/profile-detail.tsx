@@ -165,23 +165,14 @@ function ProfileDetail() {
                   {
                     type: 'input',
                     name: 'email',
-                    label: 'Email',
+                    label: 'Work Email Address',
                     placeholder: 'Email',
                     colSpan: isBase ? 6 : 12,
                     size: 'md',
                     isDisabled: true,
                     defaultValue: profileData?.email,
                   },
-                  {
-                    type: 'input',
-                    name: 'jobFunction',
-                    label: 'Job Function',
-                    placeholder: 'Job Function',
-                    colSpan: isBase ? 6 : 12,
-                    size: 'md',
-                    isDisabled: isDisabled,
-                    defaultValue: profileData?.jobFunction,
-                  },
+
                   {
                     name: 'jobTitle',
                     type: 'input',

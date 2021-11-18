@@ -71,7 +71,9 @@ function Edit() {
         position: 'top-right',
         isClosable: true,
       });
-      push('/home/content-management/products');
+      push(
+        `/home/content-management/products?productGroup=${groupingId}&lineOfProduct=${categoryId}&lineOfBusiness=${applicationId}`,
+      );
     }
   }, [postData, patchData]);
 
@@ -280,7 +282,7 @@ function Edit() {
                 })),
               },
               {
-                type: 'upload-file-contnet',
+                type: 'upload-file-content',
                 layout: 'horizontal',
                 name: 'thumb',
                 defaultValue: data?.mediaDestination,

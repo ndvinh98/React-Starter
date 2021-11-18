@@ -12,7 +12,7 @@ const MEDIA_TYPE = {
     const openModal = useModalController((s) => s.openModal);
 
     const handleShowContent = () => {
-      openModal('productModuleResourcesView', {name: record?.mediaDestination});
+      openModal('contentViewer', {mediaDestination: record?.mediaDestination});
     };
     return (
       <UI.Box ref={hoverRef} position="relative">
@@ -64,11 +64,12 @@ const MEDIA_TYPE = {
                   fontSize={'md'}
                   textAlign={'left'}
                   fontWeight={'semibold'}>
-                  {record?.resourceName}
+                  {record?.resourceName?.slice(0, 25)}
+                  {record?.resourceName?.length > 25 && <span>...</span>}
                 </UI.Text>
                 <UI.HStack>
-                  <UI.Text color={'white'}>14 minutes</UI.Text>
-                  <UI.Text color={'white'}> | .flv</UI.Text>
+                  <UI.Text color={'white'}>{record?.videoLength}</UI.Text>
+                  <UI.Text color={'white'}> | .{record?.fileType}</UI.Text>
                 </UI.HStack>
               </UI.Box>
             </UI.VStack>
@@ -84,7 +85,7 @@ const MEDIA_TYPE = {
     const openModal = useModalController((s) => s.openModal);
 
     const handleShowContent = () => {
-      openModal('productModuleResourcesView', {name: record?.mediaDestination});
+      openModal('pdfViewer', {mediaDestination: record?.mediaDestination});
     };
 
     return (
@@ -105,7 +106,7 @@ const MEDIA_TYPE = {
           size={'lg'}
         />
         <UI.HStack
-          onClick={() => handleShowContent()}
+          onClick={handleShowContent}
           overflow={'hidden'}
           borderRadius={'md'}
           position={'relative'}
@@ -134,11 +135,12 @@ const MEDIA_TYPE = {
                   fontSize={'md'}
                   textAlign={'left'}
                   fontWeight={'semibold'}>
-                  {record?.resourceName}
+                  {record?.resourceName?.slice(0, 25)}
+                  {record?.resourceName?.length > 25 && <span>...</span>}
                 </UI.Text>
                 <UI.HStack>
-                  <UI.Text color={'white'}>10 Pages</UI.Text>
-                  <UI.Text color={'white'}> | .pdf</UI.Text>
+                  <UI.Text color={'white'}>{record?.noOfPages} Pages</UI.Text>
+                  <UI.Text color={'white'}> | .{record?.fileType}</UI.Text>
                 </UI.HStack>
               </UI.Box>
             </UI.VStack>

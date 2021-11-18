@@ -10,7 +10,6 @@ import LoadingComponent from '@components/LoadingComponent';
 import {isEmpty} from 'lodash';
 import {BsArrowLeft} from 'react-icons/bs';
 
-
 function Detail() {
   const {push} = useRouter();
   const {params} = useRouterController();
@@ -31,36 +30,42 @@ function Detail() {
     }
   }, [params]);
 
-  const getListSentToDetails = (listSentTo) =>{
-    if (!listSentTo){
+  const getListSentToDetails = (listSentTo) => {
+    if (!listSentTo) {
       return undefined;
     }
-    let listName = []
-    listSentTo.map((x) => (
-        listName.push(x?.partnerUser?.firstName +" "+ x?.partnerUser?.lastName + " (" +x?.partnerUser?.email+")")
-    ))
-    return listName.join(", ");
-  }
-  
+    const listName = [];
+    listSentTo.map((x) =>
+      listName.push(
+        x?.partnerUser?.firstName +
+          ' ' +
+          x?.partnerUser?.lastName +
+          ' (' +
+          x?.partnerUser?.email +
+          ')',
+      ),
+    );
+    return listName.join(', ');
+  };
 
   return (
     <LoadingComponent length={data ? 1 : 0} isLoading={loading}>
       <UI.Box minH="77vh" p={8}>
-      <UI.HStack
-        mb={4}
-        w="full"
-        _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/file-transfer/sent')}>
-        <BsArrowLeft size={20} />
-        <UI.Text fontSize={'14px'}>Back</UI.Text>
-      </UI.HStack>
+        <UI.HStack
+          mb={4}
+          w="full"
+          _hover={{cursor: 'pointer'}}
+          onClick={() => push('/home/file-transfer/sent')}>
+          <BsArrowLeft size={20} />
+          <UI.Text fontSize={'14px'}>Back</UI.Text>
+        </UI.HStack>
         <UI.HStack>
           <UI.Text fontWeight="bold" fontSize="20px" textTransform="uppercase">
             File Transfer
           </UI.Text>
         </UI.HStack>
         <UI.Box mt={4} bg="white" shadow="sm" p={5}>
-          <UI.VStack spacing="20px">  
+          <UI.VStack spacing="20px">
             <UI.HStack alignItems="flex-start" w="full">
               <UI.Text w="300px">Sent to:</UI.Text>
               <UI.Text w="calc(100% - 300px)">
@@ -114,13 +119,14 @@ const FileItem = ({file}) => {
       bg="#F7F7F7"
       minW="200px"
       w="80%">
-      <UI.Text>{file?.fileName}</UI.Text>
+      <UI.Text w="90%">{file?.fileName}</UI.Text>
       <UI.Button
         onClick={() =>
           openModal('fileViewer', {
             url: 'productModuleResources/downloadFileUrl',
             title: file?.fileName,
             payload: file,
+            isDownload: true,
           })
         }
         //isDisabled={loading}

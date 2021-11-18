@@ -1,6 +1,5 @@
 import FormGenerate from '@components/FormGenerate';
 import {IFormControl} from '@components/FormGenerate/FormControl';
-// import {IPartnerSale} from '@types';
 import {useFilter, useGetList} from '@utils/hooks';
 import React, {useEffect} from 'react';
 import {AiOutlineSearch} from 'react-icons/ai';

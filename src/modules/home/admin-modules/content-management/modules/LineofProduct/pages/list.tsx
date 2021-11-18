@@ -103,7 +103,6 @@ function List() {
         linkDeleteContent="/categories"
         linkAddNew="/home/content-management/line-of-product/detail/add"
         onClickItem={(item) => {
-          console.log(item);
           push(
             `/home/content-management/product-group?lineOfProduct=${item?.id}&lineOfBusiness=${item?.application?.id}`,
           );

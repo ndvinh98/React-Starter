@@ -77,7 +77,10 @@ function Edit() {
         category,
         mediaDestination: thumb,
       });
+
     }
+    setCategoryId(category)
+
   };
   const handleOnChange = ({application}) => {
     setApplicationId(application || -1);
@@ -103,7 +106,9 @@ function Edit() {
         position: 'top-right',
         isClosable: true,
       });
-      push('/home/content-management/product-group');
+      push(
+        `/home/content-management/product-group?lineOfProduct=${categoryId}&lineOfBusiness=${applicationId}`,
+      );
     }
   }, [postData, pathData]);
 
@@ -152,7 +157,7 @@ function Edit() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-        {mode==="ADD" ? "ADD NEW" : mode}  PRODUCT GROUP
+          {mode === 'ADD' ? 'ADD NEW' : mode} PRODUCT GROUP
         </UI.Text>
         <LoadingComponent isError={isNull(data)}>
           <FormGenerate
@@ -221,7 +226,7 @@ function Edit() {
                 })),
               },
               {
-                type: 'upload-file-contnet',
+                type: 'upload-file-content',
                 layout: 'horizontal',
                 name: 'thumb',
                 defaultValue: data?.mediaDestination,
