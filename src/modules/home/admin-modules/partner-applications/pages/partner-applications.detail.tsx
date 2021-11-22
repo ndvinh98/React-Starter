@@ -303,6 +303,15 @@ function Detail() {
                   {
                     type: 'decor',
                     DecorComponent: () => (
+                      <FieldData
+                        name={'Business Registration Number'}
+                        value={data?.businessRegistrationNo}
+                      />
+                    ),
+                  },
+                  {
+                    type: 'decor',
+                    DecorComponent: () => (
                       <SectionTitle sectionName={'Section B'} />
                     ),
                   },

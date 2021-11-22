@@ -59,7 +59,7 @@ function CompanyInfo(props: any) {
               fontWeight={'semibold'}
               color={'ste.black'}
               bgColor={'#EEEEEC'}>
-              Company Information
+              Company Information ({data?.businessRegistrationNo})
             </UI.Text>
             <UI.Accordion allowMultiple>
               <UI.AccordionItem>
@@ -150,6 +150,15 @@ function CompanyInfo(props: any) {
                           <FieldData
                             name={'Nature of Business'}
                             value={data?.natureOfBusiness}
+                          />
+                        ),
+                      },
+                      {
+                        type: 'decor',
+                        DecorComponent: () => (
+                          <FieldData
+                            name={'Business Registration Number'}
+                            value={data?.businessRegistrationNo}
                           />
                         ),
                       },
