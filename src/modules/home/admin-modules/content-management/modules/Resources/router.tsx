@@ -21,4 +21,12 @@ export default mount({
     title: 'line-of-business-list',
     getView: () => import('./pages/videos/edit'),
   }),
+  '/add-images/module/:id': route({
+    title: 'line-of-business-list',
+    getView: () => import('./pages/images/add-new'),
+  }),
+  'module/images/edit/:resourceId': route({
+    title: 'line-of-business-list',
+    getView: () => import('./pages/images/edit'),
+  }),
 });

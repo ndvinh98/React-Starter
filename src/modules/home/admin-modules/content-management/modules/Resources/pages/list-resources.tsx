@@ -26,7 +26,10 @@ function List() {
       getListResources({
         page,
         limit,
-        relations: JSON.stringify(['productModule']),
+        relations: JSON.stringify([
+          'productModule',
+          'uploadedByUser'
+        ]),
         filter: JSON.stringify([{productModuleId: params?.id}]),
         textSearch: textSearch
           ? JSON.stringify([{resourceName: textSearch}])
@@ -34,6 +37,12 @@ function List() {
       });
       getListModules({
         filter: JSON.stringify([{id: params?.id}]),
+        relations: JSON.stringify([
+          'product',
+          'product.grouping',
+          'product.grouping.category',
+          'product.grouping.category.application',
+        ]),
       });
     }
   }, [page, limit, textSearch, params]);
@@ -49,7 +58,11 @@ function List() {
         ml={8}
         w="full"
         _hover={{cursor: 'pointer'}}
-        onClick={() => push('/home/content-management/modules')}>
+        onClick={() =>
+          push(
+            `/home/content-management/modules?productId=${modulesData?.records?.[0]?.product?.id}&productGroup=${modulesData?.records?.[0]?.product?.grouping?.id}&lineOfProduct=${modulesData?.records?.[0]?.product?.grouping?.category?.id}&lineOfBusiness=${modulesData?.records?.[0]?.product?.grouping?.category?.application?.id}`,
+          )
+        }>
         <BsArrowLeft size={20} />
         <UI.Text fontSize={'14px'}>Back</UI.Text>
       </UI.HStack>
@@ -58,12 +71,7 @@ function List() {
         data={resourcesData?.records}
         isLoading={loading}
         limit={limit}
-        isVideo={
-          modulesData?.records?.[0]?.mediaType == 'VIDEOS' ? true : false
-        }
-        isBrochures={
-          modulesData?.records?.[0]?.mediaType == 'VIDEOS' ? false : true
-        }
+        mediaType = {modulesData?.records?.[0]?.mediaType}
         totalCount={resourcesData?.total}
         currentPage={page}
         onPageChange={setPage}
@@ -89,6 +97,9 @@ function List() {
         linkAddNew={
           modulesData?.records?.[0]?.mediaType == 'VIDEOS'
             ? '/home/content-management/resources/add-videos/module/' +
+              modulesData?.records?.[0]?.id
+            : modulesData?.records?.[0]?.mediaType == 'IMAGES' ?
+            '/home/content-management/resources/add-images/module/' +
               modulesData?.records?.[0]?.id
             : '/home/content-management/resources/add-brochures/module/' +
               modulesData?.records?.[0]?.id

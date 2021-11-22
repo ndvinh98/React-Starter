@@ -55,7 +55,7 @@ function UploadMultipleFiles(props: IUploadFilesPorps, ref: any) {
   useImperativeHandle(ref, () => ({clear: () => setFiles([])}));
 
   return (
-    <UI.Box borderWidth={'1px'} borderRadius="md" p={4}>
+    <UI.Box>
       <UploadFilesStyled
         onDrop={
           isDisabled
@@ -66,7 +66,7 @@ function UploadMultipleFiles(props: IUploadFilesPorps, ref: any) {
               }
         }
         className={`cursor-pointer`}>
-        <UI.VStack>
+        <UI.VStack borderWidth={'1px'} borderRadius="md" p={4}>
           <UI.Center>
             <UI.Image width="40px" src={FOLDER} alt="folder-icon" />
           </UI.Center>

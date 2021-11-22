@@ -35,11 +35,15 @@ export interface IContentView {
   linkToChild?: string;
   linkDeleteContent?: string;
   isModulesView?: boolean;
-  isVideo?: boolean;
-  isBrochures?: boolean;
+  mediaType?: string;
   onReloadPage?: () => void;
   onClickItem?: (item: any) => void;
 }
+const MEDIA_TYPE = {
+  image: "IMAGES",
+  video: "VIDEOS",
+  document: "DOCUMENTS",
+};
 
 function ContentView(props: IContentView) {
   const {
@@ -51,8 +55,7 @@ function ContentView(props: IContentView) {
     totalCount,
     currentPage,
     isModulesView,
-    isVideo,
-    isBrochures,
+    mediaType,
     linkDeleteContent,
     onLimitChange,
     onPageChange,
@@ -73,6 +76,11 @@ function ContentView(props: IContentView) {
   React.useEffect(() => {
     if (pathname) clear();
   }, [pathname]);
+
+  React.useEffect(() => {
+    clear();
+  }, [data]);
+
 
   return (
     <UI.VStack
@@ -151,10 +159,12 @@ function ContentView(props: IContentView) {
               <UI.MenuList zIndex={999}>
                 <UI.MenuItem
                   onClick={() => {
-                    if (isVideo) {
+                    if (mediaType === MEDIA_TYPE.video) {
                       push(`videos/edit/${itemSelected?.[0]?.id}`);
-                    } else if (isBrochures) {
+                    } else if (mediaType === MEDIA_TYPE.document) {
                       push(`brochures/edit/${itemSelected?.[0]?.id}`);
+                    } else if (mediaType === MEDIA_TYPE.image) {
+                      push(`images/edit/${itemSelected?.[0]?.id}`);
                     } else {
                       push(`${pathname}/detail/${itemSelected?.[0]?.id}`);
                     }
@@ -179,7 +189,7 @@ function ContentView(props: IContentView) {
                     openModal('deleteContent', {
                       name: modalName,
                       url: linkDeleteContent,
-                      isResources: isVideo || isBrochures,
+                      isResources: mediaType ? true : false,
                       cb: () => onReloadPage?.(),
                     });
                   }}
@@ -201,9 +211,10 @@ function ContentView(props: IContentView) {
                 data?.map((item) => (
                   <NormalGridItem
                     key={item?.id}
-                    isBrochures={isBrochures}
-                    isVideo={isVideo}
+                    // isBrochures={isBrochures}
+                    // isVideo={isVideo}
                     item={item}
+                    mediaType={mediaType}
                     onClickItem={onClickItem}
                   />
                 ))}
@@ -243,8 +254,9 @@ function ContentView(props: IContentView) {
                   <NormalListItem
                     item={x}
                     key={x?.id}
-                    isBrochures={isBrochures}
-                    isVideo={isVideo}
+                    // isBrochures={isBrochures}
+                    // isVideo={isVideo}
+                    mediaType={mediaType}
                     onClickItem={onClickItem}
                   />
                 ))}

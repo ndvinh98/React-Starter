@@ -3,12 +3,18 @@ import * as UI from '@chakra-ui/react';
 import {useContentManagementController} from '@modules/home/admin-modules/content-management';
 import {useHover} from '@utils/hooks';
 import {useModalController} from '@modules/modal';
-
-function GridItem({item, onClickItem, isVideo, isBrochures}) {
+import {format} from 'date-fns';
+const MEDIA_TYPE = {
+  image: 'IMAGES',
+  video: 'VIDEOS',
+  document: 'DOCUMENTS',
+};
+function GridItem({item, onClickItem, mediaType}) {
   const [hoverRef, isHovered] = useHover<any>();
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
   const removeItem = useContentManagementController((s) => s.removeItem);
+  console.log(item);
 
   const {openModal} = useModalController();
 
@@ -37,12 +43,12 @@ function GridItem({item, onClickItem, isVideo, isBrochures}) {
       />
       <UI.Box
         onClick={() => {
-          if (!isVideo && !isBrochures) onClickItem?.(item);
-          if (isVideo)
+          if (!mediaType) onClickItem?.(item);
+          if (mediaType === MEDIA_TYPE.video || mediaType === MEDIA_TYPE.image)
             openModal('contentViewer', {
               mediaDestination: item?.mediaDestination,
             });
-          if (isBrochures) {
+          if (mediaType === MEDIA_TYPE.document) {
             openModal('pdfViewer', {
               mediaDestination: item?.mediaDestination,
             });
@@ -61,18 +67,18 @@ function GridItem({item, onClickItem, isVideo, isBrochures}) {
         size="20px"
         fontWeight="bold"
         position="relative">
-        {isVideo && (
+        {mediaType === MEDIA_TYPE.video && (
           <UI.Image
             position="absolute"
             zIndex={1}
             top={'50%'}
             left={'50%'}
             transform={'translate(-50%, -50%);'}
-            w="100px"
+            w="50px"
             src={'/images/playback.png'}
           />
         )}
-        {!isVideo && !isBrochures ? (
+        {!mediaType ? (
           <UI.Center
             position="absolute"
             w="full"
@@ -88,9 +94,19 @@ function GridItem({item, onClickItem, isVideo, isBrochures}) {
             <UI.Text color="white">{item?.name || item?.resourceName}</UI.Text>
             <UI.HStack>
               <UI.Text color={'white'} fontSize={'12px'}>
-                {isVideo
+                {mediaType === MEDIA_TYPE.video
                   ? item?.videoLength + ' | ' + item?.fileType
+                  : mediaType === MEDIA_TYPE.image
+                  ? item?.fileType
                   : item?.noOfPages + ' pages | ' + item?.fileType}
+                {' | Uploaded: ' +
+                  (item?.createdAt
+                    ? format(new Date(item?.createdAt), 'dd MMM yyyy')
+                    : undefined) +
+                  ' | Uploaded by: ' +
+                  item?.uploadedByUser?.firstName +
+                  ' ' +
+                  item?.uploadedByUser?.lastName}
               </UI.Text>
             </UI.HStack>
           </UI.Box>

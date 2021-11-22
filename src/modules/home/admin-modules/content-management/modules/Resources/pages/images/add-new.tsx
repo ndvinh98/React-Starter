@@ -21,6 +21,8 @@ function AddNew() {
     loading: loadModuleData,
     getItem,
   } = useGetItem('/productModules/');
+  const {me, getMe} = useAuthController();
+
 
   useEffect(() => {
     if (params?.id) getItem({}, {path: params?.id});
@@ -40,7 +42,6 @@ function AddNew() {
     }
   }, [postData]);
 
-  const {me, getMe} = useAuthController();
   const handleSubmit = (value) => {
     if (value  && moduleData) {
       post({
@@ -48,9 +49,8 @@ function AddNew() {
         resourceName: value.name,
         languageId: value.language,
         fileType: value.fileType,
-        videoLength: value.videoLength,
         thumbnailMediaDestination: value.thumb,
-        mediaDestination: value.videos,
+        mediaDestination: value.images,
         uploadedByUserId: me?.id,
       });
     };
@@ -80,7 +80,7 @@ function AddNew() {
           bg="white"
           shadow="md">
           <UI.Text fontSize="16px" fontWeight="bold">
-            ADD NEW VIDEO
+            ADD NEW IMAGE
           </UI.Text>
           <FormGenerate
             spacing={6}
@@ -88,24 +88,23 @@ function AddNew() {
               handleSubmit(value);
             }}
             schema={{
-              name: yup.string().required('Please enter Video Name'),
+              name: yup.string().required('Please enter Image Name'),
               language: yup.number().required('Please select language'),
               fileType: yup
                 .string()
-                .required('Please enter video type'),
-              videoLength: yup.string().required('Please enter video length'),
-              videos: yup
+                .required('Please enter Image type'),
+              images: yup
                 .string()
                 .required('Please upload file'),
-              thumb: yup
-                .string()
-                .required('Please upload thumbnail'),
+              // thumb: yup
+              //   .string()
+              //   .required('Please upload thumbnail'),
             }}
             fields={[
               {
                 name: 'name',
                 type: 'input',
-                label: 'Video Name',
+                label: 'Image Name',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
@@ -113,11 +112,11 @@ function AddNew() {
               {
                 type: 'upload-file-content',
                 layout: 'horizontal',
-                name: 'videos',
+                name: 'images',
                 productModuleId: moduleData?.id,
                 //defaultValue: data?.mediaDestination,
                 colSpan: 12,
-                labelUpload: 'Upload File',
+                labelUpload: 'Upload Image',
                 description: ' ',
                 width: '100%',
                 size: 'md',
@@ -138,15 +137,7 @@ function AddNew() {
               {
                 name: 'fileType',
                 type: 'input',
-                label: 'Video Type',
-                size: 'md',
-                layout: 'horizontal',
-                width: '70%',
-              },
-              {
-                name: 'videoLength',
-                type: 'input',
-                label: 'Video Length',
+                label: 'Image Format',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',

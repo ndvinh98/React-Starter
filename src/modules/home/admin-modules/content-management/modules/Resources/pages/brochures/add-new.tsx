@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
 import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
+import {useAuthController} from '@modules/auth';
 
 function AddNew() {
   const {push} = useRouter();
@@ -23,6 +24,7 @@ function AddNew() {
 
   useEffect(() => {
     if (params?.id) getItem({}, {path: params?.id});
+    getMe();
   }, [params]);
 
   useEffect(() => {
@@ -38,6 +40,7 @@ function AddNew() {
     }
   }, [postData]);
 
+  const {me, getMe} = useAuthController();
   const handleSubmit = (value) => {
     if (value && moduleData) {
       post({
@@ -48,6 +51,7 @@ function AddNew() {
         noOfPages: value.noOfPages,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.brochures,
+        uploadedByUserId: me?.id,
       });
     }
   };
@@ -157,7 +161,7 @@ function AddNew() {
             ]}>
             <UI.Center mt={4} w="full">
               <UI.Button type={'submit'} isLoading={loading} w="150px">
-                Create
+                Publish
               </UI.Button>
             </UI.Center>
           </FormGenerate>
