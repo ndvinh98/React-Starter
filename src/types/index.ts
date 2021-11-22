@@ -161,6 +161,7 @@ export interface IPartnerApplicationForms extends BaseSchema {
   applicantPreferredLanguage?: string;
   natureOfBusiness?: string;
   language: ILanguages;
+  businessRegistrationNo?: string;
 }
 
 export interface IApplication extends BaseSchema {
