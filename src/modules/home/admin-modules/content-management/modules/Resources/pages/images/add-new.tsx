@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, usePost} from '@utils/hooks';
@@ -10,11 +10,23 @@ import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
 import {useAuthController} from '@modules/auth';
 
+const IMAGE_TYPES = [
+  {
+    label: 'PNG',
+    value: 'PNG',
+  },
+  {
+    label: 'JPEG',
+    value: 'JPEG',
+  },
+];
+
 function AddNew() {
   const {push} = useRouter();
   const toast = UI.useToast();
   const {params} = useRouterController();
   const {languages} = useConfigStore();
+  const [defaultFile, setDefaultFile] = useState<File>();
   const {post, loading, data: postData} = usePost('/productModuleResources');
   const {
     data: moduleData,
@@ -22,7 +34,6 @@ function AddNew() {
     getItem,
   } = useGetItem('/productModules/');
   const {me, getMe} = useAuthController();
-
 
   useEffect(() => {
     if (params?.id) getItem({}, {path: params?.id});
@@ -38,22 +49,29 @@ function AddNew() {
         position: 'top-right',
         isClosable: true,
       });
-      push('/home/content-management/resources/module/' + moduleData?.id)
+      push('/home/content-management/resources/module/' + moduleData?.id);
     }
   }, [postData]);
 
   const handleSubmit = (value) => {
-    if (value  && moduleData) {
+    console.log(value);
+    if (value && moduleData) {
       post({
         productModuleId: moduleData?.id,
         resourceName: value.name,
         languageId: value.language,
         fileType: value.fileType,
         thumbnailMediaDestination: value.thumb,
-        mediaDestination: value.images,
+        mediaDestination: value.images?.thumb,
         uploadedByUserId: me?.id,
       });
-    };
+    }
+  };
+
+  const handleOnchange = (value) => {
+    if (value?.images?.file) {
+      setDefaultFile(value?.images?.file);
+    }
   };
 
   return (
@@ -87,15 +105,22 @@ function AddNew() {
             onSubmit={(value) => {
               handleSubmit(value);
             }}
+            onChangeValue={(value) => {
+              handleOnchange(value);
+            }}
             schema={{
               name: yup.string().required('Please enter Image Name'),
               language: yup.number().required('Please select language'),
-              fileType: yup
-                .string()
-                .required('Please enter Image type'),
+              fileType: yup.string().required('Please enter Image type'),
               images: yup
-                .string()
-                .required('Please upload file'),
+                .object({
+                  thumb: yup
+                    .string()
+                    .required('Please upload file')
+                    .typeError('Please upload file'),
+                })
+                .required('Please upload thumbnail'),
+
               // thumb: yup
               //   .string()
               //   .required('Please upload thumbnail'),
@@ -114,6 +139,7 @@ function AddNew() {
                 layout: 'horizontal',
                 name: 'images',
                 productModuleId: moduleData?.id,
+                exportFile: true,
                 //defaultValue: data?.mediaDestination,
                 colSpan: 12,
                 labelUpload: 'Upload Image',
@@ -127,7 +153,7 @@ function AddNew() {
                 layout: 'horizontal',
                 name: 'thumb',
                 labelUpload: 'Upload Thumbnail',
-
+                defaultFile: defaultFile,
                 //defaultValue: data?.mediaDestination,
                 colSpan: 12,
                 width: '100%',
@@ -136,11 +162,12 @@ function AddNew() {
               },
               {
                 name: 'fileType',
-                type: 'input',
+                type: 'select',
                 label: 'Image Format',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                options: IMAGE_TYPES,
               },
               {
                 name: 'language',

@@ -17,6 +17,8 @@ export interface IUploadFileContent {
   label?: string;
   productModuleId?: number;
   labelUpload?: string;
+  exportFile?: boolean;
+  defaultFile?:File;
 }
 
 function UploadFileContent(props: IUploadFileContent) {
@@ -30,12 +32,14 @@ function UploadFileContent(props: IUploadFileContent) {
     onChange,
     name,
     listStock,
+    exportFile = false,
     defaultValue = '',
+    defaultFile,
   } = props;
 
   const [thumb, setThumb] = useState(defaultValue);
   const [uploading, setUploading] = useState(false);
-  const [file, setFile] = useState();
+  const [file, setFile] = useState<File>();
   const {data, getItem} = useGetItem<{url: string; value: string}>(urlPath);
   useEffect(() => {
     if (data) {
@@ -50,7 +54,23 @@ function UploadFileContent(props: IUploadFileContent) {
   }, [defaultValue]);
 
   useEffect(() => {
-    onChange({target: {value: thumb, name}});
+    if (defaultFile) {
+      setUploading(true);
+      setFile(defaultFile);
+      getItem({
+        name: defaultFile?.name,
+        type: defaultFile?.type,
+      });
+    }
+  }, [defaultFile]);
+
+  useEffect(() => {
+    if (!exportFile){
+      onChange({target: {value: thumb, name}});
+    }
+    else{
+      onChange({target: {value: { thumb: thumb, file: file}, name}});
+    }
   }, [thumb]);
 
   const handleOnchange = (thumb) => {

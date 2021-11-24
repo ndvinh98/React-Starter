@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter} from '@utils/hooks';
@@ -10,11 +10,25 @@ import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
 import {isEmpty} from 'lodash';
 
+const IMAGE_TYPES = [
+  {
+    label: 'PNG',
+    value: 'PNG',
+  },
+  {
+    label: 'JPEG',
+    value: 'JPEG',
+  },
+];
+
+
 function Edit() {
   const {push} = useRouter();
   const toast = UI.useToast();
   const {params} = useRouterController();
   const {languages} = useConfigStore();
+  const [defaultFile, setDefaultFile] = useState<File>();
+
   const {
     data: resourceData,
     loading: loadResourceData,
@@ -59,8 +73,14 @@ function Edit() {
         languageId: value.language,
         fileType: value.fileType,
         thumbnailMediaDestination: value.thumb,
-        mediaDestination: value.images,
+        mediaDestination: value.images?.thumb,
       });
+    }
+  };
+
+  const handleOnchange = (value) => {
+    if (value?.images?.file) {
+      setDefaultFile(value?.images?.file);
     }
   };
 
@@ -97,6 +117,9 @@ function Edit() {
             onSubmit={(value) => {
               handleSubmit(value);
             }}
+            onChangeValue={(value) => {
+              handleOnchange(value);
+            }}
             schema={{
               name: yup
                 .string()
@@ -111,7 +134,7 @@ function Edit() {
                 .typeError('Please select Language')
                 .required('Please select Language')
                 .default(resourceData?.languageId),
-              images: yup.string().required('Please upload file'),
+              //images: yup.string().required('Please upload file'),
               //thumb: yup.string().required('Please upload thumbnail'),
             }}
             fields={[
@@ -130,6 +153,7 @@ function Edit() {
                 name: 'images',
                 productModuleId: resourceData?.productModuleId,
                 defaultValue: resourceData?.mediaDestination,
+                exportFile: true,
                 colSpan: 12,
                 labelUpload: 'Upload Image',
                 description: ' ',
@@ -142,6 +166,7 @@ function Edit() {
                 layout: 'horizontal',
                 name: 'thumb',
                 labelUpload: 'Upload Thumbnail',
+                defaultFile: defaultFile,
                 defaultValue: resourceData?.thumbnailMediaDestination,
                 colSpan: 12,
                 width: '100%',
@@ -150,12 +175,16 @@ function Edit() {
               },
               {
                 name: 'fileType',
-                type: 'input',
-                label: 'Image Type',
+                type: 'select',
+                label: 'Image Format',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
-                defaultValue: resourceData?.fileType,
+                options: IMAGE_TYPES,
+                defaultValue: {
+                  value: resourceData?.fileType,
+                  label: resourceData?.fileType,
+                }
               },
               {
                 name: 'language',
