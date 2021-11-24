@@ -75,10 +75,11 @@ export const HEADER_ITEMS = {
     const guard = useHomeController((s) => s.guard);
     const path = useRouterController((s) => s.path);
     const {push} = useRouter();
-    const {me: profileData} = useAuthController();
+    const {me: profileData, getMe} = useAuthController();
 
     React.useEffect(() => {
       guard();
+      getMe();
     }, []);
 
     const Avatar = memo(() => (
