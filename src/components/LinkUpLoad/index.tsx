@@ -1,10 +1,7 @@
 import React, {memo, useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
-import {isEmpty} from 'lodash';
 import {HTMLChakraProps} from '@chakra-ui/system';
-import {useGetItem} from '@utils/hooks';
-import {uploadFile} from '@services/attachments/uploadFile';
-import {useAuthController} from '@modules/auth';
+import {useModalController} from '@modules/modal';
 
 export interface ILinkUploadProps extends HTMLChakraProps<'div'> {
   label?: string;
@@ -17,6 +14,8 @@ export interface ILinkUploadProps extends HTMLChakraProps<'div'> {
 }
 
 function LinkUpload(props: ILinkUploadProps) {
+  const {openModal} = useModalController();
+
   const {
     label = 'Edit Photo',
     name,
@@ -27,36 +26,7 @@ function LinkUpload(props: ILinkUploadProps) {
     cb,
     ...others
   } = props;
-  const {isOpen, onOpen, onClose} = UI.useDisclosure();
-  const {getItem, data: item} = useGetItem('users/uploadAvatarUrl');
-  const [file, setFile] = useState<File>(null);
-  const {getMe} = useAuthController();
-
-  const onFileChange = (event: any) => {
-    if (!isEmpty(event.target.files)) {
-      onOpen();
-      const file = event.target.files?.[0] as File;
-      setFile(file);
-      getItem({
-        name: file?.name,
-        type: file?.type,
-        userId: userId,
-      });
-    }
-  };
-
-  const handleUpFile = async (url: string, payload: File) => {
-    await uploadFile(url, payload);
-    onClose();
-    getMe();
-    cb?.();
-  };
-
-  useEffect(() => {
-    if (item && item?.url) {
-      handleUpFile(item.url, file);
-    }
-  }, [item]);
+  const {isOpen} = UI.useDisclosure();
 
   return (
     <UI.VStack cursor="pointer" maxH="max-content" {...others}>
@@ -84,21 +54,19 @@ function LinkUpload(props: ILinkUploadProps) {
           fontSize="14px"
           fontWeight="semibold"
           htmlFor={name}
+          onClick={() =>
+            openModal('uploadAvatar', {
+              userId: userId,
+              cb: cb,
+              image: src,
+            })
+          }
           as="label">
           {label}
         </UI.Text>
       ) : (
         <UI.Text pl={2}>Uploading...</UI.Text>
       )}
-      <UI.VisuallyHidden>
-        <input
-          type="file"
-          onChange={onFileChange}
-          id={name}
-          name={name}
-          accept="image/png, image/jpeg"
-        />
-      </UI.VisuallyHidden>
     </UI.VStack>
   );
 }

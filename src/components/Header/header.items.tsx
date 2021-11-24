@@ -9,6 +9,7 @@ import {useHomeController} from '@modules/home';
 import {useRouter} from '@utils/hooks';
 import {useRouterController} from '@modules/router';
 import {useSalesContoller} from '@modules/home';
+import {useAuthController} from '@modules/auth';
 
 const USER_TYPE_DISPLAY = {
   USER: 'User',
@@ -74,6 +75,7 @@ export const HEADER_ITEMS = {
     const guard = useHomeController((s) => s.guard);
     const path = useRouterController((s) => s.path);
     const {push} = useRouter();
+    const {me: profileData} = useAuthController();
 
     React.useEffect(() => {
       guard();
@@ -83,8 +85,8 @@ export const HEADER_ITEMS = {
       <UI.HStack pr={4}>
         <UI.Avatar
           sx={{img: {objectFit: 'contain'}}}
-          bg={me?.avatarMediaDestination ? 'white' : undefined}
-          src={me?.avatarMediaDestination}
+          bg={profileData?.avatarMediaDestination ? 'white' : undefined}
+          src={profileData?.avatarMediaDestination}
           name={me?.firstName + ' ' + me?.lastName}
         />
         <UI.Box textAlign="left">

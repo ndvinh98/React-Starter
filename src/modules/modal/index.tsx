@@ -18,10 +18,12 @@ import RemoveCertificate from './modals/RemoveCertificate.modal';
 import DeleteFileTransfer from './modals/DeleteFileTransfer.modal';
 import ContentViewer from './modals/ContentViewer.modal';
 import PdfViewer from './modals/PdfViewer.modal';
+import UploadAvatarModal from './modals/UploadAvatar.modal';
 
 function InitModal() {
   return (
     <>
+      <UploadAvatarModal />
       <DeleteFileTransfer />
       <LogoutModal />
       <RejectModal />
