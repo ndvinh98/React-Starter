@@ -69,7 +69,7 @@ function UploadFileContent(props: IUploadFileContent) {
       onChange({target: {value: thumb, name}});
     }
     else{
-      onChange({target: {value: { thumb: thumb, file: file}, name}});
+      onChange({target: {value: { mediaDestination: thumb, file: file}, name}});
     }
   }, [thumb]);
 

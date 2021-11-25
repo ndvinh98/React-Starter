@@ -73,7 +73,7 @@ function Edit() {
         languageId: value.language,
         fileType: value.fileType,
         thumbnailMediaDestination: value.thumb,
-        mediaDestination: value.images?.thumb,
+        mediaDestination: value.images?.mediaDestination,
       });
     }
   };

@@ -62,7 +62,7 @@ function AddNew() {
         languageId: value.language,
         fileType: value.fileType,
         thumbnailMediaDestination: value.thumb,
-        mediaDestination: value.images?.thumb,
+        mediaDestination: value.images?.mediaDestination,
         uploadedByUserId: me?.id,
       });
     }
@@ -114,7 +114,7 @@ function AddNew() {
               fileType: yup.string().required('Please enter Image type'),
               images: yup
                 .object({
-                  thumb: yup
+                  mediaDestination: yup
                     .string()
                     .required('Please upload file')
                     .typeError('Please upload file'),
