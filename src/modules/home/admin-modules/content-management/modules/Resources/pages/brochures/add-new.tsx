@@ -9,8 +9,10 @@ import {useRouterController} from '@modules/router';
 import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
 import {useAuthController} from '@modules/auth';
+import PdfThumbnail from 'react-pdf-thumbnail';
 
 function AddNew() {
+  const [defaultFile, setDefaultFile] = useState<File>();
   const {push} = useRouter();
   const toast = UI.useToast();
   const {params} = useRouterController();
@@ -50,9 +52,32 @@ function AddNew() {
         fileType: value.fileType,
         noOfPages: value.noOfPages,
         thumbnailMediaDestination: value.thumb,
-        mediaDestination: value.brochures,
+        mediaDestination: value.brochures?.mediaDestination,
         uploadedByUserId: me?.id,
       });
+    }
+  };
+
+  const createThumb = async (pdf) => {
+    console.log(pdf);
+		const { File, error } = await PdfThumbnail(
+			pdf,
+			{ // thumb image config
+				fileName: 'thumbPDF.png', // thumb file name
+				height: 200, // image height
+				width: 200, // image width
+				pageNo: 0  // pdf page number
+			}
+		);
+		if (!error) {
+			setDefaultFile(File);
+		}
+	};
+
+  const handleOnchange = (value) => {
+    console.log(value);
+    if (value?.brochures?.file) {
+      createThumb(value?.brochures?.file);
     }
   };
 
@@ -87,13 +112,16 @@ function AddNew() {
             onSubmit={(value) => {
               handleSubmit(value);
             }}
+            onChangeValue={(value) => {
+              handleOnchange(value);
+            }}
             schema={{
               name: yup.string().required('Please enter File Name'),
               language: yup.number().required('Please select language'),
               fileType: yup.string().required('Please enter File Format'),
               noOfPages: yup.number().required('Please enter number of pages'),
-              brochures: yup.string().required('Please upload file'),
-              thumb: yup.string().required('Please upload thumbnail'),
+              //brochures: yup.string().required('Please upload file'),
+              //thumb: yup.string().required('Please upload thumbnail'),
             }}
             fields={[
               {
@@ -110,6 +138,7 @@ function AddNew() {
                 name: 'brochures',
                 productModuleId: moduleData?.id,
                 //defaultValue: data?.mediaDestination,
+                exportFile: true,
                 colSpan: 12,
                 labelUpload: 'Upload File',
                 description: ' ',
@@ -122,7 +151,7 @@ function AddNew() {
                 layout: 'horizontal',
                 name: 'thumb',
                 labelUpload: 'Upload Thumbnail',
-
+                defaultFile: defaultFile,
                 //defaultValue: data?.mediaDestination,
                 colSpan: 12,
                 width: '100%',

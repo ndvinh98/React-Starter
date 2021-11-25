@@ -3874,6 +3874,11 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+  
+pdfjs-dist@^2.7.570:
+  version "2.10.377"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.10.377.tgz#feadc9f31bf1790795994e54b18930974cf4970a"
+  integrity sha512-i0jRShtvgfsVQUNCoFYH4SVhPO3U0yhtiFLfZ0RR0B+68N+Vnwq+8B3cjWjLEwWGh8wg1XQ/sYMYKUlHn/Qpsw==
 
 picocolors@^1.0.0:
   version "1.0.0"
@@ -4162,6 +4167,13 @@ react-navi@^0.14.4:
   integrity sha512-faMCCEikOUvsJNI9cD7Zqktv7ZOV5MNLcy5lli6WaTqhtUmS22C6X7fivvOWx/FukNLt4bU1R1+ScRVDk5+oBQ==
   dependencies:
     "@types/history" "^4.6.2"
+
+react-pdf-thumbnail@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-pdf-thumbnail/-/react-pdf-thumbnail-0.1.0.tgz#6b8ddf861252acb2b137dfd42007f545fde52ef9"
+  integrity sha512-VzkGUmgAheqxQsMTcUjOFrATtEdG2C9YRkMb0GFkf9JyfTDdBjkyu1/gVLk9CYVKWkgyNID34/G0TTX60XJuyA==
+  dependencies:
+    pdfjs-dist "^2.7.570"
 
 react-pro-sidebar@^0.6.0:
   version "0.6.0"

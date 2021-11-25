@@ -65,6 +65,7 @@
     "react-intl": "^5.18.1",
     "react-modern-calendar-datepicker": "^3.1.6",
     "react-navi": "^0.14.4",
+    "react-pdf-thumbnail": "^0.1.0",
     "react-pro-sidebar": "^0.6.0",
     "react-query": "^3.26.0",
     "react-select": "^4.3.1",

@@ -115,8 +115,8 @@ function Edit() {
                 .typeError('Please select Language')
                 .required('Please select Language')
                 .default(resourceData?.languageId),
-              brochures: yup.string().required('Please upload file'),
-              thumb: yup.string().required('Please upload thumbnail'),
+              //brochures: yup.string().required('Please upload file'),
+              //thumb: yup.string().required('Please upload thumbnail'),
             }}
             fields={[
               {
