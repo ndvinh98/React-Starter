@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {useGetItem, useMedia, useRouter} from '@utils/hooks';
 import {IPartnerApplicationForms} from '@types';
 import * as UI from '@chakra-ui/react';
-import {isEmpty} from 'lodash';
+import {isEmpty, last} from 'lodash';
 import {useModalController} from '@modules/modal';
 import FormGenerate from '@components/FormGenerate';
 import {BsArrowLeft} from 'react-icons/bs';
@@ -582,6 +582,45 @@ function Detail() {
             <PdfExport
               natureOfBusiness={data?.natureOfBusiness}
               nameOfCompany={data?.companyName}
+              registeredBusinessAddress={`
+              ${data?.address1} 
+              ${data?.address2 || '-'} 
+              ${data?.address3 || '-'} 
+              ${data?.countryName} 
+              ${data?.cityName} 
+              ${data?.postalCode}`}
+              countryOfIncorporation={data?.countryIncorporation}
+              nameOfCEO={data?.companyCEOName}
+              shareholders1={data?.companyShareholderName1}
+              shareholders2={data?.companyShareholderName2}
+              shareholders3={data?.companyShareholderName3}
+              directors1={data?.companyDirectorName1}
+              directors2={data?.companyDirectorName2}
+              directors3={data?.companyDirectorName3}
+              directors4={data?.companyDirectorName4}
+              directors5={data?.companyDirectorName5}
+              attachments1={last(
+                data?.partnerApplicationAttachments?.[0]?.mediaDestination?.split(
+                  '/',
+                ),
+              )}
+              attachments2={last(
+                data?.partnerApplicationAttachments?.[1]?.mediaDestination?.split(
+                  '/',
+                ),
+              )}
+              billingAddress={`
+              ${data?.billingAddress1} 
+              ${data?.billingAddress2 || '-'} 
+              ${data?.billingAddress3 || '-'} 
+              ${data?.billingCityName} 
+              ${data?.billingCountryName} 
+              ${data?.billingPostalCode} 
+              `}
+              contactAttentionPayment={data?.billingContactName}
+              designation={data?.billingContactDesignation}
+              telephoneNumber={data?.billingContactTelNo}
+              faxNumber={data?.billingContactFaxNo}
             />
           </div>
         </UI.Box>
