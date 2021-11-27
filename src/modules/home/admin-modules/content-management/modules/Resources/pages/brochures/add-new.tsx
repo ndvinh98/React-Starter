@@ -13,6 +13,13 @@ import {useAuthController} from '@modules/auth';
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 
+const FILE_TYPES = [
+  {
+    label: 'PDF',
+    value: 'PDF',
+  }
+];
+
 function AddNew() {
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
   const [defaultFile, setDefaultFile] = useState<File>();
@@ -20,7 +27,7 @@ function AddNew() {
   const toast = UI.useToast();
   const {params} = useRouterController();
   const {languages} = useConfigStore();
-  const [defaultThumb, setDefaultThumb] = useState();
+  const [defaultThumb, setDefaultThumb] = useState<any>();
   const {post, loading, data: postData} = usePost('/productModuleResources');
   const {
     data: moduleData,
@@ -89,7 +96,7 @@ function AddNew() {
     await page.render({ canvasContext: context, viewport: viewport }).promise;
     const thumb = canvas.toDataURL();
     canvas.remove();
-    return thumb;
+    setDefaultFile(dataURLtoFile(thumb, `${getFileName(file?.name)}.png`));
   }
 
   const dataURLtoFile = (dataUrl, fileName) => {
@@ -106,14 +113,22 @@ function AddNew() {
     return new File([u8arr], fileName, {type: mime});
   };
 
-  const handleOnchange = async ({brochures}) => {
-    console.log(defaultThumb)
-    if(defaultThumb !== brochures){
-      setDefaultThumb(brochures)
-      const res = await generateThumbPDF(brochures?.file);
-      setDefaultFile(dataURLtoFile(res, "thumb.png"))
-    }
+  const getFileName = (name: string) => {
+    if (!name) return undefined;
+    const names = name?.split('/');
+    if (!names.length) return name;
+    return names?.[names?.length - 1];
   };
+
+  const handleOnchange = async ({brochures}) => {
+    setDefaultThumb(brochures);
+  };
+
+  useEffect(() => {
+    if (defaultThumb && defaultThumb?.file){
+      generateThumbPDF(defaultThumb?.file);
+    }
+  },[defaultThumb])
 
   return (
     <UI.Box py={5} px={7}>
@@ -179,26 +194,29 @@ function AddNew() {
                 width: '100%',
                 size: 'md',
                 urlPath: 'productModuleResources/uploadFileUrl',
+                acceptFileType: "application/pdf",
               },
               {
                 type: 'upload-file-content',
                 layout: 'horizontal',
                 name: 'thumb',
-                labelUpload: 'Upload Thumbnail',
+                labelUpload: 'Upload Thumbnail (Optional)',
                 defaultFile: defaultFile,
                 //defaultValue: data?.mediaDestination,
                 colSpan: 12,
                 width: '100%',
                 size: 'md',
                 urlPath: '/products/uploadThumbnailUrl',
+                acceptFileType:"image/png, image/jpeg"
               },
               {
                 name: 'fileType',
-                type: 'input',
+                type: 'select',
                 label: 'File Format',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                options: FILE_TYPES,
               },
               {
                 name: 'noOfPages',

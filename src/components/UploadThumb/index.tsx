@@ -16,6 +16,7 @@ interface IUploadFilesPorps {
   isHiddenLabel?: boolean;
   isLoading?: boolean;
   description?: string;
+  acceptFileType?: string;
 }
 
 function UploadFiles(props: IUploadFilesPorps) {
@@ -26,6 +27,7 @@ function UploadFiles(props: IUploadFilesPorps) {
     isDisabled,
     isLoading,
     description,
+    acceptFileType,
   } = props;
 
   const [files, setFiles] = useState<any[]>(defaultValue);
@@ -88,6 +90,7 @@ function UploadFiles(props: IUploadFilesPorps) {
               type="file"
               disabled={isDisabled}
               id={name}
+              accept={acceptFileType}
             />
           </UI.VisuallyHidden>
         </UI.Box>
