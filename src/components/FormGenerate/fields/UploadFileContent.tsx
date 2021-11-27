@@ -19,6 +19,7 @@ export interface IUploadFileContent {
   labelUpload?: string;
   exportFile?: boolean;
   defaultFile?:File;
+  acceptFileType?:string;
 }
 
 function UploadFileContent(props: IUploadFileContent) {
@@ -35,6 +36,7 @@ function UploadFileContent(props: IUploadFileContent) {
     exportFile = false,
     defaultValue = '',
     defaultFile,
+    acceptFileType,
   } = props;
 
   const [thumb, setThumb] = useState(defaultValue);
@@ -107,6 +109,7 @@ function UploadFileContent(props: IUploadFileContent) {
         <UI.VStack alignItems="flex-start" w="full">
           <UploadThumb
             name={name}
+            acceptFileType={acceptFileType}
             isLoading={uploading}
             description={description ? description : undefined}
             onChangeValue={(res) => {

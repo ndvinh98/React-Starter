@@ -50,6 +50,7 @@ function AddNew() {
   const [mode, setMode] = useState<'ADD' | 'EDIT'>('ADD');
   const {params} = useRouterController();
   const {data, getItem} = useGetItem(`/productModules/${params?.id}`);
+  const [productIdBack, setProductIdBack] = useState()
 
   useEffect(() => {
     if (params?.id && params?.id !== 'add') {
@@ -89,12 +90,13 @@ function AddNew() {
         isClosable: true,
       });
       push(
-        `/home/content-management/modules?productId=${productId}&productGroup=${groupingId}&lineOfProduct=${categoryId}&lineOfBusiness=${applicationId}`,
+        `/home/content-management/modules?productId=${productIdBack}&productGroup=${groupingId}&lineOfProduct=${categoryId}&lineOfBusiness=${applicationId}`,
       );
     }
   }, [postData, pathData]);
 
   const handleSubmit = ({name, product, mediaType, thumb}) => {
+    setProductIdBack(product);
     if (mode === 'ADD')
       post({
         name,

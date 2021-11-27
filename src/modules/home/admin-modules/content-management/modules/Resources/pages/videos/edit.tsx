@@ -10,6 +10,18 @@ import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
 import {isEmpty} from 'lodash';
 
+const FILE_TYPES = [
+  {
+    label: 'MP4',
+    value: 'MP4',
+  },
+  {
+    label: 'MOV',
+    value: 'MOV',
+  },
+];
+
+
 function Edit() {
   const {push} = useRouter();
   const toast = UI.useToast();
@@ -140,6 +152,7 @@ function Edit() {
                 description: ' ',
                 width: '100%',
                 size: 'md',
+                acceptFileType:"video/*",
                 urlPath: 'productModuleResources/uploadFileUrl',
               },
               {
@@ -151,16 +164,21 @@ function Edit() {
                 colSpan: 12,
                 width: '100%',
                 size: 'md',
+                acceptFileType:"image/png, image/jpeg",
                 urlPath: '/products/uploadThumbnailUrl',
               },
               {
                 name: 'fileType',
-                type: 'input',
+                type: 'select',
                 label: 'Video Type',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
-                defaultValue: resourceData?.fileType,
+                options: FILE_TYPES,
+                defaultValue: {
+                  value: resourceData?.fileType,
+                  label: resourceData?.fileType,
+                }
               },
               {
                 name: 'videoLength',

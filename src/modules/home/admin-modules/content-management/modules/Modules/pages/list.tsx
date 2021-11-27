@@ -262,7 +262,7 @@ function List() {
                 },
                 value: groupingsDataKeys?.[filter?.groupingId],
                 options: [
-                  {value: -1, label: 'All Line of Product Group'},
+                  {value: -1, label: 'All Product Group'},
                   ...groupingsData,
                 ],
               },
@@ -286,7 +286,7 @@ function List() {
                 },
                 value: productsDataKeys?.[filter?.productId],
                 options: [
-                  {value: -1, label: 'All Line of Product Group'},
+                  {value: -1, label: 'All Products'},
                   ...productsData,
                 ],
               },

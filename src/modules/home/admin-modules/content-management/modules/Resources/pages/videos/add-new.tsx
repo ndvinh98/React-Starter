@@ -10,6 +10,18 @@ import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
 import {useAuthController} from '@modules/auth';
 
+const FILE_TYPES = [
+  {
+    label: 'MP4',
+    value: 'MP4',
+  },
+  {
+    label: 'MOV',
+    value: 'MOV',
+  },
+];
+
+
 function AddNew() {
   const {push} = useRouter();
   const toast = UI.useToast();
@@ -121,14 +133,15 @@ function AddNew() {
                 description: ' ',
                 width: '100%',
                 size: 'md',
+                acceptFileType:"video/*",
                 urlPath: 'productModuleResources/uploadFileUrl',
               },
               {
                 type: 'upload-file-content',
                 layout: 'horizontal',
                 name: 'thumb',
+                acceptFileType:"image/png, image/jpeg",
                 labelUpload: 'Upload Thumbnail',
-
                 //defaultValue: data?.mediaDestination,
                 colSpan: 12,
                 width: '100%',
@@ -137,11 +150,12 @@ function AddNew() {
               },
               {
                 name: 'fileType',
-                type: 'input',
+                type: 'select',
                 label: 'Video Type',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                options: FILE_TYPES,
               },
               {
                 name: 'videoLength',
