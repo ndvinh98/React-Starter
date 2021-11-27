@@ -18,7 +18,12 @@ function AddBlacklistDomainModal() {
     if (postData) {
       data?.cb();
       closeModal('addBlacklistDomain');
-      toast({status: 'success', description: 'Successfully!', duration: 2000});
+      toast({
+        status: 'success',
+        isClosable: true,
+        description: 'Successfully!',
+        duration: 2000,
+      });
     }
   }, [postData]);
 

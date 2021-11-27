@@ -17,7 +17,12 @@ function AssignPartnerAdminModal() {
   useEffect(() => {
     if (patchData) {
       closeModal('assignPartnerAdmin');
-      toast({status: 'success', description: 'Successfully!', duration: 2000});
+      toast({
+        status: 'success',
+        description: 'Successfully!',
+        isClosable: true,
+        duration: 2000,
+      });
       data?.cb();
     }
   }, [patchData]);

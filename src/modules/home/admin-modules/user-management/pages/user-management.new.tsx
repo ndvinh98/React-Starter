@@ -41,6 +41,7 @@ function Addnew() {
         description: 'Create a user successfully!',
         status: 'success',
         duration: 2000,
+        isClosable: true,
       });
       push('/home/user-management');
     }

@@ -36,6 +36,7 @@ function AddSale() {
       description: 'Successfully!',
       position: 'top-right',
       duration: 2000,
+      isClosable: true,
     });
   };
 

@@ -4,9 +4,45 @@ import '@assets/css/pdfExport.css';
 function PdfExport({
   nameOfCompany,
   natureOfBusiness,
+  registeredBusinessAddress,
+  countryOfIncorporation,
+  nameOfCEO,
+  shareholders1,
+  shareholders2,
+  shareholders3,
+  directors1,
+  directors2,
+  directors3,
+  directors4,
+  directors5,
+  attachments1,
+  attachments2,
+  billingAddress,
+  contactAttentionPayment,
+  designation,
+  telephoneNumber,
+  faxNumber,
 }: {
   nameOfCompany: string;
   natureOfBusiness: string;
+  registeredBusinessAddress: string;
+  countryOfIncorporation: string;
+  nameOfCEO: string;
+  shareholders1: string;
+  shareholders2: string;
+  shareholders3: string;
+  directors1: string;
+  directors2: string;
+  directors3: string;
+  directors4: string;
+  directors5: string;
+  attachments1: string;
+  attachments2: string;
+  billingAddress: string;
+  contactAttentionPayment: string;
+  designation: string;
+  telephoneNumber: string;
+  faxNumber: string;
 }) {
   return (
     <div
@@ -54,13 +90,10 @@ function PdfExport({
                 <p className="c5">
                   <span className="c9">Registered Business Address</span>
                 </p>
-                <p className="c3">
-                  <span className="c2"></span>
-                </p>
               </td>
               <td className="c14" colSpan={4} rowSpan={1}>
                 <p className="c3">
-                  <span className="c2"></span>
+                  <span className="c2">{registeredBusinessAddress}</span>
                 </p>
               </td>
             </tr>
@@ -72,7 +105,7 @@ function PdfExport({
               </td>
               <td className="c14" colSpan={4} rowSpan={1}>
                 <p className="c3">
-                  <span className="c2"></span>
+                  <span className="c2">{countryOfIncorporation}</span>
                 </p>
               </td>
             </tr>
@@ -109,7 +142,7 @@ function PdfExport({
                   <span className="c2"></span>
                 </p>
                 <p className="c5">
-                  <span className="c36">&nbsp;</span>
+                  <span className="c36">{nameOfCEO}</span>
                 </p>
               </td>
             </tr>
@@ -126,7 +159,7 @@ function PdfExport({
               </td>
               <td className="c0" colSpan={3} rowSpan={1}>
                 <p className="c3">
-                  <span className="c2"></span>
+                  <span className="c2">{shareholders1}</span>
                 </p>
               </td>
             </tr>
@@ -138,7 +171,7 @@ function PdfExport({
               </td>
               <td className="c0" colSpan={3} rowSpan={1}>
                 <p className="c3">
-                  <span className="c2"></span>
+                  <span className="c2">{shareholders2}</span>
                 </p>
               </td>
             </tr>
@@ -150,7 +183,7 @@ function PdfExport({
               </td>
               <td className="c0" colSpan={3} rowSpan={1}>
                 <p className="c3">
-                  <span className="c2"></span>
+                  <span className="c2">{shareholders3}</span>
                 </p>
               </td>
             </tr>
@@ -203,7 +236,7 @@ function PdfExport({
               </td>
               <td className="c0" colSpan={3} rowSpan={1}>
                 <p className="c3">
-                  <span className="c2"></span>
+                  <span className="c2">{directors1}</span>
                 </p>
               </td>
             </tr>
@@ -215,7 +248,7 @@ function PdfExport({
               </td>
               <td className="c0" colSpan={3} rowSpan={1}>
                 <p className="c3">
-                  <span className="c2"></span>
+                  <span className="c2">{directors2}</span>
                 </p>
               </td>
             </tr>
@@ -227,7 +260,7 @@ function PdfExport({
               </td>
               <td className="c0" colSpan={3} rowSpan={1}>
                 <p className="c3">
-                  <span className="c2"></span>
+                  <span className="c2">{directors3}</span>
                 </p>
               </td>
             </tr>
@@ -239,7 +272,7 @@ function PdfExport({
               </td>
               <td className="c0" colSpan={3} rowSpan={1}>
                 <p className="c3">
-                  <span className="c2"></span>
+                  <span className="c2">{directors4}</span>
                 </p>
               </td>
             </tr>
@@ -251,7 +284,7 @@ function PdfExport({
               </td>
               <td className="c0" colSpan={3} rowSpan={1}>
                 <p className="c3">
-                  <span className="c2"></span>
+                  <span className="c2">{directors5}</span>
                 </p>
               </td>
             </tr>
@@ -303,9 +336,6 @@ function PdfExport({
             </tr>
             <tr className="c12">
               <td className="c30" colSpan={5} rowSpan={1}>
-                <p className="c3">
-                  <span className="c9"></span>
-                </p>
                 <p className="c5">
                   <span className="c9">
                     Along with this Customer Form, please attach the following:
@@ -313,15 +343,10 @@ function PdfExport({
                 </p>
                 <ol className="c18 lst-kix_list_2-0 start" start={1}>
                   <li className="c5 c32 li-bullet-0">
-                    <span className="c9">
-                      Company&rsquo;s last signed audited financial statement,
-                      and
-                    </span>
+                    <span className="c9">{attachments1}</span>
                   </li>
                   <li className="c5 c32 li-bullet-0">
-                    <span className="c9">
-                      Company&rsquo;s business registry
-                    </span>
+                    <span className="c9">{attachments2}</span>
                   </li>
                 </ol>
               </td>
@@ -341,7 +366,7 @@ function PdfExport({
               </td>
               <td className="c14" colSpan={4} rowSpan={1}>
                 <p className="c3">
-                  <span className="c9"></span>
+                  <span className="c9">{billingAddress}</span>
                 </p>
               </td>
             </tr>
@@ -355,7 +380,7 @@ function PdfExport({
               </td>
               <td className="c14" colSpan={4} rowSpan={1}>
                 <p className="c3" id="h.gjdgxs">
-                  <span className="c9"></span>
+                  <span className="c9">{contactAttentionPayment}</span>
                 </p>
               </td>
             </tr>
@@ -367,7 +392,7 @@ function PdfExport({
               </td>
               <td className="c14" colSpan={4} rowSpan={1}>
                 <p className="c3">
-                  <span className="c9"></span>
+                  <span className="c9">{designation}</span>
                 </p>
               </td>
             </tr>
@@ -379,7 +404,7 @@ function PdfExport({
               </td>
               <td className="c41" colSpan={2} rowSpan={1}>
                 <p className="c3">
-                  <span className="c9"></span>
+                  <span className="c9">{telephoneNumber}</span>
                 </p>
               </td>
               <td className="c15" colSpan={1} rowSpan={1}>
@@ -389,7 +414,7 @@ function PdfExport({
               </td>
               <td className="c15" colSpan={1} rowSpan={1}>
                 <p className="c3">
-                  <span className="c9"></span>
+                  <span className="c9">{faxNumber}</span>
                 </p>
               </td>
             </tr>
