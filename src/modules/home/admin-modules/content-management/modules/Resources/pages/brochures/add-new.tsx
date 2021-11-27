@@ -17,6 +17,10 @@ const FILE_TYPES = [
   {
     label: 'PDF',
     value: 'PDF',
+  },
+  {
+    label: 'DOC',
+    value: 'DOC',
   }
 ];
 
@@ -28,6 +32,7 @@ function AddNew() {
   const {params} = useRouterController();
   const {languages} = useConfigStore();
   const [defaultThumb, setDefaultThumb] = useState<any>();
+  const [defaultNumPages, setDefaultNumpages] = useState<string>();
   const {post, loading, data: postData} = usePost('/productModuleResources');
   const {
     data: moduleData,
@@ -97,6 +102,7 @@ function AddNew() {
     const thumb = canvas.toDataURL();
     canvas.remove();
     setDefaultFile(dataURLtoFile(thumb, `${getFileName(file?.name)}.png`));
+    setDefaultNumpages(pdf.numPages.toString())
   }
 
   const dataURLtoFile = (dataUrl, fileName) => {
@@ -225,6 +231,8 @@ function AddNew() {
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                //value: defaultNumPages,
+                //defaultValue: defaultNumPages,
               },
               {
                 name: 'language',

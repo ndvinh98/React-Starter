@@ -16,6 +16,10 @@ const FILE_TYPES = [
   {
     label: 'PDF',
     value: 'PDF',
+  },
+  {
+    label: 'DOC',
+    value: 'DOC',
   }
 ];
 
@@ -23,6 +27,7 @@ function Edit() {
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
   const [defaultThumb, setDefaultThumb] = useState<any>();
   const [defaultFile, setDefaultFile] = useState<File>();
+  const [defaultNumPages, setDefaultNumpages] = useState<string>();
   const {push} = useRouter();
   const toast = UI.useToast();
   const {params} = useRouterController();
@@ -47,6 +52,7 @@ function Edit() {
   useEffect(() => {
     if (resourceData?.productModuleId)
       getModuleData({}, {path: resourceData?.productModuleId});
+      setDefaultNumpages(resourceData?.noOfPages)
   }, [resourceData]);
 
   useEffect(() => {
@@ -103,6 +109,7 @@ function Edit() {
     const thumb = canvas.toDataURL();
     canvas.remove();
     setDefaultFile(dataURLtoFile(thumb, `${getFileName(file?.name)}.png`));
+    setDefaultNumpages(pdf.numPages.toString())
   }
 
   const dataURLtoFile = (dataUrl, fileName) => {
@@ -126,7 +133,7 @@ function Edit() {
     return names?.[names?.length - 1];
   };
 
-  const handleOnchange = async ({brochures}) => {
+  const handleOnchange = ({brochures}) => {
     setDefaultThumb(brochures);
   };
 
@@ -252,7 +259,7 @@ function Edit() {
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
-                defaultValue: resourceData?.noOfPages,
+                defaultValue: defaultNumPages,
               },
               {
                 name: 'language',
