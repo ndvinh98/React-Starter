@@ -20,6 +20,10 @@ const FILE_TYPES = [
   {
     label: 'DOC',
     value: 'DOC',
+  },
+  {
+    label: 'PPT',
+    value: 'PPT',
   }
 ];
 
