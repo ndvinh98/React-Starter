@@ -218,7 +218,7 @@ function List() {
                 value: groupingsDataKeys?.[filter?.groupingId],
                 placeholder: 'Product Group',
                 options: [
-                  {value: -1, label: 'All Line of Product Group'},
+                  {value: -1, label: 'All Product Group'},
                   ...groupingsData,
                 ],
               },
