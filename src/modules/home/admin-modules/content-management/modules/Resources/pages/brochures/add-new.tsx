@@ -9,14 +9,18 @@ import {useRouterController} from '@modules/router';
 import {useConfigStore} from '@services/config';
 import LoadingComponent from '@components/LoadingComponent';
 import {useAuthController} from '@modules/auth';
-import PdfThumbnail from 'react-pdf-thumbnail';
+// import PdfThumbnail from 'react-pdf-thumbnail';
+import * as pdfjsLib from "pdfjs-dist/build/pdf";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 
 function AddNew() {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
   const [defaultFile, setDefaultFile] = useState<File>();
   const {push} = useRouter();
   const toast = UI.useToast();
   const {params} = useRouterController();
   const {languages} = useConfigStore();
+  const [defaultThumb, setDefaultThumb] = useState();
   const {post, loading, data: postData} = usePost('/productModuleResources');
   const {
     data: moduleData,
@@ -58,26 +62,56 @@ function AddNew() {
     }
   };
 
-  const createThumb = async (pdf) => {
-    console.log(pdf);
-		const { File, error } = await PdfThumbnail(
-			pdf,
-			{ // thumb image config
-				fileName: 'thumbPDF.png', // thumb file name
-				height: 200, // image height
-				width: 200, // image width
-				pageNo: 0  // pdf page number
-			}
-		);
-		if (!error) {
-			setDefaultFile(File);
-		}
-	};
+  const readFileData = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        resolve(e.target.result);
+      };
+      reader.onerror = (err) => {
+        reject(err);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
 
-  const handleOnchange = (value) => {
-    console.log(value);
-    if (value?.brochures?.file) {
-      createThumb(value?.brochures?.file);
+ 
+
+  const generateThumbPDF = async (file) => {
+    const data = await readFileData(file);
+    const pdf = await pdfjsLib.getDocument(data).promise;
+    const canvas = document.createElement("canvas");
+    const page = await pdf.getPage(1);
+    const viewport = page.getViewport({ scale: 1 });
+    const context = canvas.getContext("2d");
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+    await page.render({ canvasContext: context, viewport: viewport }).promise;
+    const thumb = canvas.toDataURL();
+    canvas.remove();
+    return thumb;
+  }
+
+  const dataURLtoFile = (dataUrl, fileName) => {
+    const arr = dataUrl.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], fileName, {type: mime});
+  };
+
+  const handleOnchange = async ({brochures}) => {
+    console.log(defaultThumb)
+    if(defaultThumb !== brochures){
+      setDefaultThumb(brochures)
+      const res = await generateThumbPDF(brochures?.file);
+      setDefaultFile(dataURLtoFile(res, "thumb.png"))
     }
   };
 
