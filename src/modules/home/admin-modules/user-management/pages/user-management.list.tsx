@@ -12,6 +12,7 @@ import {useRouterController} from '@modules/router';
 import {useMedia} from '@utils/hooks';
 import {useModalController} from '@modules/modal';
 import {isEmpty} from 'lodash';
+import {format} from 'date-fns';
 
 import * as UI from '@chakra-ui/react';
 import {AiOutlineSearch} from 'react-icons/ai';
@@ -267,6 +268,21 @@ function userManagement() {
                 },
 
                 {
+                  Header: 'Registered Date',
+                  id: 'registeredDate',
+                  accessor: (row) => {
+                    return (
+                      <UI.Text>
+                        {' '}
+                        {row?.createdAt
+                          ? format(new Date(row?.createdAt), 'dd MMM yyyy')
+                          : false}
+                      </UI.Text>
+                    );
+                  },
+                },
+
+                {
                   Header: () => <UI.Center>Action</UI.Center>,
                   id: 'action',
                   accessor: (row) => (
@@ -359,7 +375,7 @@ export const ActionColum = (props: any) => {
             hidden={row?.isActive === 0}
             onClick={(e) => {
               e.stopPropagation();
-              openModal('action', {
+              openModal('deactiveUser', {
                 title: 'Deactivate Access',
                 type: 'Deactivate',
                 cb: () => refresh(),

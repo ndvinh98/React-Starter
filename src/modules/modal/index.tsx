@@ -19,6 +19,7 @@ import DeleteFileTransfer from './modals/DeleteFileTransfer.modal';
 import ContentViewer from './modals/ContentViewer.modal';
 import PdfViewer from './modals/PdfViewer.modal';
 import UploadAvatarModal from './modals/UploadAvatar.modal';
+import DeactiveUser from './modals/DeactiveUser.modal';
 
 function InitModal() {
   return (
@@ -43,6 +44,7 @@ function InitModal() {
       <RemoveSale />
       <ContentViewer />
       <PdfViewer />
+      <DeactiveUser />
     </>
   );
 }
