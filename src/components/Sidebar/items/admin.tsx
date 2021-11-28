@@ -146,7 +146,7 @@ export const MenuLevel0 = memo(
           whiteSpace={'nowrap'}
           overflow="hidden"
           fontSize={'16px'}
-          fontWeight={'semibold'}>
+          fontWeight={useActive(to, {exact: false}) ? 'semibold' : '500'}>
           {label}
         </UI.Text>
       </SB.MenuItem>
@@ -162,7 +162,7 @@ export const MenuLevel0 = memo(
             whiteSpace={'nowrap'}
             overflow="hidden"
             fontSize={'16px'}
-            fontWeight={'semibold'}>
+            fontWeight={useActive(to, {exact: false}) ? 'semibold' : '500'}>
             {label}
           </UI.Text>
         }
