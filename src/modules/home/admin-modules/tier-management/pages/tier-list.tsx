@@ -74,7 +74,19 @@ function TierList() {
                       }}>
                       Edit Tier Name
                     </UI.MenuItem>
-                    <UI.MenuItem>Delete</UI.MenuItem>
+                    <UI.MenuItem
+                      onClick={() => {
+                        openModal('deleteTier', {
+                          name: x?.name,
+                          id: x?.id,
+                          cb: () =>
+                            getList({
+                              limit: 1000,
+                            }),
+                        });
+                      }}>
+                      Delete
+                    </UI.MenuItem>
                   </UI.MenuList>
                 </UI.Menu>
               </UI.Box>

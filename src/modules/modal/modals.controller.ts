@@ -28,9 +28,11 @@ export interface IModalController {
   pdfViewer: boolean;
   uploadAvatar: boolean;
   editTierName: boolean;
+  deleteTier: boolean;
 }
 
 export const useModalController = create<IModalController>((set) => ({
+  deleteTier: false,
   editTierName: false,
   uploadAvatar: false,
   deleteFileTransfer: false,

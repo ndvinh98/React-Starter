@@ -14,15 +14,22 @@ function LogoutModal() {
   }, [data?.defaultName]);
 
   const {patch, loading, data: dataEditName} = usePatch<any>('/tiers/');
-
+  const toast = UI.useToast();
   const handleConfirmName = (id: number) => () => {
     patch({name: name}, {}, id);
   };
 
   useEffect(() => {
     if (dataEditName) {
-      closeModal('editTierName');
+      toast({
+        status: 'success',
+        description: 'Successfully!',
+        position: 'top-right',
+        isClosable: true,
+        duration: 2000,
+      });
       data?.cb?.();
+      closeModal('editTierName');
     }
   }, [dataEditName]);
 

@@ -5,12 +5,8 @@ import {useModalController} from '../modals.controller';
 import {useRemove} from '@utils/hooks';
 
 function RemoveTier() {
-  const {removeTier, closeModal, data} = useModalController();
-  const {
-    data: postData,
-    loading,
-    remove,
-  } = useRemove(`/partnerTierRelations/${data?.id}`);
+  const {deleteTier, closeModal, data} = useModalController();
+  const {data: postData, loading, remove} = useRemove(`/tiers/${data?.id}`);
   const toast = UI.useToast();
 
   React.useEffect(() => {
@@ -30,8 +26,8 @@ function RemoveTier() {
   return (
     <UI.Modal
       isCentered
-      isOpen={removeTier}
-      onClose={() => closeModal('removeTier')}>
+      isOpen={deleteTier}
+      onClose={() => closeModal('deleteTier')}>
       <UI.ModalOverlay />
       <UI.ModalContent position={'relative'} w="360px" minH="211px">
         <UI.Circle
@@ -51,7 +47,8 @@ function RemoveTier() {
             <UI.Text> Delete Tier</UI.Text>
           </UI.Box>
           <UI.Center fontSize={'lg'} fontWeight={400} pt={3} textAlign="center">
-            Are you sure you want to delete this tier for {data?.companyName}?
+            Are you sure you want to delete {data?.name}? This action cannot be
+            undone.
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
@@ -69,7 +66,7 @@ function RemoveTier() {
               w={'120px'}
               type="button"
               onClick={() => {
-                closeModal('removeTier');
+                closeModal('deleteTier');
               }}
               variant="outline">
               Cancel

@@ -20,6 +20,8 @@ import ContentViewer from './modals/ContentViewer.modal';
 import PdfViewer from './modals/PdfViewer.modal';
 import UploadAvatarModal from './modals/UploadAvatar.modal';
 import EditTierName from './modals/EditTierName.modal';
+import DeleteTier from './modals/DeleteTier.modal';
+
 function InitModal() {
   return (
     <>
@@ -44,6 +46,7 @@ function InitModal() {
       <ContentViewer />
       <PdfViewer />
       <EditTierName />
+      <DeleteTier />
     </>
   );
 }
