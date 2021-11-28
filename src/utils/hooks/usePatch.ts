@@ -6,12 +6,12 @@ export const usePatch = <T = any>(url: string) => {
   const [data, setData] = useState<T>();
   const [error, setError] = useState<Error>(null);
 
-  const patch = async (payload = {}, params?: any) => {
+  const patch = async (payload = {}, params?: any, id?: number) => {
     setLoading(true);
     setData(null);
     request({
       method: 'PATCH',
-      path: url,
+      path: id ? `${url}${id}` : url,
       option: {qs: params, data: payload},
     })
       .then(([res, err]) => {
