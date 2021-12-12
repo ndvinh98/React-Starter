@@ -155,7 +155,7 @@ function UserDetail() {
                     <UI.MenuItem
                       hidden={!isProfileActive}
                       onClick={() => {
-                        openModal('action', {
+                        openModal('deactiveUser', {
                           title: 'Deactivate Access',
                           type: 'Deactivate',
                           cb: () => getUserProfile(),
@@ -171,6 +171,38 @@ function UserDetail() {
           </UI.Tbody>
         </UI.Table>
       </UI.Box>
+      {profileData?.isActive === 0 ? (
+        <UI.VStack
+          py={6}
+          px={4}
+          spacing={4}
+          mt={8}
+          width="full"
+          bgColor="white">
+          <UI.Box w="full">
+            <UI.Text
+              fontSize={{md: 'md', lg: '16px'}}
+              fontWeight="600"
+              w="full"
+              color="#4a5568"
+              bgColor={'#EEEEEC'}
+              px={3}
+              py={2}>
+              Reason for deactivation
+            </UI.Text>
+            <UI.Text
+              fontSize={{md: '12px', lg: '16px'}}
+              fontWeight="400"
+              w="full"
+              px={3}
+              py={2}>
+              {profileData?.deactivationReason}
+            </UI.Text>
+          </UI.Box>
+        </UI.VStack>
+      ) : (
+        <> </>
+      )}
       {loading ? (
         <UI.Center minH="200px">
           <UI.Spinner size="lg" color="ste.red" />
@@ -289,16 +321,7 @@ function UserDetail() {
                     isDisabled: true,
                     defaultValue: profileData?.email,
                   },
-                  {
-                    name: 'salesId',
-                    type: 'input',
-                    label: 'Sales ID',
-                    placeholder: 'Sales Id',
-                    colSpan: isBase ? 6 : 12,
-                    size: 'md',
-                    isDisabled: isDisabled,
-                    defaultValue: userProfiles?.salesId,
-                  },
+
                   {
                     name: 'jobTitle',
                     type: 'input',

@@ -24,7 +24,7 @@ import {useCurrentRoute} from 'react-navi';
 
 function CompanyDetail() {
   const {lastChunk} = useCurrentRoute();
-  console.log(lastChunk?.request?.params?.companyId);
+
   const {push} = useRouter();
 
   /// get Info Company

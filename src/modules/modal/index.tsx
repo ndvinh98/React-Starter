@@ -19,6 +19,10 @@ import DeleteFileTransfer from './modals/DeleteFileTransfer.modal';
 import ContentViewer from './modals/ContentViewer.modal';
 import PdfViewer from './modals/PdfViewer.modal';
 import UploadAvatarModal from './modals/UploadAvatar.modal';
+
+import DeactiveUser from './modals/DeactiveUser.modal';
+import ResetValidation from './modals/ResetValidation';
+
 import EditTierName from './modals/EditTierName.modal';
 import DeleteTier from './modals/DeleteTier.modal';
 
@@ -45,6 +49,8 @@ function InitModal() {
       <RemoveSale />
       <ContentViewer />
       <PdfViewer />
+      <DeactiveUser />
+      <ResetValidation />
       <EditTierName />
       <DeleteTier />
     </>

@@ -16,7 +16,6 @@ import {useModalController} from '@modules/modal';
 import {useMedia} from '@utils/hooks';
 
 import CertificatesAwarded from '@components/CertificatesAwarded';
-import {useCurrentRoute} from 'react-navi';
 
 const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
@@ -41,8 +40,7 @@ const SALUATION_OPITONS_VALUE = keyBy(SALUATION_OPITONS, 'value');
 function UserPartnerDetail() {
   const {push} = useRouter();
   const {params} = useRouterController();
-  const {lastChunk} = useCurrentRoute();
-  console.log(lastChunk);
+
   // const {
   //   data: profileData,
   //   loading,
