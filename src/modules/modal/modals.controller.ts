@@ -29,9 +29,13 @@ export interface IModalController {
   uploadAvatar: boolean;
   deactiveUser: boolean;
   resetValidation: boolean;
+  editTierName: boolean;
+  deleteTier: boolean;
 }
 
 export const useModalController = create<IModalController>((set) => ({
+  deleteTier: false,
+  editTierName: false,
   uploadAvatar: false,
   deleteFileTransfer: false,
   deleteContent: false,

@@ -64,7 +64,6 @@ function DeactivetUser() {
                 reasonMessage: yup
                   .string()
                   .required('Reason Message is required'),
-                reasons: yup.array().required('Reasons is required'),
               }}
               fields={[
                 {

@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
+import {MdMoreHoriz} from 'react-icons/md';
 
 import {useGetList, useRouter} from '@utils/hooks';
 import {ITier} from '@types';
@@ -40,8 +41,9 @@ function TierList() {
           <UI.VStack pt={3} w="full">
             {data?.records?.map((x) => (
               <UI.Box
-                onClick={() => push('/home/tier-management/' + x?.id)}
+                display="flex"
                 cursor="pointer"
+                alignItems="center"
                 bg="white"
                 fontWeight="500"
                 shadow="sm"
@@ -49,7 +51,44 @@ function TierList() {
                 px={3}
                 w="full"
                 key={x?.id}>
-                {x?.name}
+                <UI.Text
+                  flexGrow={1}
+                  onClick={() => push('/home/tier-management/' + x?.id)}>
+                  {x?.name}
+                </UI.Text>
+                <UI.Menu>
+                  <UI.MenuButton>
+                    <MdMoreHoriz fontSize="25px" />
+                  </UI.MenuButton>
+                  <UI.MenuList>
+                    <UI.MenuItem
+                      onClick={() => {
+                        openModal('editTierName', {
+                          defaultName: x?.name,
+                          id: x?.id,
+                          cb: () =>
+                            getList({
+                              limit: 1000,
+                            }),
+                        });
+                      }}>
+                      Edit Tier Name
+                    </UI.MenuItem>
+                    <UI.MenuItem
+                      onClick={() => {
+                        openModal('deleteTier', {
+                          name: x?.name,
+                          id: x?.id,
+                          cb: () =>
+                            getList({
+                              limit: 1000,
+                            }),
+                        });
+                      }}>
+                      Delete
+                    </UI.MenuItem>
+                  </UI.MenuList>
+                </UI.Menu>
               </UI.Box>
             ))}
           </UI.VStack>
