@@ -328,6 +328,18 @@ export const ActionColum = (props: any) => {
             }}>
             Deactivate Access
           </UI.MenuItem>
+          <UI.MenuItem
+            onClick={(e) => {
+              e.stopPropagation();
+              openModal('resetValidation', {
+                title: 'Reset Validity Date',
+                path: 'partners',
+                cb: () => refresh(),
+                id: row?.id,
+              });
+            }}>
+            Reset Validity Date
+          </UI.MenuItem>
         </UI.MenuList>
       </UI.Menu>
     </UI.Center>

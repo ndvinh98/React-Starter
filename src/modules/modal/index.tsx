@@ -20,6 +20,7 @@ import ContentViewer from './modals/ContentViewer.modal';
 import PdfViewer from './modals/PdfViewer.modal';
 import UploadAvatarModal from './modals/UploadAvatar.modal';
 import DeactiveUser from './modals/DeactiveUser.modal';
+import ResetValidation from './modals/ResetValidation';
 
 function InitModal() {
   return (
@@ -45,6 +46,7 @@ function InitModal() {
       <ContentViewer />
       <PdfViewer />
       <DeactiveUser />
+      <ResetValidation />
     </>
   );
 }

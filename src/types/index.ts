@@ -243,6 +243,7 @@ export interface IUsers extends BaseSchema {
   otpCode?: string;
   otpCodeExp?: Date;
   userProfiles?: IUserProfiles;
+  deactivationReason: string;
 }
 
 export interface IUserProfiles extends BaseSchema {

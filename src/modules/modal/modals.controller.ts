@@ -28,6 +28,7 @@ export interface IModalController {
   pdfViewer: boolean;
   uploadAvatar: boolean;
   deactiveUser: boolean;
+  resetValidation: boolean;
 }
 
 export const useModalController = create<IModalController>((set) => ({
@@ -55,6 +56,7 @@ export const useModalController = create<IModalController>((set) => ({
   contentViewer: false,
   pdfViewer: false,
   deactiveUser: false,
+  resetValidation: false,
   openModal: (name: string, data?: any) => set({[name]: true, data}),
   closeModal: (name: string) => set({[name]: false, data: null}),
 }));
