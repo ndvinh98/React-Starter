@@ -26,7 +26,7 @@ function AddSale() {
 
   const handleAddSale = ({userIds}) => {
     createNewSale({
-      userIds,
+      userIds: userIds.map((x) => x?.value),
       partnerId: data?.partnerId,
     });
     data.cb();

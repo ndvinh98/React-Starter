@@ -58,14 +58,14 @@ function ConfirmModal() {
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody>
-          <UI.Stack>
-            <UI.Text mb={2}>Validity Date:</UI.Text>
+          <UI.Stack spacing={0}>
+            <UI.Text mb={1}>Validity Date:</UI.Text>
             <DatePicker
               isMinimumTodayDate
               value={selectedDay}
               onChange={setSelectedDay}
             />
-            <UI.Center mt={8} w={'full'} pt={3}>
+            <UI.Center pt={10} w={'full'}>
               <UI.Button
                 colorScheme="blue"
                 onClick={() => {

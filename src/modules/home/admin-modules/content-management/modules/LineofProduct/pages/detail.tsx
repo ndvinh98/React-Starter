@@ -6,7 +6,7 @@ import FormGenerate from '@components/FormGenerate';
 import * as yup from 'yup';
 import {useRouterController} from '@modules/router';
 import {useContentManagementController} from '@modules/home';
-import {isNull, keyBy} from 'lodash';
+import {isEmpty, isNull, keyBy} from 'lodash';
 import LoadingComponent from '@components/LoadingComponent';
 
 const STOCK = [
@@ -78,7 +78,7 @@ function AddNew() {
         mediaDestination: thumb,
       });
     }
-    setApplicationIdParam(application)
+    setApplicationIdParam(application);
   };
 
   useEffect(() => {
@@ -115,80 +115,88 @@ function AddNew() {
           {mode === 'ADD' ? 'ADD NEW' : mode} LINE OF PRODUCT
         </UI.Text>
         <LoadingComponent isError={isNull(data)}>
-          <FormGenerate
-            spacing={6}
-            onSubmit={(value) => {
-              handleSubmit(value);
-            }}
-            schema={{
-              name: yup
-                .string()
-                .default(data?.name)
-                .required('Please enter Line of Product Name'),
-              application: yup
-                .number()
-                .default(data?.application?.id)
-                .required('Please select Line of Business'),
-              thumb: yup
-                .string()
-                .default(data?.mediaDestination)
-                .required('Please upload or select an image'),
-            }}
-            fields={[
-              {
-                name: 'name',
-                type: 'input',
-                label: 'Line of Product Name',
-                size: 'md',
-                layout: 'horizontal',
-                width: '70%',
-                defaultValue: data?.name,
-              },
-              {
-                name: 'application',
-                type: 'select',
-                label: 'Select Line of Business',
-                placeholder: 'Select Line of Business',
-                size: 'md',
-                layout: 'horizontal',
-                width: '70%',
-                refEl: applicationRef,
-                isClearable: false,
-                defaultValue: {
-                  value: data?.id,
-                  label: keyBy(allLineBusiness, 'id')?.[data?.id]?.name,
+          {!isEmpty(allLineBusiness) && (
+            <FormGenerate
+              spacing={6}
+              key={data?.id}
+              onSubmit={(data) => {
+                handleSubmit({...data, application: data?.application?.value});
+              }}
+              schema={{
+                name: yup
+                  .string()
+                  .default(data?.name)
+                  .required('Please enter Line of Product Name'),
+                application: yup
+                  .object({
+                    value: yup
+                      .number()
+                      .required('Please select Line of Business'),
+                  })
+                  .default({value: data?.application?.id})
+                  .required(),
+                thumb: yup
+                  .string()
+                  .default(data?.mediaDestination)
+                  .required('Please upload or select an image'),
+              }}
+              fields={[
+                {
+                  name: 'name',
+                  type: 'input',
+                  label: 'Line of Product Name',
+                  size: 'md',
+                  layout: 'horizontal',
+                  width: '70%',
+                  defaultValue: data?.name,
                 },
-                options: allLineBusiness?.map((x) => ({
-                  value: x?.id,
-                  label: x?.name,
-                })),
-              },
-              {
-                type: 'upload-file-content',
-                layout: 'horizontal',
-                name: 'thumb',
-                defaultValue: data?.mediaDestination,
-                isChooseStock: true,
-                listStock: STOCK,
-                colSpan: 12,
-                width: '100%',
-                size: 'md',
-                urlPath: '/products/uploadThumbnailUrl',
-              },
-            ]}>
-            <UI.Center mt={4} w="full">
-              {mode === 'ADD' && (
-                <UI.Button type={'submit'} isLoading={postLoading} w="150px">
-                  Create
-                </UI.Button>
-              )}
-              {mode === 'EDIT' && (
-                <UI.Button type={'submit'} isLoading={pathLoading} w="150px">
-                  Update
-                </UI.Button>
-              )}
-            </UI.Center>
-          </FormGenerate>
+                {
+                  name: 'application',
+                  type: 'select',
+                  label: 'Select Line of Business',
+                  placeholder: 'Select Line of Business',
+                  size: 'md',
+                  layout: 'horizontal',
+                  width: '70%',
+                  isClearable: false,
+                  errorProperty: 'value',
+                  defaultValue: {
+                    value: data?.application?.id,
+                    label: keyBy(allLineBusiness, 'id')?.[data?.application.id]
+                      ?.name,
+                  },
+                  options: allLineBusiness?.map((x) => ({
+                    value: x?.id,
+                    label: x?.name,
+                  })),
+                },
+                {
+                  type: 'upload-file-content',
+                  layout: 'horizontal',
+                  name: 'thumb',
+                  defaultValue: data?.mediaDestination,
+                  isChooseStock: true,
+                  listStock: STOCK,
+                  colSpan: 12,
+                  width: '100%',
+                  size: 'md',
+                  urlPath: '/products/uploadThumbnailUrl',
+                },
+              ]}>
+              <UI.Center mt={4} w="full">
+                {mode === 'ADD' && (
+                  <UI.Button type={'submit'} isLoading={postLoading} w="150px">
+                    Create
+                  </UI.Button>
+                )}
+                {mode === 'EDIT' && (
+                  <UI.Button type={'submit'} isLoading={pathLoading} w="150px">
+                    Update
+                  </UI.Button>
+                )}
+              </UI.Center>
+            </FormGenerate>
+          )}
         </LoadingComponent>
       </UI.VStack>
     </UI.Box>

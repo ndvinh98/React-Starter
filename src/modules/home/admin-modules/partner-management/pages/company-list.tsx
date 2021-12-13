@@ -76,7 +76,7 @@ function CompanyManagement() {
       setPage(1),
         setFilter((filter) => ({
           ...filter,
-          status: status === '-1' ? undefined : status,
+          status: status?.value === '-1' ? undefined : status?.value,
         }));
     }
   };

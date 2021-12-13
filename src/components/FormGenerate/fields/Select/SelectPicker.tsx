@@ -8,7 +8,6 @@ import * as UI from '@chakra-ui/react';
 export const SelectPicker = memo((props: ISelect) => {
   const {
     onChange,
-    name,
     size,
     isInvalid,
     isClearable = true,
@@ -16,18 +15,18 @@ export const SelectPicker = memo((props: ISelect) => {
     ...other
   } = props;
 
-  const [seleced, setSeleced] = useState<any[]>([]);
+  const [selected, setSelected] = useState<any[]>([]);
 
   useEffect(() => {
-    onChange({target: {value: seleced.map((x) => x?.value), name}});
-  }, [seleced]);
+    onChange(selected);
+  }, [selected]);
 
   const handleRemove = (value) =>
-    setSeleced((s) => s.filter((x) => x.value !== value));
+    setSelected((s) => s.filter((x) => x.value !== value));
 
   const handleAdd = (data) => {
-    if (some(seleced, data)) return;
-    setSeleced((s) => [...s, data]);
+    if (some(selected, data)) return;
+    setSelected((s) => [...s, data]);
   };
 
   return (
@@ -41,7 +40,7 @@ export const SelectPicker = memo((props: ISelect) => {
         styles={style({isInvalid, size})}
       />
       <UI.HStack mt={2} spacing={0} flexWrap="wrap">
-        {seleced?.map((x) => (
+        {selected?.map((x) => (
           <UI.Box pb={2} pr={2} key={x?.value}>
             <UI.Tag>
               {x?.label}

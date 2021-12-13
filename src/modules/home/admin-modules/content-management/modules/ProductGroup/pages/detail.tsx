@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {
@@ -28,8 +28,13 @@ function Edit() {
   const allLineBusiness = useContentManagementController(
     (s) => s.allLineBusiness,
   );
-  const categoryRef = useRef<any>(null);
-  const applicationRef = useRef<any>(null);
+
+  const allLineBusinessKey = useMemo(
+    () => keyBy(allLineBusiness, 'id'),
+    [allLineBusiness],
+  );
+  // const categoryRef = useRef<any>(null);
+  // const applicationRef = useRef<any>(null);
 
   const {params} = useRouterController();
   const [mode, setMode] = useState<'ADD' | 'EDIT'>('ADD');
@@ -43,6 +48,11 @@ function Edit() {
     data: categoriesData,
     loading: categoriesLoading,
   } = useGetList<ICategorie>('categories');
+
+  const categoriesDataKey = useMemo(
+    () => keyBy(categoriesData?.records, 'id'),
+    [categoriesData],
+  );
 
   useEffect(() => {
     if (params?.id && params?.id !== 'add') {
@@ -77,24 +87,12 @@ function Edit() {
         category,
         mediaDestination: thumb,
       });
-
     }
-    setCategoryId(category)
-
+    setCategoryId(category);
   };
   const handleOnChange = ({application}) => {
     setApplicationId(application || -1);
   };
-
-  useEffect(() => {
-    if (applicationId > 0) {
-      categoryRef?.current?.select?.clearValue();
-      getListCategories({
-        limit: 9999,
-        filter: JSON.stringify([{application: applicationId}]),
-      });
-    }
-  }, [applicationId]);
 
   const toast = UI.useToast();
   useEffect(() => {
@@ -112,29 +110,38 @@ function Edit() {
     }
   }, [postData, pathData]);
 
-  useEffect(() => {
-    const applicationId = data?.category?.application?.id;
-    const categoryId = data?.category?.id;
-    if (applicationId) {
-      applicationRef?.current?.select?.setValue({
-        value: applicationId,
-        label: keyBy(allLineBusiness, 'id')?.[applicationId]?.name,
-      });
-      setApplicationId(applicationId);
-    }
-    if (categoryId) setCategoryId(categoryId);
-  }, [data]);
+  const [applicationValue, setApplicationValue] = useState(null);
+  const [categoryValue, setCategoryValue] = useState(null);
 
-  const initData = useRef(true);
   useEffect(() => {
-    if (categoriesData?.records && categoryId && initData.current) {
-      categoryRef?.current?.select?.setValue({
-        value: categoryId,
-        label: keyBy(categoriesData?.records, 'id')?.[categoryId]?.name,
+    if (applicationValue?.value > 0) {
+      getListCategories({
+        limit: 9999,
+        filter: JSON.stringify([{application: applicationValue?.value}]),
       });
-      initData.current = false;
     }
-  }, [categoriesData]);
+  }, [applicationValue]);
+
+  useEffect(() => {
+    if (data) {
+      const applicationId = data?.category?.application?.id;
+      if (applicationId) {
+        setApplicationValue({
+          value: applicationId,
+          label: allLineBusinessKey?.[applicationId]?.name,
+        });
+      }
+    }
+  }, [data, allLineBusinessKey]);
+
+  useEffect(() => {
+    if (data?.category?.id) {
+      setCategoryValue({
+        value: categoryId,
+        label: categoriesDataKey?.[data?.category?.id]?.name,
+      });
+    }
+  }, [data, categoriesDataKey]);
 
   return (
     <UI.Box py={5} px={7}>
@@ -163,8 +170,13 @@ function Edit() {
           <FormGenerate
             spacing={6}
             onChangeValue={handleOnChange}
-            onSubmit={(value) => {
-              handleSubmit(value);
+            key={data?.id}
+            onSubmit={(data) => {
+              handleSubmit({
+                ...data,
+                category: data?.category?.value,
+                application: data?.application?.value,
+              });
             }}
             schema={{
               name: yup
@@ -172,12 +184,17 @@ function Edit() {
                 .required('Please enter Product Group Name')
                 .default(data?.name),
               application: yup
-                .number()
-                .required('Please select Line of Business'),
+                .object({
+                  value: yup
+                    .number()
+                    .required('Please select Line of Business'),
+                })
+                .required(),
               category: yup
-                .number()
-                .typeError('Please select Line of Product')
-                .required('Please select Line of Product'),
+                .object({
+                  value: yup.number().required('Please select Line of Product'),
+                })
+                .required(),
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)
@@ -196,13 +213,19 @@ function Edit() {
               {
                 name: 'application',
                 type: 'select',
-                refEl: applicationRef,
                 label: 'Select Line of Business',
                 placeholder: 'Select Line of Business',
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
                 isClearable: false,
+                errorProperty: 'value',
+                value: applicationValue,
+                canControlsValue: true,
+                onChangeValue: (data) => {
+                  setCategoryValue(null);
+                  setApplicationValue(data);
+                },
                 options: allLineBusiness?.map((x) => ({
                   value: x?.id,
                   label: x?.name,
@@ -210,16 +233,21 @@ function Edit() {
               },
               {
                 name: 'category',
-                refEl: categoryRef,
                 label: 'Select Line of Product',
                 placeholder: 'Select Line of Product',
                 layout: 'horizontal',
                 width: '70%',
-                isDisabled: applicationId < 0,
+                isDisabled: applicationValue?.value < 0,
                 type: 'select',
                 size: 'md',
                 isLoading: categoriesLoading,
                 isClearable: false,
+                canControlsValue: true,
+                value: categoryValue,
+                onChangeValue: (data) => {
+                  setCategoryValue(data);
+                },
+                errorProperty: 'value',
                 options: categoriesData?.records?.map?.((x) => ({
                   value: x?.id,
                   label: x?.name,

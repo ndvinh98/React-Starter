@@ -18,8 +18,8 @@ export interface IUploadFileContent {
   productModuleId?: number;
   labelUpload?: string;
   exportFile?: boolean;
-  defaultFile?:File;
-  acceptFileType?:string;
+  defaultFile?: File;
+  acceptFileType?: string;
 }
 
 function UploadFileContent(props: IUploadFileContent) {
@@ -67,11 +67,10 @@ function UploadFileContent(props: IUploadFileContent) {
   }, [defaultFile]);
 
   useEffect(() => {
-    if (!exportFile){
-      onChange({target: {value: thumb, name}});
-    }
-    else{
-      onChange({target: {value: { mediaDestination: thumb, file: file}, name}});
+    if (!exportFile) {
+      onChange(thumb);
+    } else {
+      onChange({mediaDestination: thumb, file: file});
     }
   }, [thumb]);
 

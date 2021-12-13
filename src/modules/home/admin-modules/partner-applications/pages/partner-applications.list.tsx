@@ -112,8 +112,8 @@ function Main() {
       setFilter((filter) => ({
         ...filter,
       }));
-    if (status === '-1') setFilter(undefined);
-    else setFilter({status});
+    if (status.value === '-1') setFilter(undefined);
+    else setFilter({status: status.value});
   };
 
   const handleLoadMore = () => {

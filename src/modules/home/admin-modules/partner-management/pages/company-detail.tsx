@@ -121,8 +121,8 @@ function CompanyDetail() {
     if (['status', 'userType'].includes(fieldChange.name)) {
       setFilterUser((filterUser) => ({
         ...filterUser,
-        isActive: status === '-1' ? undefined : status,
-        userType: userType === '-1' ? undefined : userType,
+        isActive: status?.value === '-1' ? undefined : status?.value,
+        userType: userType?.value === '-1' ? undefined : userType?.value,
       }));
     }
   };

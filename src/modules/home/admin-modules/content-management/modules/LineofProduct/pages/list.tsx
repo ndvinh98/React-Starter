@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import ContentView from '@components/ContentView';
 import FormGenerate from '@components/FormGenerate';
 import {useGetList, useFilter, useRouter} from '@utils/hooks';
 import {ICategorie} from '@types';
 import {useContentManagementController} from '@modules/home';
-import {keyBy} from 'lodash';
+import {isEmpty, keyBy} from 'lodash';
 import {useCurrentRoute} from 'react-navi';
 
 function List() {
@@ -46,8 +46,6 @@ function List() {
     });
   }, [page, limit, lineOfBusinessId]);
 
-  const applicationRef = useRef<any>(null);
-
   const {push} = useRouter();
 
   return (
@@ -67,37 +65,42 @@ function List() {
         onPageChange={setPage}
         onLimitChange={setLimit}
         filterBar={
-          <FormGenerate
-            onChangeValue={handleOnChange}
-            gap="10px"
-            w="60vw"
-            display="stack"
-            styled={{
-              direction: 'row',
-            }}
-            defaultWatchValue={{
-              business: url?.query?.lineOfBusiness,
-            }}
-            fields={[
-              {
-                name: 'business',
-                type: 'select',
-                size: 'md',
-                colSpan: 3,
-                placeholder: 'All Line of Business',
-                value: allLineBusinessKeys?.[lineOfBusinessId],
-                styled: {
-                  width: '30%',
-                },
-                isClearable: false,
-                refEl: applicationRef,
-                options: [
-                  {label: 'All Line of Business', value: -1},
-                  ...allLineBusiness,
-                ],
-              },
-            ]}
-          />
+          <div>
+            {!isEmpty(allLineBusiness) && (
+              <FormGenerate
+                onChangeValue={handleOnChange}
+                gap="10px"
+                w="60vw"
+                display="stack"
+                styled={{
+                  direction: 'row',
+                }}
+                fields={[
+                  {
+                    name: 'business',
+                    type: 'select',
+                    size: 'md',
+                    colSpan: 3,
+                    placeholder: 'All Line of Business',
+                    styled: {
+                      width: '30%',
+                    },
+                    isClearable: false,
+                    defaultValue: {
+                      value: url?.query?.lineOfBusiness,
+                      label:
+                        allLineBusinessKeys?.[url?.query?.lineOfBusiness]
+                          ?.label,
+                    },
+                    options: [
+                      {label: 'All Line of Business', value: -1},
+                      ...allLineBusiness,
+                    ],
+                  },
+                ]}
+              />
+            )}
+          </div>
         }
         name="Line of Product"
         linkDeleteContent="/categories"

@@ -47,14 +47,16 @@ function Addnew() {
     }
   }, [data]);
 
-  const onFormSubmit = (value) => {
-    value = {
-      ...value,
-      showWorkNumber: value.showWorkNumber ? 1 : 0,
-      showMobileNumber: value.showMobileNumber ? 1 : 0,
-    };
-    post(value);
-  };
+  const onFormSubmit = (data) =>
+    post({
+      ...data,
+      showWorkNumber: data.showWorkNumber ? 1 : 0,
+      showMobileNumber: data.showMobileNumber ? 1 : 0,
+      salutation: data?.salutation?.value,
+      languageId: data?.languageId?.value,
+      userType: data?.userType?.value,
+      countryName: data?.countryName?.value,
+    });
 
   return (
     <UI.Box py={6} px={8} spacing={4} width="full">
@@ -73,25 +75,41 @@ function Addnew() {
         </UI.Text>
         <FormGenerate
           ref={formRef}
-          onSubmit={(value) => onFormSubmit(value)}
+          onSubmit={onFormSubmit}
           schema={{
-            salutation: yup.string().required('Please select Salutation'),
+            salutation: yup
+              .object({
+                value: yup.string().required('Please select Salutation'),
+              })
+              .required(),
             firstName: yup.string().required('Please enter First Name'),
             lastName: yup.string().required('Please enter Last Name'),
             email: yup
               .string()
               .email('Email is invalid')
               .required('Please enter Work Email Address'),
-            userType: yup.string().required('Please select Role'),
+            userType: yup
+              .object({
+                value: yup.string().required('Please select Role'),
+              })
+              .required(),
             jobTitle: yup.string().required('Please enter Job Title'),
-            countryName: yup.string().required('Please select Country'),
+            countryName: yup
+              .object({
+                value: yup.string().required('Please select Country'),
+              })
+              .required(),
             cityName: yup.string().required('Please enter City'),
             postalCode: yup.string().required('Please enter Postal Code'),
             workNumber: yup.string().required('Please enter Work Number'),
             mobileNumber: yup.string().required('Please enter Mobile Number'),
             languageId: yup
-              .string()
-              .required('Please select Preferred Language'),
+              .object({
+                value: yup
+                  .number()
+                  .required('Please select Preferred Language'),
+              })
+              .required(),
           }}
           fields={[
             {
@@ -104,6 +122,7 @@ function Addnew() {
               layout: isBase ? 'horizontal' : 'vertical',
               label: 'Salutation',
               placeholder: 'Salutation',
+              errorProperty: 'value',
               options: [
                 {value: 'MR', label: 'Mr'},
                 {value: 'MRS', label: 'Mrs'},
@@ -153,6 +172,7 @@ function Addnew() {
               layout: isBase ? 'horizontal' : 'vertical',
               label: 'Role',
               placeholder: 'Admin or Sales Manager',
+              errorProperty: 'value',
               options: [
                 {value: 'ADMIN', label: 'Admin'},
                 {value: 'USER', label: 'Sales Manager'},
@@ -189,6 +209,7 @@ function Addnew() {
               width: isBase ? '70%' : '100%',
               layout: isBase ? 'horizontal' : 'vertical',
               placeholder: 'Country',
+              errorProperty: 'value',
               options: COUNTRY_NAME.map((x) => ({
                 value: x?.country,
                 label: x?.country,

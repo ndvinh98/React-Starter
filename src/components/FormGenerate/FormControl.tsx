@@ -1,6 +1,8 @@
 import React, {memo, forwardRef} from 'react';
 import * as UI from '@chakra-ui/react';
 import {HTMLChakraProps} from '@chakra-ui/system';
+import {Controller} from 'react-hook-form';
+import {isEmpty} from 'lodash';
 
 import PasswordInput from './fields/PasswordInput';
 import {IOptions, Select, SelectPicker} from './fields/Select';
@@ -53,7 +55,7 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
     | 'upload-file'
     | 'upload-file-content'
     | 'radio-group';
-
+  control?: any;
   label?: string | React.ReactNode;
   text?: string | React.ReactNode;
   size?: 'sm' | 'md' | 'lg';
@@ -80,7 +82,10 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
   styled?: any;
   listStock?: string[];
   isChooseStock?: boolean;
-  colSytled?: any;
+  colStyled?: any;
+  errorProperty?: string;
+  value?: any;
+  canControlsValue?: boolean;
 }
 
 const DIRECTION = {
@@ -108,6 +113,10 @@ const FormControl = (props: IFormControl) => {
     align,
     isDisabled,
     styled,
+    control,
+    errorProperty,
+    canControlsValue,
+    value,
   } = props;
   const Field = type === 'decor' ? DecorComponent : FieldComponent?.[type];
 
@@ -125,15 +134,24 @@ const FormControl = (props: IFormControl) => {
         direction={DIRECTION[layout]}>
         {!!label && <UI.FormLabel m={0}>{label}</UI.FormLabel>}
         <UI.Box width={width}>
-          <Field
-            w={'full'}
+          <Controller
+            name={name}
+            control={control}
             defaultValue={defaultValue}
-            isInvalid={!!error}
-            {...props}
+            render={({field}) => (
+              <Field
+                w={'full'}
+                defaultValue={defaultValue}
+                isInvalid={!!error}
+                {...props}
+                {...field}
+                value={canControlsValue ? value : field?.value}
+              />
+            )}
           />
         </UI.Box>
       </UI.Stack>
-      {error?.message && (
+      {!isEmpty(error) && (
         <UI.Stack
           justifyContent={'space-between'}
           alignItems={LAYOUT_ITEMS[layout]}
@@ -148,7 +166,9 @@ const FormControl = (props: IFormControl) => {
               lineHeight={'20px'}
               fontSize={'sm'}
               color={'ste.red'}>
-              {error?.message}
+              {error?.message ||
+                error?.[errorProperty]?.message ||
+                'Something went wrong '}
             </UI.Text>
           </UI.Box>
         </UI.Stack>

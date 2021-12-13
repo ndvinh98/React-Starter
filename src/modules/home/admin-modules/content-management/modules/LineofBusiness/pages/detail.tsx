@@ -103,6 +103,7 @@ function AddNew() {
         </UI.Text>
         <LoadingComponent isError={isNull(data)}>
           <FormGenerate
+            key={data?.id}
             spacing={6}
             onSubmit={handleSubmit}
             schema={{

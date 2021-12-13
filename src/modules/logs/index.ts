@@ -1,6 +1,6 @@
 // import {useHomeController} from '../home';
 // import {useRouterController} from '../router';
-import {useAuthController} from '@modules/auth';
+// import {useAuthController} from '@modules/auth';
 
 export const logs = () => {
   // useHomeController.subscribe(($new) => {
@@ -9,7 +9,7 @@ export const logs = () => {
   // useRouterController.subscribe(($new) => {
   //   console.log('🚀 ~ $useRouterController', $new);
   // });
-  useAuthController.subscribe(($new) => {
-    console.log('🚀 ~ $useAuthController', $new);
-  });
+  // useAuthController.subscribe(($new) => {
+  //   console.log('🚀 ~ $useAuthController', $new);
+  // });
 };

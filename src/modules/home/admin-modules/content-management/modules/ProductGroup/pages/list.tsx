@@ -123,7 +123,8 @@ function List() {
                 styled: {
                   width: '30%',
                 },
-                value: allLineBusinessKeys?.[filter?.applicationId],
+                canControlsValue: true,
+                value: allLineBusinessKeys?.[filter?.applicationId] || -1,
                 defaultValue: {
                   value: -1,
                   label: 'All Line of Business',
@@ -150,6 +151,7 @@ function List() {
                     categoryId: data?.value,
                   }));
                 },
+                canControlsValue: true,
                 value: categoriesDataKeys?.[filter?.categoryId],
                 defaultValue: {
                   value: -1,

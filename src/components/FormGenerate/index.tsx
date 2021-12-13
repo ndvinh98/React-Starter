@@ -16,6 +16,7 @@ export interface IFormGenerate extends HTMLChakraProps<any> {
   display?: 'grid' | 'stack';
   styled?: any;
   defaultWatchValue?: any;
+  defaultValues?: any;
   onChangeValue?: (
     dataForm: any,
     filedChange: {name: string; value: any},
@@ -33,12 +34,12 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
     display = 'grid',
     styled,
     defaultWatchValue,
+    defaultValues,
     ...other
   } = props;
 
   const {
     handleSubmit,
-    register,
     formState: {errors},
     getValues,
     setValue,
@@ -46,7 +47,8 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
     watch,
     control,
   } = useForm({
-    resolver: yupResolver(yup.object().shape(schema)),
+    resolver: yupResolver(yup.object(schema).required()),
+    defaultValues,
   });
 
   useImperativeHandle(ref, () => ({
@@ -72,12 +74,12 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
       {display === 'grid' && (
         <UI.Grid templateColumns="repeat(12, 1fr)" gap={gap}>
           {fields?.map?.((x, i) => (
-            <UI.GridItem sx={x?.colSytled} colSpan={x?.colSpan || 12} key={i}>
+            <UI.GridItem sx={x?.colStyled} colSpan={x?.colSpan || 12} key={i}>
               <FormControl
                 {...x}
                 defaultValue={x?.defaultValue}
                 error={errors?.[x.name]}
-                {...register(x?.name)}
+                control={control}
               />
             </UI.GridItem>
           ))}
@@ -91,7 +93,7 @@ const FormGenerate = (props: IFormGenerate, ref?: any) => {
               {...x}
               defaultValue={x?.defaultValue}
               error={errors?.[x.name]}
-              {...register(x?.name)}
+              control={control}
             />
           ))}
         </UI.Stack>

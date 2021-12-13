@@ -195,6 +195,10 @@ function UserDetail() {
                     ...data,
                     showMobileNumber: showMobileNumber ? 1 : 0,
                     showWorkNumber: showWorkNumber ? 1 : 0,
+                    salutation: data?.salutation?.value,
+                    userType: data?.userType?.value,
+                    countryName: data?.countryName?.value,
+                    preferredLanguage: data?.preferredLanguage?.value,
                   })
                 }
                 schema={{
@@ -212,10 +216,10 @@ function UserDetail() {
                     .required('Email is required')
                     .default(profileData?.email),
                   salutation: yup
-                    .string()
-                    .required('Salutation is required')
-                    .default(profileData?.salutation),
-
+                    .object({
+                      value: yup.string().required('Please select Salutation'),
+                    })
+                    .required(),
                   jobTitle: yup
                     .string()
                     .required('Job Title is required')
@@ -225,9 +229,10 @@ function UserDetail() {
                     .required('City is required')
                     .default(profileData?.firstName),
                   countryName: yup
-                    .string()
-                    .required('City is required')
-                    .default(userProfiles?.countryName),
+                    .object({
+                      value: yup.string().required('Please select Country'),
+                    })
+                    .required(),
                   postalCode: yup
                     .string()
                     .required('Postal Code is required')
@@ -241,9 +246,12 @@ function UserDetail() {
                     .required('Mobile Number is required')
                     .default(userProfiles?.mobileNumber),
                   preferredLanguage: yup
-                    .number()
-                    .required('Preferred Please select language')
-                    .default(userProfiles?.language?.id),
+                    .object({
+                      value: yup
+                        .number()
+                        .required('Please select Preferred Language'),
+                    })
+                    .required(),
                 }}
                 fields={[
                   {

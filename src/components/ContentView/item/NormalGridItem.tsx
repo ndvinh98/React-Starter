@@ -14,7 +14,6 @@ function GridItem({item, onClickItem, mediaType}) {
   const itemSelected = useContentManagementController((s) => s.itemSelected);
   const addItem = useContentManagementController((s) => s.addItem);
   const removeItem = useContentManagementController((s) => s.removeItem);
-  console.log(item);
 
   const {openModal} = useModalController();
 
