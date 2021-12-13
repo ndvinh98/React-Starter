@@ -11,8 +11,16 @@ import {useModalController} from '@modules/modal';
 import {IPartnerManagement} from '@types';
 
 function Appearance() {
-  const {page, limit, setPage,setLimit, textSearch, setTextSearch, filter, setFilter} =
-    useFilter({page: 1, limit: 10});
+  const {
+    page,
+    limit,
+    setPage,
+    setLimit,
+    textSearch,
+    setTextSearch,
+    filter,
+    setFilter,
+  } = useFilter({page: 1, limit: 10});
   const {data, getList, loading} =
     useGetList<IPartnerManagement>('/partnerDomains');
 
@@ -34,15 +42,14 @@ function Appearance() {
   const handleFilterData = ({textSearch, status}) => {
     statusDomain.current = undefined;
     setTextSearch(textSearch === undefined ? '' : textSearch);
-    if (parseInt(status) > -1){
-      statusDomain.current = parseInt(status);
+    if (parseInt(status?.value) > -1) {
+      statusDomain.current = parseInt(status?.value);
       setFilter((filter) => ({
         ...filter,
-        status: parseInt(status),
+        status: parseInt(status?.value),
       }));
-    }
-    else{
-      setFilter(undefined)
+    } else {
+      setFilter(undefined);
     }
     setPage(1);
     setLimit(10);
@@ -75,12 +82,12 @@ function Appearance() {
               isClearable: false,
               defaultValue: {
                 label: 'All Status',
-                value: "-1",
+                value: '-1',
               },
               options: [
                 {
                   label: 'All Status',
-                  value: "-1",
+                  value: '-1',
                 },
                 {
                   label: 'Blacklist',
