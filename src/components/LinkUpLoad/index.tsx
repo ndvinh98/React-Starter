@@ -11,6 +11,7 @@ export interface ILinkUploadProps extends HTMLChakraProps<'div'> {
   boxSize?: string;
   userId: number;
   cb?: () => void;
+  isDisabled?: boolean;
 }
 
 function LinkUpload(props: ILinkUploadProps) {
@@ -24,6 +25,7 @@ function LinkUpload(props: ILinkUploadProps) {
     src,
     userId,
     cb,
+    isDisabled,
     ...others
   } = props;
   const {isOpen} = UI.useDisclosure();
@@ -50,17 +52,18 @@ function LinkUpload(props: ILinkUploadProps) {
       )}
       {!isOpen ? (
         <UI.Text
-          color="#5A8BEF"
+          color={isDisabled ? '#a3aab9' : '#5A8BEF'}
           fontSize="14px"
           fontWeight="semibold"
           htmlFor={name}
-          onClick={() =>
-            openModal('uploadAvatar', {
-              userId: userId,
-              cb: cb,
-              image: src,
-            })
-          }
+          onClick={() => {
+            if (!isDisabled)
+              openModal('uploadAvatar', {
+                userId: userId,
+                cb: cb,
+                image: src,
+              });
+          }}
           as="label">
           {label}
         </UI.Text>
