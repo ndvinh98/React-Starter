@@ -198,7 +198,7 @@ function Edit() {
         bg="white"
         shadow="md">
         <UI.Text fontSize="16px" fontWeight="bold">
-        {mode==="ADD" ? "ADD NEW" : mode}  PRODUCT
+          {mode === 'ADD' ? 'ADD NEW' : mode} PRODUCT
         </UI.Text>
         <LoadingComponent>
           <FormGenerate
@@ -215,8 +215,14 @@ function Edit() {
               application: yup
                 .number()
                 .required('Please select Line of Business'),
-              category: yup.number().typeError('Please select Line of Product').required('Please select Line of Product'),
-              grouping: yup.number().typeError('Please select Product Group').required('Please select Product Group'),
+              category: yup
+                .number()
+                .typeError('Please select Line of Product')
+                .required('Please select Line of Product'),
+              grouping: yup
+                .number()
+                .typeError('Please select Product Group')
+                .required('Please select Product Group'),
               thumb: yup
                 .string()
                 .default(data?.mediaDestination)

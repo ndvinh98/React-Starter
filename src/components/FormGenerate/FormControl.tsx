@@ -16,6 +16,7 @@ import RadioGroup from './fields/RadioGroup';
 import UploadFile from './fields/UploadFile';
 import UploadFileContent from './fields/UploadFileContent';
 import InputCheckbox from './fields/InputCheckbox';
+import DatePicker from './fields/DatePicker';
 
 const FieldComponent = {
   input: UI.Input,
@@ -33,6 +34,7 @@ const FieldComponent = {
   'upload-file-content': UploadFileContent,
   'input-checkbox': InputCheckbox,
   'select-picker': SelectPicker,
+  'date-picker': DatePicker,
 };
 
 export interface IFormControl extends HTMLChakraProps<'div'> {
@@ -54,7 +56,8 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
     | 'checkbox-group'
     | 'upload-file'
     | 'upload-file-content'
-    | 'radio-group';
+    | 'radio-group'
+    | 'date-picker';
   control?: any;
   label?: string | React.ReactNode;
   text?: string | React.ReactNode;

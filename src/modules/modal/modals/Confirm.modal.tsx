@@ -1,10 +1,9 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import {useModalController} from '../modals.controller';
 import {usePatch, useRouter} from '@utils/hooks';
-
-import DatePicker from '@components/DatePicker';
+import FormGenerate from '@components/FormGenerate';
 
 function ConfirmModal() {
   const {confirmRequest, closeModal, data} = useModalController();
@@ -14,8 +13,6 @@ function ConfirmModal() {
     patch,
   } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
   const toast = UI.useToast();
-  const [selectedDay, setSelectedDay] = useState(null);
-
   const {push} = useRouter();
 
   useEffect(() => {
@@ -58,39 +55,37 @@ function ConfirmModal() {
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody>
-          <UI.Stack spacing={0}>
-            <UI.Text mb={1}>Validity Date:</UI.Text>
-            <DatePicker
-              isMinimumTodayDate
-              value={selectedDay}
-              onChange={setSelectedDay}
-            />
-            <UI.Center pt={10} w={'full'}>
-              <UI.Button
-                colorScheme="blue"
-                onClick={() => {
-                  patch({
-                    status: 'APPROVED',
-                    expiryDate: `${selectedDay.month}/${selectedDay.day}/${selectedDay.year}`,
-                  });
-                }}
-                mr={3}
-                w={'120px'}
-                type="submit"
-                isLoading={loading}>
+          <FormGenerate
+            onSubmit={(data) => {
+              const {selectedDay} = data;
+              patch({
+                status: 'APPROVED',
+                expiryDate: `${selectedDay.month}/${selectedDay.day}/${selectedDay.year}`,
+              });
+            }}
+            fields={[
+              {
+                name: 'selectedDay',
+                type: 'date-picker',
+                isMinimumTodayDate: true,
+                label: 'Validity Date:',
+              },
+            ]}>
+            <UI.HStack justifyContent={'space-evenly'} mt={5}>
+              <UI.Button isLoading={loading} w={'120px'} type="submit">
                 Confirm
               </UI.Button>
               <UI.Button
-                w={'120px'}
-                type="button"
                 onClick={() => {
                   closeModal('confirmRequest');
                 }}
-                variant="outline">
+                w={'120px'}
+                variant="outline"
+                type="button">
                 Cancel
               </UI.Button>
-            </UI.Center>
-          </UI.Stack>
+            </UI.HStack>
+          </FormGenerate>
         </UI.ModalBody>
 
         <UI.ModalFooter></UI.ModalFooter>
