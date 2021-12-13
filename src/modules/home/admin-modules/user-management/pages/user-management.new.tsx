@@ -178,17 +178,7 @@ function Addnew() {
                 {value: 'USER', label: 'Sales Manager'},
               ],
             },
-            {
-              isClearable: false,
-              name: 'salesId',
-              type: 'input',
-              colSpan: 12,
-              size: 'md',
-              width: isBase ? '70%' : '100%',
-              layout: isBase ? 'horizontal' : 'vertical',
-              label: 'Sales ID (Only for Sales Mgr)',
-              placeholder: 'Enter Sales ID',
-            },
+
             {
               name: 'jobTitle',
               type: 'input',
