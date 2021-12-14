@@ -76,7 +76,7 @@ function ConfirmModal() {
                 status: 'APPROVED',
                 startDate: `${startDate.year}-${startDate.month}-${startDate.day}`,
                 expiryDate: `${expiryDate.year}-${expiryDate.month}-${expiryDate.day}`,
-                tierIds: tierIds.map((x) => x?.value),
+                tierIds: JSON.stringify(tierIds.map((x) => x?.value)),
               });
             }}
             schema={{
