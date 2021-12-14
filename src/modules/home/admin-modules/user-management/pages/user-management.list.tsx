@@ -344,12 +344,11 @@ function userManagement() {
 export const ActionColum = (props: any) => {
   const {openModal} = useModalController();
   const {me} = useAuthController();
-  console.log('🚀 ~ me', me);
 
   const {isOpen, onOpen, onClose} = UI.useDisclosure();
   // const {openModal} = useModalStore();
   const {row, refresh} = props;
-  console.log('🚀 ~ row', row);
+
   return (
     <UI.Center>
       <UI.Menu onClose={onClose} isOpen={isOpen}>
@@ -364,7 +363,10 @@ export const ActionColum = (props: any) => {
         </UI.MenuButton>
         <UI.MenuList>
           <UI.MenuItem
-            isDisabled={me?.userType === 'ADMIN' && row?.userType === 'ADMIN'}
+            isDisabled={
+              me?.userType === 'ADMIN' &&
+              (row?.userType === 'ADMIN' || row?.userType === 'SUPERADMIN')
+            }
             hidden={row?.isActive === 1}
             onClick={(e) => {
               e.stopPropagation();
@@ -379,7 +381,10 @@ export const ActionColum = (props: any) => {
           </UI.MenuItem>
           <UI.MenuItem
             hidden={row?.isActive === 0}
-            isDisabled={me?.userType === 'ADMIN' && row?.userType === 'ADMIN'}
+            isDisabled={
+              me?.userType === 'ADMIN' &&
+              (row?.userType === 'ADMIN' || row?.userType === 'SUPERADMIN')
+            }
             onClick={(e) => {
               e.stopPropagation();
               openModal('deactiveUser', {

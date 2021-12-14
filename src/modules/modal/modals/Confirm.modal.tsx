@@ -2,8 +2,11 @@ import React, {memo, useEffect} from 'react';
 import * as UI from '@chakra-ui/react';
 import {RiErrorWarningFill} from 'react-icons/ri';
 import {useModalController} from '../modals.controller';
-import {usePatch, useRouter} from '@utils/hooks';
+import {useGetList, usePatch, useRouter} from '@utils/hooks';
 import FormGenerate from '@components/FormGenerate';
+import {ITier} from '@types';
+
+import * as yup from 'yup';
 
 function ConfirmModal() {
   const {confirmRequest, closeModal, data} = useModalController();
@@ -12,8 +15,19 @@ function ConfirmModal() {
     loading,
     patch,
   } = usePatch(`/partnerApplicationSubmissions/${data?.id}`);
+
+  const {
+    data: dataTier,
+
+    getList,
+  } = useGetList<ITier>('/tiers');
+
   const toast = UI.useToast();
   const {push} = useRouter();
+
+  useEffect(() => {
+    getList({limit: 1000});
+  }, []);
 
   useEffect(() => {
     if (patchData) {
@@ -57,18 +71,42 @@ function ConfirmModal() {
         <UI.ModalBody>
           <FormGenerate
             onSubmit={(data) => {
-              const {selectedDay} = data;
+              const {startDate, expiryDate, tierIds} = data;
               patch({
                 status: 'APPROVED',
-                expiryDate: `${selectedDay.month}/${selectedDay.day}/${selectedDay.year}`,
+                startDate: `${startDate.year}-${startDate.month}-${startDate.day}`,
+                expiryDate: `${expiryDate.year}-${expiryDate.month}-${expiryDate.day}`,
+                tierIds: tierIds.map((x) => x?.value),
               });
+            }}
+            schema={{
+              tierIds: yup
+                .array()
+                .min(1, 'Users is required')
+                .required('Users is required'),
             }}
             fields={[
               {
-                name: 'selectedDay',
+                name: 'startDate',
+                type: 'date-picker',
+                isMinimumTodayDate: true,
+                label: 'Start Date:',
+              },
+              {
+                name: 'expiryDate',
                 type: 'date-picker',
                 isMinimumTodayDate: true,
                 label: 'Validity Date:',
+              },
+              {
+                name: 'tierIds',
+                type: 'select-picker',
+                placeholder: 'Select Tier',
+                label: 'Tier:',
+                options: dataTier?.records?.map((x) => ({
+                  label: x?.name,
+                  value: x?.id,
+                })),
               },
             ]}>
             <UI.HStack justifyContent={'space-evenly'} mt={5}>

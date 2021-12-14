@@ -19,6 +19,7 @@ import {useMedia} from '@utils/hooks';
 
 import * as yup from 'yup';
 import {useHistory} from 'react-navi';
+import {useAuthController} from '@modules/auth';
 
 const USRTYPE_STRING = {
   PARTNERADMIN: 'Owner',
@@ -51,6 +52,8 @@ function UserDetail() {
   const {isBase} = useMedia();
 
   const [userProfiles, setUserProfiles] = useState<IUserProfiles>(null);
+
+  const {me} = useAuthController();
 
   useEffect(() => {
     if (params?.id) getUserProfile();
@@ -141,6 +144,11 @@ function UserDetail() {
                   </UI.MenuButton>
                   <UI.MenuList>
                     <UI.MenuItem
+                      isDisabled={
+                        me?.userType === 'ADMIN' &&
+                        (profileData?.userType === 'ADMIN' ||
+                          profileData?.userType === 'SUPERADMIN')
+                      }
                       hidden={isProfileActive}
                       onClick={() => {
                         openModal('action', {
@@ -153,6 +161,11 @@ function UserDetail() {
                       Activate Access
                     </UI.MenuItem>
                     <UI.MenuItem
+                      isDisabled={
+                        me?.userType === 'ADMIN' &&
+                        (profileData?.userType === 'ADMIN' ||
+                          profileData?.userType === 'SUPERADMIN')
+                      }
                       hidden={!isProfileActive}
                       onClick={() => {
                         openModal('deactiveUser', {
@@ -217,10 +230,15 @@ function UserDetail() {
               userId={profileData?.id}
               src={userProfiles?.avatarMediaDestination}
               cb={() => getUserProfile()}
+              isDisabled={
+                me?.userType === 'ADMIN' &&
+                (profileData?.userType === 'ADMIN' ||
+                  profileData?.userType === 'SUPERADMIN')
+              }
             />
           </UI.Center>
           <UI.Box p="4">
-            {profileData && userProfiles && (
+            {profileData && (
               <FormGenerate
                 onSubmit={(data) =>
                   patch({
@@ -293,7 +311,8 @@ function UserDetail() {
                     placeholder: 'First Name',
                     colSpan: 6,
                     size: 'md',
-                    isDisabled: true,
+                    isDisabled:
+                      me?.userType === 'SUPERADMIN' ? isDisabled : true,
                     defaultValue: profileData?.firstName,
                   },
                   {
@@ -303,7 +322,8 @@ function UserDetail() {
                     placeholder: 'Last Name',
                     colSpan: 6,
                     size: 'md',
-                    isDisabled: true,
+                    isDisabled:
+                      me?.userType === 'SUPERADMIN' ? isDisabled : true,
                     defaultValue: profileData?.lastName,
                   },
                   {
@@ -326,7 +346,8 @@ function UserDetail() {
                     placeholder: 'Email',
                     colSpan: isBase ? 6 : 12,
                     size: 'md',
-                    isDisabled: true,
+                    isDisabled:
+                      me?.userType === 'SUPERADMIN' ? isDisabled : true,
                     defaultValue: profileData?.email,
                   },
 
@@ -447,6 +468,11 @@ function UserDetail() {
                 <UI.Center pt="4">
                   <UI.HStack>
                     <UI.Button
+                      isDisabled={
+                        me?.userType === 'ADMIN' &&
+                        (profileData?.userType === 'ADMIN' ||
+                          profileData?.userType === 'SUPERADMIN')
+                      }
                       onClick={() => setIsDisabled(false)}
                       w={{lg: '200px', md: '130px'}}
                       type="button"

@@ -22,6 +22,7 @@ function DeactivetUser() {
         position: 'top-right',
         isClosable: true,
       });
+      data?.cb();
     }
   }, [patchData]);
 
