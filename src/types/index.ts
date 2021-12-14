@@ -23,7 +23,7 @@ export interface BaseSchema {
   updatedAt: Date;
 }
 
-export type TUserType = 'PARTNERADMIN' | 'ADMIN' | 'USER';
+export type TUserType = 'PARTNERADMIN' | 'ADMIN' | 'USER' | 'SUPERADMIN';
 
 export interface ILanguages extends BaseSchema {
   isActive?: number;
