@@ -46,9 +46,11 @@ function Appearance() {
                 name: 'logo',
                 type: 'upload-file',
                 size: 'md',
-                label: 'Button colour',
+                label: 'Logo',
                 layout: 'horizontal',
                 width: '70%',
+                urlPath: '/appearanceSettings/uploadLogoUrl',
+                description: 'Recommended size: 94px x 36px',
               },
               {
                 name: 'leftMenuFontAndIconColour',
@@ -121,6 +123,8 @@ function Appearance() {
                 label: 'Change Login page image',
                 layout: 'horizontal',
                 width: '70%',
+                urlPath: '/appearanceSettings/uploadLogoUrl',
+                description: 'Recommended size: 94px x 36px',
               },
             ]}>
             <UI.HStack mt={8} justifyContent={'center'}>
