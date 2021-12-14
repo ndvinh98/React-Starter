@@ -80,6 +80,16 @@ function ConfirmModal() {
               });
             }}
             schema={{
+              startDate: yup
+                .object({
+                  day: yup.number().required('Start date is required!'),
+                })
+                .required(),
+              expiryDate: yup
+                .object({
+                  day: yup.number().required('Expiry date is required!'),
+                })
+                .required(),
               tierIds: yup
                 .array()
                 .min(1, 'Users is required')
@@ -91,12 +101,14 @@ function ConfirmModal() {
                 type: 'date-picker',
                 isMinimumTodayDate: true,
                 label: 'Start Date:',
+                errorProperty: 'day',
               },
               {
                 name: 'expiryDate',
                 type: 'date-picker',
                 isMinimumTodayDate: true,
                 label: 'Validity Date:',
+                errorProperty: 'day',
               },
               {
                 name: 'tierIds',
