@@ -1,6 +1,7 @@
 import React from 'react';
 import * as UI from '@chakra-ui/react';
 import FormGenerate from '@components/FormGenerate';
+import * as yup from 'yup';
 
 function Appearance() {
   return (
@@ -12,12 +13,21 @@ function Appearance() {
         <UI.Box bg={'white'} mt={4} p={8}>
           <FormGenerate
             spacing={6}
-            // onSubmit={(value) => {
-            // }}
+            onSubmit={(data) => {
+              console.log('🚀 ~ data', data);
+            }}
+            schema={{
+              topMenuColour: yup
+                .string()
+                .matches(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i, {
+                  message: 'Color code invalid!',
+                })
+                .required('Color code invalid!'),
+            }}
             fields={[
               {
                 name: 'topMenuColour',
-                type: 'input',
+                type: 'color-picker',
                 size: 'md',
                 placeholder: 'Key in #colour',
                 label: 'Top Menu Colour',
@@ -26,7 +36,7 @@ function Appearance() {
               },
               {
                 name: 'leftMenuBgColour',
-                type: 'input',
+                type: 'color-picker',
                 size: 'md',
                 placeholder: 'Key in #colour',
                 label: 'Left menu background colour',
@@ -35,7 +45,7 @@ function Appearance() {
               },
               {
                 name: 'btnColour',
-                type: 'input',
+                type: 'color-picker',
                 size: 'md',
                 placeholder: 'Key in #colour',
                 label: 'Button colour',
@@ -54,7 +64,7 @@ function Appearance() {
               },
               {
                 name: 'leftMenuFontAndIconColour',
-                type: 'input',
+                type: 'color-picker',
                 size: 'md',
                 placeholder: 'Key in #colour',
                 label: 'Left menu font and icon colour',
@@ -63,7 +73,7 @@ function Appearance() {
               },
               {
                 name: 'leftMenuHighlightColour',
-                type: 'input',
+                type: 'color-picker',
                 size: 'md',
                 placeholder: 'Key in #colour',
                 label: 'Left Menu Highlight colour',
@@ -72,7 +82,7 @@ function Appearance() {
               },
               {
                 name: 'leftMenuHighlightStripeColour',
-                type: 'input',
+                type: 'color-picker',
                 size: 'md',
                 placeholder: 'Key in #colour',
                 label: 'Left Menu Highlight Stripe colour',
@@ -81,7 +91,7 @@ function Appearance() {
               },
               {
                 name: 'BgColour',
-                type: 'input',
+                type: 'color-picker',
                 size: 'md',
                 placeholder: 'Key in #colour',
                 label: 'Background colour',
@@ -109,7 +119,7 @@ function Appearance() {
               },
               {
                 name: 'fontColour',
-                type: 'input',
+                type: 'color-picker',
                 label: 'Font Colour',
                 size: 'md',
                 placeholder: 'Key in #colour',
@@ -118,7 +128,7 @@ function Appearance() {
               },
               {
                 name: 'changeLoginPageImg',
-                type: 'upload-file',
+                type: 'color-picker',
                 size: 'md',
                 label: 'Change Login page image',
                 layout: 'horizontal',
@@ -128,11 +138,12 @@ function Appearance() {
               },
             ]}>
             <UI.HStack mt={8} justifyContent={'center'}>
-              <UI.Button w={'100px'} variant="outline">
-                {' '}
+              <UI.Button type="button" w={'100px'} variant="outline">
                 Preview
               </UI.Button>
-              <UI.Button w={'100px'}> Save</UI.Button>
+              <UI.Button type="submit" w={'100px'}>
+                Save
+              </UI.Button>
             </UI.HStack>
           </FormGenerate>
         </UI.Box>
