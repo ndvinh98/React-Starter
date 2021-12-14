@@ -138,7 +138,7 @@ export const MenuLevel0 = memo(
         icon={
           <Icon
             sizeBox="23px"
-            fillColor={useActive(to, {exact: false}) ? '#333' : '#6C6F84 '}
+            fillColor={useActive(to, {exact: false}) ? '#1A1E32' : '#6C6F84 '}
           />
         }>
         <UI.Text
@@ -146,7 +146,7 @@ export const MenuLevel0 = memo(
           whiteSpace={'nowrap'}
           overflow="hidden"
           fontSize={'16px'}
-          fontWeight={useActive(to, {exact: false}) ? 'semibold' : '500'}>
+          fontWeight={'semibold'}>
           {label}
         </UI.Text>
       </SB.MenuItem>
@@ -162,7 +162,7 @@ export const MenuLevel0 = memo(
             whiteSpace={'nowrap'}
             overflow="hidden"
             fontSize={'16px'}
-            fontWeight={useActive(to, {exact: false}) ? 'semibold' : '500'}>
+            fontWeight={'semibold'}>
             {label}
           </UI.Text>
         }
@@ -199,9 +199,7 @@ export const MenuLevel0 = memo(
               overflow="hidden"
               fontSize={'16px'}
               color={useActive(x?.to, {exact: false}) ? '#1A1E32' : '#6C6F84'}
-              fontWeight={
-                useActive(x?.to, {exact: false}) ? 'extrabold' : 'medium'
-              }>
+              fontWeight={'extrabold'}>
               {x?.label}
             </UI.Text>
           </SB.MenuItem>

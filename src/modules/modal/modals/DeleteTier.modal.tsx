@@ -12,7 +12,7 @@ function RemoveTier() {
   React.useEffect(() => {
     if (postData) {
       data?.cb?.();
-      closeModal('removeTier');
+      closeModal('deleteTier');
       toast({
         status: 'success',
         description: 'Successfully!',

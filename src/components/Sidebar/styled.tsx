@@ -246,7 +246,7 @@ export const SidebarWarp = styled.div`
     > .pro-inner-list-item
     > div
     > ul {
-    padding-top: 0;
+    padding-top: 10px;
     padding-bottom: 0;
     list-style: none !important;
   }
@@ -278,7 +278,7 @@ export const SidebarWarp = styled.div`
   }
   .pro-sidebar .pro-menu .pro-menu-item .prefix-wrapper {
     display: flex;
-    margin-right: 5px;
+    margin-right: 12px;
     opacity: 1;
     transition: opacity 0.2s;
   }
