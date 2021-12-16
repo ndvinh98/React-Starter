@@ -4,10 +4,10 @@ import {CgColorPicker} from 'react-icons/cg';
 import {SketchPicker} from 'react-color';
 
 const ColorPicker: React.FC<any> = (props) => {
-  const [color, setColor] = React.useState<any>('#fff');
+  const [color, setColor] = React.useState<any>(props?.defaultValues);
 
   useEffect(() => {
-    props?.onChange(color?.hex);
+    props?.onChange(color?.hex || color);
   }, [color]);
 
   return (
@@ -15,7 +15,7 @@ const ColorPicker: React.FC<any> = (props) => {
       <UI.Input
         pr="4.5rem"
         {...props}
-        value={color?.hex}
+        value={color?.hex || color}
         onChange={(e) => {
           setColor(e?.target?.value);
         }}

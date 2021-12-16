@@ -7,7 +7,7 @@ import SalesRouter from './sales-modules/sales.router';
 useConfigStore.getState?.()?.initDashboardConfig?.();
 
 export default mount({
-  '*': map(async (request) => {
+  '*': map((request) => {
     const {guard} = useHomeController.getState();
     const ROUTER = {
       admin: AdminRouter,

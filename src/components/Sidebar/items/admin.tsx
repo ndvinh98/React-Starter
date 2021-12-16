@@ -138,11 +138,11 @@ export const MenuLevel0 = memo(
         icon={
           <Icon
             sizeBox="23px"
-            fillColor={useActive(to, {exact: false}) ? '#1A1E32' : '#6C6F84 '}
+            fillColor={useActive(to, {exact: false}) ? 'black' : '#6C6F84 '}
           />
         }>
         <UI.Text
-          color="black"
+          color={useActive(to, {exact: false}) ? 'black' : '#6C6F84 '}
           whiteSpace={'nowrap'}
           overflow="hidden"
           fontSize={'16px'}
@@ -158,7 +158,7 @@ export const MenuLevel0 = memo(
         // @ts-ignore
         title={
           <UI.Text
-            color="black"
+            color={useActive(to, {exact: false}) ? 'black' : '#6C6F84 '}
             whiteSpace={'nowrap'}
             overflow="hidden"
             fontSize={'16px'}
