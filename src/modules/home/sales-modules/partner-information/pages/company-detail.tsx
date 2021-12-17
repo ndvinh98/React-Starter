@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {useRouterController} from '@modules/router';
 import {useGetItem, useFilter, useGetList} from '@utils/hooks';
+import {format} from 'date-fns';
 
 import {useRouter} from '@utils/hooks';
 
@@ -21,6 +22,11 @@ import TierToSale from '@components/TierToSale';
 function CompanyDetail() {
   const {push} = useRouter();
   const {params} = useRouterController();
+
+  const STATUS_STRING = {
+    1: 'Active',
+    0: 'Inactive',
+  };
 
   /// get Info Company
   const {
@@ -128,6 +134,41 @@ function CompanyDetail() {
         {dataCompany?.records[0]?.companyName}
         {''} ({dataDomain?.partnerDomain?.domain})
       </UI.Text>
+
+      <UI.Box bgColor={'white'} px={4} py={4} borderRadius="md" mt={4} w="full">
+        <UI.Table variant="simple">
+          <UI.Thead>
+            <UI.Tr bgColor={'#EEEEEC'}>
+              <UI.Th>Company</UI.Th>
+              <UI.Th>Status</UI.Th>
+              <UI.Th>Registered Date</UI.Th>
+              <UI.Th>Start Date</UI.Th>
+              <UI.Th>Validity Date</UI.Th>
+            </UI.Tr>
+          </UI.Thead>
+          <UI.Tbody>
+            <UI.Tr>
+              <UI.Td>{dataDomain?.companyName}</UI.Td>
+              <UI.Td>{STATUS_STRING[dataDomain?.isActive]}</UI.Td>
+              <UI.Td>
+                {dataDomain?.createdAt
+                  ? format(new Date(dataDomain?.createdAt), 'dd MMM yyyy')
+                  : false}
+              </UI.Td>
+              <UI.Td>
+                {dataDomain?.startDate
+                  ? format(new Date(dataDomain?.startDate), 'dd MMM yyyy')
+                  : false}
+              </UI.Td>
+              <UI.Td>
+                {dataDomain?.expiryDate
+                  ? format(new Date(dataDomain?.expiryDate), 'dd MMM yyyy')
+                  : false}
+              </UI.Td>
+            </UI.Tr>
+          </UI.Tbody>
+        </UI.Table>
+      </UI.Box>
       <CompanyInfo data={dataCompany?.records[0]} loading={loadingCompany} />
       <UserTableSale
         data={dataUser}
