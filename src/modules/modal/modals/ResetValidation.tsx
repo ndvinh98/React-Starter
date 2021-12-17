@@ -12,12 +12,6 @@ function ResetValidationModal() {
   const {data: patchData, loading, patch} = usePatch(`/partners/${data?.id}`);
   const toast = UI.useToast();
 
-  const defaultValue = {
-    year: 2019,
-    month: 4,
-    day: 15,
-  };
-
   const [selectedDay, setSelectedDay] = useState(
     utils('fa').getMonthNumber(`6`),
   );

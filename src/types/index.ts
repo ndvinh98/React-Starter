@@ -272,6 +272,7 @@ export interface IPartnerManagement extends BaseSchema {
   isActive?: 1 | 0;
   isApproved?: 1 | 0;
   expiryDate?: Date;
+  startDate?: Date;
   companyName?: string;
   partnerDomain?: IPartnerDomain;
 }
