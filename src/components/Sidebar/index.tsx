@@ -40,7 +40,10 @@ function SideBar(porps: {type?: 'admin' | 'sales'}) {
               alignItems={'center'}
               justifyContent={'space-between'}>
               <UI.ScaleFade unmountOnExit in={isOpen}>
-                <UI.Image w="80px" src="/images/admin-portal-logo.png" />
+                <UI.Image
+                  w="80px"
+                  src="https://stepartnerportal-dev.s3.ap-southeast-1.amazonaws.com/settings/logo/logo.png"
+                />
               </UI.ScaleFade>
               <UI.Box onClick={onToggle} cursor={'pointer'}>
                 <BiMenu color={'#9097A9'} size={35} />

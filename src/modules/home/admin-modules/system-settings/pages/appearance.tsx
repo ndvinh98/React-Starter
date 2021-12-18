@@ -1,23 +1,47 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import * as yup from 'yup';
-import {isEmpty, keyBy} from 'lodash';
+import {isEmpty, values} from 'lodash';
 import * as UI from '@chakra-ui/react';
-import {useGetList} from '@utils/hooks';
 import FormGenerate from '@components/FormGenerate';
+import {useConfigStore} from '@services/config';
+import {usePatch, useGetItem} from '@utils/hooks';
+import {uploadFile} from '@services';
+
+const FONTS = {
+  arial: {
+    label: 'Arial',
+    value: 'arial',
+  },
+  time_new_roman: {
+    label: 'Time New Roman',
+    value: 'time_new_roman',
+  },
+};
 
 function Appearance() {
-  const {data, getList} = useGetList('/appearanceSettings/all');
-  const [setting, setSetting] = useState<any>();
+  const settings = useConfigStore((s) => s.settings?.[0]);
+  const {patch, loading} = usePatch(`appearanceSettings/${settings?.id}`);
+  const {getItem: getLogoUrlUpload, data: logoUrlUpload} = useGetItem(
+    'appearanceSettings/uploadLogoUrl',
+  );
+  const {getItem: getLoginPageUrl, data: loginPageImageUrl} = useGetItem(
+    'appearanceSettings/uploadLoginPageImageUrl',
+  );
 
-  useEffect(() => {
-    getList();
-  }, []);
+  const [fileLogo, setFileLogo] = useState(null);
+  const [fileLoginPageImage, setFileLoginPageImage] = useState(null);
 
-  useEffect(() => {
-    if (!isEmpty(data)) {
-      setSetting(keyBy(data as any, 'key'));
+  React.useEffect(() => {
+    if (logoUrlUpload?.url) {
+      uploadFile(logoUrlUpload?.url, fileLogo);
     }
-  }, [data]);
+  }, [logoUrlUpload]);
+
+  React.useEffect(() => {
+    if (loginPageImageUrl?.url) {
+      uploadFile(loginPageImageUrl?.url, fileLoginPageImage);
+    }
+  }, [loginPageImageUrl]);
 
   return (
     <>
@@ -26,11 +50,30 @@ function Appearance() {
           Appearance
         </UI.Text>
         <UI.Box bg={'white'} mt={4} p={8}>
-          {setting && (
+          {!isEmpty(settings) && (
             <FormGenerate
               spacing={6}
-              onSubmit={(data) => {
-                console.log('🚀 ~ data', data);
+              onSubmit={(data: any) => {
+                patch({
+                  ...data,
+                  font: data?.font.value,
+                  loginPageImage: undefined,
+                  logo: undefined,
+                });
+                if (data?.logo?.name && data?.logo?.type) {
+                  setFileLogo(data?.logo);
+                  getLogoUrlUpload({
+                    name: data?.logo?.name,
+                    type: data?.logo?.type,
+                  });
+                }
+                if (data?.loginPageImage?.name && data?.loginPageImage?.type) {
+                  setFileLoginPageImage(data?.loginPageImage);
+                  getLoginPageUrl({
+                    name: data?.loginPageImage?.name,
+                    type: data?.loginPageImage?.type,
+                  });
+                }
               }}
               schema={{
                 topMenuColour: yup
@@ -38,7 +81,8 @@ function Appearance() {
                   .matches(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i, {
                     message: 'Color code invalid!',
                   })
-                  .required('Color code invalid!'),
+                  .required('Color code invalid!')
+                  .default(settings?.topMenuColour),
               }}
               fields={[
                 {
@@ -49,27 +93,27 @@ function Appearance() {
                   label: 'Top Menu Colour',
                   layout: 'horizontal',
                   width: '70%',
-                  defaultValues: setting?.TOP_MENU_COLOUR?.value,
+                  defaultValue: settings?.topMenuColour || '#ffffff',
                 },
                 {
-                  name: 'leftMenuBgColour',
+                  name: 'leftMenuBackgroundColour',
                   type: 'color-picker',
                   size: 'md',
                   placeholder: 'Key in #colour',
                   label: 'Left menu background colour',
                   layout: 'horizontal',
                   width: '70%',
-                  defaultValues: setting?.LEFT_MENU_BACKGROUND_COLOUR?.value,
+                  defaultValue: settings?.leftMenuBackgroundColour || '#ffffff',
                 },
                 {
-                  name: 'btnColour',
+                  name: 'buttonsColour',
                   type: 'color-picker',
                   size: 'md',
                   placeholder: 'Key in #colour',
                   label: 'Button colour',
                   layout: 'horizontal',
                   width: '70%',
-                  defaultValues: setting?.BUTTONS_COLOUR?.value,
+                  defaultValue: settings?.buttonsColour || '#ffffff',
                 },
                 {
                   name: 'logo',
@@ -80,7 +124,7 @@ function Appearance() {
                   width: '70%',
                   urlPath: '/appearanceSettings/uploadLogoUrl',
                   description: 'Recommended size: 94px x 36px',
-                  defaultValues: setting?.LOGO?.value,
+                  defaultValue: settings?.logo,
                 },
                 {
                   name: 'leftMenuFontAndIconColour',
@@ -90,7 +134,8 @@ function Appearance() {
                   label: 'Left menu font and icon colour',
                   layout: 'horizontal',
                   width: '70%',
-                  defaultValues: setting?.LEFT_MENU_FONT_AND_ICON_COLOUR?.value,
+                  defaultValue:
+                    settings?.leftMenuFontAndIconColour || '#ffffff',
                 },
                 {
                   name: 'leftMenuHighlightColour',
@@ -100,7 +145,7 @@ function Appearance() {
                   label: 'Left Menu Highlight colour',
                   layout: 'horizontal',
                   width: '70%',
-                  defaultValues: setting?.LEFT_MENU_FONT_AND_ICON_COLOUR?.value,
+                  defaultValue: settings?.leftMenuHighlightColour || '#ffffff',
                 },
                 {
                   name: 'leftMenuHighlightStripeColour',
@@ -110,17 +155,18 @@ function Appearance() {
                   label: 'Left Menu Highlight Stripe colour',
                   layout: 'horizontal',
                   width: '70%',
-                  defaultValues: setting?.LEFT_MENU_HIGHLIGHT_COLOUR?.value,
+                  defaultValue:
+                    settings?.leftMenuHighlightStripeColour || '#ffffff',
                 },
                 {
-                  name: 'BgColour',
+                  name: 'backgroundColour',
                   type: 'color-picker',
                   size: 'md',
                   placeholder: 'Key in #colour',
                   label: 'Background colour',
                   layout: 'horizontal',
                   width: '70%',
-                  defaultValues: setting?.BUTTONS_COLOUR?.value,
+                  defaultValue: settings?.backgroundColour || '#ffffff',
                 },
                 {
                   name: 'font',
@@ -130,17 +176,8 @@ function Appearance() {
                   placeholder: 'Select Font Change',
                   layout: 'horizontal',
                   width: '70%',
-                  defaultValues: setting?.FONT?.value,
-                  options: [
-                    {
-                      label: 'Time New Roman',
-                      value: '1',
-                    },
-                    {
-                      label: 'Arial',
-                      value: '2',
-                    },
-                  ],
+                  defaultValue: FONTS?.[settings?.font] || FONTS.arial,
+                  options: values(FONTS),
                 },
                 {
                   name: 'fontColour',
@@ -150,10 +187,10 @@ function Appearance() {
                   placeholder: 'Key in #colour',
                   layout: 'horizontal',
                   width: '70%',
-                  defaultValues: setting?.FONT_COLOUR?.value,
+                  defaultValue: settings?.fontColour || '#ffffff',
                 },
                 {
-                  name: 'changeLoginPageImg',
+                  name: 'loginPageImage',
                   type: 'upload-file',
                   size: 'md',
                   label: 'Change Login page image',
@@ -161,14 +198,14 @@ function Appearance() {
                   width: '70%',
                   urlPath: '/appearanceSettings/uploadLogoUrl',
                   description: 'Recommended size: 94px x 36px',
-                  defaultValues: setting?.LOGIN_PAGE_IMAGE?.value,
+                  defaultValue: settings?.loginPageImage,
                 },
               ]}>
               <UI.HStack mt={8} justifyContent={'center'}>
                 <UI.Button type="button" w={'100px'} variant="outline">
                   Preview
                 </UI.Button>
-                <UI.Button type="submit" w={'100px'}>
+                <UI.Button isLoading={loading} type="submit" w={'100px'}>
                   Save
                 </UI.Button>
               </UI.HStack>

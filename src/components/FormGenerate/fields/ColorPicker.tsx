@@ -4,7 +4,7 @@ import {CgColorPicker} from 'react-icons/cg';
 import {SketchPicker} from 'react-color';
 
 const ColorPicker: React.FC<any> = (props) => {
-  const [color, setColor] = React.useState<any>(props?.defaultValues);
+  const [color, setColor] = React.useState<any>(props?.defaultValue);
 
   useEffect(() => {
     props?.onChange(color?.hex || color);
@@ -27,7 +27,7 @@ const ColorPicker: React.FC<any> = (props) => {
               size={'xs'}
               aria-label="Add to friends"
               icon={<CgColorPicker />}
-              background={color?.hex}
+              background={color?.hex || color}
             />
           </UI.PopoverTrigger>
           <UI.PopoverContent
