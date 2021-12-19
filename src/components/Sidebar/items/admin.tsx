@@ -138,11 +138,19 @@ export const MenuLevel0 = memo(
         icon={
           <Icon
             sizeBox="23px"
-            fillColor={useActive(to, {exact: false}) ? 'black' : '#6C6F84 '}
+            fillColor={
+              useActive(to, {exact: false})
+                ? 'var(--ste-colors-ste-left_menu_highlight_colour)'
+                : 'var(--ste-colors-ste-left_menu_font_and_icon_colour)'
+            }
           />
         }>
         <UI.Text
-          color={useActive(to, {exact: false}) ? 'black' : '#6C6F84 '}
+          color={
+            useActive(to, {exact: false})
+              ? 'ste.left_menu_highlight_colour'
+              : 'ste.left_menu_font_and_icon_colour'
+          }
           whiteSpace={'nowrap'}
           overflow="hidden"
           fontSize={'16px'}
@@ -158,7 +166,11 @@ export const MenuLevel0 = memo(
         // @ts-ignore
         title={
           <UI.Text
-            color={useActive(to, {exact: false}) ? 'black' : '#6C6F84 '}
+            color={
+              useActive(to, {exact: false})
+                ? 'ste.left_menu_highlight_colour'
+                : 'ste.left_menu_font_and_icon_colour'
+            }
             whiteSpace={'nowrap'}
             overflow="hidden"
             fontSize={'16px'}
@@ -169,7 +181,11 @@ export const MenuLevel0 = memo(
         icon={
           <Icon
             sizeBox="23px"
-            fillColor={useActive(to, {exact: false}) ? '#1A1E32' : '#6C6F84 '}
+            fillColor={
+              useActive(to, {exact: false})
+                ? 'var(--ste-colors-ste-left_menu_highlight_colour)'
+                : 'var(--ste-colors-ste-left_menu_font_and_icon_colour)'
+            }
           />
         }>
         {subMenu.map((x, i) => (

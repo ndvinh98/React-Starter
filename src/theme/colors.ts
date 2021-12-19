@@ -1,4 +1,16 @@
-export const colors = {
+export const colors = ({
+  topMenuColour,
+  leftMenuBackgroundColour,
+  leftMenuFontAndIconColour,
+  leftMenuHighlightColour,
+  leftMenuHighlightStripeColour,
+}: {
+  topMenuColour?: string;
+  leftMenuBackgroundColour?: string;
+  leftMenuFontAndIconColour?: string;
+  leftMenuHighlightColour?: string;
+  leftMenuHighlightStripeColour?: string;
+}) => ({
   red: {
     50: '#ffe7e6',
     100: '#f7c2be',
@@ -20,7 +32,11 @@ export const colors = {
     gray_light: '#6C6F84',
     gray_lighter: '#f3f3f3',
     black: '#1a1919',
-
+    top_menu: topMenuColour || '#d03a2b',
+    left_menu_background_colour: leftMenuBackgroundColour || 'white',
+    left_menu_font_and_icon_colour: leftMenuFontAndIconColour || 'black',
+    left_menu_highlight_colour: leftMenuHighlightColour || 'black',
+    left_menu_highlight_stripe_colour: leftMenuHighlightStripeColour || 'gray',
     primary: '#854fff',
     secondary: '#364a63',
     success: '#1ee1ab',
@@ -39,4 +55,4 @@ export const colors = {
     light_lightest: '#f0f3f5',
     dark_lightest: '#e5e8e9',
   },
-};
+});

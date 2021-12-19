@@ -12,22 +12,43 @@ import {Accordion} from './components/accordion';
 import {Menu} from './components/menu';
 import {Textarea} from './components/textarea';
 
-export const theme = extendTheme({
-  initialColorMode: 'light',
-  useSystemColorMode: false,
-  breakpoints,
-  colors,
-  fonts,
-  config: {
-    cssVarPrefix: 'ste',
-  },
-  components: {
-    Button,
-    Checkbox,
-    Input,
-    Popover,
-    Accordion,
-    Menu,
-    Textarea,
-  },
-});
+export const theme = ({
+  topMenuColour,
+  leftMenuBackgroundColour,
+  leftMenuFontAndIconColour,
+  leftMenuHighlightColour,
+  leftMenuHighlightStripeColour,
+}: {
+  topMenuColour?: string;
+  leftMenuBackgroundColour?: string;
+  leftMenuFontAndIconColour?: string;
+  leftMenuHighlightColour?: string;
+  leftMenuHighlightStripeColour?: string;
+}) => {
+  const theme = extendTheme({
+    initialColorMode: 'light',
+    useSystemColorMode: false,
+    breakpoints,
+    colors: colors({
+      topMenuColour,
+      leftMenuBackgroundColour,
+      leftMenuFontAndIconColour,
+      leftMenuHighlightColour,
+      leftMenuHighlightStripeColour,
+    }),
+    fonts,
+    config: {
+      cssVarPrefix: 'ste',
+    },
+    components: {
+      Button,
+      Checkbox,
+      Input,
+      Popover,
+      Accordion,
+      Menu,
+      Textarea,
+    },
+  });
+  return theme;
+};
