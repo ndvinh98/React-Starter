@@ -50,7 +50,7 @@ function ConfirmModal() {
       isOpen={confirmRequest}
       onClose={() => closeModal('confirmRequest')}>
       <UI.ModalOverlay />
-      <UI.ModalContent position={'relative'} w="360px" minH="311px">
+      <UI.ModalContent position={'relative'} w="360px" minH="400px">
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -65,7 +65,8 @@ function ConfirmModal() {
 
         <UI.ModalHeader mt={8}>
           <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            Please select access validity date for {data?.companyName}
+            Please set start date, validity date and tier access for{' '}
+            {data?.companyName}
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody>

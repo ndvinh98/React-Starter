@@ -80,6 +80,9 @@ function ProfileDetail() {
                     ...data,
                     showMobileNumber: showMobileNumber ? 1 : 0,
                     showWorkNumber: showWorkNumber ? 1 : 0,
+                    salutation: data?.salutation?.value,
+                    preferredLanguage: data?.preferredLanguage?.value,
+                    countryName: data?.countryName?.value,
                   });
                 }}
                 schema={{
@@ -92,9 +95,10 @@ function ProfileDetail() {
                     .required('Last Name is required')
                     .default(profileData?.lastName),
                   salutation: yup
-                    .string()
-                    .required('Salutation is required')
-                    .default(profileData?.salutation),
+                    .object({
+                      value: yup.string().required('Please select Salutation'),
+                    })
+                    .required(),
                   jobFunction: yup
                     .string()
                     .required('Job Function is required')
@@ -108,9 +112,10 @@ function ProfileDetail() {
                     .required('City is required')
                     .default(profileData?.firstName),
                   countryName: yup
-                    .string()
-                    .required('City is required')
-                    .default(profileData?.countryName),
+                    .object({
+                      value: yup.string().required('Please select Country'),
+                    })
+                    .required(),
                   postalCode: yup
                     .string()
                     .required('Postal Code is required')
@@ -124,10 +129,12 @@ function ProfileDetail() {
                     .required('Mobile Number is required')
                     .default(profileData?.mobileNumber),
                   preferredLanguage: yup
-                    .number()
-                    .optional()
-                    // .required('Preferred Please select language')
-                    .default(profileData?.language),
+                    .object({
+                      value: yup
+                        .number()
+                        .required('Please select Preferred Language'),
+                    })
+                    .required(),
                 }}
                 fields={[
                   {
