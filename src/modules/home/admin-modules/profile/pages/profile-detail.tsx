@@ -33,10 +33,6 @@ function ProfileDetail() {
   }, []);
 
   useEffect(() => {
-    console.log(profileData);
-  }, [profileData]);
-
-  useEffect(() => {
     if (data) {
       toast({
         title: 'Successfully!',

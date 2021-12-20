@@ -21,6 +21,7 @@ export const theme = ({
   leftMenuHighlightStripeColour,
   backgroundColour,
   fontColour,
+  fontFamily,
 }: {
   topMenuColour?: string;
   leftMenuBackgroundColour?: string;
@@ -29,6 +30,7 @@ export const theme = ({
   leftMenuHighlightStripeColour?: string;
   backgroundColour?: string;
   fontColour?: string;
+  fontFamily?: string;
 }) => {
   const theme = extendTheme({
     initialColorMode: 'light',
@@ -54,7 +56,14 @@ export const theme = ({
       Accordion,
       Menu,
       Textarea,
-      Text: Text({color: fontColour}),
+      Text: Text({color: fontColour, fontFamily: fontFamily}),
+    },
+    styles: {
+      global: {
+        '*': {
+          fontFamily: fontFamily || `Arial, Helvetica, sans-serif !important`,
+        },
+      },
     },
   });
   return theme;

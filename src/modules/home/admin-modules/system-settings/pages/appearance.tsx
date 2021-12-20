@@ -12,21 +12,31 @@ const FONTS = {
     label: 'Arial',
     value: 'arial',
   },
-  time_new_roman: {
-    label: 'Time New Roman',
-    value: 'time_new_roman',
+  times_new_roman: {
+    label: 'Times New Roman',
+    value: 'times_new_roman',
   },
 };
 
 function Appearance() {
   const settings = useConfigStore((s) => s.settings?.[0]);
-  const {patch, loading} = usePatch(`appearanceSettings/${settings?.id}`);
-  const {getItem: getLogoUrlUpload, data: logoUrlUpload} = useGetItem(
-    'appearanceSettings/uploadLogoUrl',
-  );
-  const {getItem: getLoginPageUrl, data: loginPageImageUrl} = useGetItem(
-    'appearanceSettings/uploadLoginPageImageUrl',
-  );
+  const toast = UI.useToast();
+
+  const {
+    patch,
+    data: settingsData,
+    loading,
+  } = usePatch(`appearanceSettings/${settings?.id}`);
+  const {
+    getItem: getLogoUrlUpload,
+    data: logoUrlUpload,
+    loading: logoUrlUploadLoading,
+  } = useGetItem('appearanceSettings/uploadLogoUrl');
+  const {
+    getItem: getLoginPageUrl,
+    data: loginPageImageUrl,
+    loading: loginPageImageUrlLoading,
+  } = useGetItem('appearanceSettings/uploadLoginPageImageUrl');
 
   const [fileLogo, setFileLogo] = useState(null);
   const [fileLoginPageImage, setFileLoginPageImage] = useState(null);
@@ -42,6 +52,22 @@ function Appearance() {
       uploadFile(loginPageImageUrl?.url, fileLoginPageImage);
     }
   }, [loginPageImageUrl]);
+
+  React.useEffect(() => {
+    if (settingsData) {
+      toast({
+        title: 'Successfully!',
+        status: 'success',
+        duration: 1000,
+        isClosable: true,
+        position: 'top-right',
+      });
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
+  }, [settingsData]);
 
   return (
     <>
@@ -205,7 +231,12 @@ function Appearance() {
                 <UI.Button type="button" w={'100px'} variant="outline">
                   Preview
                 </UI.Button>
-                <UI.Button isLoading={loading} type="submit" w={'100px'}>
+                <UI.Button
+                  isLoading={
+                    loading || logoUrlUploadLoading || loginPageImageUrlLoading
+                  }
+                  type="submit"
+                  w={'100px'}>
                   Save
                 </UI.Button>
               </UI.HStack>

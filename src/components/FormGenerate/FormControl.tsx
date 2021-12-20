@@ -138,7 +138,11 @@ const FormControl = (props: IFormControl) => {
         justifyContent={'space-between'}
         alignItems={LAYOUT_ITEMS[layout]}
         direction={DIRECTION[layout]}>
-        {!!label && <UI.FormLabel m={0}>{label}</UI.FormLabel>}
+        {!!label && (
+          <UI.FormLabel m={0}>
+            <UI.Text>{label}</UI.Text>
+          </UI.FormLabel>
+        )}
         <UI.Box width={width}>
           <Controller
             name={name}
