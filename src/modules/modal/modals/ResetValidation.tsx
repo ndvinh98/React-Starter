@@ -26,6 +26,7 @@ function ResetValidationModal() {
         position: 'top-right',
         isClosable: true,
       });
+      data?.cb();
     }
   }, [patchData]);
 
