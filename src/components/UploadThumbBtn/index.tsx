@@ -53,7 +53,10 @@ function UploadFiles(props: IUploadFilesPorps) {
           as={'label'}
           htmlFor={name}>
           <UI.Center>
-            <BiCloudUpload size={20} /> <UI.Text ml={1}>Upload file</UI.Text>
+            <BiCloudUpload size={20} />
+            <UI.Text color="white" ml={1}>
+              Upload file
+            </UI.Text>
           </UI.Center>
         </UI.Button>
 

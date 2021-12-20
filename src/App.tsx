@@ -27,6 +27,8 @@ export default function App() {
           leftMenuFontAndIconColour: setting?.leftMenuFontAndIconColour,
           leftMenuHighlightColour: setting?.leftMenuHighlightColour,
           leftMenuHighlightStripeColour: setting?.leftMenuHighlightStripeColour,
+          backgroundColour: setting?.backgroundColour,
+          fontColour: setting?.fontColour,
         })}>
         <Router navigation={navigation}>
           <Suspense fallback={<LoadingScreen />}>

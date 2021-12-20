@@ -24,10 +24,10 @@ function HomeLayout() {
         <UI.Box w={'min-content'}>
           <Sidebar.base />
         </UI.Box>
-        <UI.Box w={'full'} bg={'ste.gray_lighter'}>
+        <UI.Box background={'red'} w={'full'}>
           <Header.base />
           <UI.Box
-            bg={'ste.gray_lighter'}
+            sx={{backgroundColor: 'red !important'}}
             h={'calc(100vh - 60px)'}
             overflow={'auto'}
             w={'full'}>

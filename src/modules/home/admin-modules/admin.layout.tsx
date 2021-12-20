@@ -28,7 +28,7 @@ function HomeLayout() {
         <UI.Box w={'full'} bg={'ste.gray_lighter'}>
           <Header.base type="admin" />
           <UI.Box
-            bg={'ste.gray_lighter'}
+            bg={'ste.background_colour'}
             h={'calc(100vh - 60px)'}
             overflow={'auto'}
             w={'full'}>

@@ -11,6 +11,7 @@ import {Popover} from './components/popover';
 import {Accordion} from './components/accordion';
 import {Menu} from './components/menu';
 import {Textarea} from './components/textarea';
+import {Text} from './components/text';
 
 export const theme = ({
   topMenuColour,
@@ -18,12 +19,16 @@ export const theme = ({
   leftMenuFontAndIconColour,
   leftMenuHighlightColour,
   leftMenuHighlightStripeColour,
+  backgroundColour,
+  fontColour,
 }: {
   topMenuColour?: string;
   leftMenuBackgroundColour?: string;
   leftMenuFontAndIconColour?: string;
   leftMenuHighlightColour?: string;
   leftMenuHighlightStripeColour?: string;
+  backgroundColour?: string;
+  fontColour?: string;
 }) => {
   const theme = extendTheme({
     initialColorMode: 'light',
@@ -35,6 +40,7 @@ export const theme = ({
       leftMenuFontAndIconColour,
       leftMenuHighlightColour,
       leftMenuHighlightStripeColour,
+      backgroundColour,
     }),
     fonts,
     config: {
@@ -48,6 +54,7 @@ export const theme = ({
       Accordion,
       Menu,
       Textarea,
+      Text: Text({color: fontColour}),
     },
   });
   return theme;

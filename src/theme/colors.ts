@@ -4,12 +4,14 @@ export const colors = ({
   leftMenuFontAndIconColour,
   leftMenuHighlightColour,
   leftMenuHighlightStripeColour,
+  backgroundColour,
 }: {
   topMenuColour?: string;
   leftMenuBackgroundColour?: string;
   leftMenuFontAndIconColour?: string;
   leftMenuHighlightColour?: string;
   leftMenuHighlightStripeColour?: string;
+  backgroundColour?: string;
 }) => ({
   red: {
     50: '#ffe7e6',
@@ -37,6 +39,8 @@ export const colors = ({
     left_menu_font_and_icon_colour: leftMenuFontAndIconColour || 'black',
     left_menu_highlight_colour: leftMenuHighlightColour || 'black',
     left_menu_highlight_stripe_colour: leftMenuHighlightStripeColour || 'gray',
+    background_colour: backgroundColour || 'gray',
+
     primary: '#854fff',
     secondary: '#364a63',
     success: '#1ee1ab',
