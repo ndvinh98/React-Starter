@@ -4,9 +4,14 @@ import envConfig from '@env';
 import {useMedia} from '@utils/hooks';
 import {NotFoundBoundary} from 'react-navi';
 import NotFound from '@components/404NotFound';
+import {useConfigStore} from '@services/config';
 
 function AuthLayout({children}: any) {
   const {isAllMobile, isBase} = useMedia();
+
+  React.useEffect(() => {
+    useConfigStore.getState?.()?.initAuthConfig?.();
+  }, []);
 
   return (
     <NotFoundBoundary render={() => <NotFound />}>
@@ -24,7 +29,7 @@ function AuthLayout({children}: any) {
               w="full"
               height="full"
               fit="cover"
-              src="/images/img-login-page.png"
+              src="https://stepartnerportal-dev.s3.ap-southeast-1.amazonaws.com/settings/loginPageImage/login-page-image.png"
             />
           )}
           {isBase && (
@@ -32,7 +37,7 @@ function AuthLayout({children}: any) {
               w="full"
               height="full"
               fit="cover"
-              src="/images/img-login-page.png"
+              src="https://stepartnerportal-dev.s3.ap-southeast-1.amazonaws.com/settings/loginPageImage/login-page-image.png"
             />
           )}
         </UI.Box>

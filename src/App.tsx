@@ -17,7 +17,6 @@ serverInterceptors();
 
 export default function App() {
   const setting = useConfigStore((s) => s.settings?.[0]);
-  console.log('🚀 ~ setting', setting);
   return (
     <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
       <ChakraProvider

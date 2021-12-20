@@ -6,11 +6,13 @@ import AuthLayout from './auth.layout';
 import {useAuthController} from '@modules/auth';
 
 export default compose(
-  withView((request) => (
-    <AuthLayout mountpath={request.mountpath || '/'}>
-      <View />
-    </AuthLayout>
-  )),
+  withView((request) => {
+    return (
+      <AuthLayout mountpath={request.mountpath || '/'}>
+        <View />
+      </AuthLayout>
+    );
+  }),
   mount({
     '*': map(() =>
       useAuthController.getState().getToken()

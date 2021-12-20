@@ -19,6 +19,7 @@ export interface IConfigStore {
   settings: any;
   fetchLanguages: () => Promise<void>;
   initDashboardConfig: () => void;
+  initAuthConfig: () => void;
 }
 
 export const useConfigStore = create<IConfigStore>((set) => ({
@@ -27,6 +28,10 @@ export const useConfigStore = create<IConfigStore>((set) => ({
   fetchLanguages: async () =>
     fetchLanguages().then((languages) => set({languages})),
   initDashboardConfig: () => {
+    fetchLanguages().then((languages) => set({languages}));
+    fetchSettings().then((settings) => set({settings}));
+  },
+  initAuthConfig: () => {
     fetchLanguages().then((languages) => set({languages}));
     fetchSettings().then((settings) => set({settings}));
   },

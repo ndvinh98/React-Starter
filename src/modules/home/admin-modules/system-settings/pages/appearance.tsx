@@ -56,16 +56,12 @@ function Appearance() {
   React.useEffect(() => {
     if (settingsData) {
       toast({
-        title: 'Successfully!',
+        title: 'Successfully! Please refresh the browser to apply',
         status: 'success',
-        duration: 1000,
+        duration: 3000,
         isClosable: true,
         position: 'top-right',
       });
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
     }
   }, [settingsData]);
 
