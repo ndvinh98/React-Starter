@@ -22,6 +22,7 @@ export const theme = ({
   backgroundColour,
   fontColour,
   fontFamily,
+  buttonsColour,
 }: {
   topMenuColour?: string;
   leftMenuBackgroundColour?: string;
@@ -31,6 +32,7 @@ export const theme = ({
   backgroundColour?: string;
   fontColour?: string;
   fontFamily?: string;
+  buttonsColour?: string;
 }) => {
   const theme = extendTheme({
     initialColorMode: 'light',
@@ -49,7 +51,7 @@ export const theme = ({
       cssVarPrefix: 'ste',
     },
     components: {
-      Button,
+      Button: Button({buttonsColour}),
       Checkbox,
       Input,
       Popover,

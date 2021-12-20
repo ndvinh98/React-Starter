@@ -29,6 +29,7 @@ export default function App() {
           backgroundColour: setting?.backgroundColour,
           fontColour: setting?.fontColour,
           fontFamily: setting?.font,
+          buttonsColour: setting?.buttonsColour,
         })}>
         <Router navigation={navigation}>
           <Suspense fallback={<LoadingScreen />}>
