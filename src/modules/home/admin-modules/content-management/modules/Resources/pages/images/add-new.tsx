@@ -59,8 +59,8 @@ function AddNew() {
       post({
         productModuleId: moduleData?.id,
         resourceName: value.name,
-        languageId: value.language,
-        fileType: value.fileType,
+        languageId: value.language.value,
+        fileType: value.fileType.value,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.images?.mediaDestination,
         uploadedByUserId: me?.id,
@@ -110,20 +110,27 @@ function AddNew() {
             }}
             schema={{
               name: yup.string().required('Please enter Image Name'),
-              language: yup.number().required('Please select language'),
-              fileType: yup.string().required('Please enter Image type'),
+              language: yup
+                .object({
+                  value: yup.number().required('Please select language'),
+                })
+                .required(),
+              fileType: yup
+                .object({
+                  value: yup.string().required('Please select Image Format'),
+                })
+                .required(),
               images: yup
                 .object({
                   mediaDestination: yup
                     .string()
-                    .required('Please upload file')
-                    .typeError('Please upload file'),
+                    .required('Please upload image')
+                    .typeError('Please upload image'),
                 })
+                .required('Please upload image'),
+              thumb: yup
+                .string()
                 .required('Please upload thumbnail'),
-
-              // thumb: yup
-              //   .string()
-              //   .required('Please upload thumbnail'),
             }}
             fields={[
               {
@@ -141,6 +148,7 @@ function AddNew() {
                 productModuleId: moduleData?.id,
                 exportFile: true,
                 //defaultValue: data?.mediaDestination,
+                errorProperty: 'mediaDestination',
                 colSpan: 12,
                 labelUpload: 'Upload Image',
                 description: ' ',
@@ -167,6 +175,7 @@ function AddNew() {
                 type: 'select',
                 label: 'Image Format',
                 size: 'md',
+                errorProperty: 'value',
                 layout: 'horizontal',
                 width: '70%',
                 options: IMAGE_TYPES,
@@ -177,6 +186,7 @@ function AddNew() {
                 label: 'Select Language',
                 placeholder: 'Select Language',
                 size: 'md',
+                errorProperty: 'value',
                 layout: 'horizontal',
                 width: '70%',
                 options: languages?.map((x) => ({

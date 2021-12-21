@@ -68,8 +68,8 @@ function Edit() {
     if (value) {
       patch({
         resourceName: value.name,
-        languageId: value.language,
-        fileType: value.fileType,
+        languageId: value.language.value,
+        fileType: value.fileType.value,
         videoLength: value.videoLength,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.videos,
@@ -115,19 +115,22 @@ function Edit() {
                 .string()
                 .required('Please enter Video Name')
                 .default(resourceData?.resourceName),
+              language: yup
+                .object({
+                  value: yup.number().required('Please select language'),
+                })
+                .required()
+                .default(resourceData?.languageId),
               fileType: yup
-                .string()
-                .required('Please enter Video Type')
+                .object({
+                  value: yup.string().required('Please select Video Type'),
+                })
+                .required()
                 .default(resourceData?.fileType),
               videoLength: yup
                 .string()
                 .required('Please enter Video Length')
                 .default(resourceData?.videoLength),
-              language: yup
-                .number()
-                .typeError('Please select Language')
-                .required('Please select Language')
-                .default(resourceData?.languageId),
               videos: yup.string().required('Please upload file'),
               thumb: yup.string().required('Please upload thumbnail'),
             }}
@@ -174,6 +177,7 @@ function Edit() {
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                errorProperty: 'value',
                 options: FILE_TYPES,
                 defaultValue: {
                   value: resourceData?.fileType,
@@ -195,6 +199,7 @@ function Edit() {
                 label: 'Select Language',
                 placeholder: 'Select Language',
                 size: 'md',
+                errorProperty: 'value',
                 layout: 'horizontal',
                 width: '70%',
                 options: languages?.map((x) => ({

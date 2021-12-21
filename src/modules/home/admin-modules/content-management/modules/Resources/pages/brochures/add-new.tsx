@@ -68,8 +68,8 @@ function AddNew() {
       post({
         productModuleId: moduleData?.id,
         resourceName: value.name,
-        languageId: value.language,
-        fileType: value.fileType,
+        languageId: value.language.value,
+        fileType: value.fileType.value,
         noOfPages: value.noOfPages,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.brochures?.mediaDestination,
@@ -176,11 +176,26 @@ function AddNew() {
             }}
             schema={{
               name: yup.string().required('Please enter File Name'),
-              language: yup.number().required('Please select language'),
-              fileType: yup.string().required('Please enter File Format'),
+              language: yup
+                .object({
+                  value: yup.number().required('Please select language'),
+                })
+                .required(),
+              fileType: yup
+                .object({
+                  value: yup.string().required('Please select File Format'),
+                })
+                .required(),
               noOfPages: yup.number().required('Please enter number of pages'),
-              //brochures: yup.string().required('Please upload file'),
-              //thumb: yup.string().required('Please upload thumbnail'),
+              brochures: yup
+                .object({
+                  mediaDestination: yup
+                    .string()
+                    .required('Please upload file')
+                    .typeError('Please upload file'),
+                })
+                .required('Please upload file'),
+              thumb: yup.string().required('Please upload thumbnail'),
             }}
             fields={[
               {
@@ -203,6 +218,7 @@ function AddNew() {
                 description: ' ',
                 width: '100%',
                 size: 'md',
+                errorProperty: 'mediaDestination',
                 urlPath: 'productModuleResources/uploadFileUrl',
                 acceptFileType: "application/pdf",
               },
@@ -225,6 +241,7 @@ function AddNew() {
                 label: 'File Format',
                 size: 'md',
                 layout: 'horizontal',
+                errorProperty: 'value',
                 width: '70%',
                 options: FILE_TYPES,
               },
@@ -246,6 +263,7 @@ function AddNew() {
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                errorProperty: 'value',
                 options: languages?.map((x) => ({
                   value: x?.id,
                   label: x?.name,

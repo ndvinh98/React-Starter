@@ -58,8 +58,8 @@ function AddNew() {
       post({
         productModuleId: moduleData?.id,
         resourceName: value.name,
-        languageId: value.language,
-        fileType: value.fileType,
+        languageId: value.language.value,
+        fileType: value.fileType.value,
         videoLength: value.videoLength,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.videos,
@@ -101,10 +101,16 @@ function AddNew() {
             }}
             schema={{
               name: yup.string().required('Please enter Video Name'),
-              language: yup.number().required('Please select language'),
+              language: yup
+                .object({
+                  value: yup.number().required('Please select language'),
+                })
+                .required(),
               fileType: yup
-                .string()
-                .required('Please enter video type'),
+                .object({
+                  value: yup.string().required('Please select Video Type'),
+                })
+                .required(),
               videoLength: yup.string().required('Please enter video length'),
               videos: yup
                 .string()
@@ -155,6 +161,7 @@ function AddNew() {
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                errorProperty: 'value',
                 options: FILE_TYPES,
               },
               {
@@ -169,6 +176,7 @@ function AddNew() {
                 name: 'language',
                 type: 'select',
                 label: 'Select Language',
+                errorProperty: 'value',
                 placeholder: 'Select Language',
                 size: 'md',
                 layout: 'horizontal',

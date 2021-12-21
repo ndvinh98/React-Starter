@@ -70,8 +70,8 @@ function Edit() {
     if (value) {
       patch({
         resourceName: value.name,
-        languageId: value.language,
-        fileType: value.fileType,
+        languageId: value.language.value,
+        fileType: value.fileType.value,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.images?.mediaDestination,
       });
@@ -126,16 +126,19 @@ function Edit() {
                 .required('Please enter Image Name')
                 .default(resourceData?.resourceName),
               fileType: yup
-                .string()
-                .required('Please enter Image Type')
+                .object({
+                  value: yup.string().required('Please select Image Format'),
+                })
+                .required()
                 .default(resourceData?.fileType),
               language: yup
-                .number()
-                .typeError('Please select Language')
-                .required('Please select Language')
+                .object({
+                  value: yup.number().required('Please select language'),
+                })
+                .required()
                 .default(resourceData?.languageId),
               //images: yup.string().required('Please upload file'),
-              //thumb: yup.string().required('Please upload thumbnail'),
+              thumb: yup.string().required('Please upload thumbnail'),
             }}
             fields={[
               {
@@ -180,6 +183,7 @@ function Edit() {
                 type: 'select',
                 label: 'Image Format',
                 size: 'md',
+                errorProperty: 'value',
                 layout: 'horizontal',
                 width: '70%',
                 options: IMAGE_TYPES,
@@ -194,6 +198,7 @@ function Edit() {
                 label: 'Select Language',
                 placeholder: 'Select Language',
                 size: 'md',
+                errorProperty: 'value',
                 layout: 'horizontal',
                 width: '70%',
                 options: languages?.map((x) => ({

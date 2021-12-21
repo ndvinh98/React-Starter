@@ -76,8 +76,8 @@ function Edit() {
     if (value) {
       patch({
         resourceName: value.name,
-        languageId: value.language,
-        fileType: value.fileType,
+        languageId: value.language.value,
+        fileType: value.fileType.value,
         noOfPages: value.noOfPages,
         thumbnailMediaDestination: value.thumb,
         mediaDestination: value.brochures?.mediaDestination,
@@ -189,8 +189,10 @@ function Edit() {
                 .required('Please enter File Name')
                 .default(resourceData?.resourceName),
               fileType: yup
-                .string()
-                .required('Please enter File Format')
+                .object({
+                  value: yup.string().required('Please select File Format'),
+                })
+                .required()
                 .default(resourceData?.fileType),
               noOfPages: yup
                 .number()
@@ -198,12 +200,13 @@ function Edit() {
                 .required('Please enter Number of Pages')
                 .default(resourceData?.noOfPages),
               language: yup
-                .number()
-                .typeError('Please select Language')
-                .required('Please select Language')
+                .object({
+                  value: yup.number().required('Please select language'),
+                })
+                .required()
                 .default(resourceData?.languageId),
               //brochures: yup.string().required('Please upload file'),
-              //thumb: yup.string().required('Please upload thumbnail'),
+              thumb: yup.string().required('Please upload thumbnail'),
             }}
             fields={[
               {
@@ -250,6 +253,7 @@ function Edit() {
                 size: 'md',
                 layout: 'horizontal',
                 width: '70%',
+                errorProperty: 'value',
                 options: FILE_TYPES,
                 defaultValue: {
                   value: resourceData?.fileType,
@@ -272,6 +276,7 @@ function Edit() {
                 placeholder: 'Select Language',
                 size: 'md',
                 layout: 'horizontal',
+                errorProperty: 'value',
                 width: '70%',
                 options: languages?.map((x) => ({
                   value: x?.id,
