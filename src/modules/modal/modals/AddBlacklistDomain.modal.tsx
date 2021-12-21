@@ -20,6 +20,7 @@ function AddBlacklistDomainModal() {
       closeModal('addBlacklistDomain');
       toast({
         status: 'success',
+        position: 'top-right',
         isClosable: true,
         description: 'Successfully!',
         duration: 2000,
