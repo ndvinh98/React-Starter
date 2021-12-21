@@ -71,7 +71,11 @@ const HEADER_BUTTONS = {
 function Header(props: {type?: 'admin' | 'sales'}) {
   const {type} = props;
   return (
-    <HStack justifyContent={'flex-end'} px={3} height={'60px'} bg={'ste.red'}>
+    <HStack
+      justifyContent={'flex-end'}
+      px={3}
+      height={'60px'}
+      bg={'ste.top_menu'}>
       {chain(HEADER_BUTTONS?.[type])
         .filter((x) => x.isShow)
         .orderBy(['position'], ['asc'])

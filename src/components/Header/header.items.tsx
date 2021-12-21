@@ -12,7 +12,7 @@ import {useSalesContoller} from '@modules/home';
 import {useAuthController} from '@modules/auth';
 
 const USER_TYPE_DISPLAY = {
-  USER: 'User',
+  USER: 'Sales Manager',
   PARTNERADMIN: 'Partner admin',
   ADMIN: 'Admin',
 };

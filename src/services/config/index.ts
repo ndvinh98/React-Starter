@@ -1,6 +1,7 @@
 import create from 'zustand';
 
 import {fetchLanguages} from './fetchLanguages';
+import {fetchSettings} from './fetchSetting';
 
 export interface ILanguages {
   id: number;
@@ -15,28 +16,23 @@ export interface ILanguages {
 
 export interface IConfigStore {
   languages: ILanguages[];
+  settings: any;
   fetchLanguages: () => Promise<void>;
-  initAuthConfig: () => void;
   initDashboardConfig: () => void;
-  initRegisterConfig: () => void;
+  initAuthConfig: () => void;
 }
 
 export const useConfigStore = create<IConfigStore>((set) => ({
   languages: [],
-  fetchLanguages: async () => {
-    const languages = await fetchLanguages();
-    set({languages});
+  settings: [],
+  fetchLanguages: async () =>
+    fetchLanguages().then((languages) => set({languages})),
+  initDashboardConfig: () => {
+    fetchLanguages().then((languages) => set({languages}));
+    fetchSettings().then((settings) => set({settings}));
   },
-  initAuthConfig: async () => {
-    const languages = await fetchLanguages();
-    set({languages});
-  },
-  initDashboardConfig: async () => {
-    const languages = await fetchLanguages();
-    set({languages});
-  },
-  initRegisterConfig: async () => {
-    const languages = await fetchLanguages();
-    set({languages});
+  initAuthConfig: () => {
+    fetchLanguages().then((languages) => set({languages}));
+    fetchSettings().then((settings) => set({settings}));
   },
 }));

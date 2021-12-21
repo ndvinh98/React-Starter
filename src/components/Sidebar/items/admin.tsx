@@ -138,15 +138,23 @@ export const MenuLevel0 = memo(
         icon={
           <Icon
             sizeBox="23px"
-            fillColor={useActive(to, {exact: false}) ? '#333' : '#6C6F84 '}
+            fillColor={
+              useActive(to, {exact: false})
+                ? 'var(--ste-colors-ste-left_menu_highlight_colour)'
+                : 'var(--ste-colors-ste-left_menu_font_and_icon_colour)'
+            }
           />
         }>
         <UI.Text
-          color="black"
+          color={
+            useActive(to, {exact: false})
+              ? 'ste.left_menu_highlight_colour'
+              : 'ste.left_menu_font_and_icon_colour'
+          }
           whiteSpace={'nowrap'}
           overflow="hidden"
           fontSize={'16px'}
-          fontWeight={useActive(to, {exact: false}) ? 'semibold' : '500'}>
+          fontWeight={'semibold'}>
           {label}
         </UI.Text>
       </SB.MenuItem>
@@ -158,18 +166,26 @@ export const MenuLevel0 = memo(
         // @ts-ignore
         title={
           <UI.Text
-            color="black"
+            color={
+              useActive(to, {exact: false})
+                ? 'ste.left_menu_highlight_colour'
+                : 'ste.left_menu_font_and_icon_colour'
+            }
             whiteSpace={'nowrap'}
             overflow="hidden"
             fontSize={'16px'}
-            fontWeight={useActive(to, {exact: false}) ? 'semibold' : '500'}>
+            fontWeight={'semibold'}>
             {label}
           </UI.Text>
         }
         icon={
           <Icon
             sizeBox="23px"
-            fillColor={useActive(to, {exact: false}) ? '#1A1E32' : '#6C6F84 '}
+            fillColor={
+              useActive(to, {exact: false})
+                ? 'var(--ste-colors-ste-left_menu_highlight_colour)'
+                : 'var(--ste-colors-ste-left_menu_font_and_icon_colour)'
+            }
           />
         }>
         {subMenu.map((x, i) => (
@@ -199,9 +215,7 @@ export const MenuLevel0 = memo(
               overflow="hidden"
               fontSize={'16px'}
               color={useActive(x?.to, {exact: false}) ? '#1A1E32' : '#6C6F84'}
-              fontWeight={
-                useActive(x?.to, {exact: false}) ? 'extrabold' : 'medium'
-              }>
+              fontWeight={'extrabold'}>
               {x?.label}
             </UI.Text>
           </SB.MenuItem>

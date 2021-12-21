@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-export const SidebarWarp = styled.div`
+export const SidebarWarp = styled.div<any>`
   .pro-sidebar {
     color: #adadad;
     height: 100%;
@@ -246,7 +246,7 @@ export const SidebarWarp = styled.div`
     > .pro-inner-list-item
     > div
     > ul {
-    padding-top: 0;
+    padding-top: 10px;
     padding-bottom: 0;
     list-style: none !important;
   }
@@ -278,7 +278,7 @@ export const SidebarWarp = styled.div`
   }
   .pro-sidebar .pro-menu .pro-menu-item .prefix-wrapper {
     display: flex;
-    margin-right: 5px;
+    margin-right: 12px;
     opacity: 1;
     transition: opacity 0.2s;
   }
@@ -706,7 +706,7 @@ export const SidebarWarp = styled.div`
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: #e9e9e9 !important;
+    background-color: ${(props) => props.stripeColor || '#e9e9e9'} !important;
   }
   .pro-sidebar .pro-menu .pro-menu-item.level2 {
     position: relative;

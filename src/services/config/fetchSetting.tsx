@@ -1,9 +1,9 @@
 import request from '@services/axios/request';
 
-export const fetchLanguages = () =>
+export const fetchSettings = () =>
   request({
     method: 'GET',
-    path: '/languages/all',
+    path: '/appearanceSettings/all',
   }).then(([res, err]) => {
     if (err) return null;
     return res?.data?.data;

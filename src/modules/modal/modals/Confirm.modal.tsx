@@ -50,7 +50,7 @@ function ConfirmModal() {
       isOpen={confirmRequest}
       onClose={() => closeModal('confirmRequest')}>
       <UI.ModalOverlay />
-      <UI.ModalContent position={'relative'} w="360px" minH="311px">
+      <UI.ModalContent position={'relative'} w="360px" minH="400px">
         <UI.Circle
           position={'absolute'}
           top={'-22px'}
@@ -65,7 +65,8 @@ function ConfirmModal() {
 
         <UI.ModalHeader mt={8}>
           <UI.Center fontSize={'lg'} textAlign="center" color={'ste.red'}>
-            Please select access validity date for {data?.companyName}
+            Please set start date, validity date and tier access for{' '}
+            {data?.companyName}
           </UI.Center>
         </UI.ModalHeader>
         <UI.ModalBody>
@@ -76,10 +77,20 @@ function ConfirmModal() {
                 status: 'APPROVED',
                 startDate: `${startDate.year}-${startDate.month}-${startDate.day}`,
                 expiryDate: `${expiryDate.year}-${expiryDate.month}-${expiryDate.day}`,
-                tierIds: tierIds.map((x) => x?.value),
+                tierIds: JSON.stringify(tierIds.map((x) => x?.value)),
               });
             }}
             schema={{
+              startDate: yup
+                .object({
+                  day: yup.number().required('Start date is required!'),
+                })
+                .required(),
+              expiryDate: yup
+                .object({
+                  day: yup.number().required('Expiry date is required!'),
+                })
+                .required(),
               tierIds: yup
                 .array()
                 .min(1, 'Users is required')
@@ -91,12 +102,14 @@ function ConfirmModal() {
                 type: 'date-picker',
                 isMinimumTodayDate: true,
                 label: 'Start Date:',
+                errorProperty: 'day',
               },
               {
                 name: 'expiryDate',
                 type: 'date-picker',
                 isMinimumTodayDate: true,
                 label: 'Validity Date:',
+                errorProperty: 'day',
               },
               {
                 name: 'tierIds',

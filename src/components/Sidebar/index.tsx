@@ -28,8 +28,9 @@ function SideBar(porps: {type?: 'admin' | 'sales'}) {
       alignItems={'start'}
       justifyContent={'flex-start'}
       h={'100vh'}
-      overflow={'hidden'}>
-      <SidebarWarp>
+      overflow={'hidden'}
+      backgroundColor={'ste.left_menu_background_colour'}>
+      <SidebarWarp stripeColor="var(--ste-colors-ste-left_menu_highlight_stripe_colour)">
         <SB.ProSidebar collapsed={!isOpen} width={'350px'}>
           <SB.SidebarHeader>
             <UI.HStack
@@ -39,9 +40,12 @@ function SideBar(porps: {type?: 'admin' | 'sales'}) {
               h={'60px'}
               alignItems={'center'}
               justifyContent={'space-between'}>
-              <UI.ScaleFade unmountOnExit in={isOpen}>
-                <UI.Image w="80px" src="/images/admin-portal-logo.png" />
-              </UI.ScaleFade>
+              <UI.Box display={isOpen ? 'visible' : 'none'}>
+                <UI.Image
+                  w="80px"
+                  src="https://stepartnerportal-dev.s3.ap-southeast-1.amazonaws.com/settings/logo/logo.png"
+                />
+              </UI.Box>
               <UI.Box onClick={onToggle} cursor={'pointer'}>
                 <BiMenu color={'#9097A9'} size={35} />
               </UI.Box>

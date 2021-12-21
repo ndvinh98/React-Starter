@@ -52,7 +52,7 @@ function DeactivetUser() {
         </UI.ModalHeader>
         <UI.ModalBody fontSize={'lg'} textAlign={'center'}>
           <UI.VStack>
-            <UI.Text>Are you sure you want to deactive access</UI.Text>
+            <UI.Text>Are you sure you want to deactivate access?</UI.Text>
             <FormGenerate
               onSubmit={({reasonMessage}: {reasonMessage: string}) => {
                 post({

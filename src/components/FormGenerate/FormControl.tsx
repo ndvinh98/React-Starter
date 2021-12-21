@@ -17,6 +17,7 @@ import UploadFile from './fields/UploadFile';
 import UploadFileContent from './fields/UploadFileContent';
 import InputCheckbox from './fields/InputCheckbox';
 import DatePicker from './fields/DatePicker';
+import ColorPicker from './fields/ColorPicker';
 
 const FieldComponent = {
   input: UI.Input,
@@ -35,6 +36,7 @@ const FieldComponent = {
   'input-checkbox': InputCheckbox,
   'select-picker': SelectPicker,
   'date-picker': DatePicker,
+  'color-picker': ColorPicker,
 };
 
 export interface IFormControl extends HTMLChakraProps<'div'> {
@@ -57,7 +59,8 @@ export interface IFormControl extends HTMLChakraProps<'div'> {
     | 'upload-file'
     | 'upload-file-content'
     | 'radio-group'
-    | 'date-picker';
+    | 'date-picker'
+    | 'color-picker';
   control?: any;
   label?: string | React.ReactNode;
   text?: string | React.ReactNode;
@@ -135,7 +138,11 @@ const FormControl = (props: IFormControl) => {
         justifyContent={'space-between'}
         alignItems={LAYOUT_ITEMS[layout]}
         direction={DIRECTION[layout]}>
-        {!!label && <UI.FormLabel m={0}>{label}</UI.FormLabel>}
+        {!!label && (
+          <UI.FormLabel m={0}>
+            <UI.Text>{label}</UI.Text>
+          </UI.FormLabel>
+        )}
         <UI.Box width={width}>
           <Controller
             name={name}

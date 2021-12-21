@@ -8,18 +8,10 @@ export interface IUploadFile {
 }
 
 const UploadFile: React.FC<IUploadFile> = (props) => {
-  const {name, onChange} = props;
+  const {onChange} = props;
   return (
     <UI.Box w={'full'}>
-      <UploadFiles
-        isHiddenLabel
-        {...props}
-        onChangeValue={(data) =>
-          onChange({
-            target: {value: data?.[name] || undefined, name},
-          })
-        }
-      />
+      <UploadFiles isHiddenLabel {...props} onChangeValue={onChange} />
     </UI.Box>
   );
 };

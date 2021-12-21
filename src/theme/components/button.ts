@@ -1,4 +1,4 @@
-export const Button = {
+export const Button = ({buttonsColour}: {buttonsColour: string}) => ({
   baseStyle: {
     fontWeight: 'semibold',
     color: 'white',
@@ -7,28 +7,28 @@ export const Button = {
       outline: 'none',
     },
     _hover: {
-      color: 'ste.red',
-      bg: 'ste.red_lighter',
+      color: buttonsColour || 'ste.red',
+      bg: buttonsColour || 'ste.red_lighter',
     },
   },
   variants: {
     solid: {
-      bg: 'ste.red',
+      bg: buttonsColour || 'ste.red',
       _hover: {
         color: 'white',
-        bg: 'ste.red_lighter',
+        bg: buttonsColour || 'ste.red_lighter',
       },
     },
     ghost: {
       color: 'white',
       bg: 'rgba(244, 244, 244, 0.4)',
       _active: {
-        color: 'ste.red',
+        color: buttonsColour || 'ste.red',
       },
     },
     outline: {
-      borderColor: 'ste.red',
-      color: 'ste.red',
+      borderColor: buttonsColour || 'ste.red',
+      color: buttonsColour || 'ste.red',
     },
     link: {
       _hover: {
@@ -36,4 +36,4 @@ export const Button = {
       },
     },
   },
-};
+});

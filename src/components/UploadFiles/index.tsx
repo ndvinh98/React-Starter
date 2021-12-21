@@ -1,13 +1,10 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {isEmpty} from 'lodash';
-import {BiCloudUpload} from 'react-icons/bi';
-import {RiCloseCircleFill} from 'react-icons/ri';
-import {Center, Text, Box} from '@chakra-ui/react';
+import React, {useState} from 'react';
+import {IoMdCloseCircle} from 'react-icons/io';
 
-import {FOLDER} from '@assets/base64/folder';
-import {LabelStyled, PreviewStyled, UploadFilesStyled} from './styled';
+import * as UI from '@chakra-ui/react';
+import UploadThumb from '@components/UploadThumbBtn';
 
-interface IUploadFilesPorps {
+interface IUploadFilesProps {
   label?: string;
   className?: string;
   name?: string;
@@ -15,100 +12,63 @@ interface IUploadFilesPorps {
   defaultValue?: any[];
   isDisabled?: boolean;
   isHiddenLabel?: boolean;
+  urlPath?: string;
   [key: string]: any;
 }
 
-function UploadFiles(props: IUploadFilesPorps) {
+function UploadFiles(props: IUploadFilesProps) {
   const {
-    label,
     className,
     name = 'upload-file',
     onChangeValue,
     defaultValue,
-    isDisabled,
-    isHiddenLabel,
+    description,
   } = props;
 
-  const [files, setFiles] = useState<any[]>(defaultValue);
-  const isChanged = useRef(false);
+  const [thumb, setThumb] = useState<any>(defaultValue);
 
-  useEffect(() => {
-    if (onChangeValue && isChanged.current) onChangeValue({[name]: files});
-  }, [files]);
-
-  const onFileChange = (event: any) => {
-    isChanged.current = true;
-    if (!isEmpty(event.target.files)) setFiles([...event.target.files]);
-  };
-
-  const handleRemoveFile = (index: number) => {
-    const res = files.splice(index + 1, 1);
-    setFiles(res);
+  const handleOnchange = (thumb) => {
+    if (thumb?.[0]) {
+      onChangeValue(thumb?.[0]);
+    }
   };
 
   return (
     <div className={className}>
-      {label && !isHiddenLabel && <LabelStyled>{label}</LabelStyled>}
-      {!isEmpty(files) && (
-        <PreviewStyled>
-          {files.map((x: any, i: number) => (
-            <div className="file-item" key={i}>
-              {x.name}
-              <Center
-                opacity={isDisabled ? 0.6 : 1}
-                onClick={isDisabled ? undefined : () => handleRemoveFile(i)}
-                cursor={isDisabled ? 'no-drop' : 'pointer'}
-                position={'absolute'}
-                right={-2}
-                top={-2}>
-                <RiCloseCircleFill size={24} />
-              </Center>
-            </div>
-          ))}
-        </PreviewStyled>
+      <UploadThumb
+        name={name ? name : 'thumb'}
+        description={description}
+        onChangeValue={(res) => {
+          const thumb = res?.[name] || res?.thumb;
+          setThumb(thumb);
+          handleOnchange(thumb);
+        }}
+      />
+      {thumb && (
+        <UI.Box mt={3} width={'120px'} position="relative">
+          <UI.Circle
+            onClick={() => {
+              setThumb('');
+            }}
+            cursor="pointer"
+            bg="white"
+            right={-2}
+            top={-2}
+            position="absolute">
+            <IoMdCloseCircle fontSize="20px" color="red" />
+          </UI.Circle>
+          <UI.Image
+            boxSize={'120px'}
+            borderRadius="md"
+            objectFit="contain"
+            src={
+              typeof thumb === 'string'
+                ? thumb
+                : window.URL.createObjectURL(thumb?.[0])
+            }
+          />
+        </UI.Box>
       )}
-      <UploadFilesStyled
-        onDrop={
-          isDisabled
-            ? undefined
-            : (files) => {
-                isChanged.current = true;
-                if (!isEmpty(files)) setFiles([...files]);
-              }
-        }
-        className={`cursor-pointer`}>
-        <div className="upload-content mt-2 px-5 py-8">
-          <div className="flex justify-center mb-4">
-            <img width="40px" src={FOLDER} alt="folder-icon" />
-          </div>
-          <div className="upload-text text-center">
-            Drag & Drop your files here
-          </div>
-          <div className="upload-text text-center py-4">Or</div>
-          <div className="w-full flex justify-center">
-            <Box
-              bg={isDisabled ? 'ste.gray_lighter' : 'ste.red'}
-              color={isDisabled ? 'ste.red_lighter' : 'white'}
-              py={2}
-              px={3}
-              cursor={isDisabled ? 'no-drop' : 'pointer'}
-              borderRadius={'md'}
-              as={'label'}
-              htmlFor={name}>
-              <Center>
-                <BiCloudUpload size={20} /> <Text ml={1}>Upload file</Text>
-              </Center>
-            </Box>
-          </div>
-        </div>
-        <input
-          onChange={onFileChange}
-          className="upload-input"
-          type="file"
-          disabled={isDisabled}
-          id={name}
-        />
-      </UploadFilesStyled>
     </div>
   );
 }

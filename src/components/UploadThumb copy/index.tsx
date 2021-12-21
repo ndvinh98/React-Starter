@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, {useEffect, useState, useRef, memo} from 'react';
 import {isEmpty} from 'lodash';
 import {BiCloudUpload} from 'react-icons/bi';
