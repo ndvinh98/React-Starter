@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import * as UI from '@chakra-ui/react';
 import {BsArrowLeft} from 'react-icons/bs';
 import {useRouter, usePost, usePatch, useGetItem} from '@utils/hooks';
@@ -8,7 +8,7 @@ import {ICategorie, IGrouping, IProduct} from '@types';
 import * as yup from 'yup';
 import {useContentManagementController} from '@modules/home';
 import {useRouterController} from '@modules/router';
-import {keyBy} from 'lodash';
+import {keyBy, isEmpty} from 'lodash';
 
 const STOCK = [
   'https://i.imgur.com/bkSeJLO.png',
@@ -42,15 +42,21 @@ const STOCK = [
 const MEDIA_TYPE = ['VIDEOS', 'DOCUMENTS', 'IMAGES'];
 
 function AddNew() {
-  const allLineBusiness = useContentManagementController(
-    (s) => s.allLineBusiness,
-  );
   const {push} = useRouter();
   const toast = UI.useToast();
   const [mode, setMode] = useState<'ADD' | 'EDIT'>('ADD');
   const {params} = useRouterController();
   const {data, getItem} = useGetItem(`/productModules/${params?.id}`);
-  const [productIdBack, setProductIdBack] = useState()
+  const [applicationId, setApplicationId] = useState(-1);
+  const [categoryId, setCategoryId] = useState(-1);
+  const [groupingId, setGroupingId] = useState(-1);
+  const [productId, setProductId] = useState(-1);
+  const [applicationValue, setApplicationValue] = useState(null);
+  const [categoryValue, setCategoryValue] = useState(null);
+  const [groupingValue, setGroupingValue] = useState(null);
+  const [productValue, setProductValue] = useState(null);
+  const [mediaTypeValue, setMediaTypeValue] = useState(null);
+
 
   useEffect(() => {
     if (params?.id && params?.id !== 'add') {
@@ -90,13 +96,12 @@ function AddNew() {
         isClosable: true,
       });
       push(
-        `/home/content-management/modules?productId=${productIdBack}&productGroup=${groupingId}&lineOfProduct=${categoryId}&lineOfBusiness=${applicationId}`,
+        `/home/content-management/modules?productId=${productValue?.value}&productGroup=${groupingValue?.value}&lineOfProduct=${categoryValue?.value}&lineOfBusiness=${applicationValue?.value}`,
       );
     }
   }, [postData, pathData]);
 
   const handleSubmit = ({name, product, mediaType, thumb}) => {
-    setProductIdBack(product);
     if (mode === 'ADD')
       post({
         name,
@@ -116,34 +121,6 @@ function AddNew() {
       });
   };
 
-  ///
-  const categoryRef = useRef<any>(null);
-  const applicationRef = useRef<any>(null);
-  const groupingRef = useRef<any>(null);
-  const productRef = useRef<any>(null);
-  const mediaTypeRef = useRef<any>(null);
-
-  const [mediaType, setMediaType] = useState();
-  const [applicationId, setApplicationId] = useState(-1);
-  const [categoryId, setCategoryId] = useState(-1);
-  const [groupingId, setGroupingId] = useState(-1);
-  const [productId, setProductId] = useState(-1);
-
-  useEffect(() => {
-    categoryRef?.current?.select?.clearValue();
-    groupingRef?.current?.select?.clearValue();
-    productRef?.current?.select?.clearValue();
-  }, [applicationId]);
-
-  useEffect(() => {
-    groupingRef?.current?.select?.clearValue();
-    productRef?.current?.select?.clearValue();
-  }, [categoryId]);
-
-  useEffect(() => {
-    productRef?.current?.select?.clearValue();
-  }, [groupingId]);
-
   const {getList: getListCategories, data: categoriesData} =
     useGetList<ICategorie>('categories');
   const {getList: getListGroupings, data: groupingsData} =
@@ -151,95 +128,117 @@ function AddNew() {
   const {getList: getListProduct, data: productsData} =
     useGetList<IProduct>('products');
 
-  const handleOnChange = ({application, category, grouping}) => {
-    if (mediaType && mediaType !== -1) setMediaType(mediaType);
+  const allLineBusiness = useContentManagementController(
+    (s) => s.allLineBusiness,
+  );
+
+  const allLineBusinessKey = useMemo(
+    () => keyBy(allLineBusiness, 'id'),
+    [allLineBusiness],
+  );
+
+  const categoriesDataKey = useMemo(
+    () => keyBy(categoriesData?.records, 'id'),
+    [categoriesData],
+  );
+
+  const groupingsDataKey = useMemo(
+    () => keyBy(groupingsData?.records, 'id'),
+    [groupingsData],
+  );
+
+  const productDataKey = useMemo(
+    () => keyBy(productsData?.records, 'id'),
+    [productsData],
+  );
+
+  
+
+  const handleOnChange = ({application, category, grouping, product}) => {
     if (application > 0) setApplicationId(application);
     if (category > 0) setCategoryId(category);
     if (grouping > 0) setGroupingId(grouping);
+    if (product > 0) setProductId(product);
+
   };
 
   useEffect(() => {
-    if (applicationId > 0) {
-      categoryRef?.current?.select?.clearValue();
+    if (applicationValue?.value > 0) {
       getListCategories({
         limit: 9999,
-        filter: JSON.stringify([{application: applicationId}]),
+        filter: JSON.stringify([{application: applicationValue?.value}]),
       });
     }
-  }, [applicationId]);
+  }, [applicationValue]);
 
   useEffect(() => {
-    if (categoryId > 0) {
+    if (categoryValue?.value > 0) {
       getListGroupings({
         limit: 9999,
-        filter: JSON.stringify([{category: categoryId}]),
+        filter: JSON.stringify([{category: categoryValue?.value}]),
       });
     }
-  }, [categoryId]);
+  }, [categoryValue]);
 
   useEffect(() => {
-    if (groupingId > 0) {
+    if (groupingValue?.value > 0) {
       getListProduct({
         limit: 9999,
-        filter: JSON.stringify([{grouping: groupingId}]),
+        filter: JSON.stringify([{grouping: groupingValue?.value}]),
       });
     }
-  }, [groupingId]);
+  }, [groupingValue]);
 
-  useEffect(() => {
-    const applicationId = data?.product?.grouping?.category?.application?.id;
-    const categoryId = data?.product?.grouping?.category?.id;
-    const groupingId = data?.product?.grouping?.id;
-    const productId = data?.product?.id;
-
-    if (applicationId) {
-      applicationRef?.current?.select?.setValue({
-        value: applicationId,
-        label: keyBy(allLineBusiness, 'id')?.[applicationId]?.name,
-      });
-      setApplicationId(applicationId);
-    }
-    if (categoryId) setCategoryId(categoryId);
-    if (groupingId) setGroupingId(groupingId);
-    if (productId) setProductId(productId);
-    if (data?.mediaType) setMediaType(data?.mediaType);
-  }, [data]);
-
-  useEffect(() => {
-    if (mediaType && mediaType !== -1) {
-      mediaTypeRef?.current?.select?.setValue({
-        value: mediaType,
-        label: mediaType,
+  useEffect(()=>{
+    if(data){
+      setMediaTypeValue({
+        value: data?.mediaType,
+        label: data?.mediaType,
       });
     }
-  }, [mediaType]);
+  },[data]);
 
   useEffect(() => {
-    if (categoriesData?.records && categoryId > 0) {
-      categoryRef?.current?.select?.setValue({
+    if (data) {
+      if (data?.product?.grouping?.category?.application?.id && !isEmpty(allLineBusinessKey)) {
+        const applicationId = data?.product?.grouping?.category?.application?.id
+        setApplicationValue({
+          value: applicationId,
+          label: allLineBusinessKey?.[applicationId]?.name,
+        });
+      }
+    }
+  }, [data, allLineBusinessKey]);
+
+  useEffect(() => {
+    if (data?.product?.grouping?.category?.id && !isEmpty(categoriesDataKey)) {
+      const categoryId = data?.product?.grouping?.category?.id
+      setCategoryValue({
         value: categoryId,
-        label: keyBy(categoriesData?.records, 'id')?.[categoryId]?.name,
+        label: categoriesDataKey?.[categoryId]?.name,
       });
     }
-  }, [categoriesData, categoryId]);
+  }, [data, categoriesDataKey]);
 
   useEffect(() => {
-    if (groupingsData?.records && groupingId > 0) {
-      groupingRef?.current?.select?.setValue({
+    if (data?.product?.grouping?.id && !isEmpty(groupingsDataKey)) {
+      const groupingId = data?.product?.grouping?.id
+      setGroupingValue({
         value: groupingId,
-        label: keyBy(groupingsData?.records, 'id')?.[groupingId]?.name,
+        label: groupingsDataKey?.[groupingId]?.name,
       });
     }
-  }, [groupingsData, groupingId]);
+  }, [data, groupingsDataKey]);
 
   useEffect(() => {
-    if (productsData?.records && productId > 0) {
-      productRef?.current?.select?.setValue({
+    if (data?.product?.grouping?.id && !isEmpty(productDataKey)) {
+      const productId = data?.product?.id
+      setGroupingValue({
         value: productId,
-        label: keyBy(productsData?.records, 'id')?.[productId]?.name,
+        label: productDataKey?.[productId]?.name,
       });
     }
-  }, [productsData, productId]);
+  }, [data, productDataKey]);
 
   return (
     <UI.Box py={5} px={7}>
@@ -267,36 +266,53 @@ function AddNew() {
         <FormGenerate
           onChangeValue={handleOnChange}
           spacing={6}
-          onSubmit={handleSubmit}
+          onSubmit={(data) => {
+            handleSubmit({
+              ...data,
+              category: data?.category?.value,
+              application: data?.application?.value,
+              grouping: data?.grouping?.value,
+              product: data?.product?.value,
+              mediaType: data?.mediaType?.value,
+            });
+          }}
           schema={{
             name: yup
               .string()
               .default(data?.name)
               .required('Please enter Module Name'),
             mediaType: yup
-              .string()
-              .default(data?.mediaType)
-              .required('Please select Media Type'),
+              .object({
+                value: yup.string().required('Please select Media Type'),
+              })
+              .default({value: data?.mediaType})
+              .required(),
             application: yup
-              .number()
-              .default(data?.product?.grouping?.category?.application?.id)
-              .typeError('Please select Line of Business')
-              .required('Please select Line of Business'),
+              .object({
+                value: yup
+                  .number()
+                  .required('Please select Line of Business'),
+              })
+              .default({value: data?.product?.grouping?.category?.application?.id})
+              .required(),
             category: yup
-              .number()
-              .typeError('Please select Line of Product')
-              .default(data?.product?.grouping?.category?.id)
-              .required('Please select Line of Product'),
+              .object({
+                value: yup.number().required('Please select Line of Product'),
+              })
+              .default({value: data?.product?.grouping?.category?.id})
+              .required(),
             grouping: yup
-              .number()
-              .typeError('Please select Product Group')
-              .default(data?.product?.grouping?.id)
-              .required('Please select Product Group'),
+              .object({
+                value: yup.number().required('Please select Product Group'),
+              })
+              .default({value: data?.product?.grouping?.id})
+              .required(),
             product: yup
-              .number()
-              .typeError('Please select Product')
-              .default(data?.product?.id)
-              .required('Please select Product'),
+              .object({
+                value: yup.number().required('Please select Product'),
+              })
+              .default({value: data?.product?.grouping?.id})
+              .required(),
             thumb: yup
               .string()
               .default(data?.mediaDestination)
@@ -315,13 +331,18 @@ function AddNew() {
             {
               name: 'mediaType',
               type: 'select',
-              refEl: mediaTypeRef,
               label: 'Select Media Type',
               placeholder: 'Select Media Type',
               size: 'md',
               layout: 'horizontal',
               width: '70%',
               isClearable: false,
+              errorProperty: 'value',
+              value: mediaTypeValue,
+              onChangeValue: (data) => {
+                setMediaTypeValue(data)
+              },
+              canControlsValue: true,
               options: MEDIA_TYPE?.map((x) => ({
                 value: x,
                 label: x,
@@ -330,13 +351,21 @@ function AddNew() {
             {
               name: 'application',
               type: 'select',
-              refEl: applicationRef,
               label: 'Select Line of Business',
               placeholder: 'Select Line of Business',
               size: 'md',
               layout: 'horizontal',
               isClearable: false,
               width: '70%',
+              errorProperty: 'value',
+              value: applicationValue,
+              canControlsValue: true,
+              onChangeValue: (data) => {
+                setCategoryValue(null);
+                setGroupingValue(null);
+                setProductValue(null);
+                setApplicationValue(data);
+              },
               options: allLineBusiness?.map((x) => ({
                 value: x?.id,
                 label: x?.name,
@@ -344,15 +373,22 @@ function AddNew() {
             },
             {
               name: 'category',
-              refEl: categoryRef,
               label: 'Select Line of Product',
               placeholder: 'Select Line of Product',
               layout: 'horizontal',
               width: '70%',
-              isDisabled: applicationId < 0,
-              type: 'select',
               isClearable: false,
+              isDisabled: applicationValue?.value < 0,
+              type: 'select',
               size: 'md',
+              canControlsValue: true,
+              value: categoryValue,
+              onChangeValue: (data) => {
+                setGroupingValue(null);
+                setProductValue(null);
+                setCategoryValue(data);
+              },
+              errorProperty: 'value',
               options: categoriesData?.records?.map?.((x) => ({
                 value: x?.id,
                 label: x?.name,
@@ -360,15 +396,21 @@ function AddNew() {
             },
             {
               name: 'grouping',
-              refEl: groupingRef,
               label: 'Select Product Group',
               placeholder: 'Select Product Group',
               layout: 'horizontal',
               width: '70%',
-              isDisabled: categoryId < 0,
+              isDisabled: categoryValue?.value < 0,
               isClearable: false,
               type: 'select',
               size: 'md',
+              canControlsValue: true,
+              value: groupingValue,
+              onChangeValue: (data) => {
+                setGroupingValue(data);
+                setProductValue(null);
+              },
+              errorProperty: 'value',
               options: groupingsData?.records?.map?.((x) => ({
                 value: x?.id,
                 label: x?.name,
@@ -376,15 +418,20 @@ function AddNew() {
             },
             {
               name: 'product',
-              refEl: productRef,
               label: 'Select Product',
               placeholder: 'Select Product',
               layout: 'horizontal',
               width: '70%',
-              isDisabled: groupingId < 0,
+              isDisabled: productValue?.value < 0,
+              isClearable: false,
               type: 'select',
               size: 'md',
-              isClearable: false,
+              canControlsValue: true,
+              value: productValue,
+              onChangeValue: (data) => {
+                setProductValue(data);
+              },
+              errorProperty: 'value',
               options: productsData?.records?.map?.((x) => ({
                 value: x?.id,
                 label: x?.name,

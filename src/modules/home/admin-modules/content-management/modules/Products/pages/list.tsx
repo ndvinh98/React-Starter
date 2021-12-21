@@ -162,7 +162,12 @@ function List() {
                 styled: {
                   width: '28%',
                 },
+                canControlsValue: true,
                 value: allLineBusinessKeys?.[filter?.applicationId],
+                defaultValue: {
+                  value: -1,
+                  label: 'All Line of Business',
+                },
                 onChangeValue: (data) => {
                   setFilter({
                     applicationId: data?.value,
@@ -172,7 +177,7 @@ function List() {
                 },
                 placeholder: 'Line of Business',
                 options: [
-                  {value: -1, label: 'All Business'},
+                  {value: -1, label: 'All Line of Business'},
                   ...allLineBusiness,
                 ],
               },
@@ -182,6 +187,7 @@ function List() {
                 isClearable: false,
                 isDisabled: +filter?.applicationId < 0,
                 size: 'md',
+                canControlsValue: true,
                 value: categoriesDataKeys?.[filter?.categoryId],
                 onChangeValue: (data) => {
                   setFilter((s) => ({
@@ -215,6 +221,7 @@ function List() {
                     groupingId: data?.value,
                   }));
                 },
+                canControlsValue: true,
                 value: groupingsDataKeys?.[filter?.groupingId],
                 placeholder: 'Product Group',
                 options: [

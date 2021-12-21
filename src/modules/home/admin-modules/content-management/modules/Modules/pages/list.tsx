@@ -212,6 +212,7 @@ function List() {
                     productId: -1,
                   });
                 },
+                canControlsValue: true,
                 value: allLineBusinessKeys?.[filter?.applicationId],
                 options: [
                   {value: -1, label: 'All Line of Business'},
@@ -234,6 +235,7 @@ function List() {
                 size: 'md',
                 colSpan: 3,
                 placeholder: 'Line of Product',
+                canControlsValue: true,
                 value: categoriesDataKeys?.[filter?.categoryId],
                 defaultValue: {value: -1, label: 'All Line of Product'},
                 options: [
@@ -260,6 +262,7 @@ function List() {
                     productId: -1,
                   }));
                 },
+                canControlsValue: true,
                 value: groupingsDataKeys?.[filter?.groupingId],
                 options: [
                   {value: -1, label: 'All Product Group'},
@@ -284,6 +287,7 @@ function List() {
                   value: -1,
                   label: 'All Products',
                 },
+                canControlsValue: true,
                 value: productsDataKeys?.[filter?.productId],
                 options: [
                   {value: -1, label: 'All Products'},

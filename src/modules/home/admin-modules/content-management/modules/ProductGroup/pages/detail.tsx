@@ -105,7 +105,7 @@ function Edit() {
         isClosable: true,
       });
       push(
-        `/home/content-management/product-group?lineOfProduct=${categoryId}&lineOfBusiness=${applicationId}`,
+        `/home/content-management/product-group?lineOfProduct=${categoryValue?.value}&lineOfBusiness=${applicationValue?.value}`,
       );
     }
   }, [postData, pathData]);
@@ -189,11 +189,13 @@ function Edit() {
                     .number()
                     .required('Please select Line of Business'),
                 })
+                .default({value: data?.category?.application?.id})
                 .required(),
               category: yup
                 .object({
                   value: yup.number().required('Please select Line of Product'),
                 })
+                .default({value: data?.category?.id})
                 .required(),
               thumb: yup
                 .string()
