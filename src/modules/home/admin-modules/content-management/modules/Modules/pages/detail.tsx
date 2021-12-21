@@ -58,6 +58,8 @@ function AddNew() {
   const [mediaTypeValue, setMediaTypeValue] = useState(null);
 
 
+
+
   useEffect(() => {
     if (params?.id && params?.id !== 'add') {
       getItem({
@@ -231,9 +233,9 @@ function AddNew() {
   }, [data, groupingsDataKey]);
 
   useEffect(() => {
-    if (data?.product?.grouping?.id && !isEmpty(productDataKey)) {
+    if (data?.product?.id && !isEmpty(productDataKey)) {
       const productId = data?.product?.id
-      setGroupingValue({
+      setProductValue({
         value: productId,
         label: productDataKey?.[productId]?.name,
       });
@@ -311,7 +313,7 @@ function AddNew() {
               .object({
                 value: yup.number().required('Please select Product'),
               })
-              .default({value: data?.product?.grouping?.id})
+              .default({value: data?.product?.id})
               .required(),
             thumb: yup
               .string()
